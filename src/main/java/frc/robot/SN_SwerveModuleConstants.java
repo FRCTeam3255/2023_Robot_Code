@@ -17,7 +17,7 @@ public class SN_SwerveModuleConstants {
      * @param driveMotorID
      * @param steerMotorID
      * @param steerEncoderID
-     * @param steerEncodersteerEncoderOffsetOffset
+     * @param steerEncoderOffset
      * @param modulePosition
      * @param moduleNumber
      */
