@@ -58,15 +58,34 @@ public class SN_SwerveModule {
    * Configure the drive motor, steer motor, and absolute encoder.
    */
   public void configure() {
+    // driveMotor
+
     driveMotor.configFactoryDefault();
-    // TODO: set driveConfiguration to preferences
+
+    driveConfiguration.slot0.kF = prefDrivetrain.driveF.getValue();
+    driveConfiguration.slot0.kP = prefDrivetrain.driveP.getValue();
+    driveConfiguration.slot0.kI = prefDrivetrain.driveI.getValue();
+    driveConfiguration.slot0.kD = prefDrivetrain.driveD.getValue();
+
     driveMotor.configAllSettings(driveConfiguration);
-    // TODO: set drive motor configs from constants
+
+    driveMotor.setNeutralMode(Constants.DRIVE_NEUTRAL_MODE);
+    driveMotor.setInverted(Constants.DRIVE_MOTOR_INVERT);
+
+    // steerMotor
 
     steerMotor.configFactoryDefault();
-    // TODO: set steerConfiguration to preferences
+
+    steerConfiguration.slot0.kP = prefDrivetrain.steerP.getValue();
+    steerConfiguration.slot0.kI = prefDrivetrain.steerI.getValue();
+    steerConfiguration.slot0.kD = prefDrivetrain.steerD.getValue();
+
     steerMotor.configAllSettings(steerConfiguration);
-    // TODO: set steer motor configs from constants
+
+    steerMotor.setNeutralMode(Constants.STEER_NEUTRAL_MODE);
+    steerMotor.setInverted(Constants.STEER_MOTOR_INVERT);
+
+    // absoluteEncoder
 
     absoluteEncoder.configFactoryDefault();
     absoluteEncoder.setPositionToAbsolute();
