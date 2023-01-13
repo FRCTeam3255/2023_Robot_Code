@@ -6,7 +6,10 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
@@ -56,4 +59,53 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
+  // TODO: get module offsets
+
+  // module positions follow the WPILib robot coordinate system
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
+  public static final SN_SwerveModuleConstants MODULE_0 = new SN_SwerveModuleConstants(
+      mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
+      mapDrivetrain.FRONT_LEFT_STEER_CAN,
+      mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
+      0,
+      new Translation2d(
+          WHEELBASE / 2.0,
+          TRACK_WIDTH / 2.0),
+      0);
+
+  public static final SN_SwerveModuleConstants MODULE_1 = new SN_SwerveModuleConstants(
+      mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
+      mapDrivetrain.FRONT_RIGHT_STEER_CAN,
+      mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
+      0,
+      new Translation2d(
+          WHEELBASE / 2.0,
+          -TRACK_WIDTH / 2.0),
+      1);
+
+  public static final SN_SwerveModuleConstants MODULE_2 = new SN_SwerveModuleConstants(
+      mapDrivetrain.BACK_LEFT_DRIVE_CAN,
+      mapDrivetrain.BACK_LEFT_STEER_CAN,
+      mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
+      0,
+      new Translation2d(
+          -WHEELBASE / 2.0,
+          TRACK_WIDTH / 2.0),
+      2);
+
+  public static final SN_SwerveModuleConstants MODULE_3 = new SN_SwerveModuleConstants(
+      mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
+      mapDrivetrain.BACK_RIGHT_STEER_CAN,
+      mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
+      0,
+      new Translation2d(
+          -WHEELBASE / 2.0,
+          -TRACK_WIDTH / 2.0),
+      3);
+
+  public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+      MODULE_0.modulePosition,
+      MODULE_1.modulePosition,
+      MODULE_2.modulePosition,
+      MODULE_3.modulePosition);
 }
