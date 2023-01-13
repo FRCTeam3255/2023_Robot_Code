@@ -14,6 +14,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 6.0);
 
+    // percent of max module speed that is required for the module to steer
+    // (a stopped wheel shouldn't steer)
+    public static final SN_DoublePreference percentToSteer = new SN_DoublePreference("percentToSteer", 0.01);
+
   }
 
   public static final class prefVision {

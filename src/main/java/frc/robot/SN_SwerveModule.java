@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.frcteam3255.components.motors.SN_TalonFX;
+import com.frcteam3255.utils.CTREModuleState;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -103,9 +105,42 @@ public class SN_SwerveModule {
    *                        loop control
    */
   public void setDesiredState(SwerveModuleState desiredState, boolean isDriveOpenLoop) {
+    SwerveModuleState state = CTREModuleState.optimize(desiredState, getState().angle);
 
-    // TODO: implement
+    if (isDriveOpenLoop) {
 
+      // calculate the percent output from the currently demanded speed and the
+      // module's max speed. the currently demanded speed should never be above the
+      // module's max speed given that desiredState was properly desaturated
+      double percentOutput = state.speedMetersPerSecond / Constants.MAX_MODULE_SPEED;
+      driveMotor.set(ControlMode.PercentOutput, percentOutput);
+
+    } else {
+
+      // convert the wheel speed to Falcon encoder counts
+      double velocity = SN_Math.MPSToFalcon(
+          state.speedMetersPerSecond,
+          Constants.WHEEL_CIRCUMFERENCE,
+          Constants.DRIVE_GEAR_RATIO);
+
+      driveMotor.set(ControlMode.Velocity, velocity);
+    }
+
+    // convert angle to Falcon encoder counts
+    double angle = SN_Math.degreesToFalcon(
+        state.angle.getDegrees(),
+        Constants.STEER_GEAR_RATIO);
+
+    // if the module doesn't actually have any speed, don't bother steering it
+    if (Math.abs(
+        state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue() * Constants.MAX_MODULE_SPEED)) {
+
+      angle = lastAngle;
+    }
+
+    steerMotor.set(ControlMode.Position, angle);
+
+    lastAngle = angle;
   }
 
   /**
