@@ -149,9 +149,17 @@ public class SN_SwerveModule {
    */
   public SwerveModuleState getState() {
 
-    // TODO: implement
+    double velocity = SN_Math.falconToMPS(
+        driveMotor.getSelectedSensorVelocity(),
+        Constants.WHEEL_CIRCUMFERENCE,
+        Constants.DRIVE_GEAR_RATIO);
 
-    return null;
+    Rotation2d angle = Rotation2d.fromDegrees(
+        SN_Math.falconToDegrees(
+            steerMotor.getSelectedSensorPosition(),
+            Constants.STEER_GEAR_RATIO));
+
+    return new SwerveModuleState(velocity, angle);
   }
 
 }
