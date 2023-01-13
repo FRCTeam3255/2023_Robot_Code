@@ -54,7 +54,6 @@ public final class Constants {
 
   public static final boolean DRIVE_MOTOR_INVERT = true;
   public static final boolean STEER_MOTOR_INVERT = false;
-  public static final boolean ABSOLUTE_MOTOR_INVERT = false;
 
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
