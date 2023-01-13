@@ -19,120 +19,120 @@ import frc.robot.RobotPreferences.prefDrivetrain;
  */
 public class SN_SwerveModule {
 
-    public int moduleNumber;
+  public int moduleNumber;
 
-    private SN_TalonFX driveMotor;
-    private SN_TalonFX steerMotor;
+  private SN_TalonFX driveMotor;
+  private SN_TalonFX steerMotor;
 
-    private CANCoder absoluteEncoder;
-    private double absoluteEncoderOffset;
+  private CANCoder absoluteEncoder;
+  private double absoluteEncoderOffset;
 
-    private TalonFXConfiguration driveConfiguration;
-    private TalonFXConfiguration steerConfiguration;
+  private TalonFXConfiguration driveConfiguration;
+  private TalonFXConfiguration steerConfiguration;
 
-    private double lastAngle;
+  private double lastAngle;
 
-    /**
-     * Create a new SN_SwerveModule.
-     * 
-     * @param moduleConstants Constants required to create a swerve module
-     */
-    public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
-        moduleNumber = moduleConstants.moduleNumber;
+  /**
+   * Create a new SN_SwerveModule.
+   * 
+   * @param moduleConstants Constants required to create a swerve module
+   */
+  public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
+    moduleNumber = moduleConstants.moduleNumber;
 
-        driveMotor = new SN_TalonFX(moduleConstants.driveMotorID);
-        steerMotor = new SN_TalonFX(moduleConstants.steerMotorID);
+    driveMotor = new SN_TalonFX(moduleConstants.driveMotorID);
+    steerMotor = new SN_TalonFX(moduleConstants.steerMotorID);
 
-        absoluteEncoder = new CANCoder(moduleConstants.absoluteEncoderID);
-        absoluteEncoderOffset = moduleConstants.absoluteEncoderOffset;
+    absoluteEncoder = new CANCoder(moduleConstants.absoluteEncoderID);
+    absoluteEncoderOffset = moduleConstants.absoluteEncoderOffset;
 
-        driveConfiguration = new TalonFXConfiguration();
-        steerConfiguration = new TalonFXConfiguration();
+    driveConfiguration = new TalonFXConfiguration();
+    steerConfiguration = new TalonFXConfiguration();
 
-        lastAngle = 0;
+    lastAngle = 0;
 
-        configure();
-    }
+    configure();
+  }
 
-    /**
-     * Configure the drive motor, steer motor, and absolute encoder.
-     */
-    public void configure() {
-        driveMotor.configFactoryDefault();
-        // TODO: set driveConfiguration to preferences
-        driveMotor.configAllSettings(driveConfiguration);
-        // TODO: set drive motor configs from constants
+  /**
+   * Configure the drive motor, steer motor, and absolute encoder.
+   */
+  public void configure() {
+    driveMotor.configFactoryDefault();
+    // TODO: set driveConfiguration to preferences
+    driveMotor.configAllSettings(driveConfiguration);
+    // TODO: set drive motor configs from constants
 
-        steerMotor.configFactoryDefault();
-        // TODO: set steerConfiguration to preferences
-        steerMotor.configAllSettings(steerConfiguration);
-        // TODO: set steer motor configs from constants
+    steerMotor.configFactoryDefault();
+    // TODO: set steerConfiguration to preferences
+    steerMotor.configAllSettings(steerConfiguration);
+    // TODO: set steer motor configs from constants
 
-        absoluteEncoder.configFactoryDefault();
-        absoluteEncoder.setPositionToAbsolute();
-    }
+    absoluteEncoder.configFactoryDefault();
+    absoluteEncoder.setPositionToAbsolute();
+  }
 
-    /**
-     * Set the desired state of the swerve module. The state includes the velocity
-     * and angles of the module. The state that the motors are actually set to will
-     * not always be the desired state, rather it will optimized to reduce
-     * unnecessary steering in favor of reversing the direction of the drive motor.
-     * 
-     * @param desiredState    Desired velocity and angle of the module
-     * @param isDriveOpenLoop Is the drive motor velocity set using open or closed
-     *                        loop control
-     */
-    public void setDesiredState(SwerveModuleState desiredState, boolean isDriveOpenLoop) {
+  /**
+   * Set the desired state of the swerve module. The state includes the velocity
+   * and angles of the module. The state that the motors are actually set to will
+   * not always be the desired state, rather it will optimized to reduce
+   * unnecessary steering in favor of reversing the direction of the drive motor.
+   * 
+   * @param desiredState    Desired velocity and angle of the module
+   * @param isDriveOpenLoop Is the drive motor velocity set using open or closed
+   *                        loop control
+   */
+  public void setDesiredState(SwerveModuleState desiredState, boolean isDriveOpenLoop) {
 
-        // TODO: implement
+    // TODO: implement
 
-    }
+  }
 
-    /**
-     * Neutral the drive motor output.
-     */
-    public void neutralDriveOutput() {
-        driveMotor.neutralOutput();
-    }
+  /**
+   * Neutral the drive motor output.
+   */
+  public void neutralDriveOutput() {
+    driveMotor.neutralOutput();
+  }
 
-    /**
-     * Reset the steer motor encoder to match the angle of the absolute encoder.
-     */
-    public void resetSteerMotorEncoderToAbsolute() {
-        // TODO: implement
-    }
+  /**
+   * Reset the steer motor encoder to match the angle of the absolute encoder.
+   */
+  public void resetSteerMotorEncoderToAbsolute() {
+    // TODO: implement
+  }
 
-    /**
-     * Get the absolute encoder with an offset applied. This angle will match the
-     * current angle of the module wheel.
-     * 
-     * @return Absolute encoder with offset applied
-     */
-    public Rotation2d getAbsoluteEncoder() {
+  /**
+   * Get the absolute encoder with an offset applied. This angle will match the
+   * current angle of the module wheel.
+   * 
+   * @return Absolute encoder with offset applied
+   */
+  public Rotation2d getAbsoluteEncoder() {
 
-        // TODO: implement
+    // TODO: implement
 
-        return null;
-    }
+    return null;
+  }
 
-    /**
-     * Reset the drive motor encoder count to 0.
-     */
-    public void resetDriveEncoderCount() {
-        driveMotor.setSelectedSensorPosition(0);
-    }
+  /**
+   * Reset the drive motor encoder count to 0.
+   */
+  public void resetDriveEncoderCount() {
+    driveMotor.setSelectedSensorPosition(0);
+  }
 
-    /**
-     * Get the current state of the swerve module. State includes a velocity and
-     * angle.
-     * 
-     * @return State of swerve module
-     */
-    public SwerveModuleState getState() {
+  /**
+   * Get the current state of the swerve module. State includes a velocity and
+   * angle.
+   * 
+   * @return State of swerve module
+   */
+  public SwerveModuleState getState() {
 
-        // TODO: implement
+    // TODO: implement
 
-        return null;
-    }
+    return null;
+  }
 
 }
