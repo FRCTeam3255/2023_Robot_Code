@@ -117,7 +117,7 @@ public class SN_SwerveModule {
 
     } else {
 
-      // convert the wheel speed to Falcon encoder counts
+      // convert the wheel speed to Falcon velocity counts
       double velocity = SN_Math.MPSToFalcon(
           state.speedMetersPerSecond,
           Constants.WHEEL_CIRCUMFERENCE,
@@ -171,7 +171,17 @@ public class SN_SwerveModule {
 
     double radians = Units.degreesToRadians(absoluteEncoder.getAbsolutePosition());
 
+    // This could make the value negative but it doesn't matter.
     radians -= Units.degreesToRadians(absoluteEncoderOffset);
+
+    // There are a few reasons we're subtracting here instead of just applying an
+    // offset to the CANCoder.
+    // Firsty, this implmentation works with any absolute encoder. You don't have to
+    // rely on the encoder class on anything but getting a rotation value.
+    // Secondly, and this is very related to the first point, different encoder
+    // classes have identically named methods that are very different in
+    // functionality. Using the bare minimum from the encoder classes and doing the
+    // (very little) math ourselves minimizes opportunity for confusion
 
     return Rotation2d.fromRadians(radians);
   }
