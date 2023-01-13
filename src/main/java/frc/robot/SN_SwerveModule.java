@@ -11,6 +11,7 @@ import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import frc.robot.RobotPreferences.prefDrivetrain;
 
 /**
@@ -129,9 +130,11 @@ public class SN_SwerveModule {
    */
   public Rotation2d getAbsoluteEncoder() {
 
-    // TODO: implement
+    double radians = Units.degreesToRadians(absoluteEncoder.getAbsolutePosition());
 
-    return null;
+    radians -= Units.degreesToRadians(absoluteEncoderOffset);
+
+    return Rotation2d.fromRadians(radians);
   }
 
   /**
