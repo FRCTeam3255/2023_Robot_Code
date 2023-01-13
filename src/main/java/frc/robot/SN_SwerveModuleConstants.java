@@ -7,8 +7,8 @@ public class SN_SwerveModuleConstants {
   public final int steerMotorID;
   public final int absoluteEncoderID;
   public final double absoluteEncoderOffset;
-  public final Translation2d modulePosition;
-  public final int moduleNumber;
+  public final Translation2d position;
+  public final int number;
 
   /**
    * Swerve Module Constants to use when creating swerve modules. Units are not
@@ -18,21 +18,21 @@ public class SN_SwerveModuleConstants {
    * @param steerMotorID
    * @param absoluteEncoderID
    * @param absoluteEncoderOffset
-   * @param modulePosition
-   * @param moduleNumber
+   * @param position
+   * @param number
    */
   public SN_SwerveModuleConstants(
       int driveMotorID,
       int steerMotorID,
       int absoluteEncoderID,
       double absoluteEncoderOffset,
-      Translation2d modulePosition,
-      int moduleNumber) {
+      Translation2d position,
+      int number) {
     this.driveMotorID = driveMotorID;
     this.steerMotorID = steerMotorID;
     this.absoluteEncoderID = absoluteEncoderID;
     this.absoluteEncoderOffset = absoluteEncoderOffset;
-    this.modulePosition = modulePosition;
-    this.moduleNumber = moduleNumber;
+    this.position = position;
+    this.number = number;
   }
 }

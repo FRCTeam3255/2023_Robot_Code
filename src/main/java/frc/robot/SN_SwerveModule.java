@@ -38,7 +38,7 @@ public class SN_SwerveModule {
    * @param moduleConstants Constants required to create a swerve module
    */
   public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
-    moduleNumber = moduleConstants.moduleNumber;
+    moduleNumber = moduleConstants.number;
 
     driveMotor = new SN_TalonFX(moduleConstants.driveMotorID);
     steerMotor = new SN_TalonFX(moduleConstants.steerMotorID);

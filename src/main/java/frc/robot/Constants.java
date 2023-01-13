@@ -104,8 +104,8 @@ public final class Constants {
       3);
 
   public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-      MODULE_0.modulePosition,
-      MODULE_1.modulePosition,
-      MODULE_2.modulePosition,
-      MODULE_3.modulePosition);
+      MODULE_0.position,
+      MODULE_1.position,
+      MODULE_2.position,
+      MODULE_3.position);
 }
