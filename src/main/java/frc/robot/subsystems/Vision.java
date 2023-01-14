@@ -24,6 +24,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.constVision;
 
 public class Vision extends SubsystemBase {
   RobotPoseEstimator photonPoseEstimator;
@@ -33,7 +34,7 @@ public class Vision extends SubsystemBase {
     AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(null, 0, 0);
 
     // add more cameras here & to the cameraList when possible
-    PhotonCamera lifecam = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    PhotonCamera lifecam = new PhotonCamera(constVision.lifecamPhotonName);
     Transform3d robotToLifecam = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     ArrayList<Pair<PhotonCamera, Transform3d>> cameraList = new ArrayList<Pair<PhotonCamera, Transform3d>>();

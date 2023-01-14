@@ -5,5 +5,7 @@
 package frc.robot;
 
 public final class Constants {
-
+  public static final class constVision {
+    public static final String lifecamPhotonName = "Microsoft_LifeCam_HD-3000";
+  }
 }
