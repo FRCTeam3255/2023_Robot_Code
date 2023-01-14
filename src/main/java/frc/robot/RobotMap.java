@@ -20,4 +20,9 @@ public class RobotMap {
     public static final int BACK_RIGHT_STEER_CAN = 10;
     public static final int BACK_RIGHT_ABSOLUTE_ENCODER_CAN = 3;
   }
+
+  public static final class mapControllers {
+
+    public static final int DRIVER = 0;
+  }
 }
