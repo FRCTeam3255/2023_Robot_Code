@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
@@ -17,6 +18,8 @@ public class RobotPreferences {
     // percent of max module speed that is required for the module to steer
     // (a stopped wheel shouldn't steer)
     public static final SN_DoublePreference percentToSteer = new SN_DoublePreference("percentToSteer", 0.01);
+
+    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", false);
 
   }
 
