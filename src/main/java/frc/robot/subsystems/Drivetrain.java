@@ -100,6 +100,12 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  public void neutralDriveOutputs() {
+    for (SN_SwerveModule mod : modules) {
+      mod.neutralDriveOutput();
+    }
+  }
+
   /**
    * Get the current estimated position of the drivetrain.
    * 
