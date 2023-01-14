@@ -153,7 +153,7 @@ public class SN_SwerveModule {
   /**
    * Reset the steer motor encoder to match the angle of the absolute encoder.
    */
-  public void resetSteerMotorEncoderToAbsolute() {
+  public void resetSteerMotorEncodersToAbsolute() {
     double absoluteEncoderCount = SN_Math.degreesToFalcon(
         getAbsoluteEncoder().getDegrees(),
         Constants.STEER_GEAR_RATIO);
