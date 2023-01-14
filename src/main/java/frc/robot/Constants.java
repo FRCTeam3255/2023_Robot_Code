@@ -56,8 +56,6 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
-  // TODO: get module offsets
-
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
   public static final SN_SwerveModuleConstants MODULE_0 = new SN_SwerveModuleConstants(
