@@ -12,6 +12,7 @@ import com.frcteam3255.utils.CTREModuleState;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.RobotPreferences.prefDrivetrain;
@@ -212,6 +213,27 @@ public class SN_SwerveModule {
             Constants.STEER_GEAR_RATIO));
 
     return new SwerveModuleState(velocity, angle);
+  }
+
+  /**
+   * Get the current position of the swerve module. Position includes a distance
+   * and angle
+   * 
+   * @return Position of swerve module
+   */
+  public SwerveModulePosition getPosition() {
+
+    double distance = SN_Math.falconToMeters(
+        driveMotor.getSelectedSensorPosition(),
+        Constants.WHEEL_CIRCUMFERENCE,
+        Constants.DRIVE_GEAR_RATIO);
+
+    Rotation2d angle = Rotation2d.fromDegrees(
+        SN_Math.falconToDegrees(
+            steerMotor.getSelectedSensorPosition(),
+            Constants.STEER_GEAR_RATIO));
+
+    return new SwerveModulePosition(distance, angle);
   }
 
 }
