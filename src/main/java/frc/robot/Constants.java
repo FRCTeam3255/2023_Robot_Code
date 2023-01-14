@@ -20,8 +20,6 @@ public final class Constants {
   public static final double TRACK_WIDTH = Units.inchesToMeters(23.75);
   public static final double WHEELBASE = Units.inchesToMeters(23.75);
 
-  public static final boolean GYRO_INVERT = false;
-
   // Swerve Modules
 
   /*
