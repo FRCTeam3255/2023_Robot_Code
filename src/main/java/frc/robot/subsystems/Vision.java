@@ -11,6 +11,10 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.RobotPoseEstimator;
 import org.photonvision.RobotPoseEstimator.PoseStrategy;
 
+import com.frcteam3255.components.SN_Blinkin;
+import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.frcteam3255.joystick.SN_F310Gamepad;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,9 +32,8 @@ public class Vision extends SubsystemBase {
     // TODO: Change to current april tag array upon new WPI update
     AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(null, 0, 0);
 
-    // TODO: get lifecam name, add more cameras when possible, add cameras to
-    // cameraList
-    PhotonCamera lifecam = new PhotonCamera("insertNameHere");
+    // add more cameras here & to the cameraList when possible
+    PhotonCamera lifecam = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     Transform3d robotToLifecam = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     ArrayList<Pair<PhotonCamera, Transform3d>> cameraList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
