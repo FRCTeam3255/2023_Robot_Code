@@ -9,7 +9,6 @@ import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
-import edu.wpi.first.cscore.VideoCamera.WhiteBalance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -33,20 +32,22 @@ public class RobotContainer {
 
     // Driver
     conDriver.btn_X
+        .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Violet)))
+        .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+    
+    conDriver.btn_Y
       .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
       .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
-    conDriver.btn_Y
-      .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Violet)))
-      .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+
 
     // Operator
-    conOperator.btn_A
+    conOperator.btn_X
+        .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Violet)))
+        .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+    
+    conOperator.btn_Y
       .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
-      .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
-
-    conOperator.btn_B
-      .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Violet)))
       .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
   }
 
