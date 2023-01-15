@@ -13,6 +13,8 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
+  public static final boolean OUTPUT_DEBUG_VALUES = false;
+
   // Drivetrain (no subclass)
 
   // note: these were physically measured center to center of the wheel on a
