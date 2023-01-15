@@ -10,44 +10,38 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotMap.mapIntake;
 
 public class Intake extends SubsystemBase {
 
   ColorSensorV3 intakeColorSensor;
   ColorMatch colorMatcher;
-
-  // I am 90% sure this is not the right place to do this, maybe constants
-  public enum gamePiece {
-    NONE, CUBE, CONE
-  }
+  Color coneColor = new Color(0.34509, 0.51764, 0.13333);
+  Color cubeColor = new Color(0.22745, 0.39607, 0.37254);
 
   public Intake() {
     intakeColorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
-    // TODO: MAKE THIS NOT BAD
-    colorMatcher.setConfidenceThreshold(0.3);
-
-    // TODO: Change these to more exact colors
-
+    colorMatcher.setConfidenceThreshold(0.95);
     // CONE
-    colorMatcher.addColorMatch(Color.kYellow);
+    colorMatcher.addColorMatch(coneColor);
     // CUBE
-    colorMatcher.addColorMatch(Color.kViolet);
+    colorMatcher.addColorMatch(cubeColor);
   }
 
-  public gamePiece hasGamePiece() {
-    gamePiece currentGamePiece = gamePiece.NONE;
+  public Constants.gamePiece hasGamePiece() {
+    Constants.gamePiece currentGamePiece = Constants.gamePiece.NONE;
     Color detectedColor = intakeColorSensor.getColor();
     ColorMatchResult currentColor = colorMatcher.matchColor(detectedColor);
 
     if (currentColor == null) {
       return currentGamePiece;
-    } else if (currentColor.color == Color.kYellow) {
-      currentGamePiece = gamePiece.CONE;
-    } else if (currentColor.color == Color.kViolet) {
-      currentGamePiece = gamePiece.CUBE;
+    } else if (currentColor.color == coneColor) {
+      currentGamePiece = Constants.gamePiece.CONE;
+    } else if (currentColor.color == cubeColor) {
+      currentGamePiece = Constants.gamePiece.CUBE;
     }
 
     return currentGamePiece;
