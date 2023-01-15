@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
+
+  private final Intake subIntake = new Intake();
 
   public RobotContainer() {
     configureBindings();
