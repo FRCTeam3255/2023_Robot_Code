@@ -4,6 +4,9 @@ import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
+
+  public static final boolean useNetworkTables = false;
+
   public static final class prefDrivetrain {
 
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);
