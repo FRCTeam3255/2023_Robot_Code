@@ -12,7 +12,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SN_SwerveModule;
@@ -147,5 +149,27 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
+
+    if (Constants.OUTPUT_DEBUG_VALUES) {
+
+      SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
+      SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
+      SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
+
+      SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
+
+      for (SN_SwerveModule mod : modules) {
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Speed",
+            Units.metersToFeet(mod.getState().speedMetersPerSecond));
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Distance",
+            Units.metersToFeet(mod.getPosition().distanceMeters));
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Angle",
+            mod.getState().angle.getDegrees());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Absolute Encoder Angle",
+            mod.getAbsoluteEncoder().getDegrees());
+      }
+    }
   }
 }
