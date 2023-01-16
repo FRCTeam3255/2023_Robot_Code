@@ -12,6 +12,18 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
+  public enum GamePiece {
+    NONE, CUBE, CONE
+  }
+
+  // RGB game piece colors
+  public static final double coneColorR = 0.34509;
+  public static final double coneColorG = 0.51764;
+  public static final double coneColorB = 0.13333;
+
+  public static final double cubeColorR = 0.22745;
+  public static final double cubeColorG = 0.39607;
+  public static final double cubeColorB = 0.37254;
 
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
@@ -105,4 +117,13 @@ public final class Constants {
       MODULE_1.position,
       MODULE_2.position,
       MODULE_3.position);
+
+  public static final class constControllers {
+    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
+    public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
+    public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
+    public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
+    public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
+    public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+  }
 }
