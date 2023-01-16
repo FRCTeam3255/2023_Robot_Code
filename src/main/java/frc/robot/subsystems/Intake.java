@@ -39,23 +39,24 @@ public class Intake extends SubsystemBase {
   }
 
   public GamePiece hasGamePiece() {
-    GamePiece currentGamePiece = GamePiece.NONE;
-    Color detectedColor = intakeColorSensor.getColor();
-    ColorMatchResult currentColor = colorMatcher.matchColor(detectedColor);
+    ColorMatchResult currentColor = colorMatcher.matchColor(intakeColorSensor.getColor());
 
     if (currentColor == null) {
-      return currentGamePiece;
+      return GamePiece.NONE;
     } else if (currentColor.color == coneColor) {
-      currentGamePiece = GamePiece.CONE;
+      return GamePiece.CONE;
     } else if (currentColor.color == cubeColor) {
-      currentGamePiece = GamePiece.CUBE;
+      return GamePiece.CUBE;
     }
 
-    return currentGamePiece;
+    return GamePiece.NONE;
   }
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putString("Current Game Piece", hasGamePiece().toString());
+
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putString("Color Sensor Color", intakeColorSensor.getColor().toHexString());
       SmartDashboard.putNumber("Color Sensor Red", intakeColorSensor.getRed());
@@ -63,6 +64,5 @@ public class Intake extends SubsystemBase {
       SmartDashboard.putNumber("Color Sensor Blue", intakeColorSensor.getBlue());
       SmartDashboard.putNumber("Color Sensor Proximity", intakeColorSensor.getProximity());
     }
-    SmartDashboard.putString("Current Game Piece", hasGamePiece().toString());
   }
 }
