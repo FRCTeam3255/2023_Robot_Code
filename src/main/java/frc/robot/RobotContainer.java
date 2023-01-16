@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
-import com.frcteam3255.joystick.SN_DualActionStick;
-import com.frcteam3255.joystick.SN_F310Gamepad;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +17,6 @@ public class RobotContainer {
 
   private final SN_Blinkin leds = new SN_Blinkin(0);
 
-  private final SN_F310Gamepad conDriver = new SN_F310Gamepad(0);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(2);
 
   public RobotContainer() {
@@ -39,7 +36,6 @@ public class RobotContainer {
     conSwitchboard.btn_2
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
-
   }
 
   public Command getAutonomousCommand() {
