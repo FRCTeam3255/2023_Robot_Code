@@ -6,10 +6,12 @@ package frc.robot.commands;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.constControllers;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
@@ -50,6 +52,10 @@ public class Drive extends CommandBase {
     xVelocity = conDriver.getAxisLSX();
     yVelocity = conDriver.getAxisLSY();
     rVelocity = conDriver.getAxisRSX();
+
+    xVelocity = MathUtil.applyDeadband(xVelocity, constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
+    yVelocity = MathUtil.applyDeadband(yVelocity, constControllers.DRIVER_LEFT_STICK_Y_DEADBAND);
+    rVelocity = MathUtil.applyDeadband(rVelocity, constControllers.DRIVER_RIGHT_STICK_X_DEADBAND);
 
     xVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     yVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());

@@ -117,4 +117,13 @@ public final class Constants {
       MODULE_1.position,
       MODULE_2.position,
       MODULE_3.position);
+
+  public static final class constControllers {
+    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
+    public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
+    public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
+    public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
+    public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
+    public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+  }
 }
