@@ -5,9 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
-import com.frcteam3255.components.motors.SN_TalonFX;
 import com.frcteam3255.utils.CTREModuleState;
 import com.frcteam3255.utils.SN_Math;
 
@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import frc.robot.RobotMap.mapDrivetrain;
 import frc.robot.RobotPreferences.prefDrivetrain;
 
 /**
@@ -25,8 +26,8 @@ public class SN_SwerveModule {
 
   public int moduleNumber;
 
-  private SN_TalonFX driveMotor;
-  private SN_TalonFX steerMotor;
+  private TalonFX driveMotor;
+  private TalonFX steerMotor;
 
   private CANCoder absoluteEncoder;
   private double absoluteEncoderOffset;
@@ -44,10 +45,10 @@ public class SN_SwerveModule {
   public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
     moduleNumber = moduleConstants.number;
 
-    driveMotor = new SN_TalonFX(moduleConstants.driveMotorID);
-    steerMotor = new SN_TalonFX(moduleConstants.steerMotorID);
+    driveMotor = new TalonFX(moduleConstants.driveMotorID, mapDrivetrain.CAN_BUS);
+    steerMotor = new TalonFX(moduleConstants.steerMotorID, mapDrivetrain.CAN_BUS);
 
-    absoluteEncoder = new CANCoder(moduleConstants.absoluteEncoderID);
+    absoluteEncoder = new CANCoder(moduleConstants.absoluteEncoderID, mapDrivetrain.CAN_BUS);
     absoluteEncoderOffset = moduleConstants.absoluteEncoderOffset;
 
     driveConfiguration = new TalonFXConfiguration();
