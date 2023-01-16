@@ -25,7 +25,7 @@ public final class Constants {
   public static final double cubeColorG = 0.39607;
   public static final double cubeColorB = 0.37254;
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // Drivetrain (no subclass)
 
@@ -76,7 +76,7 @@ public final class Constants {
       mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
       mapDrivetrain.FRONT_LEFT_STEER_CAN,
       mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-      71.279297, // absolute encoder offset
+      252.333984, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -86,7 +86,7 @@ public final class Constants {
       mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
       mapDrivetrain.FRONT_RIGHT_STEER_CAN,
       mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-      24.345703, // absolute encoder offset
+      204.082031, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -96,7 +96,7 @@ public final class Constants {
       mapDrivetrain.BACK_LEFT_DRIVE_CAN,
       mapDrivetrain.BACK_LEFT_STEER_CAN,
       mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
-      331.523438, // absolute encoder offset
+      152.929688, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -106,7 +106,7 @@ public final class Constants {
       mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
       mapDrivetrain.BACK_RIGHT_STEER_CAN,
       mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-      65.917969, // absolute encoder offset
+      246.269531, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
