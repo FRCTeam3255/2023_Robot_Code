@@ -188,6 +188,15 @@ public class SN_SwerveModule {
   }
 
   /**
+   * Get the raw absolute encoder position
+   * 
+   * @return Absolute encoder position in degrees
+   */
+  public double getRawAbsoluteEncoder() {
+    return absoluteEncoder.getAbsolutePosition();
+  }
+
+  /**
    * Reset the drive motor encoder count to 0.
    */
   public void resetDriveEncoderCount() {

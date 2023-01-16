@@ -169,6 +169,8 @@ public class Drivetrain extends SubsystemBase {
             mod.getState().angle.getDegrees());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Absolute Encoder Angle",
             mod.getAbsoluteEncoder().getDegrees());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Raw Absolute Encoder Angle",
+            mod.getRawAbsoluteEncoder());
       }
     }
   }
