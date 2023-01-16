@@ -4,25 +4,35 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.frcteam3255.preferences.SN_DoublePreference;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ConstIntake;
 import frc.robot.Constants.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
 
+  SN_CANSparkMax leftMotor;
+  SN_CANSparkMax rightMotor;
   ColorSensorV3 intakeColorSensor;
   ColorMatch colorMatcher;
   Color coneColor;
   Color cubeColor;
 
   public Intake() {
+    leftMotor = new SN_CANSparkMax(mapIntake.LEFT_MOTOR_CAN, MotorType.kBrushless);
+    rightMotor = new SN_CANSparkMax(mapIntake.RIGHT_MOTOR_CAN, MotorType.kBrushless);
+
     intakeColorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
@@ -30,8 +40,14 @@ public class Intake extends SubsystemBase {
   }
 
   public void configure() {
-    coneColor = new Color(Constants.coneColorR, Constants.coneColorG, Constants.coneColorB);
-    cubeColor = new Color(Constants.cubeColorR, Constants.cubeColorG, Constants.cubeColorB);
+    leftMotor.configFactoryDefault();
+    rightMotor.configFactoryDefault();
+
+    leftMotor.setInverted(ConstIntake.leftMotorInverted);
+    rightMotor.setInverted(ConstIntake.rightMotorInverted);
+
+    coneColor = new Color(ConstIntake.coneColorR, ConstIntake.coneColorG, ConstIntake.coneColorB);
+    cubeColor = new Color(ConstIntake.cubeColorR, ConstIntake.cubeColorG, ConstIntake.cubeColorB);
 
     colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
     colorMatcher.addColorMatch(coneColor);
@@ -50,6 +66,15 @@ public class Intake extends SubsystemBase {
     }
 
     return GamePiece.NONE;
+  }
+
+  public void setMotorSpeed(double speed) {
+    leftMotor.set(ControlMode.PercentOutput, speed);
+    rightMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setMotorSpeed(SN_DoublePreference speed) {
+    setMotorSpeed(speed.getValue());
   }
 
   @Override
