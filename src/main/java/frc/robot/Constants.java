@@ -76,7 +76,7 @@ public final class Constants {
       mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
       mapDrivetrain.FRONT_LEFT_STEER_CAN,
       mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-      252.333984, // absolute encoder offset
+      160.751953, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -86,7 +86,7 @@ public final class Constants {
       mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
       mapDrivetrain.FRONT_RIGHT_STEER_CAN,
       mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-      204.082031, // absolute encoder offset
+      114.169922, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -96,7 +96,7 @@ public final class Constants {
       mapDrivetrain.BACK_LEFT_DRIVE_CAN,
       mapDrivetrain.BACK_LEFT_STEER_CAN,
       mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
-      152.929688, // absolute encoder offset
+      62.402344, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -106,7 +106,7 @@ public final class Constants {
       mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
       mapDrivetrain.BACK_RIGHT_STEER_CAN,
       mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-      246.269531, // absolute encoder offset
+      155.302734, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
