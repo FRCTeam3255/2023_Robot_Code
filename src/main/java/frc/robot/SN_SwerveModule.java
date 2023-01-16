@@ -92,7 +92,6 @@ public class SN_SwerveModule {
     // absoluteEncoder
 
     absoluteEncoder.configFactoryDefault();
-    absoluteEncoder.setPositionToAbsolute();
   }
 
   /**

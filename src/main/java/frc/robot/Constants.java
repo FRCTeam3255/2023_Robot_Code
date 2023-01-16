@@ -55,8 +55,8 @@ public final class Constants {
   public static final double STEER_GEAR_RATIO = 150.0 / 7.0;
   public static final double MAX_MODULE_SPEED = Units.feetToMeters(16.3);
 
-  public static final boolean DRIVE_MOTOR_INVERT = true;
-  public static final boolean STEER_MOTOR_INVERT = false;
+  public static final boolean DRIVE_MOTOR_INVERT = false;
+  public static final boolean STEER_MOTOR_INVERT = true;
 
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
@@ -67,7 +67,7 @@ public final class Constants {
       mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
       mapDrivetrain.FRONT_LEFT_STEER_CAN,
       mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-      71.279297, // absolute encoder offset
+      252.333984, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -77,7 +77,7 @@ public final class Constants {
       mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
       mapDrivetrain.FRONT_RIGHT_STEER_CAN,
       mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-      24.345703, // absolute encoder offset
+      204.082031, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -87,7 +87,7 @@ public final class Constants {
       mapDrivetrain.BACK_LEFT_DRIVE_CAN,
       mapDrivetrain.BACK_LEFT_STEER_CAN,
       mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
-      331.523438, // absolute encoder offset
+      152.929688, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -97,7 +97,7 @@ public final class Constants {
       mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
       mapDrivetrain.BACK_RIGHT_STEER_CAN,
       mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-      65.917969, // absolute encoder offset
+      246.269531, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
