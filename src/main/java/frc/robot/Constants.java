@@ -12,7 +12,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
-  public enum gamePiece {
+  public enum GamePiece {
     NONE, CUBE, CONE
   }
 

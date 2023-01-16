@@ -10,7 +10,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 
 public class Intake extends SubsystemBase {
@@ -24,24 +24,23 @@ public class Intake extends SubsystemBase {
     intakeColorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
-    colorMatcher.setConfidenceThreshold(0.95);
     // CONE
     colorMatcher.addColorMatch(coneColor);
     // CUBE
     colorMatcher.addColorMatch(cubeColor);
   }
 
-  public Constants.gamePiece hasGamePiece() {
-    Constants.gamePiece currentGamePiece = Constants.gamePiece.NONE;
+  public GamePiece hasGamePiece() {
+    GamePiece currentGamePiece = GamePiece.NONE;
     Color detectedColor = intakeColorSensor.getColor();
     ColorMatchResult currentColor = colorMatcher.matchColor(detectedColor);
 
     if (currentColor == null) {
       return currentGamePiece;
     } else if (currentColor.color == coneColor) {
-      currentGamePiece = Constants.gamePiece.CONE;
+      currentGamePiece = GamePiece.CONE;
     } else if (currentColor.color == cubeColor) {
-      currentGamePiece = Constants.gamePiece.CUBE;
+      currentGamePiece = GamePiece.CUBE;
     }
 
     return currentGamePiece;
