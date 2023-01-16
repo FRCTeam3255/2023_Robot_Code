@@ -33,4 +33,23 @@ public class RobotMap {
   public static final class mapIntake {
     public static final I2C.Port COLOR_SENSOR_I2C = I2C.Port.kMXP;
   }
+
+  public static final class mapArm {
+
+    // TODO: Update CAN ports for arm motors
+    public static final int SHOULDER_CAN = 0;
+    public static final int ELBOW_CAN = 1;
+
+    // TODO: Update CAN ports for arm encoders
+    public static final int SHOULDER_ABSOLUTE_ENCODER_CAN = 0;
+    public static final int ELBOW_ABSOLUTE_ENCODER_CAN = 1;
+
+    // TODO: update position degrees
+    public static final double SHOULDER_POSITION_DEGREES = 90;
+    public static final double ELBOW_POSITION_DEGREES = 45;
+
+    // Update conversion factor for robot
+    public static final double ENCODER_CONVERSION_FACTOR = 1.8;
+    public static final int DISTANCE_PER_ROTATION = 360;
+  }
 }
