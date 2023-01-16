@@ -64,8 +64,8 @@ public final class Constants {
   public static final double STEER_GEAR_RATIO = 150.0 / 7.0;
   public static final double MAX_MODULE_SPEED = Units.feetToMeters(16.3);
 
-  public static final boolean DRIVE_MOTOR_INVERT = true;
-  public static final boolean STEER_MOTOR_INVERT = false;
+  public static final boolean DRIVE_MOTOR_INVERT = false;
+  public static final boolean STEER_MOTOR_INVERT = true;
 
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
