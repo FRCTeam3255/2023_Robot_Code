@@ -33,12 +33,16 @@ public class Vision extends SubsystemBase {
     // TODO: Change to current april tag array upon new WPI update
     AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(null, 0, 0);
 
-    // add more cameras here & to the cameraList when possible
-    PhotonCamera lifecam = new PhotonCamera(constVision.lifecamPhotonName);
-    Transform3d robotToLifecam = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    PhotonCamera ARCamera = new PhotonCamera(constVision.ARPhotonName);
+    Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+
+    PhotonCamera OVCamera = new PhotonCamera(constVision.OVPhotonName);
+    Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     ArrayList<Pair<PhotonCamera, Transform3d>> cameraList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-    cameraList.add(new Pair<PhotonCamera, Transform3d>(lifecam, robotToLifecam));
+    cameraList.add(new Pair<PhotonCamera, Transform3d>(ARCamera, robotToAR));
+    cameraList.add(new Pair<PhotonCamera, Transform3d>(OVCamera, robotToOV));
+
     photonPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
         cameraList);
   }
