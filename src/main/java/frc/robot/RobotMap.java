@@ -21,6 +21,8 @@ public class RobotMap {
     public static final int BACK_RIGHT_DRIVE_CAN = 6;
     public static final int BACK_RIGHT_STEER_CAN = 7;
     public static final int BACK_RIGHT_ABSOLUTE_ENCODER_CAN = 3;
+
+    public static final String CAN_BUS = "Swerve";
   }
 
   public static final class mapControllers {
