@@ -16,15 +16,6 @@ public final class Constants {
     NONE, CUBE, CONE
   }
 
-  // RGB game piece colors
-  public static final double coneColorR = 0.34509;
-  public static final double coneColorG = 0.51764;
-  public static final double coneColorB = 0.13333;
-
-  public static final double cubeColorR = 0.22745;
-  public static final double cubeColorG = 0.39607;
-  public static final double cubeColorB = 0.37254;
-
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // Drivetrain (no subclass)
@@ -125,5 +116,19 @@ public final class Constants {
     public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
     public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
     public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+  }
+
+  public static final class ConstIntake {
+    public static final boolean leftMotorInverted = false;
+    public static final boolean rightMotorInverted = false;
+
+    // RGB game piece colors
+    public static final double coneColorR = 0.34509;
+    public static final double coneColorG = 0.51764;
+    public static final double coneColorB = 0.13333;
+
+    public static final double cubeColorR = 0.22745;
+    public static final double cubeColorG = 0.39607;
+    public static final double cubeColorB = 0.37254;
   }
 }
