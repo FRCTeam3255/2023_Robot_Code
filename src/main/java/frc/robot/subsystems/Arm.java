@@ -37,12 +37,12 @@ public class Arm extends SubsystemBase {
     configure();
   }
 
-  public void setShoulderPosition() {
-    shoulderJoint.set(ControlMode.Position, mapArm.SHOULDER_POSITION_DEGREES);
+  public void setShoulderPosition(double position) {
+    shoulderJoint.set(ControlMode.Position, position);
   }
 
-  public void setElbowPosition() {
-    elbowJoint.set(ControlMode.Position, mapArm.ELBOW_POSITION_DEGREES);
+  public void setElbowPosition(double position) {
+    elbowJoint.set(ControlMode.Position, position);
   }
 
   public void resetEncoders() {

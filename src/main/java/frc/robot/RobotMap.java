@@ -45,8 +45,12 @@ public class RobotMap {
     public static final int ELBOW_ABSOLUTE_ENCODER_CAN = 1;
 
     // TODO: update position degrees
-    public static final double SHOULDER_POSITION_DEGREES = 90;
-    public static final double ELBOW_POSITION_DEGREES = 45;
+    public static final double SHOULDER_POSITION_DEGRESS_RETRACTED = 0;
+    public static final double SHOULDER_POSITION_DEGRESS_EXTENDED = 90;
+
+    // TODO: update position degreesd
+    public static final double ELBOW_POSITION_DEGRESS_RETRACTED = 0;
+    public static final double ELBOW_POSITION_DEGRESS_EXTENDED = 90;
 
     // Update conversion factor for robot
     public static final double ENCODER_CONVERSION_FACTOR = 1.8;
