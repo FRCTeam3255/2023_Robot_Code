@@ -21,9 +21,9 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
-  private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER);
-  private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD);
-  private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN);
+  private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
+  private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
+  private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 
   public RobotContainer() {
 
