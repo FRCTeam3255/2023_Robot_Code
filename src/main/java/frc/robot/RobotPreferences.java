@@ -33,6 +33,11 @@ public class RobotPreferences {
 
   }
 
+  public static final class prefIntake {
+    public static final SN_DoublePreference colorMatcherConfidence = new SN_DoublePreference("colorMatcherConfidence",
+        0.95);
+  }
+
   public static final class prefVision {
 
   }

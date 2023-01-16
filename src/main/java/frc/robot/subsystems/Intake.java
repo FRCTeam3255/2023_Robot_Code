@@ -10,23 +10,31 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 import frc.robot.RobotMap.mapIntake;
+import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
 
   ColorSensorV3 intakeColorSensor;
   ColorMatch colorMatcher;
-  Color coneColor = new Color(0.34509, 0.51764, 0.13333);
-  Color cubeColor = new Color(0.22745, 0.39607, 0.37254);
+  Color coneColor;
+  Color cubeColor;
 
   public Intake() {
     intakeColorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
-    // CONE
+    configure();
+  }
+
+  public void configure() {
+    coneColor = new Color(Constants.coneColorR, Constants.coneColorG, Constants.coneColorB);
+    cubeColor = new Color(Constants.cubeColorR, Constants.cubeColorG, Constants.cubeColorB);
+
+    colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
     colorMatcher.addColorMatch(coneColor);
-    // CUBE
     colorMatcher.addColorMatch(cubeColor);
   }
 
@@ -48,11 +56,13 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("Color Sensor Color", intakeColorSensor.getColor().toHexString());
-    SmartDashboard.putNumber("Color Sensor Red", intakeColorSensor.getRed());
-    SmartDashboard.putNumber("Color Sensor Green", intakeColorSensor.getGreen());
-    SmartDashboard.putNumber("Color Sensor Blue", intakeColorSensor.getBlue());
-    SmartDashboard.putNumber("Color Sensor Proximity", intakeColorSensor.getProximity());
+    if (Constants.OUTPUT_DEBUG_VALUES) {
+      SmartDashboard.putString("Color Sensor Color", intakeColorSensor.getColor().toHexString());
+      SmartDashboard.putNumber("Color Sensor Red", intakeColorSensor.getRed());
+      SmartDashboard.putNumber("Color Sensor Green", intakeColorSensor.getGreen());
+      SmartDashboard.putNumber("Color Sensor Blue", intakeColorSensor.getBlue());
+      SmartDashboard.putNumber("Color Sensor Proximity", intakeColorSensor.getProximity());
+    }
     SmartDashboard.putString("Current Game Piece", hasGamePiece().toString());
   }
 }

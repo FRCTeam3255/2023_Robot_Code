@@ -16,6 +16,15 @@ public final class Constants {
     NONE, CUBE, CONE
   }
 
+  // RGB game piece colors
+  public static final double coneColorR = 0.34509;
+  public static final double coneColorG = 0.51764;
+  public static final double coneColorB = 0.13333;
+
+  public static final double cubeColorR = 0.22745;
+  public static final double cubeColorG = 0.39607;
+  public static final double cubeColorB = 0.37254;
+
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // Drivetrain (no subclass)
