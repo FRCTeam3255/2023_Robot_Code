@@ -37,12 +37,12 @@ public class RobotMap {
   public static final class mapArm {
 
     // TODO: Update CAN ports for arm motors
-    public static final int SHOULDER_CAN = 0;
-    public static final int ELBOW_CAN = 1;
+    public static final int SHOULDER_CAN = 2;
+    public static final int ELBOW_CAN = 0;
 
     // TODO: Update CAN ports for arm encoders
-    public static final int SHOULDER_ABSOLUTE_ENCODER_CAN = 0;
-    public static final int ELBOW_ABSOLUTE_ENCODER_CAN = 1;
+    public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 9;
+    public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 1;
 
     // TODO: update position degrees
     public static final double SHOULDER_POSITION_DEGRESS_RETRACTED = 0;

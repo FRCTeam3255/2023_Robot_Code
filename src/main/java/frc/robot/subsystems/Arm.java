@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,16 +19,37 @@ public class Arm extends SubsystemBase {
   DutyCycleEncoder shoulderEncoder;
   SN_CANSparkMax elbowJoint;
   DutyCycleEncoder elbowEncoder;
+  SparkMaxPIDController m_pidController;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public Arm() {
     shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
     elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
 
-    shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_CAN);
+    shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     shoulderEncoder.setDistancePerRotation(mapArm.DISTANCE_PER_ROTATION);
 
-    elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_CAN);
+    elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
     elbowEncoder.setDistancePerRotation(mapArm.DISTANCE_PER_ROTATION);
+
+    m_pidController = shoulderJoint.getPIDController();
+
+    // PID coefficients
+    kP = 1;
+    kI = 0;
+    kD = 0;
+    kIz = 0;
+    kFF = 0;
+    kMaxOutput = 1;
+    kMinOutput = -1;
+
+    // set PID coefficients
+    m_pidController.setP(kP);
+    m_pidController.setI(kI);
+    m_pidController.setD(kD);
+    m_pidController.setIZone(kIz);
+    m_pidController.setFF(kFF);
+    m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
     shoulderJoint.getEncoder().setPositionConversionFactor(mapArm.ENCODER_CONVERSION_FACTOR);
     shoulderJoint.getEncoder().setPosition(shoulderEncoder.getDistance());
@@ -45,6 +68,10 @@ public class Arm extends SubsystemBase {
     elbowJoint.set(ControlMode.Position, position);
   }
 
+  public void motorgobrr(double brrValue) {
+    shoulderJoint.set(ControlMode.PercentOutput, brrValue);
+  }
+
   public void resetEncoders() {
     shoulderJoint.getEncoder().setPosition(shoulderEncoder.getDistance());
   }
@@ -55,12 +82,12 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("encoder abs", shoulderEncoder.getAbsolutePosition());
-    SmartDashboard.putNumber("encoder dist", shoulderEncoder.getDistance());
-    SmartDashboard.putNumber("motor encoder", shoulderJoint.getEncoder().getPosition());
+    SmartDashboard.putNumber("encoder abs - shoulder", shoulderEncoder.getAbsolutePosition());
+    SmartDashboard.putNumber("encoder dist - shoulder", shoulderEncoder.getDistance());
+    SmartDashboard.putNumber("motor encoder - shoulder", shoulderJoint.getEncoder().getPosition());
 
-    SmartDashboard.putNumber("encoder abs", elbowEncoder.getAbsolutePosition());
-    SmartDashboard.putNumber("encoder dist", elbowEncoder.getDistance());
-    SmartDashboard.putNumber("motor encoder", elbowJoint.getEncoder().getPosition());
+    SmartDashboard.putNumber("encoder abs - elbow", elbowEncoder.getAbsolutePosition());
+    SmartDashboard.putNumber("encoder dist - elbow", elbowEncoder.getDistance());
+    SmartDashboard.putNumber("motor encoder - elbow", elbowJoint.getEncoder().getPosition());
   }
 }

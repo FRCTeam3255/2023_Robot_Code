@@ -10,6 +10,7 @@ import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.RobotMap.mapArm;
@@ -18,6 +19,7 @@ import frc.robot.commands.Drive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class RobotContainer {
 
@@ -66,6 +68,16 @@ public class RobotContainer {
     conSwitchboard.btn_2
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+
+    SmartDashboard.putData(
+        "Enable Motor", new InstantCommand(() -> subArm.motorgobrr(0.5)));
+
+    SmartDashboard.putData(
+        "Stop Motor", new InstantCommand(() -> subArm.motorgobrr(0)));
+
+    conDriver.btn_Start
+        .onTrue(Commands.runOnce(() -> subArm.motorgobrr(0.5)))
+        .onFalse(Commands.runOnce(() -> subArm.motorgobrr(0)));
   }
 
   public Command getAutonomousCommand() {
