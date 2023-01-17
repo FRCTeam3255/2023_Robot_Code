@@ -49,12 +49,12 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
 
-    xVelocity = conDriver.getAxisLSX();
-    yVelocity = conDriver.getAxisLSY();
+    xVelocity = -conDriver.getAxisLSY();
+    yVelocity = conDriver.getAxisLSX();
     rVelocity = conDriver.getAxisRSX();
 
-    xVelocity = MathUtil.applyDeadband(xVelocity, constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
-    yVelocity = MathUtil.applyDeadband(yVelocity, constControllers.DRIVER_LEFT_STICK_Y_DEADBAND);
+    xVelocity = MathUtil.applyDeadband(xVelocity, constControllers.DRIVER_LEFT_STICK_Y_DEADBAND);
+    yVelocity = MathUtil.applyDeadband(yVelocity, constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
     rVelocity = MathUtil.applyDeadband(rVelocity, constControllers.DRIVER_RIGHT_STICK_X_DEADBAND);
 
     xVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
