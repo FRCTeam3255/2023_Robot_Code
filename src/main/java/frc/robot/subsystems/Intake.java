@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
 
   SN_CANSparkMax leftMotor;
   SN_CANSparkMax rightMotor;
-  ColorSensorV3 intakeColorSensor;
+  ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
   Color coneColor;
   Color cubeColor;
@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
     leftMotor = new SN_CANSparkMax(mapIntake.LEFT_MOTOR_CAN, MotorType.kBrushless);
     rightMotor = new SN_CANSparkMax(mapIntake.RIGHT_MOTOR_CAN, MotorType.kBrushless);
 
-    intakeColorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
+    colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
     configure();
@@ -55,7 +55,7 @@ public class Intake extends SubsystemBase {
   }
 
   public GamePiece hasGamePiece() {
-    ColorMatchResult currentColor = colorMatcher.matchColor(intakeColorSensor.getColor());
+    ColorMatchResult currentColor = colorMatcher.matchColor(colorSensor.getColor());
 
     if (currentColor == null) {
       return GamePiece.NONE;
@@ -83,11 +83,11 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putString("Current Game Piece", hasGamePiece().toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
-      SmartDashboard.putString("Color Sensor Color", intakeColorSensor.getColor().toHexString());
-      SmartDashboard.putNumber("Color Sensor Red", intakeColorSensor.getRed());
-      SmartDashboard.putNumber("Color Sensor Green", intakeColorSensor.getGreen());
-      SmartDashboard.putNumber("Color Sensor Blue", intakeColorSensor.getBlue());
-      SmartDashboard.putNumber("Color Sensor Proximity", intakeColorSensor.getProximity());
+      SmartDashboard.putString("Color Sensor Color", colorSensor.getColor().toHexString());
+      SmartDashboard.putNumber("Color Sensor Red", colorSensor.getRed());
+      SmartDashboard.putNumber("Color Sensor Green", colorSensor.getGreen());
+      SmartDashboard.putNumber("Color Sensor Blue", colorSensor.getBlue());
+      SmartDashboard.putNumber("Color Sensor Proximity", colorSensor.getProximity());
     }
   }
 }
