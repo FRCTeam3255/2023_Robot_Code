@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -29,6 +30,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator;
 
   private boolean isFieldRelative;
+
+  private Field2d field;
 
   public Drivetrain() {
 
@@ -47,6 +50,8 @@ public class Drivetrain extends SubsystemBase {
         navX.getRotation2d(),
         getModulePositions(),
         new Pose2d());
+
+    field = new Field2d();
 
     configure();
   }
@@ -150,6 +155,8 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
+    updatePoseEstimator();
+
     SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
@@ -159,6 +166,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
+
+      field.setRobotPose(getPose());
+      SmartDashboard.putData(field);
 
       for (SN_SwerveModule mod : modules) {
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Speed",
