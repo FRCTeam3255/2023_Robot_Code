@@ -10,6 +10,8 @@ import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.RobotMap.mapControllers;
@@ -36,6 +38,14 @@ public class RobotContainer {
 
   // While held, Leds will change to given color, and turn off on release
   private void configureBindings() {
+
+    // Driver
+
+    // "reset gyro" for field relative but actually resets the orientation at a
+    // higher level
+    conDriver.btn_A
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
 
     // Switchboard
 
