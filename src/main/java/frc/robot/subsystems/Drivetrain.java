@@ -51,6 +51,8 @@ public class Drivetrain extends SubsystemBase {
         getModulePositions(),
         new Pose2d());
 
+    isFieldRelative = true;
+
     field = new Field2d();
 
     configure();
@@ -150,6 +152,18 @@ public class Drivetrain extends SubsystemBase {
         navX.getRotation2d(),
         getModulePositions());
 
+  }
+
+  /**
+   * Reset pose estimator to given position
+   * 
+   * @param pose Position to reset to
+   */
+  public void resetPose(Pose2d pose) {
+    poseEstimator.resetPosition(
+        navX.getRotation2d(),
+        getModulePositions(),
+        pose);
   }
 
   @Override
