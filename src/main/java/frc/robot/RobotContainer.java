@@ -75,6 +75,9 @@ public class RobotContainer {
     SmartDashboard.putData(
         "Stop Motor", new InstantCommand(() -> subArm.motorgobrr(0)));
 
+    SmartDashboard.putData(
+        "Reset Encoders", new InstantCommand(() -> subArm.resetEncoders()));
+
     conDriver.btn_Start
         .onTrue(Commands.runOnce(() -> subArm.motorgobrr(0.5)))
         .onFalse(Commands.runOnce(() -> subArm.motorgobrr(0)));
