@@ -11,11 +11,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.RobotPoseEstimator;
 import org.photonvision.RobotPoseEstimator.PoseStrategy;
 
-import com.frcteam3255.components.SN_Blinkin;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
-import com.frcteam3255.joystick.SN_F310Gamepad;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -28,10 +25,14 @@ import frc.robot.Constants.constVision;
 
 public class Vision extends SubsystemBase {
   RobotPoseEstimator photonPoseEstimator;
+  AprilTagFieldLayout aprilTagFieldLayout;
 
   public Vision() {
-    // TODO: Change to current april tag array upon new WPI update
-    AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(null, 0, 0);
+    try {
+      aprilTagFieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
+    } catch (Exception e) {
+      System.out.println("Could not load AprilTagFieldLayout! Must be on WPILIB 2023.2.1+" + e);
+    }
 
     PhotonCamera ARCamera = new PhotonCamera(constVision.ARPhotonName);
     Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
