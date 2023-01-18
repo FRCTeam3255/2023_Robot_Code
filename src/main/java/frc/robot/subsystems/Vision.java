@@ -49,16 +49,10 @@ public class Vision extends SubsystemBase {
   }
 
   // Returns the current estimated pose from vision & it's timestamp.
-  public Pair<Pose2d, Double> getPoseFromVision(Pose2d prevEstimatedRobotPose) {
+  public Optional<Pair<Pose3d, Double>> getPoseFromVision(Pose2d prevEstimatedRobotPose) {
     photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
 
-    double currentTime = Timer.getFPGATimestamp();
-    Optional<Pair<Pose3d, Double>> result = photonPoseEstimator.update();
-    if (result.isPresent()) {
-      return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
-    } else {
-      return new Pair<Pose2d, Double>(null, 0.0);
-    }
+    return photonPoseEstimator.update();
   }
 
   @Override
