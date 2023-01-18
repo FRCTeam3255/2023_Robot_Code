@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SN_SwerveModule;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefVision;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -152,6 +154,22 @@ public class Drivetrain extends SubsystemBase {
         navX.getRotation2d(),
         getModulePositions());
 
+  }
+
+  /**
+   * Adds a new vision measurement to the pose estimator.
+   *
+   * @param visionMeasurement The pose measurement from the vision system
+   * @param timestampSeconds  The timestamp of the measurement in seconds
+   */
+  public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+    poseEstimator.addVisionMeasurement(
+        visionMeasurement,
+        timestampSeconds,
+        VecBuilder.fill(
+            prefVision.measurementStdDevsFeet.getValue(),
+            prefVision.measurementStdDevsFeet.getValue(),
+            prefVision.measurementStdDevsDegrees.getValue()));
   }
 
   /**
