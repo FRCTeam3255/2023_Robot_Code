@@ -17,6 +17,7 @@ public class AddVisionMeasurement extends CommandBase {
 
     this.subDrivetrain = subDrivetrain;
     this.subVision = subVision;
+    addRequirements(subVision);
   }
 
   @Override
