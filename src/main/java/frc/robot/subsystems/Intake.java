@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.frcteam3255.preferences.SN_DoublePreference;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -11,27 +14,39 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ConstIntake;
 import frc.robot.Constants.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
 
-  ColorSensorV3 intakeColorSensor;
+  SN_CANSparkMax leftMotor;
+  SN_CANSparkMax rightMotor;
+  ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
   Color coneColor;
   Color cubeColor;
 
   public Intake() {
-    intakeColorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
+    leftMotor = new SN_CANSparkMax(mapIntake.LEFT_MOTOR_CAN);
+    rightMotor = new SN_CANSparkMax(mapIntake.RIGHT_MOTOR_CAN);
+
+    colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
     configure();
   }
 
   public void configure() {
-    coneColor = new Color(Constants.coneColorR, Constants.coneColorG, Constants.coneColorB);
-    cubeColor = new Color(Constants.cubeColorR, Constants.cubeColorG, Constants.cubeColorB);
+    leftMotor.configFactoryDefault();
+    rightMotor.configFactoryDefault();
+
+    leftMotor.setInverted(ConstIntake.leftMotorInverted);
+    rightMotor.setInverted(ConstIntake.rightMotorInverted);
+
+    coneColor = new Color(ConstIntake.coneColorR, ConstIntake.coneColorG, ConstIntake.coneColorB);
+    cubeColor = new Color(ConstIntake.cubeColorR, ConstIntake.cubeColorG, ConstIntake.cubeColorB);
 
     colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
     colorMatcher.addColorMatch(coneColor);
@@ -39,7 +54,7 @@ public class Intake extends SubsystemBase {
   }
 
   public GamePiece hasGamePiece() {
-    ColorMatchResult currentColor = colorMatcher.matchColor(intakeColorSensor.getColor());
+    ColorMatchResult currentColor = colorMatcher.matchColor(colorSensor.getColor());
 
     if (currentColor == null) {
       return GamePiece.NONE;
@@ -52,17 +67,26 @@ public class Intake extends SubsystemBase {
     return GamePiece.NONE;
   }
 
+  public void setMotorSpeed(double speed) {
+    leftMotor.set(ControlMode.PercentOutput, speed);
+    rightMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setMotorSpeed(SN_DoublePreference speed) {
+    setMotorSpeed(speed.getValue());
+  }
+
   @Override
   public void periodic() {
 
     SmartDashboard.putString("Current Game Piece", hasGamePiece().toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
-      SmartDashboard.putString("Color Sensor Color", intakeColorSensor.getColor().toHexString());
-      SmartDashboard.putNumber("Color Sensor Red", intakeColorSensor.getRed());
-      SmartDashboard.putNumber("Color Sensor Green", intakeColorSensor.getGreen());
-      SmartDashboard.putNumber("Color Sensor Blue", intakeColorSensor.getBlue());
-      SmartDashboard.putNumber("Color Sensor Proximity", intakeColorSensor.getProximity());
+      SmartDashboard.putString("Color Sensor Color", colorSensor.getColor().toHexString());
+      SmartDashboard.putNumber("Color Sensor Red", colorSensor.getRed());
+      SmartDashboard.putNumber("Color Sensor Green", colorSensor.getGreen());
+      SmartDashboard.putNumber("Color Sensor Blue", colorSensor.getBlue());
+      SmartDashboard.putNumber("Color Sensor Proximity", colorSensor.getProximity());
     }
   }
 }
