@@ -41,5 +41,9 @@ public class RobotPreferences {
 
   public static final class prefVision {
 
+    public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(
+        "measurementStdDevsFeet", 1);
+    public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
+        "measurementStdDevsDegrees", 10);
   }
 }
