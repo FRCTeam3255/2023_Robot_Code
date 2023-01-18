@@ -10,7 +10,6 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,8 +29,8 @@ public class Intake extends SubsystemBase {
   Color cubeColor;
 
   public Intake() {
-    leftMotor = new SN_CANSparkMax(mapIntake.LEFT_MOTOR_CAN, MotorType.kBrushless);
-    rightMotor = new SN_CANSparkMax(mapIntake.RIGHT_MOTOR_CAN, MotorType.kBrushless);
+    leftMotor = new SN_CANSparkMax(mapIntake.LEFT_MOTOR_CAN);
+    rightMotor = new SN_CANSparkMax(mapIntake.RIGHT_MOTOR_CAN);
 
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
