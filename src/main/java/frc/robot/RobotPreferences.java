@@ -32,6 +32,10 @@ public class RobotPreferences {
     // 943.751 DPS is maximum due to gearing and robot size
     public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 360);
 
+    // Value to multiply with translation velocity when trigger is all the way held
+    // down.
+    public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
+
   }
 
   public static final class prefIntake {
