@@ -30,6 +30,7 @@ public class RobotContainer {
   private final Vision subVision = new Vision();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
+  private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 

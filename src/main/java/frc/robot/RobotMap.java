@@ -28,6 +28,7 @@ public class RobotMap {
   public static final class mapControllers {
 
     public static final int DRIVER_USB = 0;
+    public static final int OPERATOR_USB = 1;
     public static final int SWITCHBOARD_USB = 2;
     public static final int BLINKIN_PWM = 0;
   }
