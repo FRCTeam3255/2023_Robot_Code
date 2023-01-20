@@ -50,7 +50,7 @@ public class Arm extends SubsystemBase {
     // shoulder config
     shoulderJoint.configFactoryDefault();
 
-    shoulderConfig.slot0.kD = prefArm.shoulderP.getValue();
+    shoulderConfig.slot0.kP = prefArm.shoulderP.getValue();
     shoulderConfig.slot0.kI = prefArm.shoulderI.getValue();
     shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
     shoulderConfig.slot0.closedLoopPeakOutput = prefArm.shoulderMaxSpeed.getValue();
@@ -67,7 +67,7 @@ public class Arm extends SubsystemBase {
     // elbow config
     elbowJoint.configFactoryDefault();
 
-    elbowConfig.slot0.kD = prefArm.elbowP.getValue();
+    elbowConfig.slot0.kP = prefArm.elbowP.getValue();
     elbowConfig.slot0.kI = prefArm.elbowI.getValue();
     elbowConfig.slot0.kD = prefArm.elbowD.getValue();
     elbowConfig.slot0.closedLoopPeakOutput = prefArm.elbowMaxSpeed.getValue();
@@ -155,6 +155,14 @@ public class Arm extends SubsystemBase {
     double y = (a2 * Math.sin(q1 + q2)) + (a1 * Math.sin(q1));
 
     return new Translation2d(x, y);
+  }
+
+  public void setShoulderPercentOutput(double percent) {
+    shoulderJoint.set(ControlMode.PercentOutput, percent);
+  }
+
+  public void setElbowPercentOutput(double percent) {
+    elbowJoint.set(ControlMode.PercentOutput, percent);
   }
 
   @Override
