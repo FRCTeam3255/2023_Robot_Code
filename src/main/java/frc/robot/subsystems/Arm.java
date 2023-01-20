@@ -5,8 +5,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.BaseTalonConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
-import com.frcteam3255.utils.SN_InstantCommand;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -22,9 +23,6 @@ public class Arm extends SubsystemBase {
   DutyCycleEncoder elbowEncoder;
   SparkMaxPIDController m_pidController;
 
-  // Look at 2022 hood code to update FPID
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-
   public Arm() {
     shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
     elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
@@ -35,32 +33,13 @@ public class Arm extends SubsystemBase {
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
     elbowEncoder.setDistancePerRotation(mapArm.DISTANCE_PER_ROTATION);
 
-    SmartDashboard.putData("reset enc", new SN_InstantCommand(this::resetEncoders, true));
-
     m_pidController = shoulderJoint.getPIDController();
 
-    // PID coefficients
-    kP = 1;
-    kI = 0;
-    kD = 0;
-    kIz = 0;
-    kFF = 0;
-    kMaxOutput = 1;
-    kMinOutput = -1;
+    // Change QuadEncoder to necessary input
+    BaseTalonConfiguration config = new BaseTalonConfiguration(FeedbackDevice.QuadEncoder);
 
-    // set PID coefficients
-    m_pidController.setP(kP);
-    m_pidController.setI(kI);
-    m_pidController.setD(kD);
-    m_pidController.setIZone(kIz);
-    m_pidController.setFF(kFF);
-    m_pidController.setOutputRange(kMinOutput, kMaxOutput);
-
-    shoulderJoint.getEncoder().setPositionConversionFactor(mapArm.ENCODER_CONVERSION_FACTOR);
-    shoulderJoint.getEncoder().setPosition(shoulderEncoder.getDistance());
-
-    elbowJoint.getEncoder().setPositionConversionFactor(mapArm.ENCODER_CONVERSION_FACTOR);
-    elbowJoint.getEncoder().setPosition(elbowEncoder.getDistance());
+    shoulderJoint.configAllSettings(config);
+    elbowJoint.configAllSettings(config);
 
     configure();
   }
@@ -82,7 +61,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void configure() {
-
+    shoulderJoint.configFactoryDefault();
+    elbowJoint.configFactoryDefault();
   }
 
   @Override
