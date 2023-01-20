@@ -157,11 +157,16 @@ public class Arm extends SubsystemBase {
     return new Translation2d(x, y);
   }
 
-  public void setShoulderPercentOutput(double percent) {
+  public void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
+    setShoulderPercentOutput(shoulderPercent);
+    setElbowPercentOutput(elbowPercent);
+  }
+
+  private void setShoulderPercentOutput(double percent) {
     shoulderJoint.set(ControlMode.PercentOutput, percent);
   }
 
-  public void setElbowPercentOutput(double percent) {
+  private void setElbowPercentOutput(double percent) {
     elbowJoint.set(ControlMode.PercentOutput, percent);
   }
 
