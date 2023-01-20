@@ -3,6 +3,8 @@
 
 ![Robot Logo](https://raw.githubusercontent.com/FRCTeam3255/GraphicsYearly/main/Exports/SN%20Logos/Official%20SN%20Logo.png)
 
+<br/>
+
 # Summary
 
 ## **Drivetrain:**
@@ -23,3 +25,9 @@
   - ### Tunable values on network tables
     - ### Extremely useful for PID tuning
     - ### Locked to hardcoded values by default
+
+<br/>
+
+# Vendor Dependencies
+
+  - ### [Game and Season info](https://www.firstinspires.org/robotics/frc/game-and-season)
