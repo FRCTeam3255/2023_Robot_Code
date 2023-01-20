@@ -1,27 +1,25 @@
-# Field Relative Swerve Drive: #
-  Swerve drive with field oriented and robot oriented movement. Also contains pose estimation using encoders. Swerve drive also uses open
-  and closed loop drive motor control.
+# <center>**Robot 2023**</center>
 
-# Intake: #
-  Intake consisting of dual NEO control, a color sensor that allows for game piece detection and game piece identification
 
-Operational Swerve
-  Field Oriented
-  Robot Oriented
-  Pose Estimation using encoders
+![Robot Logo](https://raw.githubusercontent.com/FRCTeam3255/GraphicsYearly/main/Exports/SN%20Logos/Official%20SN%20Logo.png)
 
-Open and closed loop drive motor control
-Intake Prototype
-  Dual NEO control
-  Color sensor
-  Game piece detection
-  Game piece identification
-LEDs
-  Toggle between yellow and purple
-  Used to indicate to human player
-Misc
-  Optional debug outputs to network tables
-    Tunable values on network tables
-    Extremely useful for PID tuning
-  Locked to hardcoded values by default
-  
+# Summary
+
+## **Drivetrain:**
+  - ### Field orientated and robot oriented swerve drive. 
+  - ### Contains pose estimation using encoders
+  - ### Uses open and closed loop drive motor control.
+
+## **Intake:**
+  - ### Dual NEO motor control 
+  - ### Color sensor that allows for game piece   detection and game piece identification
+
+## **LEDs:**
+  - ### LEDs that can easily be switched between yellow (cone) and violet (cube) using the switchboard
+  - ### LEDs can be used as an indicator to the human player
+
+## **Misc:**
+  - ### Optional debug outputs to network tables
+  - ### Tunable values on network tables
+    - ### Extremely useful for PID tuning
+    - ### Locked to hardcoded values by default
