@@ -97,6 +97,19 @@ public class Arm extends SubsystemBase {
     elbowJoint.set(ControlMode.Position, encoderCounts);
   }
 
+  public void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
+    setShoulderPercentOutput(shoulderPercent);
+    setElbowPercentOutput(elbowPercent);
+  }
+
+  private void setShoulderPercentOutput(double percent) {
+    shoulderJoint.set(ControlMode.PercentOutput, percent);
+  }
+
+  private void setElbowPercentOutput(double percent) {
+    elbowJoint.set(ControlMode.PercentOutput, percent);
+  }
+
   public Rotation2d getShoulderPosition() {
     double degrees = SN_Math.falconToDegrees(
         shoulderJoint.getSelectedSensorPosition(),
@@ -155,19 +168,6 @@ public class Arm extends SubsystemBase {
     double y = (a2 * Math.sin(q1 + q2)) + (a1 * Math.sin(q1));
 
     return new Translation2d(x, y);
-  }
-
-  public void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
-    setShoulderPercentOutput(shoulderPercent);
-    setElbowPercentOutput(elbowPercent);
-  }
-
-  private void setShoulderPercentOutput(double percent) {
-    shoulderJoint.set(ControlMode.PercentOutput, percent);
-  }
-
-  private void setElbowPercentOutput(double percent) {
-    elbowJoint.set(ControlMode.PercentOutput, percent);
   }
 
   @Override
