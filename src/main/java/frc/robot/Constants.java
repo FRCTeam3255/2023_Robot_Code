@@ -18,6 +18,9 @@ public final class Constants {
 
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
+  // NEO (big and small) encoder counts per rotation
+  public static final double NEO_ENCODER_CPR = 42;
+
   // Drivetrain (no subclass)
 
   // note: these were physically measured center to center of the wheel on a
@@ -131,4 +134,19 @@ public final class Constants {
     public static final double cubeColorG = 0.39607;
     public static final double cubeColorB = 0.37254;
   }
+
+  public static final class constArm {
+    public static final boolean SHOULDER_MOTOR_INVERT = false;
+    public static final boolean ELBOW_MOTOR_INVERT = false;
+
+    public static final double SHOULDER_GEAR_RATIO = 100.0;
+    public static final double ELBOW_GEAR_RATIO = 100.0;
+
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = 0.0;
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = 0.0;
+
+    public static final double UPPER_ARM_LENGTH = Units.feetToMeters(1);
+    public static final double LOWER_ARM_LENGTH = Units.feetToMeters(1);
+  }
+
 }
