@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefArm;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Arm;
@@ -54,6 +55,11 @@ public class RobotContainer {
     conDriver.btn_A
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+
+    // Operator
+
+    conOperator.btn_A
+        .onTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderP1, prefArm.elbowP1), subArm));
 
     // Switchboard
 
