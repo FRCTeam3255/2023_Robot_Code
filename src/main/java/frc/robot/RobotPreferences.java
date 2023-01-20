@@ -14,7 +14,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 1.0);
 
-    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 0.6);
+    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 0.3);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 6.0);
 
@@ -29,7 +29,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveSpeed = new SN_DoublePreference("driveSpeed", 16.3);
 
     // max rotational speed in degrees per second while driving using a controller
-    public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 1080);
+    // 943.751 DPS is maximum due to gearing and robot size
+    public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 360);
 
   }
 
@@ -40,5 +41,9 @@ public class RobotPreferences {
 
   public static final class prefVision {
 
+    public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(
+        "measurementStdDevsFeet", 1);
+    public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
+        "measurementStdDevsDegrees", 10);
   }
 }

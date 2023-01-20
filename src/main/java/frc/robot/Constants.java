@@ -16,15 +16,6 @@ public final class Constants {
     NONE, CUBE, CONE
   }
 
-  // RGB game piece colors
-  public static final double coneColorR = 0.34509;
-  public static final double coneColorG = 0.51764;
-  public static final double coneColorB = 0.13333;
-
-  public static final double cubeColorR = 0.22745;
-  public static final double cubeColorG = 0.39607;
-  public static final double cubeColorB = 0.37254;
-
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // Drivetrain (no subclass)
@@ -64,8 +55,8 @@ public final class Constants {
   public static final double STEER_GEAR_RATIO = 150.0 / 7.0;
   public static final double MAX_MODULE_SPEED = Units.feetToMeters(16.3);
 
-  public static final boolean DRIVE_MOTOR_INVERT = true;
-  public static final boolean STEER_MOTOR_INVERT = false;
+  public static final boolean DRIVE_MOTOR_INVERT = false;
+  public static final boolean STEER_MOTOR_INVERT = true;
 
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
@@ -76,7 +67,7 @@ public final class Constants {
       mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
       mapDrivetrain.FRONT_LEFT_STEER_CAN,
       mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-      71.279297, // absolute encoder offset
+      70.927734, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -86,7 +77,7 @@ public final class Constants {
       mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
       mapDrivetrain.FRONT_RIGHT_STEER_CAN,
       mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-      24.345703, // absolute encoder offset
+      24.433594, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -96,7 +87,7 @@ public final class Constants {
       mapDrivetrain.BACK_LEFT_DRIVE_CAN,
       mapDrivetrain.BACK_LEFT_STEER_CAN,
       mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
-      331.523438, // absolute encoder offset
+      331.787109, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -106,7 +97,7 @@ public final class Constants {
       mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
       mapDrivetrain.BACK_RIGHT_STEER_CAN,
       mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-      65.917969, // absolute encoder offset
+      66.005859, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -125,5 +116,19 @@ public final class Constants {
     public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
     public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
     public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+  }
+
+  public static final class ConstIntake {
+    public static final boolean leftMotorInverted = false;
+    public static final boolean rightMotorInverted = false;
+
+    // RGB game piece colors
+    public static final double coneColorR = 0.34509;
+    public static final double coneColorG = 0.51764;
+    public static final double coneColorB = 0.13333;
+
+    public static final double cubeColorR = 0.22745;
+    public static final double cubeColorG = 0.39607;
+    public static final double cubeColorB = 0.37254;
   }
 }

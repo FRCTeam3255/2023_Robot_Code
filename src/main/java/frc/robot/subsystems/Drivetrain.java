@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,11 +15,13 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SN_SwerveModule;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefVision;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -29,6 +32,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator;
 
   private boolean isFieldRelative;
+
+  private Field2d field;
 
   public Drivetrain() {
 
@@ -47,6 +52,10 @@ public class Drivetrain extends SubsystemBase {
         navX.getRotation2d(),
         getModulePositions(),
         new Pose2d());
+
+    isFieldRelative = true;
+
+    field = new Field2d();
 
     configure();
   }
@@ -147,8 +156,38 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+  /**
+   * Adds a new vision measurement to the pose estimator.
+   *
+   * @param visionMeasurement The pose measurement from the vision system
+   * @param timestampSeconds  The timestamp of the measurement in seconds
+   */
+  public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+    poseEstimator.addVisionMeasurement(
+        visionMeasurement,
+        timestampSeconds,
+        VecBuilder.fill(
+            prefVision.measurementStdDevsFeet.getValue(),
+            prefVision.measurementStdDevsFeet.getValue(),
+            prefVision.measurementStdDevsDegrees.getValue()));
+  }
+
+  /**
+   * Reset pose estimator to given position
+   * 
+   * @param pose Position to reset to
+   */
+  public void resetPose(Pose2d pose) {
+    poseEstimator.resetPosition(
+        navX.getRotation2d(),
+        getModulePositions(),
+        pose);
+  }
+
   @Override
   public void periodic() {
+
+    updatePoseEstimator();
 
     SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
 
@@ -159,6 +198,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
+
+      field.setRobotPose(getPose());
+      SmartDashboard.putData(field);
 
       for (SN_SwerveModule mod : modules) {
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Speed",
