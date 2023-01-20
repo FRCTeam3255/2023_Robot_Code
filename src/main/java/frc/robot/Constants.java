@@ -119,6 +119,13 @@ public final class Constants {
     public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
     public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
     public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+
+    public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
+    public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
+    public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
+    public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
+    public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
+    public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
   }
 
   public static final class ConstIntake {
