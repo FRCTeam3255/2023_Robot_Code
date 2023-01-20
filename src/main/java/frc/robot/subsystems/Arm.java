@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -75,6 +76,11 @@ public class Arm extends SubsystemBase {
     elbowJoint.configAllSettings(elbowConfig);
 
     elbowJoint.setInverted(constArm.ELBOW_MOTOR_INVERT);
+  }
+
+  public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {
+    setShoulderPosition(shoulderAngle.getValue());
+    setElbowPosition(elbowAngle.getValue());
   }
 
   public void setShoulderPosition(double degrees) {
