@@ -40,24 +40,10 @@ public class RobotMap {
 
   public static final class mapArm {
 
-    // TODO: Update CAN ports for arm motors
-    public static final int SHOULDER_CAN = 2;
-    public static final int ELBOW_CAN = 0;
+    public static final int SHOULDER_CAN = 0;
+    public static final int ELBOW_CAN = 1;
 
-    // TODO: Update CAN ports for arm encoders
-    public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 9;
+    public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 0;
     public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 1;
-
-    // TODO: update position degrees
-    public static final double SHOULDER_POSITION_DEGRESS_RETRACTED = 0;
-    public static final double SHOULDER_POSITION_DEGRESS_EXTENDED = 90;
-
-    // TODO: update position degreesd
-    public static final double ELBOW_POSITION_DEGRESS_RETRACTED = 0;
-    public static final double ELBOW_POSITION_DEGRESS_EXTENDED = 90;
-
-    // Update conversion factor for robot
-    public static final double ENCODER_CONVERSION_FACTOR = 1.8;
-    public static final int DISTANCE_PER_ROTATION = 360;
   }
 }
