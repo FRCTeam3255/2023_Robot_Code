@@ -161,15 +161,15 @@ public class Arm extends SubsystemBase {
   public void periodic() {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
-      SmartDashboard.putNumber("Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Shoulder Absolute Encoder", getShoulderAbsoluteEncoder().getDegrees());
-      SmartDashboard.putNumber("Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
-      SmartDashboard.putNumber("Shoulder Position", getShoulderPosition().getDegrees());
+      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder", getShoulderAbsoluteEncoder().getDegrees());
+      SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
 
-      SmartDashboard.putNumber("Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Elbow Absolute Encoder", getElbowAbsoluteEncoder().getDegrees());
-      SmartDashboard.putNumber("Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
-      SmartDashboard.putNumber("Elbow Position", getElbowPosition().getDegrees());
+      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Elbow Absolute Encoder", getElbowAbsoluteEncoder().getDegrees());
+      SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
 
       SmartDashboard.putNumber("Arm EE Position X", Units.metersToFeet(getEEPosition().getX()));
       SmartDashboard.putNumber("Arm EE Position Y", Units.metersToFeet(getEEPosition().getY()));
