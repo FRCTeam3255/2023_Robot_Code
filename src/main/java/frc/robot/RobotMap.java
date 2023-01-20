@@ -41,8 +41,8 @@ public class RobotMap {
 
   public static final class mapArm {
 
-    public static final int SHOULDER_CAN = 0;
-    public static final int ELBOW_CAN = 1;
+    public static final int SHOULDER_CAN = 20;
+    public static final int ELBOW_CAN = 21;
 
     public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 0;
     public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 1;
