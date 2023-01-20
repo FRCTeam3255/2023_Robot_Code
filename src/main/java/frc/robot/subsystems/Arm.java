@@ -11,6 +11,8 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -95,6 +97,22 @@ public class Arm extends SubsystemBase {
     elbowJoint.set(ControlMode.Position, encoderCounts);
   }
 
+  public Rotation2d getShoulderPosition() {
+    double degrees = SN_Math.falconToDegrees(
+        shoulderJoint.getSelectedSensorPosition(),
+        constArm.SHOULDER_GEAR_RATIO);
+
+    return Rotation2d.fromDegrees(degrees);
+  }
+
+  public Rotation2d getElbowPosition() {
+    double degrees = SN_Math.falconToDegrees(
+        elbowJoint.getSelectedSensorPosition(),
+        constArm.ELBOW_GEAR_RATIO);
+
+    return Rotation2d.fromDegrees(degrees);
+  }
+
   public Rotation2d getShoulderAbsoluteEncoder() {
     double degrees = shoulderEncoder.getAbsolutePosition();
     degrees -= constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET;
@@ -126,17 +144,35 @@ public class Arm extends SubsystemBase {
     shoulderJoint.setSelectedSensorPosition(absoluteEncoderCount);
   }
 
+  private Translation2d getEEPosition() {
+    double a1 = constArm.UPPER_ARM_LENGTH;
+    double a2 = constArm.LOWER_ARM_LENGTH;
+
+    double q1 = getShoulderPosition().getRadians();
+    double q2 = getElbowPosition().getRadians();
+
+    double x = (a2 * Math.cos(q1 + q2)) + (a1 * Math.cos(q1));
+    double y = (a2 * Math.sin(q1 + q2)) + (a1 * Math.sin(q1));
+
+    return new Translation2d(x, y);
+  }
+
   @Override
   public void periodic() {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Shoulder Absolute Encoder", getShoulderAbsoluteEncoder().getDegrees());
-      SmartDashboard.putNumber("Shoulder Motor Encoder", shoulderJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Shoulder Position", getShoulderPosition().getDegrees());
 
       SmartDashboard.putNumber("Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Elbow Absolute Encoder", getElbowAbsoluteEncoder().getDegrees());
-      SmartDashboard.putNumber("Elbow Motor Encoder", elbowJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Elbow Position", getElbowPosition().getDegrees());
+
+      SmartDashboard.putNumber("Arm EE Position X", Units.metersToFeet(getEEPosition().getX()));
+      SmartDashboard.putNumber("Arm EE Position Y", Units.metersToFeet(getEEPosition().getY()));
     }
   }
 }
