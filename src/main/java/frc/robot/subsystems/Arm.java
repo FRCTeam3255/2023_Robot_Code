@@ -112,9 +112,13 @@ public class Arm extends SubsystemBase {
     resetJointsToAbsolute();
   }
 
+  public void setJointPositions(double shoulderAngle, double elbowAngle) {
+    setShoulderPosition(shoulderAngle);
+    setElbowPosition(elbowAngle - shoulderAngle);
+  }
+
   public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {
-    setShoulderPosition(shoulderAngle.getValue());
-    setElbowPosition(elbowAngle.getValue() - shoulderAngle.getValue());
+    setJointPositions(shoulderAngle.getValue(), elbowAngle.getValue());
   }
 
   public void setShoulderPosition(double degrees) {
@@ -230,8 +234,10 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
 
-      SmartDashboard.putNumber("Arm EE Position X", Units.metersToFeet(getEEPosition().getX()));
-      SmartDashboard.putNumber("Arm EE Position Y", Units.metersToFeet(getEEPosition().getY()));
+      SmartDashboard.putNumber("Arm EE Position X", Units.metersToInches(getEEPosition().getX()));
+      SmartDashboard.putNumber("Arm EE Position Y", Units.metersToInches(getEEPosition().getY()));
+      SmartDashboard.putNumber("Arm EE Distance",
+          Units.metersToInches(Math.sqrt(Math.pow(getEEPosition().getX(), 2) + Math.pow(getEEPosition().getY(), 2))));
     }
   }
 }
