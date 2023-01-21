@@ -50,17 +50,19 @@ public class RobotPreferences {
   public static final class prefArm {
     public static final SN_DoublePreference shoulderArbitraryFeedForward = new SN_DoublePreference(
         "shoulderArbitraryFeedForward", 0);
-    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0);
+    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.1);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 0);
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", .2);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 3);
 
     public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
         "elbowArbitraryFeedForward", 0);
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 0);
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", .2);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 3);
 
     // TODO: remove or replace before merge; these are for testing
     public static final SN_DoublePreference shoulderP1 = new SN_DoublePreference("shoulderP1", 0);
