@@ -28,6 +28,7 @@ public class RobotMap {
   public static final class mapControllers {
 
     public static final int DRIVER_USB = 0;
+    public static final int OPERATOR_USB = 1;
     public static final int SWITCHBOARD_USB = 2;
     public static final int BLINKIN_PWM = 0;
   }
@@ -36,5 +37,10 @@ public class RobotMap {
     public static final I2C.Port COLOR_SENSOR_I2C = I2C.Port.kMXP;
     public static final int LEFT_MOTOR_CAN = 11;
     public static final int RIGHT_MOTOR_CAN = 12;
+  }
+
+  public static final class mapCollector {
+    public static final int PIVOT_MOTOR_CAN = 13;
+    public static final int INTAKE_MOTOR_CAN = 14;
   }
 }
