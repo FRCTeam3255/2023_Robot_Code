@@ -64,8 +64,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", .2);
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 3);
 
-    // TODO: remove or replace before merge; these are for testing
-    public static final SN_DoublePreference shoulderP1 = new SN_DoublePreference("shoulderP1", 0);
-    public static final SN_DoublePreference elbowP1 = new SN_DoublePreference("elbowP1", 0);
+    public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
+    public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
   }
 }
