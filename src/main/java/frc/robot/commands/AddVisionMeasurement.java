@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
+
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -20,7 +22,7 @@ public class AddVisionMeasurement extends CommandBase {
   Drivetrain subDrivetrain;
   Vision subVision;
   Pose2d estimatedPose;
-  double latency;
+  double timestamp;
 
   public AddVisionMeasurement(Drivetrain subDrivetrain, Vision subVision) {
 
@@ -35,12 +37,13 @@ public class AddVisionMeasurement extends CommandBase {
 
   @Override
   public void execute() {
-    Optional<Pair<Pose3d, Double>> result = subVision.getPoseFromVision(subDrivetrain.getPose());
+    Optional<EstimatedRobotPose> result = subVision.getPoseFromLifecam(subDrivetrain.getPose());
 
     if (result.isPresent()) {
-      estimatedPose = result.get().getFirst().toPose2d();
-      latency = result.get().getSecond();
-      subDrivetrain.addVisionMeasurement(estimatedPose, Timer.getFPGATimestamp() - latency);
+
+      estimatedPose = result.get().estimatedPose.toPose2d();
+      timestamp = result.get().timestampSeconds;
+      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
     }
   }
 

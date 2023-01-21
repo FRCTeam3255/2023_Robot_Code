@@ -7,9 +7,10 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
-import org.photonvision.RobotPoseEstimator;
-import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
 public class Vision extends SubsystemBase {
-  RobotPoseEstimator photonPoseEstimator;
+  PhotonPoseEstimator lifecamPoseEstimator;
   AprilTagFieldLayout aprilTagFieldLayout;
 
   public Vision() {
@@ -41,22 +42,18 @@ public class Vision extends SubsystemBase {
     Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     PhotonCamera lifecam = new PhotonCamera(constVision.lifecamPhotonName);
-    Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, 0.1905, 0.6604), new Rotation3d(0, 0, 0));
+    Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604), new Rotation3d(0, 0, 0));
 
-    ArrayList<Pair<PhotonCamera, Transform3d>> cameraList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-    // cameraList.add(new Pair<PhotonCamera, Transform3d>(ARCamera, robotToAR));
-    // cameraList.add(new Pair<PhotonCamera, Transform3d>(OVCamera, robotToOV));
-    cameraList.add(new Pair<PhotonCamera, Transform3d>(lifecam, robotToLifecam));
-
-    photonPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
-        cameraList);
+    // Create an instance of this for every camera you want to do pose estimation
+    // with, as well as a getPoseFrom____ method
+    lifecamPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, lifecam,
+        robotToLifecam);
   }
 
   // Returns the current estimated pose from vision & it's timestamp.
-  public Optional<Pair<Pose3d, Double>> getPoseFromVision(Pose2d prevEstimatedRobotPose) {
-    photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
-
-    return photonPoseEstimator.update();
+  public Optional<EstimatedRobotPose> getPoseFromLifecam(Pose2d referencePose) {
+    lifecamPoseEstimator.setReferencePose(referencePose);
+    return lifecamPoseEstimator.update();
   }
 
   @Override
