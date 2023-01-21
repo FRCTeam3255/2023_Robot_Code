@@ -46,10 +46,10 @@ public class RobotMap {
 
     public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 0;
     public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 1;
+  }
 
-    public static final class mapCollector {
-      public static final int PIVOT_MOTOR_CAN = 13;
-      public static final int INTAKE_MOTOR_CAN = 14;
-    }
+  public static final class mapCollector {
+    public static final int PIVOT_MOTOR_CAN = 13;
+    public static final int INTAKE_MOTOR_CAN = 14;
   }
 }
