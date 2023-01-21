@@ -118,6 +118,13 @@ public final class Constants {
     public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
   }
 
+  public static final class constChargerTreads {
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean RIGHT_MOTOR_INVERTED = true;
+
+    public static final int RESET_ENCODERS = 0;
+  }
+
   public static final class ConstIntake {
     public static final boolean leftMotorInverted = false;
     public static final boolean rightMotorInverted = false;

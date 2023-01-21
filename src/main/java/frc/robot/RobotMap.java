@@ -25,6 +25,12 @@ public class RobotMap {
     public static final String CAN_BUS = "Swerve";
   }
 
+  public static final class mapChargerTreads {
+
+    public static final int LEFT_MOTOR_CAN = 0;
+    public static final int RIGHT_MOTOR_CAN = 0;
+  }
+
   public static final class mapControllers {
 
     public static final int DRIVER_USB = 0;
