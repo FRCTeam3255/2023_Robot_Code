@@ -15,10 +15,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.UtilityArm;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefUtilityArm;
+import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivetrain;
@@ -29,10 +29,10 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
   private final Vision subVision = new Vision();
-  private final UtilityArm subUtilityArm = new UtilityArm();
+  private final Collector subCollector = new Collector();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
-  private final SN_DualActionStick conCoDriver = new SN_DualActionStick(mapControllers.CODRIVER_USB);
+  private final SN_DualActionStick conOperator = new SN_DualActionStick(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 
@@ -71,21 +71,27 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
-    conCoDriver.btn_B
-        .onTrue(Commands.runOnce(() -> subUtilityArm.spinIntakeMotor(prefUtilityArm.intakeSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subUtilityArm.spinIntakeMotor(0)));
+    // Spin the intake motor while held
+    conOperator.btn_B
+        .onTrue(Commands.runOnce(() -> subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
 
-    conCoDriver.btn_X
+    // Set Collector to starting config
+    conOperator.btn_X
         .onTrue(
-            Commands.runOnce(() -> subUtilityArm.setPivotMotorPosition(prefUtilityArm.pivotStartingConfig.getValue())));
+            Commands.runOnce(
+                () -> subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
 
-    conCoDriver.btn_Y
+    // Set Collector Rollers to intake height
+    conOperator.btn_Y
         .onTrue(
-            Commands.runOnce(() -> subUtilityArm.setPivotMotorPosition(prefUtilityArm.pivotIntakeHeight.getValue())));
+            Commands
+                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
 
-    conCoDriver.btn_A
+    // Set Collector Rollers to climbing position
+    conOperator.btn_A
         .onTrue(
-            Commands.runOnce(() -> subUtilityArm.setPivotMotorPosition(prefUtilityArm.pivotClimb.getValue())));
+            Commands.runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
   }
 
   public Command getAutonomousCommand() {

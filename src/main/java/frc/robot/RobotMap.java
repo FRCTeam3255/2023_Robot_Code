@@ -28,7 +28,7 @@ public class RobotMap {
   public static final class mapControllers {
 
     public static final int DRIVER_USB = 0;
-    public static final int CODRIVER_USB = 1;
+    public static final int OPERATOR_USB = 1;
     public static final int SWITCHBOARD_USB = 2;
     public static final int BLINKIN_PWM = 0;
   }
@@ -39,8 +39,8 @@ public class RobotMap {
     public static final int RIGHT_MOTOR_CAN = 12;
   }
 
-  public static final class mapUtilityArm {
-    public static final int PIVOT_MOTOR = 0;
-    public static final int INTAKE_MOTOR = 1;
+  public static final class mapCollector {
+    public static final int PIVOT_MOTOR_CAN = 13;
+    public static final int INTAKE_MOTOR_CAN = 14;
   }
 }

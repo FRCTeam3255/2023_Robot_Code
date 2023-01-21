@@ -51,11 +51,14 @@ public class RobotPreferences {
         "measurementStdDevsDegrees", 10);
   }
 
-  public static final class prefUtilityArm {
+  public static final class prefCollector {
 
     public static final SN_DoublePreference intakeSpeed = new SN_DoublePreference("intakeSpeed", 0.2);
-    public static final SN_DoublePreference pivotStartingConfig = new SN_DoublePreference("pivotStartingConfig", 0);
-    public static final SN_DoublePreference pivotIntakeHeight = new SN_DoublePreference("pivotIntakeHeight", 90);
-    public static final SN_DoublePreference pivotClimb = new SN_DoublePreference("pivotIntakeHeight", 180);
+    public static final SN_DoublePreference startingConfigPivotAngle = new SN_DoublePreference(
+        "startingConfigPivotAngle",
+        0);
+    public static final SN_DoublePreference intakeHeightPivotAngle = new SN_DoublePreference("intakeHeightPivotAngle",
+        90);
+    public static final SN_DoublePreference climbPivotAngle = new SN_DoublePreference("climbPivotAngle", 180);
   }
 }
