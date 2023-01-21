@@ -131,4 +131,8 @@ public final class Constants {
     public static final double cubeColorG = 0.39607;
     public static final double cubeColorB = 0.37254;
   }
+
+  public static final class constCollector {
+    public static final double GEAR_RATIO = 1;
+  }
 }
