@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
 import com.frcteam3255.components.SN_Blinkin;
@@ -14,8 +15,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.UtilityArm;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefUtilityArm;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivetrain;
@@ -26,8 +29,10 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
   private final Vision subVision = new Vision();
+  private final UtilityArm subUtilityArm = new UtilityArm();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
+  private final SN_DualActionStick conCoDriver = new SN_DualActionStick(mapControllers.CODRIVER_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 
@@ -65,6 +70,22 @@ public class RobotContainer {
     conSwitchboard.btn_2
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+
+    conCoDriver.btn_B
+        .onTrue(Commands.runOnce(() -> subUtilityArm.spinIntakeMotor(prefUtilityArm.intakeSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subUtilityArm.spinIntakeMotor(0)));
+
+    conCoDriver.btn_X
+        .onTrue(
+            Commands.runOnce(() -> subUtilityArm.setPivotMotorPosition(prefUtilityArm.pivotStartingConfig.getValue())));
+
+    conCoDriver.btn_Y
+        .onTrue(
+            Commands.runOnce(() -> subUtilityArm.setPivotMotorPosition(prefUtilityArm.pivotIntakeHeight.getValue())));
+
+    conCoDriver.btn_A
+        .onTrue(
+            Commands.runOnce(() -> subUtilityArm.setPivotMotorPosition(prefUtilityArm.pivotClimb.getValue())));
   }
 
   public Command getAutonomousCommand() {
