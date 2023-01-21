@@ -19,7 +19,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
@@ -34,15 +33,20 @@ public class Vision extends SubsystemBase {
       System.out.println("Could not load AprilTagFieldLayout! Must be on WPILIB 2023.2.1+" + e);
     }
 
+    // TODO: MOVE TRANSFORMS TO CONSTANTS
     PhotonCamera ARCamera = new PhotonCamera(constVision.ARPhotonName);
     Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     PhotonCamera OVCamera = new PhotonCamera(constVision.OVPhotonName);
     Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
+    PhotonCamera lifecam = new PhotonCamera(constVision.lifecamPhotonName);
+    Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, 0.1905, 0.6604), new Rotation3d(0, 0, 0));
+
     ArrayList<Pair<PhotonCamera, Transform3d>> cameraList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-    cameraList.add(new Pair<PhotonCamera, Transform3d>(ARCamera, robotToAR));
-    cameraList.add(new Pair<PhotonCamera, Transform3d>(OVCamera, robotToOV));
+    // cameraList.add(new Pair<PhotonCamera, Transform3d>(ARCamera, robotToAR));
+    // cameraList.add(new Pair<PhotonCamera, Transform3d>(OVCamera, robotToOV));
+    cameraList.add(new Pair<PhotonCamera, Transform3d>(lifecam, robotToLifecam));
 
     photonPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
         cameraList);
