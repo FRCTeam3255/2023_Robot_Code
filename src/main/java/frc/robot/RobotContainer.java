@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
 import com.frcteam3255.components.SN_Blinkin;
@@ -14,8 +15,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
@@ -29,9 +32,10 @@ public class RobotContainer {
   private final Intake subIntake = new Intake();
   private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
+  private final Collector subCollector = new Collector();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
-  private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
+  private final SN_DualActionStick conOperator = new SN_DualActionStick(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 
@@ -78,6 +82,28 @@ public class RobotContainer {
     conSwitchboard.btn_2
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+
+    // Spin the intake motor while held
+    conOperator.btn_B
+        .onTrue(Commands.runOnce(() -> subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
+
+    // Set Collector to starting config
+    conOperator.btn_X
+        .onTrue(
+            Commands.runOnce(
+                () -> subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
+
+    // Set Collector Rollers to intake height
+    conOperator.btn_Y
+        .onTrue(
+            Commands
+                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
+
+    // Set Collector Rollers to climbing position
+    conOperator.btn_A
+        .onTrue(
+            Commands.runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
   }
 
   public Command getAutonomousCommand() {
