@@ -50,4 +50,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
         "measurementStdDevsDegrees", 10);
   }
+
+  public static final class prefCollector {
+
+    public static final SN_DoublePreference intakeSpeed = new SN_DoublePreference("intakeSpeed", 0.2);
+    public static final SN_DoublePreference startingConfigPivotAngle = new SN_DoublePreference(
+        "startingConfigPivotAngle",
+        0);
+    public static final SN_DoublePreference intakeHeightPivotAngle = new SN_DoublePreference("intakeHeightPivotAngle",
+        90);
+    public static final SN_DoublePreference climbPivotAngle = new SN_DoublePreference("climbPivotAngle", 180);
+  }
 }
