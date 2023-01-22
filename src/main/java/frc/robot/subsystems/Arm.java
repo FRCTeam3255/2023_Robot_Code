@@ -205,7 +205,7 @@ public class Arm extends SubsystemBase {
     elbowJoint.setSelectedSensorPosition(absoluteEncoderCount);
   }
 
-  private Translation2d getEEPosition() {
+  private Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
 
@@ -234,10 +234,11 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
 
-      SmartDashboard.putNumber("Arm EE Position X", Units.metersToInches(getEEPosition().getX()));
-      SmartDashboard.putNumber("Arm EE Position Y", Units.metersToInches(getEEPosition().getY()));
-      SmartDashboard.putNumber("Arm EE Distance",
-          Units.metersToInches(Math.sqrt(Math.pow(getEEPosition().getX(), 2) + Math.pow(getEEPosition().getY(), 2))));
+      SmartDashboard.putNumber("Arm Tip Position X", Units.metersToInches(getArmTipPosition().getX()));
+      SmartDashboard.putNumber("Arm Tip Position Y", Units.metersToInches(getArmTipPosition().getY()));
+      SmartDashboard.putNumber("Arm Tip Distance",
+          Units.metersToInches(
+              Math.sqrt(Math.pow(getArmTipPosition().getX(), 2) + Math.pow(getArmTipPosition().getY(), 2))));
     }
   }
 }
