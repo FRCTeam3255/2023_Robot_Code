@@ -13,6 +13,7 @@ import com.frcteam3255.joystick.SN_SwitchboardStick;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Collector;
@@ -37,8 +38,8 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
   private final Arm subArm = new Arm();
-  private final Vision subVision = new Vision();
-  private final Collector subCollector = new Collector();
+  // private final Vision subVision = new Vision();
+  // private final Collector subCollector = new Collector();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
   private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
@@ -47,15 +48,15 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
-    subCollector.setDefaultCommand(
-        new RunCommand(
-            () -> subCollector.setPivotMotorSpeed(
-                MathUtil.applyDeadband(
-                    conOperator.getAxisRSY(),
-                    constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
-            subCollector));
+    // subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
+    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+    // subVision));
+
+    subArm.setDefaultCommand(
+        new RunCommand(() -> subArm.setJointPercentOutputs(
+            MathUtil.applyDeadband(conOperator.getAxisLSY(), constControllers.OPERATOR_LEFT_STICK_Y_DEADBAND),
+            MathUtil.applyDeadband(conOperator.getAxisRSY(), constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
+            subArm));
 
     configureBindings();
   }
@@ -90,6 +91,12 @@ public class RobotContainer {
             .repeatedly())
         .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
+    conOperator.btn_B.whileTrue(Commands.runOnce(
+        () -> subArm.setArmTipPosition(prefArm.armTipPresetX, prefArm.armTipPresetY),
+        subArm).repeatedly());
+
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
+
     // Switchboard
 
     // Sets LED color to "violet" to indicate a purple game piece (cube) is being
@@ -110,18 +117,35 @@ public class RobotContainer {
     conOperator.btn_B
         .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
+    // // Spin the intake motor while held
+    // conOperator.btn_B
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
+    // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
                 () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
+    // // Set Collector to starting config
+    // conOperator.btn_X
+    // .onTrue(
+    // Commands.runOnce(
+    // () ->
+    // subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
                 .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
+    // // Set Collector Rollers to intake height
+    // conOperator.btn_Y
+    // .onTrue(
+    // Commands
+    // .runOnce(() ->
+    // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
@@ -144,6 +168,11 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(prefDrivetrain.chargeVelocityX.getValue(),
             prefDrivetrain.chargeVelocityY.getValue(), new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
         .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
+    // // Set Collector Rollers to climbing position
+    // conOperator.btn_A
+    // .onTrue(
+    // Commands.runOnce(() ->
+    // subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
   }
 
   public Command getAutonomousCommand() {
