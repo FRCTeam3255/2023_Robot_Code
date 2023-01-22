@@ -56,6 +56,10 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
 
+    conDriver.btn_Start
+        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0.25)))
+        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
+
     // Switchboard
 
     // Sets LED color to "violet" to indicate a purple game piece (cube) is being
