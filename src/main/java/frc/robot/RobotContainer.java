@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.ChargerTreads;
@@ -55,10 +56,6 @@ public class RobotContainer {
     conDriver.btn_A
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
-
-    conDriver.btn_Start
-        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0.25)))
-        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
 
     // Switchboard
 
