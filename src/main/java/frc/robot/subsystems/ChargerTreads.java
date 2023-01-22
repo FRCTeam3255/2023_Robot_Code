@@ -32,7 +32,7 @@ public class ChargerTreads extends SubsystemBase {
     rightMotor.setInverted(constChargerTreads.RIGHT_MOTOR_INVERTED);
   }
 
-  public void resetDrivetrainEncodersCount() {
+  public void resetChargerTreadsEncodersCount() {
     leftMotor.setSelectedSensorPosition(constChargerTreads.RESET_ENCODERS);
     rightMotor.setSelectedSensorPosition(constChargerTreads.RESET_ENCODERS);
   }
@@ -52,10 +52,10 @@ public class ChargerTreads extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Charger Threads Left Encoder", getLeftEncoderCount());
-    SmartDashboard.putNumber("Charger Threads Right Encoder", getRightEncoderCount());
+    SmartDashboard.putNumber("Charger Treads Left Encoder", getLeftEncoderCount());
+    SmartDashboard.putNumber("Charger Treads Right Encoder", getRightEncoderCount());
 
-    SmartDashboard.putBoolean("is Left Charger Thread Inverted", constChargerTreads.LEFT_MOTOR_INVERTED);
-    SmartDashboard.putBoolean("is Right Charger Thread Inverted", constChargerTreads.RIGHT_MOTOR_INVERTED);
+    SmartDashboard.putBoolean("is Left Charger Tread Inverted", constChargerTreads.LEFT_MOTOR_INVERTED);
+    SmartDashboard.putBoolean("is Right Charger Tread Inverted", constChargerTreads.RIGHT_MOTOR_INVERTED);
   }
 }
