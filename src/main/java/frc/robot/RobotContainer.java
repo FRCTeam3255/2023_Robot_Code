@@ -19,8 +19,10 @@ import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefArm;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -28,6 +30,7 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
+  private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
   private final Collector subCollector = new Collector();
 
@@ -56,6 +59,15 @@ public class RobotContainer {
     conDriver.btn_A
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+
+    // Operator
+
+    // Set the arm to a preset position (example bind, may not be necessary for comp
+    // bindings)
+    conOperator.btn_A
+        .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
+            .repeatedly())
+        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
     // Switchboard
 

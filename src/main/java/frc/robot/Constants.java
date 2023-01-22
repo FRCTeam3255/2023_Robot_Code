@@ -18,6 +18,9 @@ public final class Constants {
 
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
+  // NEO (big and small) encoder counts per rotation
+  public static final double NEO_ENCODER_CPR = 42;
+
   // Drivetrain (no subclass)
 
   // note: these were physically measured center to center of the wheel on a
@@ -116,6 +119,13 @@ public final class Constants {
     public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
     public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
     public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+
+    public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
+    public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
+    public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
+    public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
+    public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
+    public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
   }
 
   public static final class ConstIntake {
@@ -131,4 +141,30 @@ public final class Constants {
     public static final double cubeColorG = 0.39607;
     public static final double cubeColorB = 0.37254;
   }
+
+  public static final class constArm {
+    public static final boolean SHOULDER_MOTOR_INVERT = false;
+    public static final boolean ELBOW_MOTOR_INVERT = false;
+
+    public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
+    public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
+
+    public static final double SHOULDER_GEAR_RATIO = 100.0;
+    public static final double ELBOW_GEAR_RATIO = 100.0;
+
+    // offsets are when both joints are facing to the right (0 degrees on unit
+    // circle is at (1, 0))
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.397309);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.142530);
+
+    public static final double SHOULDER_LENGTH = Units.inchesToMeters(7.5);
+    public static final double ELBOW_LENGTH = Units.inchesToMeters(8.75);
+
+    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(180);
+    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-90);
+
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(163);
+    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
+  }
+
 }
