@@ -6,7 +6,10 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.RobotMap.mapDrivetrain;
@@ -17,6 +20,11 @@ public final class Constants {
     public static final String lifecamPhotonName = "Microsoft_LifeCam_HD-3000";
     public static final String ARPhotonName = "Global_Shutter_Camera";
     public static final String OVPhotonName = "Arducam_OV9281_USB_Camera";
+
+    public static final Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
+        new Rotation3d(0, 0, 0));
   }
 
   public enum GamePiece {
