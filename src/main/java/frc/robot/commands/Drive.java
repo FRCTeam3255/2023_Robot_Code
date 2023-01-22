@@ -5,10 +5,12 @@
 package frc.robot.commands;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constControllers;
@@ -32,6 +34,10 @@ public class Drive extends CommandBase {
   double xVelocity;
   double yVelocity;
   double rVelocity;
+
+  Translation2d translationVelocity;
+  double translationScalar;
+
   Pose2d velocity;
 
   public Drive(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
@@ -52,18 +58,22 @@ public class Drive extends CommandBase {
     xVelocity = -conDriver.getAxisLSY();
     yVelocity = conDriver.getAxisLSX();
     rVelocity = conDriver.getAxisRSX();
+    translationScalar = conDriver.getAxisRT();
 
     xVelocity = MathUtil.applyDeadband(xVelocity, constControllers.DRIVER_LEFT_STICK_Y_DEADBAND);
     yVelocity = MathUtil.applyDeadband(yVelocity, constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
     rVelocity = MathUtil.applyDeadband(rVelocity, constControllers.DRIVER_RIGHT_STICK_X_DEADBAND);
+    translationScalar = MathUtil.applyDeadband(translationScalar, constControllers.DRIVER_RIGHT_TRIGGER_DEADBAND);
 
     xVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     yVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     rVelocity *= Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
+    translationScalar = SN_Math.interpolate(translationScalar, 0, 1, 1, prefDrivetrain.triggerValue.getValue());
+
+    translationVelocity = new Translation2d(xVelocity, yVelocity).times(translationScalar);
 
     velocity = new Pose2d(
-        xVelocity,
-        yVelocity,
+        translationVelocity,
         new Rotation2d(rVelocity));
 
     subDrivetrain.drive(velocity);
