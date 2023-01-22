@@ -112,9 +112,64 @@ public class Arm extends SubsystemBase {
     resetJointsToAbsolute();
   }
 
+  /**
+   * 
+   * @param position inches
+   */
+  public void setArmTipPosition(Translation2d position) {
+
+    if (position.getDistance(new Translation2d()) < Units.inchesToMeters(prefArm.armTipDeadzone.getValue())) {
+      System.out.println("Cannot input arm tip position within inner deadzone. Illegal values: X " + position.getX()
+          + " Y: " + position.getY());
+      System.out.println(3255 / 0);
+    }
+
+    if (position.getDistance(new Translation2d()) > constArm.SHOULDER_LENGTH + constArm.ELBOW_LENGTH) {
+      System.out.println(
+          "Cannot input arm tip position that arm cannot reach. Make sure you are using the correct position for the arm tip. Illegal Values: "
+              + position.getX() + " Y: " + position.getY());
+    }
+
+    double x = Units.inchesToMeters(position.getX());
+    double y = Units.inchesToMeters(position.getY());
+
+    double shoulderLength = constArm.SHOULDER_LENGTH;
+    double elbowLength = constArm.ELBOW_LENGTH;
+
+    // -acos((x^2 + y^2 - shoulderLength^2 - elbowLength^2) / 2 * shoulderLength *
+    // elbowLength)
+    double independentElbowAngleRadians = -Math.acos(
+        (Math.pow(x, 2)
+            + Math.pow(y, 2)
+            - Math.pow(shoulderLength, 2)
+            - Math.pow(elbowLength, 2)
+                / 2
+                * shoulderLength
+                * elbowLength));
+
+    // atan(y / x) + atan((elbowLength * sin(elbowAngle)) / (shoulderLength +
+    // elbowLength * cos(elbowAngle)))
+    double shoulderAngleRadians = Math.atan(
+        y / x)
+        + Math.atan(
+            (elbowLength
+                * Math.sin(independentElbowAngleRadians)
+                / (shoulderLength + elbowLength
+                    * Math.cos(independentElbowAngleRadians))));
+
+    double dependentElbowAngleRadians = independentElbowAngleRadians;
+    // + shoulderAngleRadians;
+
+    setJointPositions(Units.radiansToDegrees(shoulderAngleRadians), Units.radiansToDegrees(dependentElbowAngleRadians));
+  }
+
+  public void setArmTipPosition(SN_DoublePreference x, SN_DoublePreference y) {
+    setArmTipPosition(new Translation2d(x.getValue(), y.getValue()));
+  }
+
   public void setJointPositions(double shoulderAngle, double elbowAngle) {
     setShoulderPosition(shoulderAngle);
-    setElbowPosition(elbowAngle - shoulderAngle);
+    setElbowPosition(elbowAngle/* - shoulderAngle */);
   }
 
   public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {

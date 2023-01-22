@@ -16,7 +16,7 @@ public final class Constants {
     NONE, CUBE, CONE
   }
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // NEO (big and small) encoder counts per rotation
   public static final double NEO_ENCODER_CPR = 42;
@@ -142,7 +142,6 @@ public final class Constants {
     public static final double cubeColorB = 0.37254;
   }
 
-
   public static final class constCollector {
     public static final double GEAR_RATIO = 1;
   }
@@ -171,6 +170,5 @@ public final class Constants {
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(163);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
   }
-
 
 }
