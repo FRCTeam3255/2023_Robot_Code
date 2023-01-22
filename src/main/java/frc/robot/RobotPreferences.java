@@ -60,6 +60,16 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeHeightPivotAngle = new SN_DoublePreference("intakeHeightPivotAngle",
         90);
     public static final SN_DoublePreference climbPivotAngle = new SN_DoublePreference("climbPivotAngle", 180);
+
+    public static final SN_DoublePreference collectorP = new SN_DoublePreference("collectorP", 0.09);
+    public static final SN_DoublePreference collectorI = new SN_DoublePreference("collectorI", 0);
+    public static final SN_DoublePreference collectorD = new SN_DoublePreference("collectorD", 0);
+
+    public static final SN_DoublePreference collectorAllowableClosedLoopErrorDegrees = new SN_DoublePreference(
+        "collectorAlowableClosedLoopErrorDegrees", 0.0001);
+    public static final SN_DoublePreference collectorClosedLoopPeakOutput = new SN_DoublePreference(
+        "collectorClosedLoopPeakOutput", 0.25);
+
   }
 
   public static final class prefArm {
