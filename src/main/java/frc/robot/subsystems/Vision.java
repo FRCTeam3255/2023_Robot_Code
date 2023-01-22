@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
@@ -29,9 +30,11 @@ public class Vision extends SubsystemBase {
 
   public Vision() {
     try {
-      aprilTagFieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
+      aprilTagFieldLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory().toPath().resolve("apriltags.json"));
     } catch (Exception e) {
-      System.out.println("Could not load AprilTagFieldLayout! Must be on WPILIB 2023.2.1+" + e);
+      System.out.println(
+          "*******************************************************************************************************************Could not load AprilTagFieldLayout! Must be on WPILIB 2023.2.1+"
+              + e);
     }
 
     // TODO: MOVE TRANSFORMS TO CONSTANTS

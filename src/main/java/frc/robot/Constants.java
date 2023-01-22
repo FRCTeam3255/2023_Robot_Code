@@ -23,7 +23,7 @@ public final class Constants {
     NONE, CUBE, CONE
   }
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // Drivetrain (no subclass)
 
