@@ -237,8 +237,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Tip Position X", Units.metersToInches(getArmTipPosition().getX()));
       SmartDashboard.putNumber("Arm Tip Position Y", Units.metersToInches(getArmTipPosition().getY()));
       SmartDashboard.putNumber("Arm Tip Distance",
-          Units.metersToInches(
-              Math.sqrt(Math.pow(getArmTipPosition().getX(), 2) + Math.pow(getArmTipPosition().getY(), 2))));
+          Units.metersToInches(getArmTipPosition().getDistance(new Translation2d())));
     }
   }
 }
