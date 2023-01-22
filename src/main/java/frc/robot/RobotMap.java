@@ -27,8 +27,8 @@ public class RobotMap {
 
   public static final class mapChargerTreads {
 
-    public static final int LEFT_MOTOR_CAN = 0;
-    public static final int RIGHT_MOTOR_CAN = 1;
+    public static final int LEFT_MOTOR_CAN = 1;
+    public static final int RIGHT_MOTOR_CAN = 2;
   }
 
   public static final class mapControllers {

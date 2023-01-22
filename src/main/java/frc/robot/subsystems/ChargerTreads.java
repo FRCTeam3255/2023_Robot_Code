@@ -53,7 +53,7 @@ public class ChargerTreads extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Charger Threads Left Encoder", getLeftEncoderCount());
-    SmartDashboard.putNumber("Charger Threads Left Encoder", getRightEncoderCount());
+    SmartDashboard.putNumber("Charger Threads Right Encoder", getRightEncoderCount());
 
     SmartDashboard.putBoolean("is Left Charger Thread Inverted", constChargerTreads.LEFT_MOTOR_INVERTED);
     SmartDashboard.putBoolean("is Right Charger Thread Inverted", constChargerTreads.RIGHT_MOTOR_INVERTED);
