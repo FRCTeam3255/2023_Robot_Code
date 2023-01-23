@@ -10,24 +10,34 @@ import com.frcteam3255.joystick.SN_F310Gamepad;
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
+import com.frcteam3255.utils.SN_InstantCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.subsystems.ChargerTreads;
+import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefArm;
+import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.Drive;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
 
+  private final ChargerTreads subChargerTreads = new ChargerTreads();
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
+  private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
   private final Collector subCollector = new Collector();
 
@@ -59,6 +69,15 @@ public class RobotContainer {
     conDriver.btn_B
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d())));
+
+    // Operator
+
+    // Set the arm to a preset position (example bind, may not be necessary for comp
+    // bindings)
+    conOperator.btn_A
+        .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
+            .repeatedly())
+        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
     // Switchboard
 

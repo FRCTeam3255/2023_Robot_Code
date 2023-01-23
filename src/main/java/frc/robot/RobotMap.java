@@ -25,6 +25,12 @@ public class RobotMap {
     public static final String CAN_BUS = "Swerve";
   }
 
+  public static final class mapChargerTreads {
+
+    public static final int LEFT_MOTOR_CAN = 8;
+    public static final int RIGHT_MOTOR_CAN = 9;
+  }
+
   public static final class mapControllers {
 
     public static final int DRIVER_USB = 0;
@@ -39,8 +45,18 @@ public class RobotMap {
     public static final int RIGHT_MOTOR_CAN = 12;
   }
 
+  public static final class mapArm {
+
+    public static final int SHOULDER_CAN = 20;
+    public static final int ELBOW_CAN = 21;
+
+    public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 0;
+    public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 1;
+  }
+
   public static final class mapCollector {
     public static final int PIVOT_MOTOR_CAN = 13;
     public static final int INTAKE_MOTOR_CAN = 14;
+
   }
 }
