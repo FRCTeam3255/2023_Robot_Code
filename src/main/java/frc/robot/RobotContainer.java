@@ -113,6 +113,12 @@ public class RobotContainer {
     conOperator.btn_A
         .onTrue(
             Commands.runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
+
+    // Spin Charger treads
+    conOperator.btn_RBump
+        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
+
   }
 
   public Command getAutonomousCommand() {
