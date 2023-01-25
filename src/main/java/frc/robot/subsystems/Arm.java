@@ -163,19 +163,42 @@ public class Arm extends SubsystemBase {
     setJointPositions(Units.radiansToDegrees(shoulderAngleRadians), Units.radiansToDegrees(dependentElbowAngleRadians));
   }
 
+  /**
+   * Set the translational position of the tip of the arm (intake position).
+   * 
+   * @param x x Position in inches
+   * @param y y Position in inches
+   */
   public void setArmTipPosition(SN_DoublePreference x, SN_DoublePreference y) {
     setArmTipPosition(new Translation2d(x.getValue(), y.getValue()));
   }
 
+  /**
+   * Set the rotational positions of the shoulder and elbow joints.
+   * 
+   * @param shoulderAngle Shoulder position in degrees
+   * @param elbowAngle    Elbow position in degrees
+   */
   public void setJointPositions(double shoulderAngle, double elbowAngle) {
     setShoulderPosition(shoulderAngle);
     setElbowPosition(elbowAngle/* - shoulderAngle */);
   }
 
+  /**
+   * Set the rotational positions of the shoulder and elbow joints.
+   * 
+   * @param shoulderAngle Shoulder position in degrees
+   * @param elbowAngle    Elbow position in degrees
+   */
   public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {
     setJointPositions(shoulderAngle.getValue(), elbowAngle.getValue());
   }
 
+  /**
+   * Set the rotational position of the shoulder joint.
+   * 
+   * @param degrees Rotational position to set shoulder
+   */
   public void setShoulderPosition(double degrees) {
     if (Math.abs(getShoulderPosition().getDegrees() - degrees) > prefArm.shoulderTolerance.getValue()) {
       double encoderCounts = SN_Math.degreesToFalcon(
@@ -186,6 +209,11 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  /**
+   * Set the rotational position of the elbow joint.
+   * 
+   * @param degrees Rotational position to set elbow
+   */
   public void setElbowPosition(double degrees) {
     if (Math.abs(getElbowPosition().getDegrees() - degrees) > prefArm.elbowTolerance.getValue()) {
       double encoderCounts = SN_Math.degreesToFalcon(
@@ -196,23 +224,49 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  /**
+   * Set the rotational position of the shoulder joint.
+   * 
+   * @param degrees Rotational position to set shoulder
+   */
   public void setShoulderPosition(SN_DoublePreference degrees) {
     setShoulderPosition(degrees.getValue());
   }
 
+  /**
+   * Set the percent output of the shoulder and elbow joint.
+   * 
+   * @param shoulderPercent Shoulder percent output
+   * @param elbowPercent    Elbow percent output
+   */
   public void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
     setShoulderPercentOutput(shoulderPercent);
     setElbowPercentOutput(elbowPercent);
   }
 
+  /**
+   * Set the percent output of the shoulder joint motor.
+   * 
+   * @param percent Percent output to set
+   */
   public void setShoulderPercentOutput(double percent) {
     shoulderJoint.set(ControlMode.PercentOutput, percent * prefArm.shoulderMaxSpeed.getValue());
   }
 
+  /**
+   * Set the percent output of the elbow joint motor.
+   * 
+   * @param percent Percent output to set
+   */
   public void setElbowPercentOutput(double percent) {
     elbowJoint.set(ControlMode.PercentOutput, percent * prefArm.elbowMaxSpeed.getValue());
   }
 
+  /**
+   * Get the rotational position of the shoulder.
+   * 
+   * @return Rotational position of shoulder
+   */
   public Rotation2d getShoulderPosition() {
     double degrees = SN_Math.falconToDegrees(
         shoulderJoint.getSelectedSensorPosition(),
@@ -221,6 +275,11 @@ public class Arm extends SubsystemBase {
     return Rotation2d.fromDegrees(degrees);
   }
 
+  /**
+   * Get the rotational position of the elbow.
+   * 
+   * @return Rotational position of elbow
+   */
   public Rotation2d getElbowPosition() {
     double degrees = SN_Math.falconToDegrees(
         elbowJoint.getSelectedSensorPosition(),
@@ -229,23 +288,40 @@ public class Arm extends SubsystemBase {
     return Rotation2d.fromDegrees(degrees);
   }
 
+  /**
+   * Get the shoulder absolute encoder reading.
+   * 
+   * @return Shoulder absolute encoder reading
+   */
   public Rotation2d getShoulderAbsoluteEncoder() {
     double rotations = shoulderEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
     return Rotation2d.fromRotations(rotations);
   }
 
+  /**
+   * Get the elbow absolute encoder reading.
+   * 
+   * @return Elbow absolute encoder reading
+   */
   public Rotation2d getElbowAbsoluteEncoder() {
     double rotations = elbowEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
     return Rotation2d.fromRotations(rotations);
   }
 
+  /**
+   * Reset the shoulder and elbow motor encoder to the respective absolute
+   * encoders.
+   */
   public void resetJointsToAbsolute() {
     resetShoulderToAbsolute();
     resetElbowToAbsolute();
   }
 
+  /**
+   * Reset the shoulder motor encoder to the absolute shoulder encoder.
+   */
   private void resetShoulderToAbsolute() {
     double absoluteEncoderCount = SN_Math.degreesToFalcon(
         getShoulderAbsoluteEncoder().getDegrees(),
@@ -253,6 +329,9 @@ public class Arm extends SubsystemBase {
     shoulderJoint.setSelectedSensorPosition(absoluteEncoderCount);
   }
 
+  /**
+   * Reset the elbow motor encoder to the absolute elbow encoder.
+   */
   private void resetElbowToAbsolute() {
     double absoluteEncoderCount = SN_Math.degreesToFalcon(
         getElbowAbsoluteEncoder().getDegrees(),
@@ -260,6 +339,11 @@ public class Arm extends SubsystemBase {
     elbowJoint.setSelectedSensorPosition(absoluteEncoderCount);
   }
 
+  /**
+   * Get the position of the arm tip in 2D space relative to the robot in meters.
+   * 
+   * @return Position of of arm tip in meters
+   */
   private Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
