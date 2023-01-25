@@ -4,7 +4,22 @@
 
 <br/>
 
-# Summary
+# <h1 style="color: #ECC412"> Summary </h1>
+
+## **Arm:**
+  - ### Double jointed arm mechanism
+  - ### Intake mounted onto the arm
+  - ### Uses REV through bore encoders to save prevent the need to reset encoders on startup
+  - ### Operator can directly move the intake up, down, forwards, or backwards (instead of manually controlling the rotation of the joints)
+
+<br/>
+
+## **Collector:**
+  - ### Wide, over the bumper roller to assist in the collection of cubes
+  - ### Assists in getting onto the charge station
+  - ### Deploys using a motor, instead of pneumatics for easier management
+
+<br/>
 
 ## **Drivetrain:**
   - ### Field orientated and robot oriented swerve drive. 
@@ -12,7 +27,6 @@
   - ### Uses open and closed loop drive motor control.
 
 <br/>
-
 
 ## **Intake:**
   - ### Dual NEO motor control 
@@ -26,6 +40,13 @@
 
 <br/>
 
+## **Pose Estimation and AprilTags**
+  - ### Using a N5095 Beelink Mini PC for our coprocessor
+  - ### Two global shutter cameras (AR0144 and OV9281) along with 2.8mm lenses
+  - ### Powered by a boost buck converter that accepts an 8-40V input and outputs 12V 3A
+
+<br/>
+
 ## **Misc:**
   - ### Optional debug outputs to network tables
   - ### Tunable values on network tables
@@ -34,7 +55,7 @@
 
 <br/>
 
-# Vendor Dependencies
+# <h1 style="color: #ECC412"> Vendor Dependencies </h1>
 
 ## Charged Up 2023 Game Links
 
