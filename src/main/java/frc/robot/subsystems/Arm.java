@@ -113,10 +113,15 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Set the translational position of the tip of the arm (intake position).
    * 
-   * @param position inches
+   * @param x x Position in inches
+   * @param y y Position in inches
    */
   public void setArmTipPosition(Translation2d position) {
+
+    SmartDashboard.putNumber("Arm Debug input tip position inches x", position.getX());
+    SmartDashboard.putNumber("Arm Debug input tip position inches y", position.getY());
 
     if (position.getDistance(new Translation2d()) < Units.inchesToMeters(prefArm.armTipDeadzone.getValue())) {
       System.out.println("Cannot input arm tip position within inner deadzone. Illegal values: X " + position.getX()
@@ -136,31 +141,42 @@ public class Arm extends SubsystemBase {
     double shoulderLength = constArm.SHOULDER_LENGTH;
     double elbowLength = constArm.ELBOW_LENGTH;
 
-    // -acos((x^2 + y^2 - shoulderLength^2 - elbowLength^2) / 2 * shoulderLength *
-    // elbowLength)
-    double independentElbowAngleRadians = -Math.acos(
-        (Math.pow(x, 2)
-            + Math.pow(y, 2)
-            - Math.pow(shoulderLength, 2)
-            - Math.pow(elbowLength, 2)
-                / 2
-                * shoulderLength
-                * elbowLength));
+    // distance from from origin to arm tip goal position
+    double R = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 
-    // atan(y / x) + atan((elbowLength * sin(elbowAngle)) / (shoulderLength +
-    // elbowLength * cos(elbowAngle)))
-    double shoulderAngleRadians = Math.atan(
-        y / x)
-        + Math.atan(
-            (elbowLength
-                * Math.sin(independentElbowAngleRadians)
-                / (shoulderLength + elbowLength
-                    * Math.cos(independentElbowAngleRadians))));
+    SmartDashboard.putNumber("Arm Debug R (distance to goal tip pose) meters", R);
+    SmartDashboard.putNumber("Arm Debug R (distance to goal tip pose) inches", Units.metersToInches(R));
 
-    double dependentElbowAngleRadians = independentElbowAngleRadians;
-    // + shoulderAngleRadians;
+    // negative solution
 
-    setJointPositions(Units.radiansToDegrees(shoulderAngleRadians), Units.radiansToDegrees(dependentElbowAngleRadians));
+    // see https://www.desmos.com/calculator/rxoywnwrcg for math (lines 15 and 16)
+    double elbowX = (1 / 2) * (x)
+        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2))) * (x)
+        - (1 / 2) * Math.sqrt(2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
+            - (Math.pow((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)), 2) / Math.pow(R, 4)) - 1) * (y);
+
+    SmartDashboard.putNumber("Arm Debug elbowX meters", elbowX);
+    SmartDashboard.putNumber("Arm Debug elbowX inches", Units.metersToInches(elbowX));
+
+    double elbowY = (1 / 2) * (y)
+        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2))) * (y)
+        - (1 / 2) * Math.sqrt(2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
+            - (Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4)) - 1) * (x);
+
+    SmartDashboard.putNumber("Arm Debug elbowY meters", elbowY);
+    SmartDashboard.putNumber("Arm Debug elbowY inches", Units.metersToInches(elbowY));
+
+    double shoulderAngle = Math.atan2(elbowY, elbowX);
+
+    SmartDashboard.putNumber("Arm Debug shoulderAngle radians", shoulderAngle);
+    SmartDashboard.putNumber("Arm Debug shoulderAngle degrees", Units.radiansToDegrees(shoulderAngle));
+
+    double elbowAngle = Math.atan2(y - elbowY, x - elbowX);
+
+    SmartDashboard.putNumber("Arm Debug elbowAngle radians", elbowAngle);
+    SmartDashboard.putNumber("Arm Debug elbowAngle degrees", Units.radiansToDegrees(elbowAngle));
+
+    setJointPositions(Units.radiansToDegrees(shoulderAngle), Units.radiansToDegrees(elbowAngle));
   }
 
   /**
@@ -181,7 +197,7 @@ public class Arm extends SubsystemBase {
    */
   public void setJointPositions(double shoulderAngle, double elbowAngle) {
     setShoulderPosition(shoulderAngle);
-    setElbowPosition(elbowAngle/* - shoulderAngle */);
+    setElbowPosition(elbowAngle - shoulderAngle);
   }
 
   /**
