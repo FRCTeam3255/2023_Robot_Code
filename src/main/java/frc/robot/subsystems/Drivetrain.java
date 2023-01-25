@@ -4,7 +4,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -34,6 +38,8 @@ public class Drivetrain extends SubsystemBase {
   private boolean isFieldRelative;
 
   private Field2d field;
+
+  private SwerveAutoBuilder swerveAutoBuilder;
 
   public Drivetrain() {
 
@@ -65,6 +71,22 @@ public class Drivetrain extends SubsystemBase {
       mod.configure();
       mod.resetSteerMotorEncodersToAbsolute();
     }
+
+    swerveAutoBuilder = new SwerveAutoBuilder(
+        this::getPose,
+        this::resetPose,
+        Constants.SWERVE_KINEMATICS,
+        new PIDConstants(
+            prefDrivetrain.autoTransP.getValue(),
+            prefDrivetrain.autoTransI.getValue(),
+            prefDrivetrain.autoTransD.getValue()),
+        new PIDConstants(
+            prefDrivetrain.autoThetaP.getValue(),
+            prefDrivetrain.autoThetaI.getValue(),
+            prefDrivetrain.autoThetaD.getValue()),
+        this::setModuleStates,
+        new HashMap<>(),
+        this);
   }
 
   /**

@@ -18,6 +18,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 6.0);
 
+    // TODO: Create PID values
+    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 0);
+    public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
+    public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
+
+    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 0);
+    public static final SN_DoublePreference autoTransI = new SN_DoublePreference("autoTransI", 0);
+    public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
+
     // percent of max module speed that is required for the module to steer
     // (a stopped wheel shouldn't steer)
     public static final SN_DoublePreference percentToSteer = new SN_DoublePreference("percentToSteer", 0.01);
