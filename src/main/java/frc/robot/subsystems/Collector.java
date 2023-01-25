@@ -17,13 +17,13 @@ import frc.robot.RobotPreferences.prefCollector;
 
 public class Collector extends SubsystemBase {
   SN_TalonFX pivotMotor;
-  SN_TalonFX intakeMotor;
+  SN_TalonFX rollerMotor;
 
   TalonFXConfiguration config;
 
   public Collector() {
     pivotMotor = new SN_TalonFX(mapCollector.PIVOT_MOTOR_CAN);
-    intakeMotor = new SN_TalonFX(mapCollector.INTAKE_MOTOR_CAN);
+    rollerMotor = new SN_TalonFX(mapCollector.ROLLER_MOTOR_CAN);
 
     config = new TalonFXConfiguration();
     configure();
@@ -31,7 +31,7 @@ public class Collector extends SubsystemBase {
 
   public void configure() {
     pivotMotor.configFactoryDefault();
-    intakeMotor.configFactoryDefault();
+    rollerMotor.configFactoryDefault();
 
     config.slot0.kP = prefCollector.collectorP.getValue();
     config.slot0.kI = prefCollector.collectorI.getValue();
@@ -44,8 +44,8 @@ public class Collector extends SubsystemBase {
     pivotMotor.configAllSettings(config);
   }
 
-  public void spinIntakeMotor(double speed) {
-    intakeMotor.set(ControlMode.PercentOutput, speed);
+  public void spinRollerMotor(double speed) {
+    rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
   // TODO: Set PID values

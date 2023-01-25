@@ -90,10 +90,10 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
-    // Spin the intake motor while held
+    // Spin the Collector roller motor while held
     conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
+        .onTrue(Commands.runOnce(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.spinRollerMotor(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
@@ -105,7 +105,7 @@ public class RobotContainer {
     conOperator.btn_Y
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.rollerHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
