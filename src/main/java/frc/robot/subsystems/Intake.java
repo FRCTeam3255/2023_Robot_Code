@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.ConstIntake;
+import frc.robot.Constants.constIntake;
 import frc.robot.Constants.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
@@ -42,11 +42,11 @@ public class Intake extends SubsystemBase {
     leftMotor.configFactoryDefault();
     rightMotor.configFactoryDefault();
 
-    leftMotor.setInverted(ConstIntake.leftMotorInverted);
-    rightMotor.setInverted(ConstIntake.rightMotorInverted);
+    leftMotor.setInverted(constIntake.LEFT_MOTOR_INVERTED);
+    rightMotor.setInverted(constIntake.RIGHT_MOTOR_INVERTED);
 
-    coneColor = new Color(ConstIntake.coneColorR, ConstIntake.coneColorG, ConstIntake.coneColorB);
-    cubeColor = new Color(ConstIntake.cubeColorR, ConstIntake.cubeColorG, ConstIntake.cubeColorB);
+    coneColor = new Color(constIntake.coneColorR, constIntake.coneColorG, constIntake.coneColorB);
+    cubeColor = new Color(constIntake.cubeColorR, constIntake.cubeColorG, constIntake.cubeColorB);
 
     colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
     colorMatcher.addColorMatch(coneColor);
