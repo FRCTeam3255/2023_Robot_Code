@@ -39,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
 
   private Field2d field;
 
-  private SwerveAutoBuilder swerveAutoBuilder;
+  public SwerveAutoBuilder swerveAutoBuilder;
 
   public Drivetrain() {
 

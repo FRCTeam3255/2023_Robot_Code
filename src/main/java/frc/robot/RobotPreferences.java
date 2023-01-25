@@ -18,15 +18,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 6.0);
 
-    // TODO: Create PID values
-    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 0);
-    public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
-    public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
-
-    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 0);
-    public static final SN_DoublePreference autoTransI = new SN_DoublePreference("autoTransI", 0);
-    public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
-
     // percent of max module speed that is required for the module to steer
     // (a stopped wheel shouldn't steer)
     public static final SN_DoublePreference percentToSteer = new SN_DoublePreference("percentToSteer", 0.01);
@@ -44,6 +35,21 @@ public class RobotPreferences {
     // Value to multiply with translation velocity when trigger is all the way held
     // down.
     public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
+
+    // TODO: Create PID values and other values
+    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 0);
+    public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
+    public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
+
+    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 0);
+    public static final SN_DoublePreference autoTransI = new SN_DoublePreference("autoTransI", 0);
+    public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
+
+    public static final SN_DoublePreference autoMaxSpeedFeet = new SN_DoublePreference(
+        "autoMaxSpeedFeet", 0);
+
+    public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
+        "autoMaxAccelFeet", 0);
 
   }
 
