@@ -139,8 +139,17 @@ public class Arm extends SubsystemBase {
     double x = Units.inchesToMeters(position.getX());
     double y = Units.inchesToMeters(position.getY());
 
+    SmartDashboard.putNumber("Arm Debug input tip position meters x", x);
+    SmartDashboard.putNumber("Arm Debug input tip position meters y", y);
+
     double shoulderLength = constArm.SHOULDER_LENGTH;
     double elbowLength = constArm.ELBOW_LENGTH;
+
+    SmartDashboard.putNumber("Arm Debug shoulderLength meters", shoulderLength);
+    SmartDashboard.putNumber("Arm Debug shoulderLength inches", Units.metersToInches(shoulderLength));
+
+    SmartDashboard.putNumber("Arm Debug elbowLength meters", elbowLength);
+    SmartDashboard.putNumber("Arm Debug elbowLength inches", Units.metersToInches(elbowLength));
 
     // distance from from origin to arm tip goal position
     double R = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
@@ -151,18 +160,32 @@ public class Arm extends SubsystemBase {
     // negative solution
 
     // see https://www.desmos.com/calculator/rxoywnwrcg for math (lines 15 and 16)
-    double elbowX = (1 / 2) * (x)
-        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2))) * (x)
-        - (1 / 2) * Math.sqrt(2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
-            - (Math.pow((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)), 2) / Math.pow(R, 4)) - 1) * (y);
+    double elbowX = (1 / 2)
+        * (x)
+        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2)))
+            * (x)
+        - (1 / 2)
+            * Math.sqrt(
+                2
+                    * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
+                    - (Math.pow((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)), 2) / Math.pow(R, 4))
+                    - 1)
+            * (y);
 
     SmartDashboard.putNumber("Arm Debug elbowX meters", elbowX);
     SmartDashboard.putNumber("Arm Debug elbowX inches", Units.metersToInches(elbowX));
 
-    double elbowY = (1 / 2) * (y)
-        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2))) * (y)
-        - (1 / 2) * Math.sqrt(2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
-            - (Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4)) - 1) * (x);
+    double elbowY = (1 / 2)
+        * (y)
+        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2)))
+            * (y)
+        - (1 / 2)
+            * Math.sqrt(
+                2
+                    * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
+                    - (Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4))
+                    - 1)
+            * (-x);
 
     SmartDashboard.putNumber("Arm Debug elbowY meters", elbowY);
     SmartDashboard.putNumber("Arm Debug elbowY inches", Units.metersToInches(elbowY));
