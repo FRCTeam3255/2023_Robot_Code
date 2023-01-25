@@ -400,8 +400,6 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
 
-    setArmTipPosition(new Translation2d(8.0, 8.0));
-
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder", getShoulderAbsoluteEncoder().getDegrees());
