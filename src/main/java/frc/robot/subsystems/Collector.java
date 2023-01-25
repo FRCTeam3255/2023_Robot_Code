@@ -53,6 +53,10 @@ public class Collector extends SubsystemBase {
     pivotMotor.set(ControlMode.Position, position);
   }
 
+  public void setPivotMotorSpeed(double speed) {
+    pivotMotor.set(ControlMode.PercentOutput, speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

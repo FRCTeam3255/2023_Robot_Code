@@ -23,6 +23,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.testPivotCollector;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefArm;
@@ -50,6 +51,7 @@ public class RobotContainer {
 
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    subCollector.setDefaultCommand(new testPivotCollector(subCollector, conOperator));
 
     configureBindings();
   }
