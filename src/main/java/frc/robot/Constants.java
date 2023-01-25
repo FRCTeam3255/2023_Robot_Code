@@ -150,9 +150,9 @@ public final class Constants {
     public static final int RESET_ENCODERS = 0;
   }
 
-  public static final class ConstIntake {
-    public static final boolean leftMotorInverted = false;
-    public static final boolean rightMotorInverted = false;
+  public static final class constIntake {
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean RIGHT_MOTOR_INVERTED = true;
 
     // RGB game piece colors
     public static final double coneColorR = 0.34509;
@@ -163,7 +163,6 @@ public final class Constants {
     public static final double cubeColorG = 0.39607;
     public static final double cubeColorB = 0.37254;
   }
-
 
   public static final class constCollector {
     public static final double GEAR_RATIO = 1;
@@ -193,6 +192,5 @@ public final class Constants {
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(163);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
   }
-
 
 }
