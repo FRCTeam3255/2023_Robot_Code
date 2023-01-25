@@ -129,7 +129,8 @@ public class Arm extends SubsystemBase {
       System.out.println(3255 / 0);
     }
 
-    if (position.getDistance(new Translation2d()) > constArm.SHOULDER_LENGTH + constArm.ELBOW_LENGTH) {
+    if (position.getDistance(new Translation2d()) > Units.metersToInches(constArm.SHOULDER_LENGTH)
+        + Units.metersToInches(constArm.ELBOW_LENGTH)) {
       System.out.println(
           "Cannot input arm tip position that arm cannot reach. Make sure you are using the correct position for the arm tip. Illegal Values: "
               + position.getX() + " Y: " + position.getY());
@@ -375,6 +376,8 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    setArmTipPosition(new Translation2d(8.0, 8.0));
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
