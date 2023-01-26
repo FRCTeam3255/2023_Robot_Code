@@ -160,26 +160,53 @@ public class Arm extends SubsystemBase {
     // negative solution
 
     // see https://www.desmos.com/calculator/rxoywnwrcg for math (lines 15 and 16)
-    double elbowX = (1 / 2)
-        * (x)
-        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2)))
-            * (x)
-        - (1 / 2)
-            * Math.sqrt(
-                2
-                    * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
-                    - (Math.pow((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)), 2) / Math.pow(R, 4))
-                    - 1)
-            * (y);
+    // double elbowX = (1.0 / 2.0)
+    // * (x)
+    // + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 *
+    // Math.pow(R, 2)))
+    // * (x)
+    // - (1.0 / 2.0)
+    // * Math.sqrt(
+    // 2
+    // * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
+    // - (Math.pow((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)), 2) /
+    // Math.pow(R, 4))
+    // - 1)
+    // * (y);
+
+    double t1 = 1.0 / 2.0;
+    SmartDashboard.putNumber("*t1", t1);
+    double t2 = x;
+    SmartDashboard.putNumber("*t2", t2);
+    double t3 = (Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 *
+        Math.pow(R, 2));
+    SmartDashboard.putNumber("*t3", t3);
+    double t4 = x;
+    SmartDashboard.putNumber("*t4", t4);
+    double t5 = 1.0 / 2.0;
+    SmartDashboard.putNumber("*t5", t5);
+    double t6 = 2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) /
+        Math.pow(R, 2));
+    SmartDashboard.putNumber("*t6", t6);
+    double t7 = Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2),
+        2) / Math.pow(R, 4);
+    SmartDashboard.putNumber("*t7", t7);
+    double t8 = 1;
+    SmartDashboard.putNumber("*t8", t8);
+    double t9 = y;
+    SmartDashboard.putNumber("*t9", t9);
+    double tf = t1 * t2 + t3 * t4 - t5 * Math.sqrt(t6 - t7 - t8) * t9;
+    SmartDashboard.putNumber("*tf", tf);
+    double elbowX = tf;
 
     SmartDashboard.putNumber("Arm Debug elbowX meters", elbowX);
     SmartDashboard.putNumber("Arm Debug elbowX inches", Units.metersToInches(elbowX));
 
-    double elbowY = (1 / 2)
+    double elbowY = (1.0 / 2.0)
         * (y)
         + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2)))
             * (y)
-        - (1 / 2)
+        - (1.0 / 2.0)
             * Math.sqrt(
                 2
                     * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
@@ -399,6 +426,8 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    setArmTipPosition(new Translation2d(8, 8));
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
