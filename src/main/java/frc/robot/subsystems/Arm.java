@@ -349,6 +349,14 @@ public class Arm extends SubsystemBase {
     return Rotation2d.fromDegrees(degrees);
   }
 
+  public Rotation2d getElbowPositionIndependent() {
+    double degrees = SN_Math.falconToDegrees(
+        elbowJoint.getSelectedSensorPosition(),
+        constArm.ELBOW_GEAR_RATIO);
+
+    return Rotation2d.fromDegrees(degrees + getShoulderPosition().getDegrees());
+  }
+
   /**
    * Get the shoulder absolute encoder reading.
    * 
@@ -421,8 +429,6 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
 
-    setArmTipPosition(new Translation2d(8, 8));
-
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder", getShoulderAbsoluteEncoder().getDegrees());
@@ -435,6 +441,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
+      SmartDashboard.putNumber("Arm Elbow Position Independent", getElbowPositionIndependent().getDegrees());
 
       SmartDashboard.putNumber("Arm Tip Position X", Units.metersToInches(getArmTipPosition().getX()));
       SmartDashboard.putNumber("Arm Tip Position Y", Units.metersToInches(getArmTipPosition().getY()));
