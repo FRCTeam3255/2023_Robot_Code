@@ -123,12 +123,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    PathPlannerTrajectory testAuto = PathPlanner.loadPath("testAuto",
+    PathPlannerTrajectory testPath = PathPlanner.loadPath("testPath",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    return subDrivetrain.swerveAutoBuilder.fullAuto(testAuto)
+    return subDrivetrain.swerveAutoBuilder.fullAuto(testPath)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain));
   }
 }

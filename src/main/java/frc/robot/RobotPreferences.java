@@ -46,10 +46,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
 
     public static final SN_DoublePreference autoMaxSpeedFeet = new SN_DoublePreference(
-        "autoMaxSpeedFeet", 0);
+        "autoMaxSpeedFeet", 2.0);
 
     public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
-        "autoMaxAccelFeet", 0);
+        "autoMaxAccelFeet", 1.0);
 
   }
 
