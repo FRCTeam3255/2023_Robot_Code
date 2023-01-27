@@ -229,6 +229,8 @@ public class Drivetrain extends SubsystemBase {
             Units.metersToFeet(mod.getState().speedMetersPerSecond));
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Distance",
             Units.metersToFeet(mod.getPosition().distanceMeters));
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Drive Encoder Counts",
+            mod.getDriveEncoder());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Angle",
             mod.getState().angle.getDegrees());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Absolute Encoder Angle",
