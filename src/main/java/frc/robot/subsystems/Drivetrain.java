@@ -86,6 +86,7 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.autoThetaD.getValue()),
         this::setModuleStates,
         new HashMap<>(),
+        false,
         this);
   }
 
