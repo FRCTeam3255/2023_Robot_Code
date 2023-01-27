@@ -10,6 +10,8 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +23,7 @@ import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
 
+  DigitalInput intakeLimitSwitch;
   SN_CANSparkMax leftMotor;
   SN_CANSparkMax rightMotor;
   ColorSensorV3 colorSensor;
@@ -34,6 +37,8 @@ public class Intake extends SubsystemBase {
 
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
+
+    intakeLimitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
 
     configure();
   }
@@ -67,9 +72,19 @@ public class Intake extends SubsystemBase {
     return GamePiece.NONE;
   }
 
+  public boolean isGamePieceCollected() {
+    return intakeLimitSwitch.get();
+  }
+
   public void setMotorSpeed(double speed) {
-    leftMotor.set(ControlMode.PercentOutput, speed);
-    rightMotor.set(ControlMode.PercentOutput, speed);
+
+    if (isGamePieceCollected() == true) {
+      leftMotor.set(ControlMode.PercentOutput, 0);
+      rightMotor.set(ControlMode.PercentOutput, 0);
+    } else {
+      leftMotor.set(ControlMode.PercentOutput, speed);
+      rightMotor.set(ControlMode.PercentOutput, speed);
+    }
   }
 
   public void setMotorSpeed(SN_DoublePreference speed) {
