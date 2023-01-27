@@ -31,7 +31,7 @@ public final class Constants {
     NONE, CUBE, CONE
   }
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // NEO (big and small) encoder counts per rotation
   public static final double NEO_ENCODER_CPR = 42;
