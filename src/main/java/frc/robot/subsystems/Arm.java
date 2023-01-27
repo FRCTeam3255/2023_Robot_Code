@@ -136,11 +136,11 @@ public class Arm extends SubsystemBase {
               + position.getX() + " Y: " + position.getY());
     }
 
-    double x = Units.inchesToMeters(position.getX());
-    double y = Units.inchesToMeters(position.getY());
+    double x2 = Units.inchesToMeters(position.getX());
+    double y2 = Units.inchesToMeters(position.getY());
 
-    SmartDashboard.putNumber("Arm Debug input tip position meters x", x);
-    SmartDashboard.putNumber("Arm Debug input tip position meters y", y);
+    SmartDashboard.putNumber("Arm Debug input tip position meters x2", x2);
+    SmartDashboard.putNumber("Arm Debug input tip position meters y2", y2);
 
     double shoulderLength = constArm.SHOULDER_LENGTH;
     double elbowLength = constArm.ELBOW_LENGTH;
@@ -152,67 +152,61 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Arm Debug elbowLength inches", Units.metersToInches(elbowLength));
 
     // distance from from origin to arm tip goal position
-    double R = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    double R = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2));
 
     SmartDashboard.putNumber("Arm Debug R (distance to goal tip pose) meters", R);
     SmartDashboard.putNumber("Arm Debug R (distance to goal tip pose) inches", Units.metersToInches(R));
 
     // negative solution
 
-    // see https://www.desmos.com/calculator/rxoywnwrcg for math (lines 15 and 16)
-    // double elbowX = (1.0 / 2.0)
-    // * (x)
-    // + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 *
-    // Math.pow(R, 2)))
-    // * (x)
-    // - (1.0 / 2.0)
-    // * Math.sqrt(
-    // 2
-    // * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
-    // - (Math.pow((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)), 2) /
-    // Math.pow(R, 4))
-    // - 1)
-    // * (y);
-
-    double t1 = 1.0 / 2.0;
-    SmartDashboard.putNumber("*t1", t1);
-    double t2 = x;
-    SmartDashboard.putNumber("*t2", t2);
-    double t3 = (Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 *
-        Math.pow(R, 2));
-    SmartDashboard.putNumber("*t3", t3);
-    double t4 = x;
-    SmartDashboard.putNumber("*t4", t4);
-    double t5 = 1.0 / 2.0;
-    SmartDashboard.putNumber("*t5", t5);
-    double t6 = 2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) /
-        Math.pow(R, 2));
-    SmartDashboard.putNumber("*t6", t6);
-    double t7 = Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2),
-        2) / Math.pow(R, 4);
-    SmartDashboard.putNumber("*t7", t7);
-    double t8 = 1;
-    SmartDashboard.putNumber("*t8", t8);
-    double t9 = y;
-    SmartDashboard.putNumber("*t9", t9);
-    double tf = t1 * t2 + t3 * t4 - t5 * Math.sqrt(t6 - t7 - t8) * t9;
-    SmartDashboard.putNumber("*tf", tf);
-    double elbowX = tf;
+    // i values are for x, j values are for y
+    // https://www.desmos.com/calculator/kb6pranxy3
+    double i1 = 1.0 / 2.0;
+    SmartDashboard.putNumber("*i1", i1);
+    double i2 = x2;
+    SmartDashboard.putNumber("*i2", i2);
+    double i3 = (Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2));
+    SmartDashboard.putNumber("*i3", i3);
+    double i4 = x2;
+    SmartDashboard.putNumber("*i4", i4);
+    double i5 = 1.0 / 2.0;
+    SmartDashboard.putNumber("*i5", i5);
+    double i6 = 2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2));
+    SmartDashboard.putNumber("*i6", i6);
+    double i7 = Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4);
+    SmartDashboard.putNumber("*i7", i7);
+    double i8 = 1;
+    SmartDashboard.putNumber("*i8", i8);
+    double i9 = y2;
+    SmartDashboard.putNumber("*i9", i9);
+    double ifinal = (i1 * i2) + (i3 * i4) - (i5 * Math.sqrt(i6 - i7 - i8) * i9);
+    SmartDashboard.putNumber("*ifinal", ifinal);
+    double elbowX = ifinal;
 
     SmartDashboard.putNumber("Arm Debug elbowX meters", elbowX);
     SmartDashboard.putNumber("Arm Debug elbowX inches", Units.metersToInches(elbowX));
 
-    double elbowY = (1.0 / 2.0)
-        * (y)
-        + ((Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2)))
-            * (y)
-        - (1.0 / 2.0)
-            * Math.sqrt(
-                2
-                    * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2))
-                    - (Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4))
-                    - 1)
-            * (-x);
+    double j1 = 1.0 / 2.0;
+    SmartDashboard.putNumber("*j1", j1);
+    double j2 = y2;
+    SmartDashboard.putNumber("*j2", j2);
+    double j3 = (Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2));
+    SmartDashboard.putNumber("*j3", j3);
+    double j4 = y2;
+    SmartDashboard.putNumber("*j4", j4);
+    double j5 = 1.0 / 2.0;
+    SmartDashboard.putNumber("*j5", j5);
+    double j6 = 2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2));
+    SmartDashboard.putNumber("*j6", j6);
+    double j7 = Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4);
+    SmartDashboard.putNumber("*j7", j7);
+    double j8 = 1;
+    SmartDashboard.putNumber("*j8", j8);
+    double j9 = -x2;
+    SmartDashboard.putNumber("*j9", j9);
+    double jfinal = (j1 * j2) + (j3 * j4) - (j5 * Math.sqrt(j6 - j7 - j8) * j9);
+    SmartDashboard.putNumber("*jfinal", jfinal);
+    double elbowY = jfinal;
 
     SmartDashboard.putNumber("Arm Debug elbowY meters", elbowY);
     SmartDashboard.putNumber("Arm Debug elbowY inches", Units.metersToInches(elbowY));
@@ -222,7 +216,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Arm Debug shoulderAngle radians", shoulderAngle);
     SmartDashboard.putNumber("Arm Debug shoulderAngle degrees", Units.radiansToDegrees(shoulderAngle));
 
-    double elbowAngle = Math.atan2(y - elbowY, x - elbowX);
+    double elbowAngle = Math.atan2(y2 - elbowY, x2 - elbowX);
 
     SmartDashboard.putNumber("Arm Debug elbowAngle radians", elbowAngle);
     SmartDashboard.putNumber("Arm Debug elbowAngle degrees", Units.radiansToDegrees(elbowAngle));
