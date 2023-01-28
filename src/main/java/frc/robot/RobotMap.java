@@ -27,8 +27,8 @@ public class RobotMap {
 
   public static final class mapChargerTreads {
 
-    public static final int LEFT_MOTOR_CAN = 8;
-    public static final int RIGHT_MOTOR_CAN = 9;
+    public static final int TREADS_LEFT_MOTOR_CAN = 8;
+    public static final int TREADS_RIGHT_MOTOR_CAN = 9;
   }
 
   public static final class mapControllers {
@@ -41,8 +41,8 @@ public class RobotMap {
 
   public static final class mapIntake {
     public static final I2C.Port COLOR_SENSOR_I2C = I2C.Port.kMXP;
-    public static final int LEFT_MOTOR_CAN = 11;
-    public static final int RIGHT_MOTOR_CAN = 12;
+    public static final int INTAKE_LEFT_MOTOR_CAN = 11;
+    public static final int INTAKE_RIGHT_MOTOR_CAN = 12;
 
     public static final int LIMIT_SWITCH_DIO = 13;
   }
