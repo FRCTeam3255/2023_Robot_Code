@@ -76,11 +76,20 @@ public class Intake extends SubsystemBase {
     return limitSwitch.get();
   }
 
+  public double getPieceProximity() {
+    return colorSensor.getProximity();
+  }
+
   public void setMotorSpeed(double speed) {
 
     if (isGamePieceCollected() == true) {
       leftMotor.set(ControlMode.PercentOutput, 0);
       rightMotor.set(ControlMode.PercentOutput, 0);
+
+    } else if (getPieceProximity() <= prefIntake.colorMatcherConfidence.getValue()) {
+      leftMotor.set(ControlMode.PercentOutput, 0);
+      rightMotor.set(ControlMode.PercentOutput, 0);
+
     } else {
       leftMotor.set(ControlMode.PercentOutput, speed);
       rightMotor.set(ControlMode.PercentOutput, speed);
