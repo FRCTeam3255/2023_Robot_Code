@@ -50,6 +50,11 @@ public class Collector extends SubsystemBase {
   }
 
   // TODO: Set PID values
+  public void setPivotMotorAngle(double angle) {
+    angle = SN_Math.degreesToFalcon(angle, constCollector.GEAR_RATIO);
+    setPivotMotorPosition(angle);
+  }
+
   public void setPivotMotorPosition(double position) {
     pivotMotor.set(ControlMode.Position, position);
   }
