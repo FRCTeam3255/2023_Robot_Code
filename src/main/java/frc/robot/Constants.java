@@ -166,6 +166,9 @@ public final class Constants {
 
   public static final class constCollector {
     public static final double GEAR_RATIO = 1;
+
+    public static final double FORWARD_LIMIT = 90;
+    public static final double REVERSE_LIMIT = 0;
   }
 
   public static final class constArm {

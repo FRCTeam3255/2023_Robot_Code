@@ -77,6 +77,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference collectorClosedLoopPeakOutput = new SN_DoublePreference(
         "collectorClosedLoopPeakOutput", 0.25);
 
+    public static final SN_BooleanPreference collectorForwardSoftLimitEnable = new SN_BooleanPreference(
+        "collectorForwardSoftLimitEnable", true);
+    public static final SN_BooleanPreference collectorReverseSoftLimitEnable = new SN_BooleanPreference(
+        "collectorReverseSoftLimitEnable", true);
+
   }
 
   public static final class prefArm {

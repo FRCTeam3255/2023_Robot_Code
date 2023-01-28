@@ -38,6 +38,14 @@ public class Collector extends SubsystemBase {
     config.slot0.kI = prefCollector.collectorI.getValue();
     config.slot0.kD = prefCollector.collectorD.getValue();
 
+    pivotMotor.configForwardSoftLimitEnable(prefCollector.collectorForwardSoftLimitEnable.getValue());
+    pivotMotor.configReverseSoftLimitEnable(prefCollector.collectorReverseSoftLimitEnable.getValue());
+
+    pivotMotor.configForwardSoftLimitThreshold(
+        SN_Math.degreesToFalcon(constCollector.FORWARD_LIMIT, constCollector.GEAR_RATIO));
+    pivotMotor.configReverseSoftLimitThreshold(
+        SN_Math.degreesToFalcon(constCollector.REVERSE_LIMIT, constCollector.GEAR_RATIO));
+
     config.slot0.allowableClosedloopError = SN_Math
         .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(), constCollector.GEAR_RATIO);
     config.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
