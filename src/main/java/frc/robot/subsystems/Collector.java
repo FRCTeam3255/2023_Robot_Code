@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -42,9 +43,9 @@ public class Collector extends SubsystemBase {
     pivotMotor.configReverseSoftLimitEnable(prefCollector.collectorReverseSoftLimitEnable.getValue());
 
     pivotMotor.configForwardSoftLimitThreshold(
-        SN_Math.degreesToFalcon(constCollector.FORWARD_LIMIT, constCollector.GEAR_RATIO));
+        SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.FORWARD_LIMIT), constCollector.GEAR_RATIO));
     pivotMotor.configReverseSoftLimitThreshold(
-        SN_Math.degreesToFalcon(constCollector.REVERSE_LIMIT, constCollector.GEAR_RATIO));
+        SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.REVERSE_LIMIT), constCollector.GEAR_RATIO));
 
     config.slot0.allowableClosedloopError = SN_Math
         .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(), constCollector.GEAR_RATIO);
