@@ -22,7 +22,6 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.MoveArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -30,11 +29,11 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
-  // private final Drivetrain subDrivetrain = new Drivetrain();
-  // private final Intake subIntake = new Intake();
+  private final Drivetrain subDrivetrain = new Drivetrain();
+  private final Intake subIntake = new Intake();
   private final Arm subArm = new Arm();
-  // private final Vision subVision = new Vision();
-  // private final Collector subCollector = new Collector();
+  private final Vision subVision = new Vision();
+  private final Collector subCollector = new Collector();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
   private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
@@ -43,19 +42,9 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    // subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
-    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-    // subVision));
-
-    // subArm.setDefaultCommand(
-    // new RunCommand(() -> subArm.setJointPercentOutputs(
-    // MathUtil.applyDeadband(conOperator.getAxisLSY(),
-    // constControllers.OPERATOR_LEFT_STICK_Y_DEADBAND),
-    // MathUtil.applyDeadband(conOperator.getAxisRSY(),
-    // constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
-    // subArm));
-
-    subArm.setDefaultCommand(new MoveArm(subArm, conOperator));
+    subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+        subVision));
 
     configureBindings();
   }
