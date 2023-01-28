@@ -46,6 +46,8 @@ public class RobotPreferences {
   public static final class prefIntake {
     public static final SN_DoublePreference colorMatcherConfidence = new SN_DoublePreference("colorMatcherConfidence",
         0.95);
+    // TODO: Find what proximity is needed for the sensor
+    public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
   }
 
   public static final class prefVision {
