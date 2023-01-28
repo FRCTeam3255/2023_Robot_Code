@@ -69,6 +69,9 @@ public class RobotContainer {
     conDriver.btn_A
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+    conDriver.btn_B
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPose(new Pose2d())));
 
     // Operator
 
@@ -93,27 +96,29 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
-    // Spin the intake motor while held
+    // Test keybinds
+
+    // Spin the Collector roller motor while held
     conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
+        .onTrue(Commands.runOnce(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.spinRollerMotor(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
-                () -> subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
+                () -> subCollector.setPivotMotorAngle(prefCollector.startingConfigPivotAngle.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.rollerHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
         .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
+            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.climbPivotAngle.getValue())));
 
     // Spin Charger treads
     conOperator.btn_RBump

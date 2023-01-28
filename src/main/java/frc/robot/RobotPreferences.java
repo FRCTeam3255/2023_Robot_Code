@@ -50,6 +50,8 @@ public class RobotPreferences {
   public static final class prefIntake {
     public static final SN_DoublePreference colorMatcherConfidence = new SN_DoublePreference("colorMatcherConfidence",
         0.95);
+    // TODO: Find what proximity is needed for the sensor
+    public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
   }
 
   public static final class prefVision {
@@ -62,11 +64,11 @@ public class RobotPreferences {
 
   public static final class prefCollector {
 
-    public static final SN_DoublePreference intakeSpeed = new SN_DoublePreference("intakeSpeed", 0.2);
+    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", 0.2);
     public static final SN_DoublePreference startingConfigPivotAngle = new SN_DoublePreference(
         "startingConfigPivotAngle",
         0);
-    public static final SN_DoublePreference intakeHeightPivotAngle = new SN_DoublePreference("intakeHeightPivotAngle",
+    public static final SN_DoublePreference rollerHeightPivotAngle = new SN_DoublePreference("rollerHeightPivotAngle",
         90);
     public static final SN_DoublePreference climbPivotAngle = new SN_DoublePreference("climbPivotAngle", 180);
 
@@ -78,6 +80,11 @@ public class RobotPreferences {
         "collectorAlowableClosedLoopErrorDegrees", 0.0001);
     public static final SN_DoublePreference collectorClosedLoopPeakOutput = new SN_DoublePreference(
         "collectorClosedLoopPeakOutput", 0.25);
+
+    public static final SN_BooleanPreference collectorForwardSoftLimitEnable = new SN_BooleanPreference(
+        "collectorForwardSoftLimitEnable", true);
+    public static final SN_BooleanPreference collectorReverseSoftLimitEnable = new SN_BooleanPreference(
+        "collectorReverseSoftLimitEnable", true);
 
   }
 

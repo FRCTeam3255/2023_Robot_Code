@@ -6,12 +6,27 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
+
+  public static final class constVision {
+    public static final String lifecamPhotonName = "Microsoft_LifeCam_HD-3000";
+    public static final String ARPhotonName = "Global_Shutter_Camera";
+    public static final String OVPhotonName = "Arducam_OV9281_USB_Camera";
+
+    public static final Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
+        new Rotation3d(0, 0, 0));
+  }
+
   public enum GamePiece {
     NONE, CUBE, CONE
   }
@@ -135,9 +150,9 @@ public final class Constants {
     public static final int RESET_ENCODERS = 0;
   }
 
-  public static final class ConstIntake {
-    public static final boolean leftMotorInverted = false;
-    public static final boolean rightMotorInverted = false;
+  public static final class constIntake {
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean RIGHT_MOTOR_INVERTED = true;
 
     // RGB game piece colors
     public static final double coneColorR = 0.34509;
@@ -149,9 +164,11 @@ public final class Constants {
     public static final double cubeColorB = 0.37254;
   }
 
-
   public static final class constCollector {
     public static final double GEAR_RATIO = 1;
+
+    public static final double FORWARD_LIMIT = Units.degreesToRadians(90);
+    public static final double REVERSE_LIMIT = Units.degreesToRadians(0);
   }
 
   public static final class constArm {
@@ -178,6 +195,5 @@ public final class Constants {
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(163);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
   }
-
 
 }

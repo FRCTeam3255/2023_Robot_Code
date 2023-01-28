@@ -18,8 +18,8 @@ public class ChargerTreads extends SubsystemBase {
   SN_CANSparkMax rightMotor;
 
   public ChargerTreads() {
-    leftMotor = new SN_CANSparkMax(mapChargerTreads.LEFT_MOTOR_CAN);
-    rightMotor = new SN_CANSparkMax(mapChargerTreads.RIGHT_MOTOR_CAN);
+    leftMotor = new SN_CANSparkMax(mapChargerTreads.TREADS_LEFT_MOTOR_CAN);
+    rightMotor = new SN_CANSparkMax(mapChargerTreads.TREADS_RIGHT_MOTOR_CAN);
 
     configure();
   }
