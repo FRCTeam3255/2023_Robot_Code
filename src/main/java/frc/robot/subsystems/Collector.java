@@ -8,9 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_TalonFX;
 import com.frcteam3255.utils.SN_Math;
-
-
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,7 +56,7 @@ public class Collector extends SubsystemBase {
     config.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
 
     pivotMotor.configAllSettings(config);
-    resetCollectortoAbsolute();
+    resetCollectorToAbsolute();
   }
 
   public void spinRollerMotor(double speed) {
@@ -80,7 +77,7 @@ public class Collector extends SubsystemBase {
     return pivotEncoder.getAbsolutePosition();
   }
 
-  private void resetCollectortoAbsolute() {
+  private void resetCollectorToAbsolute() {
     double absoluteEncoderCount = SN_Math.degreesToFalcon(getCollectorAbsoluteEncoder(),
         constCollector.GEAR_RATIO);
     pivotMotor.setSelectedSensorPosition(absoluteEncoderCount);
@@ -89,7 +86,6 @@ public class Collector extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
- 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getCollectorAbsoluteEncoder());
