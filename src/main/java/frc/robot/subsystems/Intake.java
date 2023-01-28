@@ -32,8 +32,8 @@ public class Intake extends SubsystemBase {
   Color cubeColor;
 
   public Intake() {
-    leftMotor = new SN_CANSparkMax(mapIntake.LEFT_MOTOR_CAN);
-    rightMotor = new SN_CANSparkMax(mapIntake.RIGHT_MOTOR_CAN);
+    leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
+    rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
 
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
