@@ -9,11 +9,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -29,15 +30,15 @@ public class Arm extends SubsystemBase {
   TalonFXConfiguration shoulderConfig;
   TalonFXConfiguration elbowConfig;
 
-  DutyCycleEncoder shoulderEncoder;
-  DutyCycleEncoder elbowEncoder;
+  AbsoluteEncoder shoulderEncoder;
+  AbsoluteEncoder elbowEncoder;
 
   public Arm() {
     shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
     elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
 
-    shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
-    elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
+    shoulderEncoder = shoulderJoint.getAbsoluteEncoder(Type.kDutyCycle);
+    elbowEncoder = elbowJoint.getAbsoluteEncoder(Type.kDutyCycle);
 
     shoulderConfig = new TalonFXConfiguration();
     elbowConfig = new TalonFXConfiguration();
@@ -175,13 +176,13 @@ public class Arm extends SubsystemBase {
   }
 
   public Rotation2d getShoulderAbsoluteEncoder() {
-    double rotations = shoulderEncoder.getAbsolutePosition();
+    double rotations = shoulderEncoder.getPosition();
     rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
     return Rotation2d.fromRotations(rotations);
   }
 
   public Rotation2d getElbowAbsoluteEncoder() {
-    double rotations = elbowEncoder.getAbsolutePosition();
+    double rotations = elbowEncoder.getPosition();
     rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
     return Rotation2d.fromRotations(rotations);
   }
@@ -222,13 +223,13 @@ public class Arm extends SubsystemBase {
   public void periodic() {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
-      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getPosition());
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder", getShoulderAbsoluteEncoder().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
-      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getPosition());
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder", getElbowAbsoluteEncoder().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
