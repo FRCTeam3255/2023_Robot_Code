@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCollector;
@@ -19,11 +21,15 @@ public class Collector extends SubsystemBase {
   SN_TalonFX pivotMotor;
   SN_TalonFX rollerMotor;
 
+  DutyCycleEncoder pivotEncoder;
+
   TalonFXConfiguration config;
 
   public Collector() {
     pivotMotor = new SN_TalonFX(mapCollector.PIVOT_MOTOR_CAN);
     rollerMotor = new SN_TalonFX(mapCollector.ROLLER_MOTOR_CAN);
+
+    pivotEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
 
     config = new TalonFXConfiguration();
     configure();
@@ -42,6 +48,7 @@ public class Collector extends SubsystemBase {
     config.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
 
     pivotMotor.configAllSettings(config);
+    resetCollectortoAbsolute();
   }
 
   public void spinRollerMotor(double speed) {
@@ -58,9 +65,21 @@ public class Collector extends SubsystemBase {
     pivotMotor.set(ControlMode.Position, position);
   }
 
+  public Rotation2d getCollectorAbsoluteEncoder() {
+    double rotations = pivotEncoder.getAbsolutePosition();
+    return Rotation2d.fromRotations(rotations);
+  }
+
+  private void resetCollectortoAbsolute() {
+    double absoluteEncoderCount = SN_Math.degreesToFalcon(getCollectorAbsoluteEncoder().getDegrees(),
+        constCollector.GEAR_RATIO);
+    pivotMotor.setSelectedSensorPosition(absoluteEncoderCount);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("EncoderCounts", pivotMotor.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getCollectorAbsoluteEncoder().getDegrees());
+    SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
   }
 }
