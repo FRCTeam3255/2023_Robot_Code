@@ -43,6 +43,8 @@ public class RobotMap {
     public static final I2C.Port COLOR_SENSOR_I2C = I2C.Port.kMXP;
     public static final int LEFT_MOTOR_CAN = 11;
     public static final int RIGHT_MOTOR_CAN = 12;
+
+    public static final int LIMIT_SWITCH_DIO = 13;
   }
 
   public static final class mapArm {
