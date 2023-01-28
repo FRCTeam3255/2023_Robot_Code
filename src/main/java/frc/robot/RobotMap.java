@@ -44,7 +44,7 @@ public class RobotMap {
     public static final int LEFT_MOTOR_CAN = 11;
     public static final int RIGHT_MOTOR_CAN = 12;
 
-    public static final int INTAKE_LIMIT_SWITCH_DIO = 13;
+    public static final int LIMIT_SWITCH_DIO = 13;
   }
 
   public static final class mapArm {

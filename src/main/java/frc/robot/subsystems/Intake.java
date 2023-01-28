@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
-    limitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
+    limitSwitch = new DigitalInput(mapIntake.LIMIT_SWITCH_DIO);
 
     configure();
   }
