@@ -7,9 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
-import com.frcteam3255.components.motors.SN_TalonFX;
 import com.frcteam3255.utils.SN_Math;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder.Type;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,7 +23,7 @@ public class Collector extends SubsystemBase {
   SN_CANSparkMax pivotMotor;
   SN_CANSparkMax rollerMotor;
 
-  DutyCycleEncoder pivotEncoder;
+  RelativeEncoder pivotEncoder;
 
   TalonFXConfiguration config;
 
@@ -30,7 +31,7 @@ public class Collector extends SubsystemBase {
     pivotMotor = new SN_CANSparkMax(mapCollector.PIVOT_MOTOR_CAN);
     rollerMotor = new SN_CANSparkMax(mapCollector.ROLLER_MOTOR_CAN);
 
-    pivotEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
+    pivotEncoder = pivotMotor.getAlternateEncoder(Type.kQuadrature, constCollector.BORE_ENCODER_COUNTS_PER_REVOLUTION);
 
     config = new TalonFXConfiguration();
     configure();
@@ -75,7 +76,7 @@ public class Collector extends SubsystemBase {
   }
 
   public double getCollectorAbsoluteEncoder() {
-    return pivotEncoder.getAbsolutePosition();
+    return pivotEncoder.getPosition();
   }
 
   private void resetCollectorToAbsolute() {
