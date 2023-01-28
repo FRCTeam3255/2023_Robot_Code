@@ -11,6 +11,7 @@ import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.constCollector;
 import frc.robot.RobotMap.mapCollector;
 import frc.robot.RobotPreferences.prefCollector;
@@ -61,6 +62,8 @@ public class Collector extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("EncoderCounts", pivotMotor.getSelectedSensorPosition());
+    if (Constants.OUTPUT_DEBUG_VALUES) {
+      SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
+    }
   }
 }
