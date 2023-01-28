@@ -65,13 +65,12 @@ public class Collector extends SubsystemBase {
     pivotMotor.set(ControlMode.Position, position);
   }
 
-  public Rotation2d getCollectorAbsoluteEncoder() {
-    double rotations = pivotEncoder.getAbsolutePosition();
-    return Rotation2d.fromRotations(rotations);
+  public double getCollectorAbsoluteEncoder() {
+    return pivotEncoder.getAbsolutePosition();
   }
 
   private void resetCollectortoAbsolute() {
-    double absoluteEncoderCount = SN_Math.degreesToFalcon(getCollectorAbsoluteEncoder().getDegrees(),
+    double absoluteEncoderCount = SN_Math.degreesToFalcon(getCollectorAbsoluteEncoder(),
         constCollector.GEAR_RATIO);
     pivotMotor.setSelectedSensorPosition(absoluteEncoderCount);
   }
@@ -79,7 +78,7 @@ public class Collector extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getCollectorAbsoluteEncoder().getDegrees());
+    SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getCollectorAbsoluteEncoder());
     SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
   }
 }
