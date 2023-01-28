@@ -102,18 +102,18 @@ public class RobotContainer {
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
-                () -> subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
+                () -> subCollector.setPivotMotorAngle(prefCollector.startingConfigPivotAngle.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.rollerHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.rollerHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
         .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
+            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.climbPivotAngle.getValue())));
   }
 
   public Command getAutonomousCommand() {
