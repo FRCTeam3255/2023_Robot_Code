@@ -23,9 +23,9 @@ import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
 
-  DigitalInput intakeLimitSwitch;
   SN_CANSparkMax leftMotor;
   SN_CANSparkMax rightMotor;
+  DigitalInput limitSwitch;
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
   Color coneColor;
@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
-    intakeLimitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
+    limitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
 
     configure();
   }
@@ -73,7 +73,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isGamePieceCollected() {
-    return intakeLimitSwitch.get();
+    return limitSwitch.get();
   }
 
   public void setMotorSpeed(double speed) {
