@@ -6,9 +6,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.frcteam3255.components.motors.SN_TalonFX;
+import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.utils.SN_Math;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,18 +21,18 @@ import frc.robot.RobotMap.mapCollector;
 import frc.robot.RobotPreferences.prefCollector;
 
 public class Collector extends SubsystemBase {
-  SN_TalonFX pivotMotor;
-  SN_TalonFX rollerMotor;
+  SN_CANSparkMax pivotMotor;
+  SN_CANSparkMax rollerMotor;
 
-  DutyCycleEncoder pivotEncoder;
+  AbsoluteEncoder absolutePivotEncoder;
 
   TalonFXConfiguration config;
 
   public Collector() {
-    pivotMotor = new SN_TalonFX(mapCollector.PIVOT_MOTOR_CAN);
-    rollerMotor = new SN_TalonFX(mapCollector.ROLLER_MOTOR_CAN);
+    pivotMotor = new SN_CANSparkMax(mapCollector.PIVOT_MOTOR_CAN);
+    rollerMotor = new SN_CANSparkMax(mapCollector.ROLLER_MOTOR_CAN);
 
-    pivotEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
+    absolutePivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
     config = new TalonFXConfiguration();
     configure();
@@ -43,13 +46,13 @@ public class Collector extends SubsystemBase {
     config.slot0.kI = prefCollector.collectorI.getValue();
     config.slot0.kD = prefCollector.collectorD.getValue();
 
-    pivotMotor.configForwardSoftLimitEnable(prefCollector.collectorForwardSoftLimitEnable.getValue());
-    pivotMotor.configReverseSoftLimitEnable(prefCollector.collectorReverseSoftLimitEnable.getValue());
+    config.forwardSoftLimitEnable = prefCollector.collectorForwardSoftLimitEnable.getValue();
+    config.reverseSoftLimitEnable = prefCollector.collectorReverseSoftLimitEnable.getValue();
 
-    pivotMotor.configForwardSoftLimitThreshold(
-        SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.FORWARD_LIMIT), constCollector.GEAR_RATIO));
-    pivotMotor.configReverseSoftLimitThreshold(
-        SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.REVERSE_LIMIT), constCollector.GEAR_RATIO));
+    config.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.FORWARD_LIMIT),
+        constCollector.GEAR_RATIO);
+    config.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.REVERSE_LIMIT),
+        constCollector.GEAR_RATIO);
 
     config.slot0.allowableClosedloopError = SN_Math
         .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(), constCollector.GEAR_RATIO);
@@ -74,7 +77,7 @@ public class Collector extends SubsystemBase {
   }
 
   public double getCollectorAbsoluteEncoder() {
-    return pivotEncoder.getAbsolutePosition();
+    return absolutePivotEncoder.getPosition();
   }
 
   private void resetCollectorToAbsolute() {
