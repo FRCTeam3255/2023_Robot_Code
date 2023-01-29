@@ -103,25 +103,25 @@ public class RobotContainer {
 
     // Spin the Collector roller motor while held
     conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.spinRollerMotor(0)));
+        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
-                () -> subCollector.setPivotMotorAngle(prefCollector.startingConfigPivotAngle.getValue())));
+                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.rollerHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
         .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.climbPivotAngle.getValue())));
+            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
 
     // Spin Charger treads
     conOperator.btn_RBump
