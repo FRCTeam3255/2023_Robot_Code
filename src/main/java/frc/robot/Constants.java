@@ -165,9 +165,9 @@ public final class Constants {
   }
 
   public static final class constCollector {
-    public static final double GEAR_RATIO = 1;
+    public static final double GEAR_RATIO = 100;
 
-    public static final double FORWARD_LIMIT = Units.degreesToRadians(90);
+    public static final double FORWARD_LIMIT = Units.degreesToRadians(100);
     public static final double REVERSE_LIMIT = Units.degreesToRadians(0);
   }
 
