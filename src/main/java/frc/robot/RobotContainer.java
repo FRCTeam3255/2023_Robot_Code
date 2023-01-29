@@ -82,6 +82,11 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d())));
 
+    // while true do robot oriented, default to field oriented
+    conDriver.btn_LBump
+        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
     // Operator
 
     // Set the arm to a preset position (example bind, may not be necessary for comp
