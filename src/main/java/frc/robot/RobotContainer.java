@@ -4,25 +4,24 @@
 
 package frc.robot;
 
-import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
-import com.frcteam3255.utils.SN_InstantCommand;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
+import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
@@ -30,13 +29,13 @@ import frc.robot.commands.Drive;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefArm;
-import frc.robot.commands.AddVisionMeasurement;
-import frc.robot.commands.Drive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
@@ -48,7 +47,7 @@ public class RobotContainer {
   private final Collector subCollector = new Collector();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
-  private final SN_DualActionStick conOperator = new SN_DualActionStick(mapControllers.OPERATOR_USB);
+  private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 
@@ -56,6 +55,13 @@ public class RobotContainer {
 
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    subCollector.setDefaultCommand(
+        new RunCommand(
+            () -> subCollector.setPivotMotorSpeed(
+                MathUtil.applyDeadband(
+                    conOperator.getAxisRSY(),
+                    constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
+            subCollector));
 
     configureBindings();
   }
@@ -99,27 +105,46 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
+    // Test keybinds
+
     // Spin the Collector roller motor while held
     conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.spinRollerMotor(0)));
+        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
-                () -> subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
+                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.rollerHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
         .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorPosition(prefCollector.climbPivotAngle.getValue())));
+            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
+
+    // Spin Charger treads
+    conOperator.btn_RBump
+        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
+
+    // Rotate drivetrain wheels in charge station orientation
+    conOperator.POV_North
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
+
+    // Spin drivetrain wheels to go onto the charge station
+    conOperator.btn_RBump
+        .onTrue(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(prefDrivetrain.chargeVelocityX.getValue(),
+            prefDrivetrain.chargeVelocityY.getValue(), new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
   }
 
   public Command getAutonomousCommand() {
