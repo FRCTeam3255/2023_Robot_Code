@@ -48,6 +48,7 @@ public class RobotPreferences {
         0.95);
     // TODO: Find what proximity is needed for the sensor
     public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
+    public static final SN_DoublePreference intakeMotorSpeed = new SN_DoublePreference("intakeMotorSpeed", 1);
   }
 
   public static final class prefVision {
