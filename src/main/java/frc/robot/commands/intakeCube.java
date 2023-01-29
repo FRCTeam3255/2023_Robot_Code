@@ -21,16 +21,19 @@ public class intakeCube extends SequentialCommandGroup {
 
   public intakeCube(Collector subCollector, Intake subIntake, SN_Blinkin leds) {
     addCommands(
+        // - Deploy collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.rollerHeightPivotAngle.getValue())),
-        // Move arm to collector (waiting on #96 for this)
+        // - Move arm to collector (waiting on #96 for this)
+        // - Spin intake
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeMotorSpeed)),
-        // Spin intake
+        // - Spin rollers .until a game piece is collected (waiting on #125 for this)
         new InstantCommand(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())).until(null),
-        // Spin rollers .until a game piece is collected (waiting on #125 for this)
-        // detect the object (done periodically in the subsystem)
-        // retract collector
+        // - detect the object (done periodically in the subsystem)
+        // - raise arm to mid shelf position -- Maybe do something here to check if we
+        // actually have a cube before continuing?
+        // - retract collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.startingConfigPivotAngle.getValue())),
-        // LEDS! Note: Not sure if I should make a constant for this, because I don't
+        // - LEDS! Note: Not sure if I should make a constant for this, because I don't
         // like setting it in here, but also, they can't be a preference so idk
         new InstantCommand(() -> leds.setPattern(PatternType.Violet)));
   }
