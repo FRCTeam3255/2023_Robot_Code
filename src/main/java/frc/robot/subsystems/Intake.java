@@ -77,7 +77,7 @@ public class Intake extends SubsystemBase {
     if (limitSwitch.get() == true) {
       return true;
 
-    } else if (colorSensor.getProximity() <= prefIntake.colorMatcherConfidence.getValue()) {
+    } else if (colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
       return true;
 
     } else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() == GamePiece.CUBE) {
