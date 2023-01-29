@@ -25,7 +25,7 @@ public class Collector extends SubsystemBase {
 
   AbsoluteEncoder absolutePivotEncoder;
 
-  TalonFXConfiguration config;
+  TalonFXConfiguration pivotMotorConfig;
 
   public Collector() {
     pivotMotor = new SN_CANSparkMax(mapCollector.PIVOT_MOTOR_CAN);
@@ -33,7 +33,7 @@ public class Collector extends SubsystemBase {
 
     absolutePivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
-    config = new TalonFXConfiguration();
+    pivotMotorConfig = new TalonFXConfiguration();
     configure();
   }
 
@@ -41,28 +41,28 @@ public class Collector extends SubsystemBase {
     pivotMotor.configFactoryDefault();
     rollerMotor.configFactoryDefault();
 
-    config.slot0.kP = prefCollector.collectorP.getValue();
-    config.slot0.kI = prefCollector.collectorI.getValue();
-    config.slot0.kD = prefCollector.collectorD.getValue();
+    pivotMotorConfig.slot0.kP = prefCollector.collectorP.getValue();
+    pivotMotorConfig.slot0.kI = prefCollector.collectorI.getValue();
+    pivotMotorConfig.slot0.kD = prefCollector.collectorD.getValue();
 
-    config.forwardSoftLimitEnable = prefCollector.collectorForwardSoftLimitEnable.getValue();
-    config.reverseSoftLimitEnable = prefCollector.collectorReverseSoftLimitEnable.getValue();
+    pivotMotorConfig.forwardSoftLimitEnable = prefCollector.collectorForwardSoftLimitEnable.getValue();
+    pivotMotorConfig.reverseSoftLimitEnable = prefCollector.collectorReverseSoftLimitEnable.getValue();
 
     pivotMotor.encoder.setPositionConversionFactor(SN_Math.TALONFX_ENCODER_PULSES_PER_COUNT);
 
-    config.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
+    pivotMotorConfig.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
         Units.radiansToDegrees(constCollector.FORWARD_LIMIT),
         constCollector.GEAR_RATIO);
-    config.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(
+    pivotMotorConfig.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(
         Units.radiansToDegrees(constCollector.REVERSE_LIMIT),
         constCollector.GEAR_RATIO);
 
-    config.slot0.allowableClosedloopError = SN_Math
+    pivotMotorConfig.slot0.allowableClosedloopError = SN_Math
         .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(),
             constCollector.GEAR_RATIO);
-    config.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
+    pivotMotorConfig.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
 
-    pivotMotor.configAllSettings(config);
+    pivotMotor.configAllSettings(pivotMotorConfig);
     resetCollectorToAbsolute();
   }
 
