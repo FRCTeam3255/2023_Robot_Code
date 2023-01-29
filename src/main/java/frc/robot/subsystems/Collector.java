@@ -23,17 +23,18 @@ public class Collector extends SubsystemBase {
   SN_CANSparkMax pivotMotor;
   SN_CANSparkMax rollerMotor;
 
-  AbsoluteEncoder absolutePivotEncoder;
+  AbsoluteEncoder pivotAbsoluteEncoder;
 
-  TalonFXConfiguration config;
+  TalonFXConfiguration pivotMotorConfig;
 
   public Collector() {
     pivotMotor = new SN_CANSparkMax(mapCollector.PIVOT_MOTOR_CAN);
     rollerMotor = new SN_CANSparkMax(mapCollector.ROLLER_MOTOR_CAN);
 
-    absolutePivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    pivotAbsoluteEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
-    config = new TalonFXConfiguration();
+    pivotMotorConfig = new TalonFXConfiguration();
+
     configure();
   }
 
@@ -41,29 +42,48 @@ public class Collector extends SubsystemBase {
     pivotMotor.configFactoryDefault();
     rollerMotor.configFactoryDefault();
 
-    config.slot0.kP = prefCollector.collectorP.getValue();
-    config.slot0.kI = prefCollector.collectorI.getValue();
-    config.slot0.kD = prefCollector.collectorD.getValue();
-
-    config.forwardSoftLimitEnable = prefCollector.collectorForwardSoftLimitEnable.getValue();
-    config.reverseSoftLimitEnable = prefCollector.collectorReverseSoftLimitEnable.getValue();
+    pivotMotorConfig.slot0.kP = prefCollector.pivotP.getValue();
+    pivotMotorConfig.slot0.kI = prefCollector.pivotI.getValue();
+    pivotMotorConfig.slot0.kD = prefCollector.pivotD.getValue();
 
     pivotMotor.encoder.setPositionConversionFactor(SN_Math.TALONFX_ENCODER_PULSES_PER_COUNT);
 
-    config.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
-        Units.radiansToDegrees(constCollector.FORWARD_LIMIT),
+    pivotMotorConfig.forwardSoftLimitEnable = constCollector.PIVOT_FORWARD_LIMIT_ENABLE;
+    pivotMotorConfig.reverseSoftLimitEnable = constCollector.PIVOT_REVERSE_LIMIT_ENABLE;
+
+    pivotMotorConfig.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
+        Units.radiansToDegrees(constCollector.PIVOT_FORWARD_LIMIT_VALUE),
         constCollector.GEAR_RATIO);
-    config.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(
-        Units.radiansToDegrees(constCollector.REVERSE_LIMIT),
+    pivotMotorConfig.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(
+        Units.radiansToDegrees(constCollector.PIVOT_REVERSE_LIMIT_VALUE),
         constCollector.GEAR_RATIO);
 
-    config.slot0.allowableClosedloopError = SN_Math
-        .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(),
+    pivotMotorConfig.slot0.allowableClosedloopError = SN_Math
+        .degreesToFalcon(prefCollector.pivotTolerance.getValue(),
             constCollector.GEAR_RATIO);
-    config.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
+    pivotMotorConfig.slot0.closedLoopPeakOutput = prefCollector.pivotMaxSpeed.getValue();
 
-    pivotMotor.configAllSettings(config);
-    resetCollectorToAbsolute();
+    pivotMotor.configAllSettings(pivotMotorConfig);
+    resetPivotMotorToAbsolute();
+  }
+
+  /**
+   * Set the angle of the collector using the pivot motor
+   * 
+   * @param angle Desired collector angle in degrees
+   */
+  public void setPivotMotorAngle(double angle) {
+    double position = SN_Math.degreesToFalcon(angle, constCollector.GEAR_RATIO);
+    pivotMotor.set(ControlMode.Position, position);
+  }
+
+  /**
+   * Set the percent output of the pivot motor
+   * 
+   * @param speed Percent output for pivot motor
+   */
+  public void setPivotMotorSpeed(double speed) {
+    pivotMotor.set(ControlMode.PercentOutput, speed);
   }
 
   /**
@@ -73,32 +93,32 @@ public class Collector extends SubsystemBase {
     pivotMotor.setSelectedSensorPosition(0);
   }
 
-  public void spinRollerMotor(double speed) {
-    rollerMotor.set(ControlMode.PercentOutput, speed);
+  /**
+   * Get the position of the absolute encoder
+   * 
+   * @return Position of absolute encoder
+   */
+  public double getPivotAbsoluteEncoder() {
+    return pivotAbsoluteEncoder.getPosition();
   }
 
-  // TODO: Set PID values
-  public void setPivotMotorAngle(double angle) {
-    angle = SN_Math.degreesToFalcon(angle, constCollector.GEAR_RATIO);
-    setPivotMotorPosition(angle);
-  }
-
-  public void setPivotMotorPosition(double position) {
-    pivotMotor.set(ControlMode.Position, position);
-  }
-
-  public void setPivotMotorSpeed(double speed) {
-    pivotMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public double getCollectorAbsoluteEncoder() {
-    return absolutePivotEncoder.getPosition();
-  }
-
-  private void resetCollectorToAbsolute() {
-    double absoluteEncoderCount = SN_Math.degreesToFalcon(getCollectorAbsoluteEncoder(),
+  /**
+   * Reset the pivot motor encoder to the absolute encoder position
+   */
+  private void resetPivotMotorToAbsolute() {
+    double absoluteEncoderCount = SN_Math.degreesToFalcon(
+        getPivotAbsoluteEncoder(),
         constCollector.GEAR_RATIO);
     pivotMotor.setSelectedSensorPosition(absoluteEncoderCount);
+  }
+
+  /**
+   * Set the percent output of the roller motor
+   * 
+   * @param speed Percent output for roller motor
+   */
+  public void setRollerMotorSpeed(double speed) {
+    rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
   @Override
@@ -106,7 +126,8 @@ public class Collector extends SubsystemBase {
     // This method will be called once per scheduler run
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
-      SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getCollectorAbsoluteEncoder());
+      SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder());
+      SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getPosition());
     }
   }
 }
