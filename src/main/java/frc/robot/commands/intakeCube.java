@@ -22,7 +22,7 @@ public class intakeCube extends SequentialCommandGroup {
   public intakeCube(Collector subCollector, Intake subIntake, SN_Blinkin leds) {
     addCommands(
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.rollerHeightPivotAngle.getValue())),
-        // Move arm to collector
+        // Move arm to collector (waiting on #96 for this)
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeMotorSpeed)),
         // Spin intake
         new InstantCommand(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())).until(null),
