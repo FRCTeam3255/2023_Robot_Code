@@ -7,6 +7,7 @@ package frc.robot.commands;
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotPreferences.prefCollector;
@@ -22,17 +23,27 @@ public class intakeCube extends SequentialCommandGroup {
   public intakeCube(Collector subCollector, Intake subIntake, SN_Blinkin leds) {
     addCommands(
         // - Deploy collector
-        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.rollerHeightPivotAngle.getValue())),
+        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())),
+
         // - Move arm to collector (waiting on #96 for this)
-        // - Spin intake
-        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeMotorSpeed)),
-        // - Spin rollers .until a game piece is collected (waiting on #125 for this)
-        new InstantCommand(() -> subCollector.spinRollerMotor(prefCollector.rollerSpeed.getValue())).until(null),
-        // - detect the object (done periodically in the subsystem)
+
+        // Spin intake & rollers until a game piece is collected
+        Commands.parallel(
+            new InstantCommand(() -> subCollector.setRollerMotorSpeed(0)),
+            new InstantCommand(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))
+                .until(subIntake::isGamePieceCollected)),
+
+        // Stop all motors
+        Commands.parallel(
+            new InstantCommand(() -> subCollector.setRollerMotorSpeed(0)),
+            new InstantCommand(() -> subIntake.setMotorSpeed(0))),
+
         // - raise arm to mid shelf position -- Maybe do something here to check if we
         // actually have a cube before continuing?
+
         // - retract collector
-        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.startingConfigPivotAngle.getValue())),
+        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
+
         // - LEDS! Note: Not sure if I should make a constant for this, because I don't
         // like setting it in here, but also, they can't be a preference so idk
         new InstantCommand(() -> leds.setPattern(PatternType.Violet)));
