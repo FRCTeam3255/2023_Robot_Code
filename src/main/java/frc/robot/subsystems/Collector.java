@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.utils.SN_Math;
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
@@ -49,17 +48,29 @@ public class Collector extends SubsystemBase {
     config.forwardSoftLimitEnable = prefCollector.collectorForwardSoftLimitEnable.getValue();
     config.reverseSoftLimitEnable = prefCollector.collectorReverseSoftLimitEnable.getValue();
 
-    config.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.FORWARD_LIMIT),
+    pivotMotor.encoder.setPositionConversionFactor(SN_Math.TALONFX_ENCODER_PULSES_PER_COUNT);
+
+    config.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
+        Units.radiansToDegrees(constCollector.FORWARD_LIMIT),
         constCollector.GEAR_RATIO);
-    config.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(Units.radiansToDegrees(constCollector.REVERSE_LIMIT),
+    config.reverseSoftLimitThreshold = SN_Math.degreesToFalcon(
+        Units.radiansToDegrees(constCollector.REVERSE_LIMIT),
         constCollector.GEAR_RATIO);
 
     config.slot0.allowableClosedloopError = SN_Math
-        .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(), constCollector.GEAR_RATIO);
+        .degreesToFalcon(prefCollector.collectorAllowableClosedLoopErrorDegrees.getValue(),
+            constCollector.GEAR_RATIO);
     config.slot0.closedLoopPeakOutput = prefCollector.collectorClosedLoopPeakOutput.getValue();
 
     pivotMotor.configAllSettings(config);
     resetCollectorToAbsolute();
+  }
+
+  /**
+   * Reset the pivot motor encoder counts to 0
+   */
+  public void resetPivotMotorEncoder() {
+    pivotMotor.setSelectedSensorPosition(0);
   }
 
   public void spinRollerMotor(double speed) {
