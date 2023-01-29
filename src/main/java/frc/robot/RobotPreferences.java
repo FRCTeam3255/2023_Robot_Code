@@ -36,6 +36,10 @@ public class RobotPreferences {
     // down.
     public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
 
+    public static final SN_DoublePreference chargeVelocityX = new SN_DoublePreference("chargeVelocityX", 0);
+    public static final SN_DoublePreference chargeVelocityY = new SN_DoublePreference("chargeVelocityY", 0);
+    public static final SN_DoublePreference chargeRotation = new SN_DoublePreference("chargeRotation", 0);
+
   }
 
   public static final class prefChargerTreads {
@@ -60,28 +64,25 @@ public class RobotPreferences {
 
   public static final class prefCollector {
 
-    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", 0.2);
-    public static final SN_DoublePreference startingConfigPivotAngle = new SN_DoublePreference(
-        "startingConfigPivotAngle",
-        0);
-    public static final SN_DoublePreference rollerHeightPivotAngle = new SN_DoublePreference("rollerHeightPivotAngle",
-        90);
-    public static final SN_DoublePreference climbPivotAngle = new SN_DoublePreference("climbPivotAngle", 180);
+    // TODO: Find PID values
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.09);
+    public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
+    public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
-    public static final SN_DoublePreference collectorP = new SN_DoublePreference("collectorP", 0.09);
-    public static final SN_DoublePreference collectorI = new SN_DoublePreference("collectorI", 0);
-    public static final SN_DoublePreference collectorD = new SN_DoublePreference("collectorD", 0);
+    // allowable closed loop error in degrees
+    public static final SN_DoublePreference pivotTolerance = new SN_DoublePreference(
+        "pivotTolerance", 2);
+    public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
+        "pivotMaxSpeed", 0.25);
 
-    public static final SN_DoublePreference collectorAllowableClosedLoopErrorDegrees = new SN_DoublePreference(
-        "collectorAlowableClosedLoopErrorDegrees", 0.0001);
-    public static final SN_DoublePreference collectorClosedLoopPeakOutput = new SN_DoublePreference(
-        "collectorClosedLoopPeakOutput", 0.25);
+    public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
+        "pivotAngleStartingConfig", 0);
+    public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
+        "pivotAngleCubeCollecting", 90);
+    public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
+        "pivotAngleClimb", 180);
 
-    public static final SN_BooleanPreference collectorForwardSoftLimitEnable = new SN_BooleanPreference(
-        "collectorForwardSoftLimitEnable", true);
-    public static final SN_BooleanPreference collectorReverseSoftLimitEnable = new SN_BooleanPreference(
-        "collectorReverseSoftLimitEnable", true);
-
+    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", 1);
   }
 
   public static final class prefArm {
