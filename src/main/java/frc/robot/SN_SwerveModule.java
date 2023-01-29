@@ -197,19 +197,14 @@ public class SN_SwerveModule {
   }
 
   /**
-   * Get the drive motor encoder count
-   * 
-   * @return Drive motor encoder count
-   */
-  public double getDriveEncoder() {
-    return -driveMotor.getSelectedSensorPosition();
-  }
-
-  /**
    * Reset the drive motor encoder count to 0.
    */
   public void resetDriveEncoderCount() {
     driveMotor.setSelectedSensorPosition(0);
+  }
+
+  public double getDriveMotorOutputPercent() {
+    return driveMotor.getMotorOutputPercent();
   }
 
   /**
@@ -242,7 +237,7 @@ public class SN_SwerveModule {
   public SwerveModulePosition getPosition() {
 
     double distance = SN_Math.falconToMeters(
-        getDriveEncoder(),
+        driveMotor.getSelectedSensorPosition(),
         Constants.WHEEL_CIRCUMFERENCE,
         Constants.DRIVE_GEAR_RATIO);
 
