@@ -28,7 +28,7 @@ public final class Constants {
   }
 
   public enum GamePiece {
-    NONE, CUBE, CONE
+    NONE, CUBE, CONE, HUH
   }
 
   public static final boolean OUTPUT_DEBUG_VALUES = false;
