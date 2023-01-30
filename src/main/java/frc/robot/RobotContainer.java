@@ -10,14 +10,10 @@ import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
-import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.commands.AddVisionMeasurement;
@@ -25,7 +21,6 @@ import frc.robot.commands.Drive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
@@ -74,7 +69,7 @@ public class RobotContainer {
 
     conOperator.btn_B
         .whileTrue(
-            Commands.runOnce(() -> subArm.setArmTipPosition(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
+            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
                 .repeatedly())
         .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 

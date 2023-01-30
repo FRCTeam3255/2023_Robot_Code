@@ -61,8 +61,8 @@ public class Arm extends SubsystemBase {
     shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
     shoulderConfig.slot0.closedLoopPeakOutput = prefArm.shoulderMaxSpeed.getValue();
 
-    shoulderConfig.forwardSoftLimitEnable = true;
-    shoulderConfig.reverseSoftLimitEnable = true;
+    shoulderConfig.forwardSoftLimitEnable = constArm.ENABLE_SOFT_LIMITS;
+    shoulderConfig.reverseSoftLimitEnable = constArm.ENABLE_SOFT_LIMITS;
 
     shoulderConfig.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
         Units.radiansToDegrees(constArm.SHOULDER_FORWARD_LIMIT),
@@ -88,8 +88,8 @@ public class Arm extends SubsystemBase {
     elbowConfig.slot0.kD = prefArm.elbowD.getValue();
     elbowConfig.slot0.closedLoopPeakOutput = prefArm.elbowMaxSpeed.getValue();
 
-    elbowConfig.forwardSoftLimitEnable = true;
-    elbowConfig.reverseSoftLimitEnable = true;
+    elbowConfig.forwardSoftLimitEnable = constArm.ENABLE_SOFT_LIMITS;
+    elbowConfig.reverseSoftLimitEnable = constArm.ENABLE_SOFT_LIMITS;
 
     elbowConfig.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
         Units.radiansToDegrees(constArm.ELBOW_FORWARD_LIMIT),
@@ -113,115 +113,114 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Set the translational position of the tip of the arm (intake position).
+   * Set the translational position of the tip of the arm (intake position). X is
+   * horizontal, Y is vertical.
    * 
-   * @param x x Position in inches
-   * @param y y Position in inches
+   * @param x x Position in meters
+   * @param y y Position in meters
    */
   public void setArmTipPosition(Translation2d position) {
-
-    SmartDashboard.putNumber("Arm Debug input tip position inches x", position.getX());
-    SmartDashboard.putNumber("Arm Debug input tip position inches y", position.getY());
-
-    if (position.getDistance(new Translation2d()) < Units.inchesToMeters(prefArm.armTipDeadzone.getValue())) {
-      System.out.println("Cannot input arm tip position within inner deadzone. Illegal values: X " + position.getX()
-          + " Y: " + position.getY());
-      System.out.println(3255 / 0);
-    }
-
-    if (position.getDistance(new Translation2d()) > Units.metersToInches(constArm.SHOULDER_LENGTH)
-        + Units.metersToInches(constArm.ELBOW_LENGTH)) {
-      System.out.println(
-          "Cannot input arm tip position that arm cannot reach. Make sure you are using the correct position for the arm tip. Illegal Values: "
-              + position.getX() + " Y: " + position.getY());
-    }
-
-    double x2 = Units.inchesToMeters(position.getX());
-    double y2 = Units.inchesToMeters(position.getY());
-
-    SmartDashboard.putNumber("Arm Debug input tip position meters x2", x2);
-    SmartDashboard.putNumber("Arm Debug input tip position meters y2", y2);
 
     double shoulderLength = constArm.SHOULDER_LENGTH;
     double elbowLength = constArm.ELBOW_LENGTH;
 
-    SmartDashboard.putNumber("Arm Debug shoulderLength meters", shoulderLength);
-    SmartDashboard.putNumber("Arm Debug shoulderLength inches", Units.metersToInches(shoulderLength));
-
-    SmartDashboard.putNumber("Arm Debug elbowLength meters", elbowLength);
-    SmartDashboard.putNumber("Arm Debug elbowLength inches", Units.metersToInches(elbowLength));
+    double x2 = position.getX();
+    double y2 = position.getY();
 
     // distance from from origin to arm tip goal position
     double R = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2));
 
-    SmartDashboard.putNumber("Arm Debug R (distance to goal tip pose) meters", R);
-    SmartDashboard.putNumber("Arm Debug R (distance to goal tip pose) inches", Units.metersToInches(R));
+    if (position.getDistance(new Translation2d()) < Units.inchesToMeters(prefArm.armTipDeadzone.getValue())) {
+      System.err.println("Cannot input arm tip position within inner deadzone. Illegal values: X "
+          + position.getX() + " Y: " + position.getY());
+    }
 
-    // negative solution
+    if (position.getDistance(new Translation2d()) > constArm.SHOULDER_LENGTH + constArm.ELBOW_LENGTH) {
+      System.err.println(
+          "Cannot input arm tip position that arm cannot reach. Make sure you are using the correct position for the arm tip. Illegal Values: "
+              + position.getX() + " Y: " + position.getY());
+    }
 
-    // i values are for x, j values are for y
+    // negative solution, i values are for x, j values are for y
     // https://www.desmos.com/calculator/kb6pranxy3
     double i1 = 1.0 / 2.0;
-    SmartDashboard.putNumber("*i1", i1);
     double i2 = x2;
-    SmartDashboard.putNumber("*i2", i2);
     double i3 = (Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2));
-    SmartDashboard.putNumber("*i3", i3);
     double i4 = x2;
-    SmartDashboard.putNumber("*i4", i4);
     double i5 = 1.0 / 2.0;
-    SmartDashboard.putNumber("*i5", i5);
     double i6 = 2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2));
-    SmartDashboard.putNumber("*i6", i6);
     double i7 = Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4);
-    SmartDashboard.putNumber("*i7", i7);
     double i8 = 1;
-    SmartDashboard.putNumber("*i8", i8);
     double i9 = y2;
-    SmartDashboard.putNumber("*i9", i9);
     double ifinal = (i1 * i2) + (i3 * i4) - (i5 * Math.sqrt(i6 - i7 - i8) * i9);
-    SmartDashboard.putNumber("*ifinal", ifinal);
     double elbowX = ifinal;
 
-    SmartDashboard.putNumber("Arm Debug elbowX meters", elbowX);
-    SmartDashboard.putNumber("Arm Debug elbowX inches", Units.metersToInches(elbowX));
-
     double j1 = 1.0 / 2.0;
-    SmartDashboard.putNumber("*j1", j1);
     double j2 = y2;
-    SmartDashboard.putNumber("*j2", j2);
     double j3 = (Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2)) / (2 * Math.pow(R, 2));
-    SmartDashboard.putNumber("*j3", j3);
     double j4 = y2;
-    SmartDashboard.putNumber("*j4", j4);
     double j5 = 1.0 / 2.0;
-    SmartDashboard.putNumber("*j5", j5);
     double j6 = 2 * ((Math.pow(shoulderLength, 2) + Math.pow(elbowLength, 2)) / Math.pow(R, 2));
-    SmartDashboard.putNumber("*j6", j6);
     double j7 = Math.pow(Math.pow(shoulderLength, 2) - Math.pow(elbowLength, 2), 2) / Math.pow(R, 4);
-    SmartDashboard.putNumber("*j7", j7);
     double j8 = 1;
-    SmartDashboard.putNumber("*j8", j8);
     double j9 = -x2;
-    SmartDashboard.putNumber("*j9", j9);
     double jfinal = (j1 * j2) + (j3 * j4) - (j5 * Math.sqrt(j6 - j7 - j8) * j9);
-    SmartDashboard.putNumber("*jfinal", jfinal);
     double elbowY = jfinal;
-
-    SmartDashboard.putNumber("Arm Debug elbowY meters", elbowY);
-    SmartDashboard.putNumber("Arm Debug elbowY inches", Units.metersToInches(elbowY));
 
     double shoulderAngle = Math.atan2(elbowY, elbowX);
 
-    SmartDashboard.putNumber("Arm Debug shoulderAngle radians", shoulderAngle);
-    SmartDashboard.putNumber("Arm Debug shoulderAngle degrees", Units.radiansToDegrees(shoulderAngle));
-
     double elbowAngle = Math.atan2(y2 - elbowY, x2 - elbowX);
 
-    SmartDashboard.putNumber("Arm Debug elbowAngle radians", elbowAngle);
-    SmartDashboard.putNumber("Arm Debug elbowAngle degrees", Units.radiansToDegrees(elbowAngle));
-
     setJointPositions(Units.radiansToDegrees(shoulderAngle), Units.radiansToDegrees(elbowAngle));
+
+    if (Constants.OUTPUT_DEBUG_VALUES) {
+
+      SmartDashboard.putNumber("Arm Debug Input Tip Position Meters (x2)", x2);
+      SmartDashboard.putNumber("Arm Debug Input Tip Position Meters (y2)", y2);
+
+      SmartDashboard.putNumber("Arm Debug shoulderLength meters", shoulderLength);
+      SmartDashboard.putNumber("Arm Debug shoulderLength inches", Units.metersToInches(shoulderLength));
+
+      SmartDashboard.putNumber("Arm Debug elbowLength meters", elbowLength);
+      SmartDashboard.putNumber("Arm Debug elbowLength inches", Units.metersToInches(elbowLength));
+
+      SmartDashboard.putNumber("Arm Debug Distance To Goal Tip Pose meters (R)", R);
+      SmartDashboard.putNumber("Arm Debug R Distance To Goal Tip Pose inches (R)", Units.metersToInches(R));
+
+      SmartDashboard.putNumber("Arm Debug i1", i1);
+      SmartDashboard.putNumber("Arm Debug i2", i2);
+      SmartDashboard.putNumber("Arm Debug i3", i3);
+      SmartDashboard.putNumber("Arm Debug i4", i4);
+      SmartDashboard.putNumber("Arm Debug i5", i5);
+      SmartDashboard.putNumber("Arm Debug i6", i6);
+      SmartDashboard.putNumber("Arm Debug i7", i7);
+      SmartDashboard.putNumber("Arm Debug i8", i8);
+      SmartDashboard.putNumber("Arm Debug i9", i9);
+      SmartDashboard.putNumber("Arm Debug ifinal", ifinal);
+
+      SmartDashboard.putNumber("Arm Debug j1", j1);
+      SmartDashboard.putNumber("Arm Debug j2", j2);
+      SmartDashboard.putNumber("Arm Debug j3", j3);
+      SmartDashboard.putNumber("Arm Debug j4", j4);
+      SmartDashboard.putNumber("Arm Debug j5", j5);
+      SmartDashboard.putNumber("Arm Debug j6", j6);
+      SmartDashboard.putNumber("Arm Debug j7", j7);
+      SmartDashboard.putNumber("Arm Debug j8", j8);
+      SmartDashboard.putNumber("Arm Debug j9", j9);
+      SmartDashboard.putNumber("Arm Debug jfinal", jfinal);
+
+      SmartDashboard.putNumber("Arm Debug elbowX meters", elbowX);
+      SmartDashboard.putNumber("Arm Debug elbowX inches", Units.metersToInches(elbowX));
+
+      SmartDashboard.putNumber("Arm Debug elbowY meters", elbowY);
+      SmartDashboard.putNumber("Arm Debug elbowY inches", Units.metersToInches(elbowY));
+
+      SmartDashboard.putNumber("Arm Debug shoulderAngle radians", shoulderAngle);
+      SmartDashboard.putNumber("Arm Debug shoulderAngle degrees", Units.radiansToDegrees(shoulderAngle));
+
+      SmartDashboard.putNumber("Arm Debug elbowAngle radians", elbowAngle);
+      SmartDashboard.putNumber("Arm Debug elbowAngle degrees", Units.radiansToDegrees(elbowAngle));
+    }
   }
 
   /**
@@ -230,8 +229,8 @@ public class Arm extends SubsystemBase {
    * @param x x Position in inches
    * @param y y Position in inches
    */
-  public void setArmTipPosition(SN_DoublePreference x, SN_DoublePreference y) {
-    setArmTipPosition(new Translation2d(x.getValue(), y.getValue()));
+  public void setArmTipPositionInches(SN_DoublePreference x, SN_DoublePreference y) {
+    setArmTipPosition(new Translation2d(Units.inchesToMeters(x.getValue()), Units.inchesToMeters(y.getValue())));
   }
 
   /**
