@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -99,28 +98,24 @@ public class Intake extends SubsystemBase {
     setMotorSpeed(speed.getValue());
   }
 
-  // removed logic here since it just has to be either rewritten or in a command
   public void setMotorSpeed(double speed) {
     leftMotor.set(ControlMode.PercentOutput, speed);
     rightMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  // these command factories don't work currently, and the idea doesn't even work
-  // since you would have to hold the intake button to not drop the game piece so
-  // these should just be their own subclassed command
-
-  // we kinda need three commands, a passive one to hold on to game pieces, an
-  // intake one to intake them, and a release one to release them. all of the
-  // logic could maybe be put in one method/command and maybe even on one button
   public Command intakeGamePiece() {
     return new ConditionalCommand(
-        Commands.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed), this),
-        Commands.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed), this),
+        this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed)),
+        this.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed)),
         this::isGamePieceCollected);
   }
 
   public Command releaseGamePiece() {
-    return Commands.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed), this);
+    return this.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed));
+  }
+
+  public Command holdGamePiece() {
+    return this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed));
   }
 
   @Override
