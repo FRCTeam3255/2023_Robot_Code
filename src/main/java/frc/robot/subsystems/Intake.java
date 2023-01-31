@@ -103,18 +103,18 @@ public class Intake extends SubsystemBase {
     rightMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public Command intakeGamePiece() {
+  public Command intakeCommand() {
     return new ConditionalCommand(
         this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed)),
         this.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed)),
         this::isGamePieceCollected);
   }
 
-  public Command releaseGamePiece() {
+  public Command releaseCommand() {
     return this.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed));
   }
 
-  public Command holdGamePiece() {
+  public Command holdCommand() {
     return this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed));
   }
 

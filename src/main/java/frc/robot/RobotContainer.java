@@ -56,7 +56,7 @@ public class RobotContainer {
                     conOperator.getAxisRSY(),
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
-    subIntake.setDefaultCommand(subIntake.holdGamePiece());
+    subIntake.setDefaultCommand(subIntake.holdCommand());
 
     configureBindings();
   }
@@ -83,8 +83,8 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // Operator
-    conOperator.btn_A.whileTrue(subIntake.intakeGamePiece());
-    conOperator.btn_B.whileTrue(subIntake.releaseGamePiece());
+    conOperator.btn_A.whileTrue(subIntake.intakeCommand());
+    conOperator.btn_B.whileTrue(subIntake.releaseCommand());
 
     // Set the arm to a preset position (example bind, may not be necessary for comp
     // bindings)
