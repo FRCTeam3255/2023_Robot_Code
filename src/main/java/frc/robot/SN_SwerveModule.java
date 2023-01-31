@@ -203,6 +203,10 @@ public class SN_SwerveModule {
     driveMotor.setSelectedSensorPosition(0);
   }
 
+  public double getDriveMotorOutputPercent() {
+    return driveMotor.getMotorOutputPercent();
+  }
+
   /**
    * Get the current state of the swerve module. State includes a velocity and
    * angle.

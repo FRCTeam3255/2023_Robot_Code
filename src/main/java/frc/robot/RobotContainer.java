@@ -10,17 +10,26 @@ import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
+import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefArm;
+import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.subsystems.ChargerTreads;
+import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
@@ -38,8 +47,14 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-        subVision));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    subCollector.setDefaultCommand(
+        new RunCommand(
+            () -> subCollector.setPivotMotorSpeed(
+                MathUtil.applyDeadband(
+                    conOperator.getAxisRSY(),
+                    constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
+            subCollector));
 
     configureBindings();
   }
@@ -53,10 +68,17 @@ public class RobotContainer {
 
     // "reset gyro" for field relative but actually resets the orientation at a
     // higher level
-    // conDriver.btn_A
-    // .onTrue(Commands.runOnce(
-    // () -> subDrivetrain.resetPose(new
-    // Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+    conDriver.btn_A
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+    conDriver.btn_B
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPose(new Pose2d())));
+
+    // while true do robot oriented, default to field oriented
+    conDriver.btn_LBump
+        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // Operator
 
@@ -89,13 +111,46 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
-    // // Spin the intake motor while held
+    // Test keybinds
 
-    // // Set Collector to starting config
+    // Spin the Collector roller motor while held
+    conOperator.btn_B
+        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
 
-    // // Set Collector Rollers to intake height
+    // Set Collector to starting config
+    conOperator.btn_X
+        .onTrue(
+            Commands.runOnce(
+                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
 
-    // // Set Collector Rollers to climbing position
+    // Set Collector Rollers to intake height
+    conOperator.btn_Y
+        .onTrue(
+            Commands
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
+
+    // Set Collector Rollers to climbing position
+    conOperator.btn_A
+        .onTrue(
+            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
+
+    // Spin Charger treads
+    conOperator.btn_RBump
+        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
+
+    // Rotate drivetrain wheels in charge station orientation
+    conOperator.POV_North
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
+
+    // Spin drivetrain wheels to go onto the charge station
+    conOperator.btn_RBump
+        .onTrue(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(prefDrivetrain.chargeVelocityX.getValue(),
+            prefDrivetrain.chargeVelocityY.getValue(), new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
   }
 
   public Command getAutonomousCommand() {
