@@ -108,5 +108,14 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
+
+    public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
+        "shoulderForwardSoftLimit", true);
+    public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(
+        "shoulderReverseSoftLimit", true);
+    public static final SN_BooleanPreference elbowForwardSoftLimit = new SN_BooleanPreference(
+        "elbowForwardSoftLimit", true);
+    public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
+        "elbowReverseSoftLimit", true);
   }
 }
