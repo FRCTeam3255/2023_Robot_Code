@@ -61,8 +61,8 @@ public class Arm extends SubsystemBase {
     shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
     shoulderConfig.slot0.closedLoopPeakOutput = prefArm.shoulderMaxSpeed.getValue();
 
-    shoulderConfig.forwardSoftLimitEnable = prefArm.shoulderForwardSoftLimitEnable.getValue();
-    shoulderConfig.reverseSoftLimitEnable = prefArm.shoulderReverseSoftLimitEnable.getValue();
+    shoulderConfig.forwardSoftLimitEnable = prefArm.shoulderForwardSoftLimit.getValue();
+    shoulderConfig.reverseSoftLimitEnable = prefArm.shoulderReverseSoftLimit.getValue();
 
     shoulderConfig.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
         Units.radiansToDegrees(constArm.SHOULDER_FORWARD_LIMIT),
@@ -88,8 +88,8 @@ public class Arm extends SubsystemBase {
     elbowConfig.slot0.kD = prefArm.elbowD.getValue();
     elbowConfig.slot0.closedLoopPeakOutput = prefArm.elbowMaxSpeed.getValue();
 
-    elbowConfig.forwardSoftLimitEnable = prefArm.elbowForwardSoftLimitEnable.getValue();
-    elbowConfig.reverseSoftLimitEnable = prefArm.elbowReverseSoftLimitEnable.getValue();
+    elbowConfig.forwardSoftLimitEnable = prefArm.elbowForwardSoftLimit.getValue();
+    elbowConfig.reverseSoftLimitEnable = prefArm.elbowReverseSoftLimit.getValue();
 
     elbowConfig.forwardSoftLimitThreshold = SN_Math.degreesToFalcon(
         Units.radiansToDegrees(constArm.ELBOW_FORWARD_LIMIT),
