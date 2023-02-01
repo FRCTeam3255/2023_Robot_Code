@@ -36,10 +36,6 @@ public class RobotPreferences {
     // down.
     public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
 
-    public static final SN_DoublePreference chargeVelocityX = new SN_DoublePreference("chargeVelocityX", 0);
-    public static final SN_DoublePreference chargeVelocityY = new SN_DoublePreference("chargeVelocityY", 0);
-    public static final SN_DoublePreference chargeRotation = new SN_DoublePreference("chargeRotation", 0);
-
   }
 
   public static final class prefChargerTreads {
