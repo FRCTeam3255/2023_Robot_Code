@@ -111,7 +111,7 @@ public class Intake extends SubsystemBase {
   }
 
   public Command releaseCommand() {
-    return this.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed));
+    return this.run(() -> setMotorSpeed(prefIntake.intakeReleaseSpeed));
   }
 
   public Command holdCommand() {
