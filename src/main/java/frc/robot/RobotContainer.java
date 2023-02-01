@@ -137,17 +137,6 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
 
-    // Rotate drivetrain wheels in charge station orientation
-    conOperator.POV_North
-        .onTrue(Commands.runOnce(
-            () -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
-
-    // Spin drivetrain wheels to go onto the charge station
-    conOperator.btn_RBump
-        .onTrue(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(prefDrivetrain.chargeVelocityX.getValue(),
-            prefDrivetrain.chargeVelocityY.getValue(), new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
   }
 
   public Command getAutonomousCommand() {
