@@ -83,15 +83,13 @@ public class Intake extends SubsystemBase {
       return true;
     }
 
-    // else if (colorSensor.getProximity() <=
-    // prefIntake.gamePieceProximity.getValue()) {
-    // return true;
-    // }
+    else if (colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
+      return true;
+    }
 
-    // else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() ==
-    // GamePiece.CUBE) {
-    // return true;
-    // }
+    else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() == GamePiece.CUBE) {
+      return true;
+    }
     return false;
   }
 
@@ -123,7 +121,7 @@ public class Intake extends SubsystemBase {
       SmartDashboard.putNumber("Intake Color Sensor Green", colorSensor.getGreen());
       SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
       SmartDashboard.putNumber("Intake Color Sensor Proximity", colorSensor.getProximity());
-      SmartDashboard.putBoolean("Intake Limit Switch", !limitSwitch.get());
+      SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
       SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
     }
   }
