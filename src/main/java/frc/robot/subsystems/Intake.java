@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
@@ -84,13 +83,15 @@ public class Intake extends SubsystemBase {
       return true;
     }
 
-    else if (colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
-      return true;
-    }
+    // else if (colorSensor.getProximity() <=
+    // prefIntake.gamePieceProximity.getValue()) {
+    // return true;
+    // }
 
-    else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() == GamePiece.CUBE) {
-      return true;
-    }
+    // else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() ==
+    // GamePiece.CUBE) {
+    // return true;
+    // }
     return false;
   }
 
@@ -101,13 +102,6 @@ public class Intake extends SubsystemBase {
   public void setMotorSpeed(double speed) {
     leftMotor.set(ControlMode.PercentOutput, speed);
     rightMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public Command intakeCommand() {
-    return new ConditionalCommand(
-        this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed)),
-        this.run(() -> setMotorSpeed(prefIntake.intakeIntakeSpeed)),
-        this::isGamePieceCollected);
   }
 
   public Command releaseCommand() {
