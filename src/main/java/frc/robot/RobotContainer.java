@@ -22,6 +22,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeGamePiece;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefDrivetrain;
@@ -83,7 +84,7 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // Operator
-    conOperator.btn_A.whileTrue(subIntake.intakeCommand());
+    conOperator.btn_A.whileTrue(new IntakeGamePiece(subIntake));
     conOperator.btn_B.whileTrue(subIntake.releaseCommand());
 
     // Set the arm to a preset position (example bind, may not be necessary for comp
