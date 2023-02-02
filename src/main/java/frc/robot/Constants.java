@@ -154,6 +154,8 @@ public final class Constants {
     public static final boolean LEFT_MOTOR_INVERTED = false;
     public static final boolean RIGHT_MOTOR_INVERTED = true;
 
+    public static final boolean LIMIT_SWITCH_INVERT = true;
+
     // RGB game piece colors
     public static final double coneColorR = 0.34509;
     public static final double coneColorG = 0.51764;
