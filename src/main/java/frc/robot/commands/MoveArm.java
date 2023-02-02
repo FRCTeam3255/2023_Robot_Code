@@ -68,7 +68,8 @@ public class MoveArm extends CommandBase {
     // x,y += controller * rate pref
     // set position
 
-    if (new Translation2d(x, y).getDistance(origin) < reach) {
+    if (new Translation2d(x, y).getDistance(origin) < reach
+        && new Translation2d(x, y).getDistance(origin) > Units.inchesToMeters(prefArm.armTipDeadzone.getValue())) {
       subArm.setArmTipPosition(new Translation2d(x, y));
     } else {
       subArm.setArmTipPosition(new Translation2d(lastX, lastY));
