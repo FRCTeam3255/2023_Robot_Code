@@ -413,7 +413,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Position of of arm tip in meters
    */
-  private Translation2d getArmTipPosition() {
+  public Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
 

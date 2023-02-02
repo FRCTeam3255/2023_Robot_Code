@@ -119,5 +119,8 @@ public class RobotPreferences {
         "elbowForwardSoftLimit", true);
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
+
+    // inches per second
+    public static final SN_DoublePreference armTipSpeed = new SN_DoublePreference("armTipSpeed", 4);
   }
 }
