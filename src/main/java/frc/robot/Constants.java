@@ -194,8 +194,6 @@ public final class Constants {
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(7.5);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(8.75);
 
-    public static final boolean ENABLE_SOFT_LIMITS = true;
-
     public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(180);
     public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-90);
 
