@@ -120,12 +120,10 @@ public class RobotPreferences {
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
 
-    // Gave these kinda bad names for now b/c this is a skeleton anyway, open to
-    // suggestions
-    public static final SN_DoublePreference armTipToCollectorX = new SN_DoublePreference("armTipToCollectorX", 0);
-    public static final SN_DoublePreference armTipToCollectorY = new SN_DoublePreference("armTipToCollectorY", 0);
+    public static final SN_DoublePreference armTipToCollectorX = new SN_DoublePreference("armTipToCollectorX", 15);
+    public static final SN_DoublePreference armTipToCollectorY = new SN_DoublePreference("armTipToCollectorY", 2);
 
-    public static final SN_DoublePreference armTipToMidPosX = new SN_DoublePreference("armTipToMidPosX", 0);
-    public static final SN_DoublePreference armTipToMidPosY = new SN_DoublePreference("armTipToMidPosY", 0);
+    public static final SN_DoublePreference armTipToMidPosX = new SN_DoublePreference("armTipToMidPosX", 4);
+    public static final SN_DoublePreference armTipToMidPosY = new SN_DoublePreference("armTipToMidPosY", 15);
   }
 }
