@@ -48,7 +48,7 @@ public class RobotPreferences {
         0.95);
     // TODO: Find what proximity is needed for the sensor
     public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
-    
+
     public static final SN_DoublePreference intakeIntakeSpeed = new SN_DoublePreference("intakeIntakeSpeed", 0.5);
     public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
     public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.5);
@@ -119,5 +119,13 @@ public class RobotPreferences {
         "elbowForwardSoftLimit", true);
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
+
+    // Gave these kinda bad names for now b/c this is a skeleton anyway, open to
+    // suggestions
+    public static final SN_DoublePreference armTipToCollectorX = new SN_DoublePreference("armTipToCollectorX", 0);
+    public static final SN_DoublePreference armTipToCollectorY = new SN_DoublePreference("armTipToCollectorY", 0);
+
+    public static final SN_DoublePreference armTipToMidPosX = new SN_DoublePreference("armTipToMidPosX", 0);
+    public static final SN_DoublePreference armTipToMidPosY = new SN_DoublePreference("armTipToMidPosY", 0);
   }
 }
