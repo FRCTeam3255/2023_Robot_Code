@@ -32,8 +32,6 @@ public class intakeCone extends SequentialCommandGroup {
         // Stop motors
         new InstantCommand(() -> subIntake.setMotorSpeed(0)),
 
-        // - Move arm to intake/collection area
-
         // - raise arm to mid node position
 
         // - LEDS: May want to be a constant since they can't be set as a preference
