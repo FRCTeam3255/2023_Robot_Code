@@ -14,6 +14,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
@@ -73,35 +74,40 @@ public class Intake extends SubsystemBase {
     return GamePiece.HUH;
   }
 
-  public boolean isGamePieceCollected() {
-    if (limitSwitch.get() == true) {
-      return true;
-
-    } else if (colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
-      return true;
-
-    } else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() == GamePiece.CUBE) {
-      return true;
-
-    } else {
-      return false;
-    }
+  public boolean getLimitSwitch() {
+    return constIntake.LIMIT_SWITCH_INVERT ? !limitSwitch.get() : limitSwitch.get();
   }
 
-  public void setMotorSpeed(double speed) {
-
-    if (isGamePieceCollected() == true) {
-      leftMotor.set(ControlMode.PercentOutput, 0);
-      rightMotor.set(ControlMode.PercentOutput, 0);
-
-    } else {
-      leftMotor.set(ControlMode.PercentOutput, speed);
-      rightMotor.set(ControlMode.PercentOutput, speed);
+  public boolean isGamePieceCollected() {
+    if (getLimitSwitch()) {
+      return true;
     }
+
+    else if (colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
+      return true;
+    }
+
+    else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() == GamePiece.CUBE) {
+      return true;
+    }
+    return false;
   }
 
   public void setMotorSpeed(SN_DoublePreference speed) {
     setMotorSpeed(speed.getValue());
+  }
+
+  public void setMotorSpeed(double speed) {
+    leftMotor.set(ControlMode.PercentOutput, speed);
+    rightMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public Command releaseCommand() {
+    return this.run(() -> setMotorSpeed(prefIntake.intakeReleaseSpeed));
+  }
+
+  public Command holdCommand() {
+    return this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed));
   }
 
   @Override
@@ -110,11 +116,13 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putString("Current Game Piece", getGamePieceType().toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
-      SmartDashboard.putString("Color Sensor Color", colorSensor.getColor().toHexString());
-      SmartDashboard.putNumber("Color Sensor Red", colorSensor.getRed());
-      SmartDashboard.putNumber("Color Sensor Green", colorSensor.getGreen());
-      SmartDashboard.putNumber("Color Sensor Blue", colorSensor.getBlue());
-      SmartDashboard.putNumber("Color Sensor Proximity", colorSensor.getProximity());
+      SmartDashboard.putString("Intake Color Sensor Color", colorSensor.getColor().toHexString());
+      SmartDashboard.putNumber("Intake Color Sensor Red", colorSensor.getRed());
+      SmartDashboard.putNumber("Intake Color Sensor Green", colorSensor.getGreen());
+      SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
+      SmartDashboard.putNumber("Intake Color Sensor Proximity", colorSensor.getProximity());
+      SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
+      SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
     }
   }
 }

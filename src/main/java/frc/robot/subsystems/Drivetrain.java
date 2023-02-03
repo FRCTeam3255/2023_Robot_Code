@@ -211,9 +211,9 @@ public class Drivetrain extends SubsystemBase {
         visionMeasurement,
         timestampSeconds,
         VecBuilder.fill(
-            prefVision.measurementStdDevsFeet.getValue(),
-            prefVision.measurementStdDevsFeet.getValue(),
-            prefVision.measurementStdDevsDegrees.getValue()));
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefVision.measurementStdDevsDegrees.getValue())));
   }
 
   /**
