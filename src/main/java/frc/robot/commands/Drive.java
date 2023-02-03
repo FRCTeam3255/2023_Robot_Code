@@ -55,9 +55,9 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
 
-    xVelocity = -conDriver.getAxisLSY();
-    yVelocity = conDriver.getAxisLSX();
-    rVelocity = conDriver.getAxisRSX();
+    xVelocity = conDriver.getAxisLSY();
+    yVelocity = -conDriver.getAxisLSX();
+    rVelocity = -conDriver.getAxisRSX();
     translationScalar = conDriver.getAxisRT();
 
     xVelocity = MathUtil.applyDeadband(xVelocity, constControllers.DRIVER_LEFT_STICK_Y_DEADBAND);

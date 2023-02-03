@@ -63,6 +63,13 @@ public class Drivetrain extends SubsystemBase {
   public void configure() {
     for (SN_SwerveModule mod : modules) {
       mod.configure();
+    }
+
+    // (i think) since the drive motor inversions takes a meanful amount of time, it
+    // eats the instruction to reset the encoder counts. so we just wait a second
+    // after inverting the modules to reset the steer motor encoders to absolute
+    Timer.delay(1.0);
+    for (SN_SwerveModule mod : modules) {
       mod.resetSteerMotorEncodersToAbsolute();
     }
   }
@@ -118,6 +125,20 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * Set the drive method to use field relative drive controls
+   */
+  public void setFieldRelative() {
+    isFieldRelative = true;
+  }
+
+  /**
+   * Set the drive method to use robot relative drive controls
+   */
+  public void setRobotRelative() {
+    isFieldRelative = false;
+  }
+
+  /**
    * Get the current estimated position of the drivetrain.
    * 
    * @return Position of drivetrain
@@ -167,9 +188,9 @@ public class Drivetrain extends SubsystemBase {
         visionMeasurement,
         timestampSeconds,
         VecBuilder.fill(
-            prefVision.measurementStdDevsFeet.getValue(),
-            prefVision.measurementStdDevsFeet.getValue(),
-            prefVision.measurementStdDevsDegrees.getValue()));
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefVision.measurementStdDevsDegrees.getValue())));
   }
 
   /**
@@ -207,14 +228,14 @@ public class Drivetrain extends SubsystemBase {
             Units.metersToFeet(mod.getState().speedMetersPerSecond));
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Distance",
             Units.metersToFeet(mod.getPosition().distanceMeters));
-        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Drive Encoder Counts",
-            mod.getDriveEncoder());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Angle",
             mod.getState().angle.getDegrees());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Absolute Encoder Angle",
             mod.getAbsoluteEncoder().getDegrees());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Raw Absolute Encoder Angle",
             mod.getRawAbsoluteEncoder());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Drive Output Percent",
+            mod.getDriveMotorOutputPercent());
       }
     }
   }

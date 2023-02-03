@@ -36,10 +36,6 @@ public class RobotPreferences {
     // down.
     public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
 
-    public static final SN_DoublePreference chargeVelocityX = new SN_DoublePreference("chargeVelocityX", 0);
-    public static final SN_DoublePreference chargeVelocityY = new SN_DoublePreference("chargeVelocityY", 0);
-    public static final SN_DoublePreference chargeRotation = new SN_DoublePreference("chargeRotation", 0);
-
   }
 
   public static final class prefChargerTreads {
@@ -52,7 +48,10 @@ public class RobotPreferences {
         0.95);
     // TODO: Find what proximity is needed for the sensor
     public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
-    public static final SN_DoublePreference intakeMotorSpeed = new SN_DoublePreference("intakeMotorSpeed", 1);
+    
+    public static final SN_DoublePreference intakeIntakeSpeed = new SN_DoublePreference("intakeIntakeSpeed", 0.5);
+    public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
+    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.5);
   }
 
   public static final class prefVision {
@@ -105,5 +104,20 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
+
+    // radius of circle centered on shoulder joint where the arm tip cannot reach
+    // (inches)
+    public static final SN_DoublePreference armTipDeadzone = new SN_DoublePreference("armTipDeadzone", 2);
+
+    public static final SN_DoublePreference armTipPresetX = new SN_DoublePreference("armTipPresetX", 8);
+    public static final SN_DoublePreference armTipPresetY = new SN_DoublePreference("armTipPresetY", 8);
+    public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
+        "shoulderForwardSoftLimit", true);
+    public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(
+        "shoulderReverseSoftLimit", true);
+    public static final SN_BooleanPreference elbowForwardSoftLimit = new SN_BooleanPreference(
+        "elbowForwardSoftLimit", true);
+    public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
+        "elbowReverseSoftLimit", true);
   }
 }

@@ -22,9 +22,9 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeGamePiece;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
-import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -56,6 +56,7 @@ public class RobotContainer {
                     conOperator.getAxisRSY(),
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
+    subIntake.setDefaultCommand(subIntake.holdCommand());
 
     configureBindings();
   }
@@ -76,7 +77,14 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d())));
 
+    // while true do robot oriented, default to field oriented
+    conDriver.btn_LBump
+        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
+        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
     // Operator
+    conOperator.btn_A.whileTrue(new IntakeGamePiece(subIntake));
+    conOperator.btn_B.whileTrue(subIntake.releaseCommand());
 
     // Set the arm to a preset position (example bind, may not be necessary for comp
     // bindings)
@@ -84,6 +92,14 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
             .repeatedly())
         .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+
+    conOperator.btn_B
+        .whileTrue(
+            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
+                .repeatedly())
+        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
 
     // Switchboard
 
@@ -105,18 +121,35 @@ public class RobotContainer {
     conOperator.btn_B
         .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
+    // // Spin the intake motor while held
+    // conOperator.btn_B
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
+    // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
                 () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
+    // // Set Collector to starting config
+    // conOperator.btn_X
+    // .onTrue(
+    // Commands.runOnce(
+    // () ->
+    // subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
                 .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
+    // // Set Collector Rollers to intake height
+    // conOperator.btn_Y
+    // .onTrue(
+    // Commands
+    // .runOnce(() ->
+    // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
@@ -128,17 +161,6 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
 
-    // Rotate drivetrain wheels in charge station orientation
-    conOperator.POV_North
-        .onTrue(Commands.runOnce(
-            () -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
-
-    // Spin drivetrain wheels to go onto the charge station
-    conOperator.btn_RBump
-        .onTrue(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(prefDrivetrain.chargeVelocityX.getValue(),
-            prefDrivetrain.chargeVelocityY.getValue(), new Rotation2d(prefDrivetrain.chargeRotation.getValue())))))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)))));
   }
 
   public Command getAutonomousCommand() {
