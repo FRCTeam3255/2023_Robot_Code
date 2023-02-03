@@ -35,9 +35,9 @@ public class intakeCube extends SequentialCommandGroup {
 
         // - Spin intake & rollers until a game piece is collected
         Commands.parallel(
-            new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
-            new InstantCommand(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))
-                .until(subIntake::isGamePieceCollected)),
+            new IntakeGamePiece(subIntake),
+            new InstantCommand(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
+            .until(subIntake::isGamePieceCollected),
 
         // - "Stop" all motors
         Commands.parallel(
