@@ -23,7 +23,6 @@ import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
-import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefArm;
@@ -89,23 +88,18 @@ public class RobotContainer {
 
     // Set the arm to a preset position (example bind, may not be necessary for comp
     // bindings)
-    // conOperator.btn_A
-    // .whileTrue(Commands.runOnce(() ->
-    // subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset),
-    // subArm)
-    // .repeatedly())
-    // .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0),
-    // subArm)));
+    conOperator.btn_A
+        .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
+            .repeatedly())
+        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
-    // conOperator.btn_B
-    // .whileTrue(
-    // Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX,
-    // prefArm.armTipPresetY), subArm)
-    // .repeatedly())
-    // .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0),
-    // subArm)));
+    conOperator.btn_B
+        .whileTrue(
+            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
+                .repeatedly())
+        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
-    // conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
 
     // Switchboard
 
@@ -124,22 +118,20 @@ public class RobotContainer {
     // Test keybinds
 
     // Spin the Collector roller motor while held
-    // conOperator.btn_B
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
-    // .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
+    conOperator.btn_B
+        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
+        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
     // // Spin the intake motor while held
     // conOperator.btn_B
     // .onTrue(Commands.runOnce(() ->
     // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
     // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
 
-    // // Set Collector to starting config
-    // conOperator.btn_X
-    // .onTrue(
-    // Commands.runOnce(
-    // () ->
-    // subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
+    // Set Collector to starting config
+    conOperator.btn_X
+        .onTrue(
+            Commands.runOnce(
+                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
     // // Set Collector to starting config
     // conOperator.btn_X
     // .onTrue(
@@ -160,20 +152,14 @@ public class RobotContainer {
     // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
-    // conOperator.btn_A
-    // .onTrue(
-    // Commands.runOnce(() ->
-    // subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
+    conOperator.btn_A
+        .onTrue(
+            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
 
     // Spin Charger treads
     conOperator.btn_RBump
         .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
-
-    conOperator.btn_LBump
-        .onTrue(new intakeCube(subArm, subCollector, subIntake, leds));
-
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.resetJointsToAbsolute()));
 
   }
 
