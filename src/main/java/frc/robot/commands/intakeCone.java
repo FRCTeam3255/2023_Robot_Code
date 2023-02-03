@@ -34,8 +34,7 @@ public class intakeCone extends SequentialCommandGroup {
 
         // - Move arm to intake/collection area
 
-        // - raise arm to mid node position -- Add something here to check if we have a
-        // cone before continuing
+        // - raise arm to mid node position
 
         // - LEDS: May want to be a constant since they can't be set as a preference
         new InstantCommand(() -> leds.setPattern(PatternType.Yellow)));
