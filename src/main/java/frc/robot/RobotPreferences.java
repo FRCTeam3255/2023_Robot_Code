@@ -105,6 +105,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
 
+    // radius of circle centered on shoulder joint where the arm tip cannot reach
+    // (inches)
+    public static final SN_DoublePreference armTipDeadzone = new SN_DoublePreference("armTipDeadzone", 2);
+
+    public static final SN_DoublePreference armTipPresetX = new SN_DoublePreference("armTipPresetX", 8);
+    public static final SN_DoublePreference armTipPresetY = new SN_DoublePreference("armTipPresetY", 8);
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
         "shoulderForwardSoftLimit", true);
     public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(
