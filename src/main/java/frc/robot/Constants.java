@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -126,6 +127,8 @@ public final class Constants {
       MODULE_1.position,
       MODULE_2.position,
       MODULE_3.position);
+
+  public static final PatternType INTAKE_CUBE_LED_PATTERN = PatternType.Violet;
 
   public static final class constControllers {
     public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
