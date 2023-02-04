@@ -30,7 +30,7 @@ public class intakeCone extends SequentialCommandGroup {
 
         // Lower the arm so that the intake is cone level
         new InstantCommand(
-            () -> subArm.setJointPositions(prefArm.shoulderIntakeConeAnglePreset, prefArm.elbowIntakeConeAnglePreset)),
+            () -> subArm.setArmTipPositionInches(prefArm.armTipToConeLevelX, prefArm.armTipToConeLevelY)),
 
         // Spin intake until a game piece is collected
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
@@ -39,8 +39,8 @@ public class intakeCone extends SequentialCommandGroup {
         new InstantCommand(() -> subIntake.setMotorSpeed(0)),
 
         // raise arm to mid node position
-        // TODO: might want to change method to setArmTipPositionInches instead
-        new InstantCommand(() -> subArm.setJointPositions(prefArm.shoulderMidNodePreset, prefArm.elbowMidNodePreset)),
+        new InstantCommand(
+            () -> subArm.setArmTipPositionInches(prefArm.armTipToMidNodePosX, prefArm.armTipToMidNodePosY)),
 
         // - LEDS: May want to be a constant since they can't be set as a preference
         new InstantCommand(() -> leds.setPattern(PatternType.Yellow)));

@@ -46,7 +46,7 @@ public class intakeCube extends SequentialCommandGroup {
 
         // - Raise arm to mid shelf position
         new InstantCommand(
-            () -> subArm.setArmTipPositionInches(prefArm.armTipToMidPosX, prefArm.armTipToMidPosY)),
+            () -> subArm.setArmTipPositionInches(prefArm.armTipToMidShelfPosX, prefArm.armTipToMidShelfPosY)),
 
         // - Retract collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),

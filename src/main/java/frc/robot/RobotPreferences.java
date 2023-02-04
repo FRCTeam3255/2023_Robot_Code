@@ -105,14 +105,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
 
-    // TODO: Figure out actual values please
-    public static final SN_DoublePreference shoulderIntakeConeAnglePreset = new SN_DoublePreference(
-        "shoulderIntakeConeAnglePreset", 0);
-    public static final SN_DoublePreference elbowIntakeConeAnglePreset = new SN_DoublePreference(
-        "elbowIntakeConeAnglePreset", 0);
-
-    public static final SN_DoublePreference shoulderMidNodePreset = new SN_DoublePreference("shoulderMidNodePreset", 0);
-    public static final SN_DoublePreference elbowMidNodePreset = new SN_DoublePreference("elbowMidNodePreset", 0);
+    public static final SN_DoublePreference armTipDeadzone = new SN_DoublePreference("armTipDeadzone", 2);
 
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
         "shoulderForwardSoftLimit", true);
@@ -123,10 +116,21 @@ public class RobotPreferences {
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
 
+    public static final SN_DoublePreference armTipPresetX = new SN_DoublePreference("armTipPresetX", 8);
+    public static final SN_DoublePreference armTipPresetY = new SN_DoublePreference("armTipPresetY", 8);
+
     public static final SN_DoublePreference armTipToCollectorX = new SN_DoublePreference("armTipToCollectorX", 15);
     public static final SN_DoublePreference armTipToCollectorY = new SN_DoublePreference("armTipToCollectorY", 2);
 
-    public static final SN_DoublePreference armTipToMidPosX = new SN_DoublePreference("armTipToMidPosX", 4);
-    public static final SN_DoublePreference armTipToMidPosY = new SN_DoublePreference("armTipToMidPosY", 15);
+    // TODO: Figure out actual values please
+    public static final SN_DoublePreference armTipToConeLevelX = new SN_DoublePreference("armTipToConeLevelX", 0);
+    public static final SN_DoublePreference armTipToConeLevelY = new SN_DoublePreference("armTipToConeLevelY", 0);
+
+    public static final SN_DoublePreference armTipToMidShelfPosX = new SN_DoublePreference("armTipToMidShelfPosX", 4);
+    public static final SN_DoublePreference armTipToMidShelfPosY = new SN_DoublePreference("armTipToMidShelfPosY", 15);
+
+    public static final SN_DoublePreference armTipToMidNodePosX = new SN_DoublePreference("armTipToMidNodePosY", 0);
+    public static final SN_DoublePreference armTipToMidNodePosY = new SN_DoublePreference("armTipToMidNodePosY", 0);
+
   }
 }
