@@ -25,7 +25,6 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
-import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -94,6 +93,14 @@ public class RobotContainer {
             .repeatedly())
         .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
+    conOperator.btn_B
+        .whileTrue(
+            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
+                .repeatedly())
+        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
+
     // Switchboard
 
     // Sets LED color to "violet" to indicate a purple game piece (cube) is being
@@ -114,18 +121,35 @@ public class RobotContainer {
     conOperator.btn_B
         .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
+    // // Spin the intake motor while held
+    // conOperator.btn_B
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
+    // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
 
     // Set Collector to starting config
     conOperator.btn_X
         .onTrue(
             Commands.runOnce(
                 () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
+    // // Set Collector to starting config
+    // conOperator.btn_X
+    // .onTrue(
+    // Commands.runOnce(
+    // () ->
+    // subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
 
     // Set Collector Rollers to intake height
     conOperator.btn_Y
         .onTrue(
             Commands
                 .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
+    // // Set Collector Rollers to intake height
+    // conOperator.btn_Y
+    // .onTrue(
+    // Commands
+    // .runOnce(() ->
+    // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
 
     // Set Collector Rollers to climbing position
     conOperator.btn_A
