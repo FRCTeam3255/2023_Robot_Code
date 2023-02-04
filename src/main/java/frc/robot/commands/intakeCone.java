@@ -17,13 +17,13 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
-public class intakeCone extends SequentialCommandGroup {
+public class IntakeCone extends SequentialCommandGroup {
   Collector subCollector;
   Intake subIntake;
   Arm subArm;
   SN_Blinkin leds;
 
-  public intakeCone() {
+  public IntakeCone() {
     addCommands(
 
         // - Retract collector

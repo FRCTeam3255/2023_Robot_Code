@@ -23,6 +23,7 @@ import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.IntakeCone;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefArm;
@@ -161,6 +162,8 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
         .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
 
+    // Intake cone command
+    conOperator.btn_LBump.onTrue(new IntakeCone());
   }
 
   public Command getAutonomousCommand() {

@@ -123,14 +123,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference armTipToCollectorY = new SN_DoublePreference("armTipToCollectorY", 2);
 
     // TODO: Figure out actual values please
-    public static final SN_DoublePreference armTipToConeLevelX = new SN_DoublePreference("armTipToConeLevelX", 0);
-    public static final SN_DoublePreference armTipToConeLevelY = new SN_DoublePreference("armTipToConeLevelY", 0);
+    public static final SN_DoublePreference armTipToConeLevelX = new SN_DoublePreference("armTipToConeLevelX", 2);
+    public static final SN_DoublePreference armTipToConeLevelY = new SN_DoublePreference("armTipToConeLevelY", 2);
 
     public static final SN_DoublePreference armTipToMidShelfPosX = new SN_DoublePreference("armTipToMidShelfPosX", 4);
     public static final SN_DoublePreference armTipToMidShelfPosY = new SN_DoublePreference("armTipToMidShelfPosY", 15);
 
-    public static final SN_DoublePreference armTipToMidNodePosX = new SN_DoublePreference("armTipToMidNodePosY", 0);
-    public static final SN_DoublePreference armTipToMidNodePosY = new SN_DoublePreference("armTipToMidNodePosY", 0);
+    public static final SN_DoublePreference armTipToMidNodePosX = new SN_DoublePreference("armTipToMidNodePosY", 4);
+    public static final SN_DoublePreference armTipToMidNodePosY = new SN_DoublePreference("armTipToMidNodePosY", 4);
 
   }
 }
