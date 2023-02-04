@@ -175,7 +175,7 @@ public class RobotContainer {
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    PathPlannerTrajectory twoConePath = PathPlanner.loadPath("toStagingMark",
+    PathPlannerTrajectory twoConePath = PathPlanner.loadPath("twoConePath",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
