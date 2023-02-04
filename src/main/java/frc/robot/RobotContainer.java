@@ -163,7 +163,7 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
 
     // Intake cone command
-    conOperator.btn_LBump.onTrue(new IntakeCone());
+    conOperator.btn_LBump.onTrue(new IntakeCone(subCollector, subIntake, subArm, leds));
   }
 
   public Command getAutonomousCommand() {
