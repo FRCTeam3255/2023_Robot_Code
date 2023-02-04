@@ -105,6 +105,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
 
+    // TODO: Figure out actual values please
+    public static final SN_DoublePreference shoulderIntakeConeAnglePreset = new SN_DoublePreference(
+        "shoulderIntakeConeAnglePreset", 0);
+    public static final SN_DoublePreference elbowIntakeConeAnglePreset = new SN_DoublePreference(
+        "elbowIntakeConeAnglePreset", 0);
+
+    public static final SN_DoublePreference shoulderMidNodePreset = new SN_DoublePreference("shoulderMidNodePreset", 0);
+    public static final SN_DoublePreference elbowMidNodePreset = new SN_DoublePreference("elbowMidNodePreset", 0);
+
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
         "shoulderForwardSoftLimit", true);
     public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(

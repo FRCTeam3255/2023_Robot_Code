@@ -28,16 +28,19 @@ public class intakeCone extends SequentialCommandGroup {
         // - Retract collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
 
+        // Lower the arm so that the intake is cone level
+        new InstantCommand(
+            () -> subArm.setJointPositions(prefArm.shoulderIntakeConeAnglePreset, prefArm.elbowIntakeConeAnglePreset)),
+
         // Spin intake until a game piece is collected
-        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected).until(subIntake::isGamePieceCollected),
+        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
 
         // Stop motors
         new InstantCommand(() -> subIntake.setMotorSpeed(0)),
 
-        // - raise arm to mid node position
-        // new InstantCommand(() ->
-        // subArm.setArmTipPositionInches(prefArm.armTipToMidPosX,
-        // prefArm.armTipToMidPosY)),
+        // raise arm to mid node position
+        // TODO: might want to change method to setArmTipPositionInches instead
+        new InstantCommand(() -> subArm.setJointPositions(prefArm.shoulderMidNodePreset, prefArm.elbowMidNodePreset)),
 
         // - LEDS: May want to be a constant since they can't be set as a preference
         new InstantCommand(() -> leds.setPattern(PatternType.Yellow)));
