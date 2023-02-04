@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -108,6 +109,7 @@ public class Arm extends SubsystemBase {
     elbowJoint.setInverted(constArm.ELBOW_MOTOR_INVERT);
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
 
+    Timer.delay(2.0);
     // general config
     resetJointsToAbsolute();
   }

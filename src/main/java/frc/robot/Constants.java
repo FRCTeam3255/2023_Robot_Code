@@ -32,7 +32,7 @@ public final class Constants {
     NONE, CUBE, CONE, HUH
   }
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // NEO (big and small) encoder counts per rotation
   public static final double NEO_ENCODER_CPR = 42;
@@ -193,7 +193,7 @@ public final class Constants {
     // offsets are when both joints are facing to the right (0 degrees on unit
     // circle is at (1, 0))
     public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.397309);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.142530);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.469278);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(7.5);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(8.75);
