@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
@@ -28,23 +29,21 @@ public class intakeCone extends SequentialCommandGroup {
         // - Retract collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
 
-        // Lower the arm so that the intake is cone level
+        // - Lower the arm so that the intake is cone level
         new InstantCommand(
             () -> subArm.setArmTipPositionInches(prefArm.armTipToConeLevelX, prefArm.armTipToConeLevelY)),
 
-        // Spin intake until a game piece is collected
+        // - Spin intake until a game piece is collected
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
 
-        // Stop motors
-        new InstantCommand(() -> subIntake.setMotorSpeed(0)),
+        // - Set motors to hold speed
+        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
 
-        // raise arm to mid node position
+        // - Raise arm to mid node position
         new InstantCommand(
             () -> subArm.setArmTipPositionInches(prefArm.armTipToMidNodePosX, prefArm.armTipToMidNodePosY)),
 
-        // - LEDS: May want to be a constant since they can't be set as a preference
-        new InstantCommand(() -> leds.setPattern(PatternType.Yellow)));
-    // new InstantCommand(() ->
-    // leds.setPattern(Constants.INTAKE_CONE_LED_PATTERN)));
+        // - Set LEDs to Yellow
+        new InstantCommand(() -> leds.setPattern(Constants.INTAKE_CONE_LED_PATTERN)));
   }
 }
