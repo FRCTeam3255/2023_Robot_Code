@@ -105,6 +105,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
 
+    // deadzone around middle
     public static final SN_DoublePreference armTipDeadzone = new SN_DoublePreference("armTipDeadzone", 2);
 
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
@@ -115,6 +116,9 @@ public class RobotPreferences {
         "elbowForwardSoftLimit", true);
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
+
+    // tolerance in 2d space to goal position
+    public static final SN_DoublePreference armTipTolerance = new SN_DoublePreference("armTipTolerance", 1);
 
     public static final SN_DoublePreference armTipPresetX = new SN_DoublePreference("armTipPresetX", 8);
     public static final SN_DoublePreference armTipPresetY = new SN_DoublePreference("armTipPresetY", 8);
