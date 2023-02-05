@@ -7,6 +7,7 @@ package frc.robot.commands;
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -35,7 +36,11 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Lower the arm so that the intake is cone level
         new InstantCommand(
-            () -> subArm.setArmTipPositionInches(prefArm.armTipToConeLevelX, prefArm.armTipToConeLevelY)),
+            () -> subArm.setArmTipPositionInches(prefArm.armTipToConeLevelX, prefArm.armTipToConeLevelY))
+            .repeatedly()
+            .until(() -> subArm.getArmTipPosition().getDistance(new Translation2d(
+                prefArm.armTipToConeLevelX.getValue(), prefArm.armTipToConeLevelY.getValue())) < prefArm.armTipTolerance
+                    .getValue()),
 
         // - Spin intake until a game piece is collected
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
