@@ -8,6 +8,7 @@ import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -38,9 +39,12 @@ public class IntakeCone extends SequentialCommandGroup {
         new InstantCommand(
             () -> subArm.setArmTipPositionInches(prefArm.armTipToConeLevelX, prefArm.armTipToConeLevelY))
             .repeatedly()
-            .until(() -> subArm.getArmTipPosition().getDistance(new Translation2d(
-                prefArm.armTipToConeLevelX.getValue(), prefArm.armTipToConeLevelY.getValue())) < prefArm.armTipTolerance
-                    .getValue()),
+            .until(() -> new Translation2d(Units.metersToInches(subArm.getArmTipPosition().getX()),
+                Units.metersToInches(subArm.getArmTipPosition().getY())).getDistance(
+                    new Translation2d(
+                        prefArm.armTipToConeLevelX.getValue(),
+                        prefArm.armTipToConeLevelY.getValue())) < prefArm.armTipTolerance
+                            .getValue()),
 
         // - Spin intake until a game piece is collected
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
