@@ -36,6 +36,20 @@ public class RobotPreferences {
     // down.
     public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
 
+    // TODO: Create PID values and other values
+    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 0.7);
+    public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0.0);
+    public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0.0);
+
+    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 2);
+    public static final SN_DoublePreference autoTransI = new SN_DoublePreference("autoTransI", 0);
+    public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
+
+    public static final SN_DoublePreference autoMaxSpeedFeet = new SN_DoublePreference(
+        "autoMaxSpeedFeet", 2.0);
+
+    public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
+        "autoMaxAccelFeet", 1.0);
   }
 
   public static final class prefChargerTreads {

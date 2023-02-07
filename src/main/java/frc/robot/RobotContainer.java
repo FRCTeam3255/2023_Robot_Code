@@ -9,10 +9,14 @@ import com.frcteam3255.joystick.SN_F310Gamepad;
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Collector;
@@ -26,10 +30,12 @@ import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.IntakeCone;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
@@ -167,6 +173,17 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    PathPlannerTrajectory linePath = PathPlanner.loadPath("linePath",
+        new PathConstraints(
+            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    PathPlannerTrajectory twoConePath = PathPlanner.loadPath("twoConePath",
+        new PathConstraints(
+            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    return subDrivetrain.swerveAutoBuilder.fullAuto(twoConePath)
+        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain));
   }
 }
