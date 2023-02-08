@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.regex.Pattern;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
@@ -204,4 +206,12 @@ public final class Constants {
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
   }
 
+  public static final class constLEDs {
+    public static final PatternType hasConeColor = PatternType.Yellow;
+    public static final PatternType hasCubeColor = PatternType.Violet;
+
+    public static final PatternType failureColor = PatternType.Red;
+
+    public static final PatternType defaultColor = PatternType.Black;
+  }
 }
