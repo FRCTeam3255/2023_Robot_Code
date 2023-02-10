@@ -169,6 +169,10 @@ public class RobotContainer {
 
   }
 
+  public void configureNeutralModes() {
+    subArm.setJointsNeutralMode();
+  }
+
   public Command getAutonomousCommand() {
     PathPlannerTrajectory linePath = PathPlanner.loadPath("linePath",
         new PathConstraints(
