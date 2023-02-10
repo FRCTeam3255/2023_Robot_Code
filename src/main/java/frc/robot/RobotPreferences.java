@@ -5,7 +5,7 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = false;
+  public static final boolean useNetworkTables = true;
 
   public static final class prefDrivetrain {
 
@@ -110,14 +110,14 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
         "elbowArbitraryFeedForward", 0);
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
     public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", .2);
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 3);
 
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
-    public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
+    public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 45.0);
 
     // radius of circle centered on shoulder joint where the arm tip cannot reach
     // (inches)

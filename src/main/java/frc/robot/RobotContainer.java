@@ -89,8 +89,6 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // Operator
-    conOperator.btn_A.whileTrue(new IntakeGamePiece(subIntake));
-    conOperator.btn_B.whileTrue(subIntake.releaseCommand());
 
     // Set the arm to a preset position (example bind, may not be necessary for comp
     // bindings)
@@ -122,50 +120,6 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
 
     // Test keybinds
-
-    // Spin the Collector roller motor while held
-    conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
-    // // Spin the intake motor while held
-    // conOperator.btn_B
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
-    // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
-
-    // Set Collector to starting config
-    conOperator.btn_X
-        .onTrue(
-            Commands.runOnce(
-                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
-    // // Set Collector to starting config
-    // conOperator.btn_X
-    // .onTrue(
-    // Commands.runOnce(
-    // () ->
-    // subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
-
-    // Set Collector Rollers to intake height
-    conOperator.btn_Y
-        .onTrue(
-            Commands
-                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
-    // // Set Collector Rollers to intake height
-    // conOperator.btn_Y
-    // .onTrue(
-    // Commands
-    // .runOnce(() ->
-    // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
-
-    // Set Collector Rollers to climbing position
-    conOperator.btn_A
-        .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
-
-    // Spin Charger treads
-    conOperator.btn_RBump
-        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
 
   }
 

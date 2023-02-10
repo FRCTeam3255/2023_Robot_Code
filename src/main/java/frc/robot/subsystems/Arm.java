@@ -245,8 +245,9 @@ public class Arm extends SubsystemBase {
    * @param elbowAngle    Elbow position in degrees
    */
   public void setJointPositions(double shoulderAngle, double elbowAngle) {
-    setShoulderPosition(shoulderAngle);
+    // setShoulderPosition(shoulderAngle);
     setElbowPosition(elbowAngle);
+    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + elbowAngle);
   }
 
   /**
@@ -284,8 +285,10 @@ public class Arm extends SubsystemBase {
       double encoderCounts = SN_Math.degreesToFalcon(
           degrees, constArm.ELBOW_GEAR_RATIO);
       elbowJoint.set(ControlMode.Position, encoderCounts);
+      System.out.println("**********************************************************" + encoderCounts);
     } else {
       elbowJoint.neutralOutput();
+      System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& neutral output");
     }
   }
 
