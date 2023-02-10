@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -157,7 +158,7 @@ public final class Constants {
     public static final boolean LEFT_MOTOR_INVERTED = false;
     public static final boolean RIGHT_MOTOR_INVERTED = true;
 
-    public static final boolean LIMIT_SWITCH_INVERT = true;
+    public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
     // RGB game piece colors
     public static final double coneColorR = 0.34509;
