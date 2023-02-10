@@ -186,8 +186,8 @@ public final class Constants {
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
 
-    public static final double SHOULDER_GEAR_RATIO = 100.0;
-    public static final double ELBOW_GEAR_RATIO = 100.0;
+    public static final double SHOULDER_GEAR_RATIO = 200.0;
+    public static final double ELBOW_GEAR_RATIO = 150.0;
 
     // offsets are when both joints are facing to the right (0 degrees on unit
     // circle is at (1, 0))
