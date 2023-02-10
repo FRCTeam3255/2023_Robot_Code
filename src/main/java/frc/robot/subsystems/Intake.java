@@ -11,7 +11,6 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +25,6 @@ public class Intake extends SubsystemBase {
 
   SN_CANSparkMax leftMotor;
   SN_CANSparkMax rightMotor;
-  DigitalInput limitSwitch;
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
   Color coneColor;
@@ -38,8 +36,6 @@ public class Intake extends SubsystemBase {
 
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
-
-    limitSwitch = new DigitalInput(mapIntake.LIMIT_SWITCH_DIO);
 
     coneColor = new Color(constIntake.coneColorR, constIntake.coneColorG, constIntake.coneColorB);
     cubeColor = new Color(constIntake.cubeColorR, constIntake.cubeColorG, constIntake.cubeColorB);
@@ -75,7 +71,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean getLimitSwitch() {
-    return constIntake.LIMIT_SWITCH_INVERT ? !limitSwitch.get() : limitSwitch.get();
+    return leftMotor.getReverseLimitSwitch(constIntake.LIMIT_SWITCH_TYPE).isPressed();
   }
 
   public boolean isGamePieceCollected() {
