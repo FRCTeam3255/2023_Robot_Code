@@ -112,6 +112,11 @@ public class Arm extends SubsystemBase {
     resetJointsToAbsolute();
   }
 
+  public void setJointsNeutralMode() {
+    shoulderJoint.setNeutralMode(constArm.SHOULDER_MOTOR_BREAK);
+    elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
+  }
+
   /**
    * Set the translational position of the tip of the arm (intake position). X is
    * horizontal, Y is vertical.
