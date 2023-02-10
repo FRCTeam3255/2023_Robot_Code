@@ -181,7 +181,7 @@ public final class Constants {
 
   public static final class constArm {
     public static final boolean SHOULDER_MOTOR_INVERT = false;
-    public static final boolean ELBOW_MOTOR_INVERT = false;
+    public static final boolean ELBOW_MOTOR_INVERT = true;
 
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
@@ -191,8 +191,16 @@ public final class Constants {
 
     // offsets are when both joints are facing to the right (0 degrees on unit
     // circle is at (1, 0))
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.397309);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.142530);
+
+    // mini-arm offsets
+    // public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.397309);
+    // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.142530);
+
+    // prac bot does not have abs encs atm
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(7.5);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(8.75);
