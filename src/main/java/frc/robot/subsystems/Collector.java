@@ -113,6 +113,18 @@ public class Collector extends SubsystemBase {
   }
 
   /**
+   * Get the position of the collector pivot joint from the motor.
+   * 
+   * @return Position of collector in radians
+   */
+  public double getPivotMotorPosition() {
+    return Units.degreesToRadians(
+        SN_Math.falconToDegrees(
+            pivotMotor.getSelectedSensorPosition(),
+            constCollector.GEAR_RATIO));
+  }
+
+  /**
    * Set the percent output of the roller motor
    * 
    * @param speed Percent output for roller motor
@@ -126,6 +138,7 @@ public class Collector extends SubsystemBase {
     // This method will be called once per scheduler run
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Collector Pivot Position", getPivotMotorPosition());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getPosition());
     }
