@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.regex.Pattern;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
