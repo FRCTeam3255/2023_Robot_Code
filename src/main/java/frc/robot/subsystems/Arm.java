@@ -327,6 +327,14 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Neutral the outputs of each joint motor
+   */
+  public void neutralJointOutputs() {
+    shoulderJoint.neutralOutput();
+    elbowJoint.neutralOutput();
+  }
+
+  /**
    * Get the rotational position of the shoulder.
    * 
    * @return Rotational position of shoulder
