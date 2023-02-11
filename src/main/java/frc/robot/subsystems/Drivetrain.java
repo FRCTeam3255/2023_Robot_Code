@@ -14,14 +14,17 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,6 +44,10 @@ public class Drivetrain extends SubsystemBase {
   private boolean isFieldRelative;
 
   private Field2d field;
+
+  private ProfiledPIDController xPID;
+  private ProfiledPIDController yPID;
+  private ProfiledPIDController thetaPID;
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
@@ -69,6 +76,30 @@ public class Drivetrain extends SubsystemBase {
 
     field = new Field2d();
 
+    xPID = new ProfiledPIDController(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+
+    yPID = new ProfiledPIDController(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+
+    thetaPID = new ProfiledPIDController(
+        prefDrivetrain.teleThetaP.getValue(),
+        prefDrivetrain.teleThetaI.getValue(),
+        prefDrivetrain.teleThetaD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
+            Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
+
     linePath = PathPlanner.loadPath("linePath",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
@@ -86,6 +117,37 @@ public class Drivetrain extends SubsystemBase {
     for (SN_SwerveModule mod : modules) {
       mod.configure();
     }
+
+    xPID.setPID(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue());
+    xPID.setConstraints(new TrapezoidProfile.Constraints(
+        Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+        Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+    xPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleTransTolerance.getValue()));
+    xPID.reset(getPose().getX());
+
+    yPID.setPID(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue());
+    yPID.setConstraints(new TrapezoidProfile.Constraints(
+        Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+        Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+    yPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleThetaTolerance.getValue()));
+    yPID.reset(getPose().getY());
+
+    thetaPID.setPID(
+        prefDrivetrain.teleThetaP.getValue(),
+        prefDrivetrain.teleThetaI.getValue(),
+        prefDrivetrain.teleThetaD.getValue());
+    thetaPID.setConstraints(new TrapezoidProfile.Constraints(
+        Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
+        Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
+    thetaPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleThetaTolerance.getValue()));
+    thetaPID.reset(getPose().getRotation().getRadians());
+    thetaPID.enableContinuousInput(-Math.PI, Math.PI);
 
     // (i think) since the drive motor inversions takes a meanful amount of time, it
     // eats the instruction to reset the encoder counts. so we just wait a second
