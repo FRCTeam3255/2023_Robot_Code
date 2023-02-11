@@ -102,11 +102,11 @@ public class RobotPreferences {
   public static final class prefArm {
     public static final SN_DoublePreference shoulderArbitraryFeedForward = new SN_DoublePreference(
         "shoulderArbitraryFeedForward", 0);
-    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.1);
+    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.00005);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", .2);
-    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 3);
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 0.75);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
 
     public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
         "elbowArbitraryFeedForward", 0);
