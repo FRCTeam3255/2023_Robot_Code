@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -47,6 +48,9 @@ public class Arm extends SubsystemBase {
     goalArmTipPosition = new Translation2d();
 
     configure();
+
+    // Timer.delay(2.25);
+    // resetJointsToAbsolute();
   }
 
   public void configure() {
@@ -111,9 +115,6 @@ public class Arm extends SubsystemBase {
 
     elbowJoint.setInverted(constArm.ELBOW_MOTOR_INVERT);
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
-
-    // general config
-    resetJointsToAbsolute();
   }
 
   public void setJointsNeutralMode() {
@@ -249,7 +250,7 @@ public class Arm extends SubsystemBase {
    * @param elbowAngle    Elbow position in degrees
    */
   public void setJointPositions(double shoulderAngle, double elbowAngle) {
-    setShoulderPosition(shoulderAngle);
+    // setShoulderPosition(shoulderAngle);
     setElbowPosition(elbowAngle);
   }
 
@@ -393,8 +394,10 @@ public class Arm extends SubsystemBase {
    * encoders.
    */
   public void resetJointsToAbsolute() {
-    resetShoulderToAbsolute();
-    resetElbowToAbsolute();
+    // resetShoulderToAbsolute();
+    // resetElbowToAbsolute();
+    shoulderJoint.setSelectedSensorPosition(SN_Math.degreesToFalcon(-90.0, constArm.SHOULDER_GEAR_RATIO));
+    elbowJoint.setSelectedSensorPosition(SN_Math.degreesToFalcon(0.0, constArm.ELBOW_GEAR_RATIO));
   }
 
   /**
