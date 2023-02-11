@@ -170,17 +170,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    PathPlannerTrajectory linePath = PathPlanner.loadPath("linePath",
-        new PathConstraints(
-            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    PathPlannerTrajectory twoConePath = PathPlanner.loadPath("twoConePath",
-        new PathConstraints(
-            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    return subDrivetrain.swerveAutoBuilder.fullAuto(twoConePath)
-        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain));
+    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.twoConePath)
+        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(),
+            subDrivetrain));
   }
 }
