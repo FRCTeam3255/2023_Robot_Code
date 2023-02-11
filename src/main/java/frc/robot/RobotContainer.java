@@ -150,6 +150,8 @@ public class RobotContainer {
         .onTrue(
             Commands
                 .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
+
+    conOperator.btn_Y.onTrue(subCollector.commandSetPivotMotorAngle(prefCollector.pivotAngleCubeCollecting));
     // // Set Collector Rollers to intake height
     // conOperator.btn_Y
     // .onTrue(

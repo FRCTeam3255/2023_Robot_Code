@@ -7,12 +7,15 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constCollector;
@@ -75,6 +78,10 @@ public class Collector extends SubsystemBase {
   public void setPivotMotorAngle(double angle) {
     double position = SN_Math.degreesToFalcon(angle, constCollector.GEAR_RATIO);
     pivotMotor.set(ControlMode.Position, position);
+  }
+
+  public Command commandSetPivotMotorAngle(SN_DoublePreference angle) {
+    return Commands.runOnce(() -> setPivotMotorAngle(angle.getValue()));
   }
 
   /**
