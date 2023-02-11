@@ -86,12 +86,9 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
-    // Set the arm to a preset position (example bind, may not be necessary for comp
-    // bindings)
     conOperator.btn_A
-        .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
-            .repeatedly())
-        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+        .onTrue(Commands
+            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
 
     conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
 
