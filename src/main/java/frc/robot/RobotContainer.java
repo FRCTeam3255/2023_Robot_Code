@@ -144,35 +144,6 @@ public class RobotContainer {
 
     // Spin the Intake in reverse
     conOperator.btn_Back.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed)));
-
-    // Switchboard
-
-    // Sets LED color to "violet" to indicate a purple game piece (cube) is being
-    // requested
-    conSwitchboard.btn_1
-        .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Violet)))
-        .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
-
-    // Sets LED color to "yellow" to indicate a yellow game piece (cone) is being
-    // requested
-    conSwitchboard.btn_2
-        .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
-        .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
-
-    // Test keybinds
-
-    conOperator.btn_A.whileTrue(new IntakeGamePiece(subIntake));
-    conOperator.btn_B.whileTrue(subIntake.releaseCommand());
-
-    // Set Collector Rollers to climbing position
-    conOperator.btn_A
-        .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
-
-    // Spin Charger treads
-    conOperator.btn_RBump
-        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
   }
 
   public Command getAutonomousCommand() {
