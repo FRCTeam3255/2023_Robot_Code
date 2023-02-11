@@ -32,6 +32,8 @@ public class Arm extends SubsystemBase {
   DutyCycleEncoder shoulderEncoder;
   DutyCycleEncoder elbowEncoder;
 
+  Translation2d goalArmTipPosition;
+
   public Arm() {
     shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
     elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
@@ -41,6 +43,8 @@ public class Arm extends SubsystemBase {
 
     shoulderConfig = new TalonFXConfiguration();
     elbowConfig = new TalonFXConfiguration();
+
+    goalArmTipPosition = new Translation2d();
 
     configure();
   }
@@ -323,6 +327,14 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Neutral the outputs of each joint motor
+   */
+  public void neutralJointOutputs() {
+    shoulderJoint.neutralOutput();
+    elbowJoint.neutralOutput();
+  }
+
+  /**
    * Get the rotational position of the shoulder.
    * 
    * @return Rotational position of shoulder
@@ -426,6 +438,24 @@ public class Arm extends SubsystemBase {
     return new Translation2d(x, y);
   }
 
+  /**
+   * Set the goal arm tip position. This will not move the arm on its own.
+   * 
+   * @param goalPosition Goal arm tip position in meters
+   */
+  public void setGoalArmTipPosition(Translation2d goalPosition) {
+    goalArmTipPosition = goalPosition;
+  }
+
+  /**
+   * Get the goal arm tip position.
+   * 
+   * @return The goal arm tip position in meters.
+   */
+  public Translation2d getGoalArmTipPosition() {
+    return goalArmTipPosition;
+  }
+
   @Override
   public void periodic() {
 
@@ -449,6 +479,9 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Tip Position Y", Units.metersToInches(getArmTipPosition().getY()));
       SmartDashboard.putNumber("Arm Tip Distance",
           Units.metersToInches(getArmTipPosition().getDistance(new Translation2d())));
+
+      SmartDashboard.putNumber("Arm Goal Tip Position X", Units.metersToInches(getGoalArmTipPosition().getX()));
+      SmartDashboard.putNumber("Arm Goal Tip Position Y", Units.metersToInches(getGoalArmTipPosition().getY()));
     }
   }
 }
