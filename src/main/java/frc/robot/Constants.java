@@ -155,8 +155,8 @@ public final class Constants {
   }
 
   public static final class constIntake {
-    public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = true;
+    public static final boolean LEFT_MOTOR_INVERTED = true;
+    public static final boolean RIGHT_MOTOR_INVERTED = false;
 
     public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
@@ -206,11 +206,11 @@ public final class Constants {
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
 
-    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(180);
-    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-90);
+    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(130.0);
+    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-157.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(163);
-    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(65.0);
+    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-80.0);
   }
 
 }
