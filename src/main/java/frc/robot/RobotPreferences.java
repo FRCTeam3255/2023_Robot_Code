@@ -110,11 +110,11 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
         "elbowArbitraryFeedForward", 0);
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.00005);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", .2);
-    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 3);
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 0.75);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
     public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
     public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
