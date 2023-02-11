@@ -69,8 +69,6 @@ public class Drivetrain extends SubsystemBase {
 
     field = new Field2d();
 
-    ////////////////////////////////////////////////////////////////////////////////////
-
     linePath = PathPlanner.loadPath("linePath",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
@@ -80,8 +78,6 @@ public class Drivetrain extends SubsystemBase {
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    ////////////////////////////////////////////////////////////////////////////////////
 
     configure();
   }
