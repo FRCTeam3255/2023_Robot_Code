@@ -430,7 +430,7 @@ public class Arm extends SubsystemBase {
     double a2 = constArm.ELBOW_LENGTH;
 
     double q1 = getShoulderPosition().getRadians();
-    double q2 = getElbowPosition().getRadians();
+    double q2 = getElbowPosition().getRadians() + q1;
 
     double x = (a2 * Math.cos(q1 + q2)) + (a1 * Math.cos(q1));
     double y = (a2 * Math.sin(q1 + q2)) + (a1 * Math.sin(q1));
