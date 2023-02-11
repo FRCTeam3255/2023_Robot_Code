@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import java.util.HashMap;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
@@ -41,6 +44,9 @@ public class Drivetrain extends SubsystemBase {
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
+  public PathPlannerTrajectory linePath;
+  public PathPlannerTrajectory twoConePath;
+
   public Drivetrain() {
 
     modules = new SN_SwerveModule[] {
@@ -62,6 +68,16 @@ public class Drivetrain extends SubsystemBase {
     isFieldRelative = true;
 
     field = new Field2d();
+
+    linePath = PathPlanner.loadPath("linePath",
+        new PathConstraints(
+            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    twoConePath = PathPlanner.loadPath("twoConePath",
+        new PathConstraints(
+            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     configure();
   }
