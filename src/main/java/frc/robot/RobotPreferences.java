@@ -5,7 +5,7 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = false;
+  public static final boolean useNetworkTables = true;
 
   public static final class prefDrivetrain {
 
