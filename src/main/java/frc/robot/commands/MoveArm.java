@@ -22,6 +22,7 @@ public class MoveArm extends CommandBase {
 
   @Override
   public void initialize() {
+    subArm.setGoalArmTipPosition(subArm.getArmTipPosition());
   }
 
   @Override

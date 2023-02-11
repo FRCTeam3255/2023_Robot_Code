@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -47,6 +48,9 @@ public class Arm extends SubsystemBase {
     goalArmTipPosition = new Translation2d();
 
     configure();
+
+    // Timer.delay(2.25);
+    // resetJointsToAbsolute();
   }
 
   public void configure() {
@@ -111,9 +115,11 @@ public class Arm extends SubsystemBase {
 
     elbowJoint.setInverted(constArm.ELBOW_MOTOR_INVERT);
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
+  }
 
-    // general config
-    resetJointsToAbsolute();
+  public void setJointsNeutralMode() {
+    shoulderJoint.setNeutralMode(constArm.SHOULDER_MOTOR_BREAK);
+    elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
   }
 
   /**
@@ -245,7 +251,7 @@ public class Arm extends SubsystemBase {
    */
   public void setJointPositions(double shoulderAngle, double elbowAngle) {
     setShoulderPosition(shoulderAngle);
-    setElbowPosition(elbowAngle - shoulderAngle);
+    setElbowPosition(elbowAngle);
   }
 
   /**
@@ -360,14 +366,6 @@ public class Arm extends SubsystemBase {
     return Rotation2d.fromDegrees(degrees);
   }
 
-  public Rotation2d getElbowPositionIndependent() {
-    double degrees = SN_Math.falconToDegrees(
-        elbowJoint.getSelectedSensorPosition(),
-        constArm.ELBOW_GEAR_RATIO);
-
-    return Rotation2d.fromDegrees(degrees + getShoulderPosition().getDegrees());
-  }
-
   /**
    * Get the shoulder absolute encoder reading.
    * 
@@ -396,8 +394,10 @@ public class Arm extends SubsystemBase {
    * encoders.
    */
   public void resetJointsToAbsolute() {
-    resetShoulderToAbsolute();
-    resetElbowToAbsolute();
+    // resetShoulderToAbsolute();
+    // resetElbowToAbsolute();
+    shoulderJoint.setSelectedSensorPosition(SN_Math.degreesToFalcon(-90.0, constArm.SHOULDER_GEAR_RATIO));
+    elbowJoint.setSelectedSensorPosition(SN_Math.degreesToFalcon(0.0, constArm.ELBOW_GEAR_RATIO));
   }
 
   /**
@@ -425,12 +425,12 @@ public class Arm extends SubsystemBase {
    * 
    * @return Position of of arm tip in meters
    */
-  private Translation2d getArmTipPosition() {
+  public Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
 
     double q1 = getShoulderPosition().getRadians();
-    double q2 = getElbowPosition().getRadians();
+    double q2 = getElbowPosition().getRadians() + q1;
 
     double x = (a2 * Math.cos(q1 + q2)) + (a1 * Math.cos(q1));
     double y = (a2 * Math.sin(q1 + q2)) + (a1 * Math.sin(q1));
@@ -445,6 +445,19 @@ public class Arm extends SubsystemBase {
    */
   public void setGoalArmTipPosition(Translation2d goalPosition) {
     goalArmTipPosition = goalPosition;
+  }
+
+  /**
+   * Set the goal arm tip position in inches with SN_DoublePreferences. Does not
+   * move the arm, simply sets the goal.
+   * 
+   * @param xInches
+   * @param yInches
+   */
+  public void setGoalArmTipPositionInches(SN_DoublePreference xInches, SN_DoublePreference yInches) {
+    goalArmTipPosition = new Translation2d(Units.inchesToMeters(xInches.getValue()),
+        Units.inchesToMeters(yInches.getValue()));
+
   }
 
   /**
@@ -473,7 +486,6 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
-      SmartDashboard.putNumber("Arm Elbow Position Independent", getElbowPositionIndependent().getDegrees());
 
       SmartDashboard.putNumber("Arm Tip Position X", Units.metersToInches(getArmTipPosition().getX()));
       SmartDashboard.putNumber("Arm Tip Position Y", Units.metersToInches(getArmTipPosition().getY()));
