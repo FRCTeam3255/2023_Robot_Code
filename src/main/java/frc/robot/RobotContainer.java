@@ -96,10 +96,8 @@ public class RobotContainer {
         .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
 
     conOperator.btn_B
-        .whileTrue(
-            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
-                .repeatedly())
-        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+        .onTrue(
+            Commands.runOnce(() -> subArm.setGoalArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY)));
 
     conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
 
