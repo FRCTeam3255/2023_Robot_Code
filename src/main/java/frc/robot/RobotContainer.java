@@ -103,6 +103,8 @@ public class RobotContainer {
 
     conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
 
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subArm.resetJointsToAbsolute()));
+
   }
 
   public void configureNeutralModes() {
