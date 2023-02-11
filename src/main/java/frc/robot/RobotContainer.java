@@ -27,6 +27,7 @@ import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.MoveArm;
 import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
@@ -65,6 +66,7 @@ public class RobotContainer {
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
 
     configureBindings();
   }
