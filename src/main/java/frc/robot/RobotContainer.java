@@ -7,7 +7,6 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
 import com.frcteam3255.components.SN_Blinkin;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -23,12 +22,10 @@ import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.MoveArm;
 import frc.robot.subsystems.ChargerTreads;
-import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
@@ -63,6 +60,7 @@ public class RobotContainer {
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
 
     configureBindings();
   }

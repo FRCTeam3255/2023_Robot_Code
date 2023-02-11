@@ -448,6 +448,19 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Set the goal arm tip position in inches with SN_DoublePreferences. Does not
+   * move the arm, simply sets the goal.
+   * 
+   * @param xInches
+   * @param yInches
+   */
+  public void setGoalArmTipPositionInches(SN_DoublePreference xInches, SN_DoublePreference yInches) {
+    goalArmTipPosition = new Translation2d(Units.inchesToMeters(xInches.getValue()),
+        Units.inchesToMeters(yInches.getValue()));
+
+  }
+
+  /**
    * Get the goal arm tip position.
    * 
    * @return The goal arm tip position in meters.
