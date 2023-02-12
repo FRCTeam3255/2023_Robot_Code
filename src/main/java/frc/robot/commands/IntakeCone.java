@@ -37,14 +37,7 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Lower the arm so that the intake is cone level
         new InstantCommand(
-            () -> subArm.setArmTipPositionInches(prefArm.armTipToConeLevelX, prefArm.armTipToConeLevelY))
-            .repeatedly()
-            .until(() -> new Translation2d(Units.metersToInches(subArm.getArmTipPosition().getX()),
-                Units.metersToInches(subArm.getArmTipPosition().getY())).getDistance(
-                    new Translation2d(
-                        prefArm.armTipToConeLevelX.getValue(),
-                        prefArm.armTipToConeLevelY.getValue())) < prefArm.armTipTolerance
-                            .getValue()),
+            () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
 
         // - Spin intake until a game piece is collected
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
@@ -54,7 +47,7 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Raise arm to mid node position
         new InstantCommand(
-            () -> subArm.setArmTipPositionInches(prefArm.armTipToMidNodePosX, prefArm.armTipToMidNodePosY)),
+            () -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)),
 
         // - Set LEDs to Yellow
         new InstantCommand(() -> leds.setPattern(Constants.INTAKE_CONE_LED_PATTERN)));

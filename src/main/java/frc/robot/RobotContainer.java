@@ -27,10 +27,12 @@ import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
-import frc.robot.commands.IntakeCone;
+import frc.robot.commands.MoveArm;
+import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -64,10 +66,14 @@ public class RobotContainer {
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
 
     configureBindings();
   }
 
+  public void configureNeutralModes() {
+    subArm.setJointsNeutralMode();
+  }
   // Leds
 
   // While held, Leds will change to given color, and turn off on release
@@ -90,100 +96,59 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // Operator
-    conOperator.btn_A.whileTrue(new IntakeGamePiece(subIntake));
-    conOperator.btn_B.whileTrue(subIntake.releaseCommand());
 
-    // Set the arm to a preset position (example bind, may not be necessary for comp
-    // bindings)
-    conOperator.btn_A
-        .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
-            .repeatedly())
-        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+    // Run IntakeCube command
+    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake, leds));
 
-    conOperator.btn_B
-        .whileTrue(
-            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
-                .repeatedly())
-        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+    // TODO: Run IntakeCone command (btn_RB)
+    // TODO: Run PrepPlace command (btn_LT)
+    // TODO: Run PlaceGamePiece command (btn_RT)
 
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
+    // Set stow Arm preset
+    conOperator.btn_B.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
 
-    // Switchboard
+    // Set low Arm preset
+    conOperator.btn_A.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
 
-    // Sets LED color to "violet" to indicate a purple game piece (cube) is being
-    // requested
-    conSwitchboard.btn_1
-        .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Violet)))
-        .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+    // Set mid Arm preset
+    conOperator.btn_X.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
 
-    // Sets LED color to "yellow" to indicate a yellow game piece (cone) is being
-    // requested
-    conSwitchboard.btn_2
-        .onTrue(Commands.runOnce(() -> leds.setPattern(PatternType.Yellow)))
-        .onFalse(Commands.runOnce(() -> leds.setPattern(PatternType.Black)));
+    // Set high Arm preset
+    conOperator.btn_Y.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
 
-    // Test keybinds
+    // TODO: Create button to manually adjust arm
+    // shoulder: btn_LS
+    // elbow: btn_RS
 
-    // Spin the Collector roller motor while held
-    conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
-    // // Spin the intake motor while held
-    // conOperator.btn_B
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
-    // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
-
-    // Set Collector to starting config
-    conOperator.btn_X
+    // Set Collector to starting config and stop the rollers
+    conOperator.POV_North
         .onTrue(
             Commands.runOnce(
-                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
-    // // Set Collector to starting config
-    // conOperator.btn_X
-    // .onTrue(
-    // Commands.runOnce(
-    // () ->
-    // subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
+                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
+                .alongWith(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0))));
 
-    // Set Collector Rollers to intake height
-    conOperator.btn_Y
+    // Set Collector rollers to intake height and spin the rollers
+    conOperator.POV_South
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
-    // // Set Collector Rollers to intake height
-    // conOperator.btn_Y
-    // .onTrue(
-    // Commands
-    // .runOnce(() ->
-    // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue()))
+                .alongWith(
+                    Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))));
 
-    // Set Collector Rollers to climbing position
-    conOperator.btn_A
-        .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
+    // Spin the Intake forward
+    conOperator.btn_Start.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed)));
 
-    // Spin Charger treads
-    conOperator.btn_RBump
-        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
-
-    // Intake cone command
-    conOperator.btn_LBump.onTrue(new IntakeCone(subCollector, subIntake, subArm, leds));
+    // Spin the Intake in reverse
+    conOperator.btn_Back.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed)));
   }
 
   public Command getAutonomousCommand() {
-    PathPlannerTrajectory linePath = PathPlanner.loadPath("linePath",
-        new PathConstraints(
-            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    PathPlannerTrajectory twoConePath = PathPlanner.loadPath("twoConePath",
-        new PathConstraints(
-            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    return subDrivetrain.swerveAutoBuilder.fullAuto(twoConePath)
-        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain));
+    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.twoConePath)
+        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(),
+            subDrivetrain));
   }
 }

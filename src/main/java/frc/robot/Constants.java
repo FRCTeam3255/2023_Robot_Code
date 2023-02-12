@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -155,10 +156,10 @@ public final class Constants {
   }
 
   public static final class constIntake {
-    public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = true;
+    public static final boolean LEFT_MOTOR_INVERTED = true;
+    public static final boolean RIGHT_MOTOR_INVERTED = false;
 
-    public static final boolean LIMIT_SWITCH_INVERT = true;
+    public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
     // RGB game piece colors
     public static final double coneColorR = 0.34509;
@@ -182,27 +183,35 @@ public final class Constants {
 
   public static final class constArm {
     public static final boolean SHOULDER_MOTOR_INVERT = false;
-    public static final boolean ELBOW_MOTOR_INVERT = false;
+    public static final boolean ELBOW_MOTOR_INVERT = true;
 
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
 
-    public static final double SHOULDER_GEAR_RATIO = 100.0;
-    public static final double ELBOW_GEAR_RATIO = 100.0;
+    public static final double SHOULDER_GEAR_RATIO = 200.0;
+    public static final double ELBOW_GEAR_RATIO = 150.0;
 
     // offsets are when both joints are facing to the right (0 degrees on unit
     // circle is at (1, 0))
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.397309);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.469278);
 
-    public static final double SHOULDER_LENGTH = Units.inchesToMeters(7.5);
-    public static final double ELBOW_LENGTH = Units.inchesToMeters(8.75);
+    // mini-arm offsets
+    // public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.397309);
+    // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(180);
-    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-90);
+    // prac bot does not have abs encs atm
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(163);
-    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-170);
+    public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
+    public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
+
+    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(130.0);
+    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-157.0);
+
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(65.0);
+    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-80.0);
   }
 
 }
