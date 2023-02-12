@@ -214,4 +214,12 @@ public final class Constants {
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-80.0);
   }
 
+  public static final class constLEDs {
+    public static final PatternType hasConeColor = PatternType.Yellow;
+    public static final PatternType hasCubeColor = PatternType.Violet;
+
+    public static final PatternType failureColor = PatternType.Red;
+
+    public static final PatternType defaultColor = PatternType.Black;
+  }
 }

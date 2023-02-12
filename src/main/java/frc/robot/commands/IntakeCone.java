@@ -22,7 +22,7 @@ public class IntakeCone extends SequentialCommandGroup {
   Arm subArm;
   SN_Blinkin leds;
 
-  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm, SN_Blinkin leds) {
+  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm) {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.subArm = subArm;
@@ -44,9 +44,6 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Raise arm to stow position
         new InstantCommand(
-            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
-
-        // - Set LEDs to Yellow
-        new InstantCommand(() -> leds.setPattern(Constants.INTAKE_CONE_LED_PATTERN)));
+            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
   }
 }

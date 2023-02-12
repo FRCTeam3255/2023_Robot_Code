@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
@@ -28,6 +29,7 @@ import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.ChargerTreads;
@@ -49,11 +51,11 @@ public class RobotContainer {
   private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
   private final Collector subCollector = new Collector();
+  private final LEDs subLEDs = new LEDs();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
   private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
-  private final SN_Blinkin leds = new SN_Blinkin(mapControllers.BLINKIN_PWM);
 
   public RobotContainer() {
 
@@ -67,6 +69,7 @@ public class RobotContainer {
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
 
     configureBindings();
@@ -75,9 +78,7 @@ public class RobotContainer {
   public void configureNeutralModes() {
     subArm.setJointsNeutralMode();
   }
-  // Leds
 
-  // While held, Leds will change to given color, and turn off on release
   private void configureBindings() {
 
     // Driver
@@ -99,10 +100,10 @@ public class RobotContainer {
     // Operator
 
     // Run IntakeCube command
-    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake, leds));
+    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake));
 
     // TODO: Run IntakeCone command (btn_RB)
-    conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake, subArm, leds));
+    conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
