@@ -46,6 +46,9 @@ public class Arm extends SubsystemBase {
     shoulderConfig = new TalonFXConfiguration();
     elbowConfig = new TalonFXConfiguration();
 
+    goalShoulderAngle = new Rotation2d();
+    goalElbowAngle = new Rotation2d();
+
     configure();
 
     // Timer.delay(2.25);

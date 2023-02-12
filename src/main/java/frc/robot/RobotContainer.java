@@ -27,6 +27,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
@@ -102,6 +103,7 @@ public class RobotContainer {
     conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake));
 
     // TODO: Run IntakeCone command (btn_RB)
+    conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake, subArm, leds));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
