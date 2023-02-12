@@ -79,7 +79,8 @@ public class Intake extends SubsystemBase {
       return true;
     }
 
-    else if (colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
+    else if (colorSensor.getProximity() != 0
+        && colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
       return true;
     }
 
