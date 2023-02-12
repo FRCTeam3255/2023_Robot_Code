@@ -45,9 +45,9 @@ public class IntakeCone extends SequentialCommandGroup {
         // - Set motors to hold speed
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
 
-        // - Raise arm to mid node position
+        // - Raise arm to stow position
         new InstantCommand(
-            () -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)),
+            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
 
         // - Set LEDs to Yellow
         new InstantCommand(() -> leds.setPattern(Constants.INTAKE_CONE_LED_PATTERN)));
