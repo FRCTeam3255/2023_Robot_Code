@@ -129,9 +129,9 @@ public class RobotPreferences {
         "elbowReverseSoftLimit", true);
 
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 0);
+        "armPresetCollectorShoulderAngle", 12);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", 0);
+        "armPresetCollectorElbowAngle", -110);
 
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
