@@ -16,7 +16,7 @@ import frc.robot.commands.intakeCube;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class fullAuto extends SequentialCommandGroup {
+public class FullAuto extends SequentialCommandGroup {
 
   Arm arm;
   Collector collector;
@@ -33,7 +33,7 @@ public class fullAuto extends SequentialCommandGroup {
   // Drive to charge station
   // Dock/Engage
 
-  public fullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake,
+  public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake,
       intakeCube intakeCube, MoveArm moveArm) {
 
     arm = subArm;

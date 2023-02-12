@@ -25,6 +25,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.Auto.FullAuto;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefArm;
@@ -101,8 +102,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.twoConePath)
-        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(),
-            subDrivetrain));
+    return new FullAuto(subArm, subCollector, subDrivetrain, subIntake, null, null)
+        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain));
   }
 }
