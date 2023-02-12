@@ -2,10 +2,13 @@ package frc.robot;
 
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
+import com.frcteam3255.preferences.SN_ZeroDoublePreference;
 
 public class RobotPreferences {
 
   public static final boolean useNetworkTables = false;
+
+  public static final SN_ZeroDoublePreference zero = new SN_ZeroDoublePreference();
 
   public static final class prefDrivetrain {
 
@@ -116,8 +119,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 0.75);
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
-    // radius of circle centered on shoulder joint where the arm tip cannot reach
-    // (inches)
+    public static final SN_DoublePreference toleranceMultiplier = new SN_DoublePreference("toleranceMultiplier", 10);
 
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
         "shoulderForwardSoftLimit", true);
@@ -129,9 +131,9 @@ public class RobotPreferences {
         "elbowReverseSoftLimit", true);
 
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 12);
+        "armPresetCollectorShoulderAngle", 10);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", -110);
+        "armPresetCollectorElbowAngle", -90);
 
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
