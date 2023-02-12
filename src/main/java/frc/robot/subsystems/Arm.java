@@ -358,6 +358,24 @@ public class Arm extends SubsystemBase {
     setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
+  public boolean areJointsAtGoalAngles() {
+    return isShoulderAtGoalAngle() && isElbowAtGoalAngle();
+  }
+
+  public boolean isShoulderAtGoalAngle() {
+    return Math.abs(
+        getShoulderPosition().getDegrees()
+            - goalShoulderAngle.getDegrees()) < (prefArm.shoulderTolerance.getValue()
+                * prefArm.toleranceMultiplier.getValue());
+  }
+
+  public boolean isElbowAtGoalAngle() {
+    return Math.abs(getElbowPosition().getDegrees()
+        - goalElbowAngle.getDegrees()) < (prefArm.elbowTolerance.getValue()
+            * prefArm.toleranceMultiplier.getValue());
+
+  }
+
   @Override
   public void periodic() {
 
@@ -383,6 +401,11 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
+
+      SmartDashboard.putBoolean("Arm Is Shoulder At Goal Angle", isShoulderAtGoalAngle());
+      SmartDashboard.putBoolean("Arm Is Elbow At Goal Angle", isElbowAtGoalAngle());
+      SmartDashboard.putBoolean("Arm Is (are) Joints At Goal Angles", areJointsAtGoalAngles());
+
     }
   }
 }
