@@ -101,6 +101,7 @@ public class RobotContainer {
     conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake, leds));
 
     // TODO: Run IntakeCone command (btn_RB)
+    conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake, subArm, leds));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
