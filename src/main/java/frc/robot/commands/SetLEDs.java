@@ -41,8 +41,7 @@ public class SetLEDs extends CommandBase {
         break;
       case NONE:
         if (subIntake.isGamePieceCollected()) {
-          // We have a game piece but the color sensor failed
-          // TODO: create fallthrough logic
+          desiredPattern = constLEDs.failureColor;
           break;
         }
         if (true) {
