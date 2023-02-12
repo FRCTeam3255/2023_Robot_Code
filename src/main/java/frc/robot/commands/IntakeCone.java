@@ -47,9 +47,6 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Raise arm to mid node position
         new InstantCommand(
-            () -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)),
-
-        // - Set LEDs to Yellow
-        new InstantCommand(() -> leds.setPattern(Constants.INTAKE_CONE_LED_PATTERN)));
+            () -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
   }
 }

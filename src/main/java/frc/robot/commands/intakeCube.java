@@ -53,7 +53,6 @@ public class intakeCube extends SequentialCommandGroup {
         // - Retract collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
 
-    // - Set LEDs TODO: MAKE THIS WORK LOL
     );
   }
 }

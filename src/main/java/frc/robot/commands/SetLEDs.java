@@ -29,8 +29,6 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
-    // TODO: MAKE THINGS PREFERENCES
-
     switch (subIntake.getGamePieceType()) {
       case CONE:
         desiredPattern = constLEDs.hasConeColor;
@@ -48,7 +46,7 @@ public class SetLEDs extends CommandBase {
           break;
         }
         if (true) {
-          // We don't have a game and we WANT something
+          // We don't have a game piece and we WANT something
           // TODO: Create a conditional that returns CONE or CUBE
         }
         // We dont have a game piece or want a game piece; default color
