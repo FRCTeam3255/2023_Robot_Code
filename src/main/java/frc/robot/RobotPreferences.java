@@ -3,11 +3,9 @@ package frc.robot;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = false;
+  public static final boolean useNetworkTables = true;
 
   public static final class prefDrivetrain {
 
@@ -130,29 +128,29 @@ public class RobotPreferences {
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
 
-    public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", 15);
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 2);
+        "armPresetCollectorShoulderAngle", 0);
+    public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
+        "armPresetCollectorElbowAngle", 0);
 
-    public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 0);
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 0);
+        "armPresetStowShoulderAngle", -90);
+    public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
+        "armPresetStowElbowAngle", 70);
 
-    public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 1);
     public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 1);
+        "armPresetLowShoulderAngle", -90);
+    public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
+        "armPresetLowElbowAngle", 0);
 
-    public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 4);
     public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 15);
+        "armPresetMidShoulderAngle", 0);
+    public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
+        "armPresetMidElbowAngle", 0);
 
-    public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 2);
     public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 2);
+        "armPresetHighShoulderAngle", 45);
+    public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
+        "armPresetHighElbowAngle", 0);
   }
 }
