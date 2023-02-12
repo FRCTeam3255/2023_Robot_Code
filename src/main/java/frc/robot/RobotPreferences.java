@@ -143,6 +143,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
         "armPresetLowElbowAngle", 0);
 
+    public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
+        "armPresetConeElbowAngle", 15);
+    public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
+        "armPresetConeShoulderAngle", 2);
+
     public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
         "armPresetMidShoulderAngle", 0);
     public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(

@@ -130,6 +130,7 @@ public final class Constants {
       MODULE_3.position);
 
   public static final PatternType INTAKE_CUBE_LED_PATTERN = PatternType.Violet;
+  public static final PatternType INTAKE_CONE_LED_PATTERN = PatternType.Yellow;
 
   public static final class constControllers {
     public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
