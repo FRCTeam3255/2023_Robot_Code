@@ -44,10 +44,9 @@ public class SetLEDs extends CommandBase {
           desiredPattern = constLEDs.failureColor;
           break;
         }
-        if (true) {
-          // We don't have a game piece and we WANT something
-          // TODO: Create a conditional that returns CONE or CUBE
-        }
+        // TODO: Create a conditional that returns CONE or CUBE; Numpad input?
+        // We don't have a game piece and we WANT something
+
         // We dont have a game piece or want a game piece; default color
         desiredPattern = constLEDs.defaultColor;
         break;
