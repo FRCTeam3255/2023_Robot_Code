@@ -77,6 +77,7 @@ public class RobotContainer {
   public void configureNeutralModes() {
     subArm.setJointsNeutralMode();
   }
+
   private void configureBindings() {
 
     // Driver
@@ -98,7 +99,7 @@ public class RobotContainer {
     // Operator
 
     // Run IntakeCube command
-    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake, leds));
+    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake));
 
     // TODO: Run IntakeCone command (btn_RB)
     // TODO: Run PrepPlace command (btn_LT)
