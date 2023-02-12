@@ -29,7 +29,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
-import frc.robot.commands.intakeCube2;
+import frc.robot.commands.IntakeCube;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefDrivetrain;
@@ -99,7 +99,7 @@ public class RobotContainer {
     // Operator
 
     // Run IntakeCube command
-    conOperator.btn_LBump.onTrue(new intakeCube2(subArm, subCollector, subIntake, leds));
+    conOperator.btn_LBump.onTrue(new IntakeCube(subArm, subCollector, subIntake, leds));
 
     // TODO: Run IntakeCone command (btn_RB)
     conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake, subArm, leds));
