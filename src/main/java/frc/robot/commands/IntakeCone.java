@@ -5,10 +5,7 @@
 package frc.robot.commands;
 
 import com.frcteam3255.components.SN_Blinkin;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
