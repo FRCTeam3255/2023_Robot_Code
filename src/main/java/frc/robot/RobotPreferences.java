@@ -135,15 +135,21 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
         "armPresetCollectorShoulderAngle", 2);
 
+    // TODO: Find the values for stow, low, high, and cone
+    public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
+        "armPresetConeElbowAngle", 15);
+    public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
+        "armPresetConeShoulderAngle", 2);
+
     public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 0);
+        "armPresetStowElbowAngle", 0);
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 0);
+        "armPresetStowShoulderAngle", 0);
 
     public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 1);
+        "armPresetLowElbowAngle", 1);
     public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 1);
+        "armPresetLowShoulderAngle", 1);
 
     public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
         "armPresetMidElbowAngle", 4);
@@ -151,8 +157,8 @@ public class RobotPreferences {
         "armPresetMidShoulderAngle", 15);
 
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 2);
+        "armPresetHighElbowAngle", 2);
     public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 2);
+        "armPresetHighShoulderAngle", 2);
   }
 }
