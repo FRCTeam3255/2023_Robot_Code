@@ -3,6 +3,8 @@ package frc.robot;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public class RobotPreferences {
 
   public static final boolean useNetworkTables = false;
@@ -102,29 +104,23 @@ public class RobotPreferences {
   public static final class prefArm {
     public static final SN_DoublePreference shoulderArbitraryFeedForward = new SN_DoublePreference(
         "shoulderArbitraryFeedForward", 0);
-    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.1);
+    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.00005);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", .2);
-    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 3);
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 0.75);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
 
     public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
         "elbowArbitraryFeedForward", 0);
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.00005);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", .2);
-    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 3);
-
-    public static final SN_DoublePreference shoulderPreset = new SN_DoublePreference("shoulderPreset", 0);
-    public static final SN_DoublePreference elbowPreset = new SN_DoublePreference("elbowPreset", 0);
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 0.75);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
     // radius of circle centered on shoulder joint where the arm tip cannot reach
     // (inches)
-    public static final SN_DoublePreference armTipDeadzone = new SN_DoublePreference("armTipDeadzone", 2);
 
-    public static final SN_DoublePreference armTipPresetX = new SN_DoublePreference("armTipPresetX", 8);
-    public static final SN_DoublePreference armTipPresetY = new SN_DoublePreference("armTipPresetY", 8);
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
         "shoulderForwardSoftLimit", true);
     public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(
@@ -134,10 +130,35 @@ public class RobotPreferences {
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
 
-    public static final SN_DoublePreference armTipToCollectorX = new SN_DoublePreference("armTipToCollectorX", 15);
-    public static final SN_DoublePreference armTipToCollectorY = new SN_DoublePreference("armTipToCollectorY", 2);
+    public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
+        "armPresetCollectorElbowAngle", 15);
+    public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
+        "armPresetCollectorShoulderAngle", 2);
 
-    public static final SN_DoublePreference armTipToMidPosX = new SN_DoublePreference("armTipToMidPosX", 4);
-    public static final SN_DoublePreference armTipToMidPosY = new SN_DoublePreference("armTipToMidPosY", 15);
+    // TODO: Find the values for stow, low, high, and cone
+    public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
+        "armPresetConeElbowAngle", 15);
+    public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
+        "armPresetConeShoulderAngle", 2);
+
+    public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
+        "armPresetStowElbowAngle", 0);
+    public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
+        "armPresetStowShoulderAngle", 0);
+
+    public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
+        "armPresetLowElbowAngle", 1);
+    public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
+        "armPresetLowShoulderAngle", 1);
+
+    public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
+        "armPresetMidElbowAngle", 4);
+    public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
+        "armPresetMidShoulderAngle", 15);
+
+    public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
+        "armPresetHighElbowAngle", 2);
+    public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
+        "armPresetHighShoulderAngle", 2);
   }
 }

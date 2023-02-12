@@ -53,6 +53,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    m_robotContainer.configureNeutralModes();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -66,6 +69,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
+    m_robotContainer.configureNeutralModes();
+
     // Comment this line out if you would like autonomous to continue until being
     // interrupted by another command
     if (m_autonomousCommand != null) {
@@ -80,6 +86,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+
+    m_robotContainer.configureNeutralModes();
+
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
@@ -92,6 +101,9 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is first started up. */
   @Override
   public void simulationInit() {
+
+    m_robotContainer.configureNeutralModes();
+
   }
 
   /** This function is called periodically whilst in simulation. */

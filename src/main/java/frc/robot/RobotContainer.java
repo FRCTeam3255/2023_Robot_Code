@@ -29,9 +29,12 @@ import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.SetLEDs;
+import frc.robot.commands.MoveArm;
+import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -66,10 +69,14 @@ public class RobotContainer {
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
 
     configureBindings();
   }
 
+  public void configureNeutralModes() {
+    subArm.setJointsNeutralMode();
+  }
   private void configureBindings() {
 
     // Driver
@@ -89,70 +96,54 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // Operator
-    conOperator.btn_A.whileTrue(new IntakeGamePiece(subIntake));
-    conOperator.btn_B.whileTrue(subIntake.releaseCommand());
 
-    // Set the arm to a preset position (example bind, may not be necessary for comp
-    // bindings)
-    conOperator.btn_A
-        .whileTrue(Commands.runOnce(() -> subArm.setJointPositions(prefArm.shoulderPreset, prefArm.elbowPreset), subArm)
-            .repeatedly())
-        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+    // Run IntakeCube command
+    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake, leds));
 
-    conOperator.btn_B
-        .whileTrue(
-            Commands.runOnce(() -> subArm.setArmTipPositionInches(prefArm.armTipPresetX, prefArm.armTipPresetY), subArm)
-                .repeatedly())
-        .onFalse((Commands.runOnce(() -> subArm.setShoulderPercentOutput(0), subArm)));
+    // TODO: Run IntakeCone command (btn_RB)
+    // TODO: Run PrepPlace command (btn_LT)
+    // TODO: Run PlaceGamePiece command (btn_RT)
 
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.configure()));
+    // Set stow Arm preset
+    conOperator.btn_B.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
 
-    // Test keybinds
+    // Set low Arm preset
+    conOperator.btn_A.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
 
-    // Spin the Collector roller motor while held
-    conOperator.btn_B
-        .onTrue(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0)));
-    // // Spin the intake motor while held
-    // conOperator.btn_B
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.spinIntakeMotor(prefCollector.intakeSpeed.getValue())))
-    // .onFalse(Commands.runOnce(() -> subCollector.spinIntakeMotor(0)));
+    // Set mid Arm preset
+    conOperator.btn_X.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
 
-    // Set Collector to starting config
-    conOperator.btn_X
+    // Set high Arm preset
+    conOperator.btn_Y.onTrue(Commands
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
+
+    // TODO: Create button to manually adjust arm
+    // shoulder: btn_LS
+    // elbow: btn_RS
+
+    // Set Collector to starting config and stop the rollers
+    conOperator.POV_North
         .onTrue(
             Commands.runOnce(
-                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())));
-    // // Set Collector to starting config
-    // conOperator.btn_X
-    // .onTrue(
-    // Commands.runOnce(
-    // () ->
-    // subCollector.setPivotMotorPosition(prefCollector.startingConfigPivotAngle.getValue())));
+                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
+                .alongWith(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0))));
 
-    // Set Collector Rollers to intake height
-    conOperator.btn_Y
+    // Set Collector rollers to intake height and spin the rollers
+    conOperator.POV_South
         .onTrue(
             Commands
-                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())));
-    // // Set Collector Rollers to intake height
-    // conOperator.btn_Y
-    // .onTrue(
-    // Commands
-    // .runOnce(() ->
-    // subCollector.setPivotMotorPosition(prefCollector.intakeHeightPivotAngle.getValue())));
+                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue()))
+                .alongWith(
+                    Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))));
 
-    // Set Collector Rollers to climbing position
-    conOperator.btn_A
-        .onTrue(
-            Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleClimb.getValue())));
+    // Spin the Intake forward
+    conOperator.btn_Start.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed)));
 
-    // Spin Charger treads
-    conOperator.btn_RBump
-        .onTrue(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(prefChargerTreads.motorSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subChargerTreads.setMotorSpeed(0)));
-
+    // Spin the Intake in reverse
+    conOperator.btn_Back.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed)));
   }
 
   public Command getAutonomousCommand() {
