@@ -22,7 +22,7 @@ public class IntakeCone extends SequentialCommandGroup {
   Arm subArm;
   SN_Blinkin leds;
 
-  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm, SN_Blinkin leds) {
+  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm) {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.subArm = subArm;
