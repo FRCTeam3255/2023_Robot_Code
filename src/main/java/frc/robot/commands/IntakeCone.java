@@ -26,6 +26,7 @@ public class IntakeCone extends SequentialCommandGroup {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.subArm = subArm;
+    this.leds = leds;
 
     addCommands(
         // - Retract collector

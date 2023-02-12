@@ -32,18 +32,11 @@ public class AddVisionMeasurement extends CommandBase {
 
   @Override
   public void execute() {
-    Optional<EstimatedRobotPose> ARresult = subVision.getPoseFromARCamera(subDrivetrain.getPose());
-    Optional<EstimatedRobotPose> OVresult = subVision.getPoseFromOVCamera(subDrivetrain.getPose());
+    Optional<EstimatedRobotPose> result = subVision.getPoseFromLifecam(subDrivetrain.getPose());
 
-    if (ARresult.isPresent()) {
-      estimatedPose = ARresult.get().estimatedPose.toPose2d();
-      timestamp = ARresult.get().timestampSeconds;
-      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
-    }
-
-    if (OVresult.isPresent()) {
-      estimatedPose = OVresult.get().estimatedPose.toPose2d();
-      timestamp = OVresult.get().timestampSeconds;
+    if (result.isPresent()) {
+      estimatedPose = result.get().estimatedPose.toPose2d();
+      timestamp = result.get().timestampSeconds;
       subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
     }
   }

@@ -19,8 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
 public class Vision extends SubsystemBase {
-  PhotonPoseEstimator ARCameraPoseEstimator;
-  PhotonPoseEstimator OVCameraPoseEstimator;
+  PhotonPoseEstimator lifecamPoseEstimator;
   AprilTagFieldLayout aprilTagFieldLayout;
 
   public Vision() {
@@ -37,26 +36,19 @@ public class Vision extends SubsystemBase {
     PhotonCamera OVCamera = new PhotonCamera(constVision.OVPhotonName);
     Transform3d robotToOV = constVision.robotToOV;
 
+    PhotonCamera lifecam = new PhotonCamera(constVision.lifecamPhotonName);
+    Transform3d robotToLifecam = constVision.robotToLifecam;
+
     // Create an instance of this for every camera you want to do pose estimation
     // with, as well as a getPoseFrom__ method to reference in the
     // AddVisionMeasurement command
-    ARCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
-        ARCamera,
-        robotToAR);
-
-    OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
-        OVCamera,
-        robotToOV);
+    lifecamPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, lifecam,
+        robotToLifecam);
   }
 
-  public Optional<EstimatedRobotPose> getPoseFromARCamera(Pose2d referencePose) {
-    ARCameraPoseEstimator.setReferencePose(referencePose);
-    return ARCameraPoseEstimator.update();
-  }
-
-  public Optional<EstimatedRobotPose> getPoseFromOVCamera(Pose2d referencePose) {
-    OVCameraPoseEstimator.setReferencePose(referencePose);
-    return OVCameraPoseEstimator.update();
+  public Optional<EstimatedRobotPose> getPoseFromLifecam(Pose2d referencePose) {
+    lifecamPoseEstimator.setReferencePose(referencePose);
+    return lifecamPoseEstimator.update();
   }
 
   @Override
