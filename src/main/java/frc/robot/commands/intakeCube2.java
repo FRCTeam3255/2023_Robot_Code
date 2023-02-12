@@ -18,13 +18,13 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
-public class intakeCube extends SequentialCommandGroup {
+public class intakeCube2 extends SequentialCommandGroup {
   Collector subCollector;
   Intake subIntake;
   Arm subArm;
   SN_Blinkin leds;
 
-  public intakeCube(Arm subArm, Collector subCollector, Intake subIntake, SN_Blinkin leds) {
+  public intakeCube2(Arm subArm, Collector subCollector, Intake subIntake, SN_Blinkin leds) {
     addCommands(
         // - Deploy collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())),
