@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SN_SwerveModule;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -33,7 +35,11 @@ public class Drivetrain extends SubsystemBase {
 
   private Field2d field;
 
+  ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
   public Drivetrain() {
+
+    Shuffleboard.selectTab("Drivetrain");
 
     modules = new SN_SwerveModule[] {
         new SN_SwerveModule(Constants.MODULE_0),
@@ -169,33 +175,41 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
-    updatePoseEstimator();
+    Shuffleboard.getTab("Drivetrain").add("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
 
-    SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
+    // SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
 
-    if (Constants.OUTPUT_DEBUG_VALUES) {
+    // if (Constants.OUTPUT_DEBUG_VALUES) {
 
-      SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
-      SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
-      SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
+    // Shuffleboard.getTab("Drivetrain");
 
-      SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
+    // SmartDashboard.putNumber("Drivetrain Pose X",
+    // Units.feetToMeters(getPose().getX()));
+    // SmartDashboard.putNumber("Drivetrain Pose Y",
+    // Units.feetToMeters(getPose().getY()));
+    // SmartDashboard.putNumber("Drivetrain Pose Rotation",
+    // getPose().getRotation().getDegrees());
 
-      field.setRobotPose(getPose());
-      SmartDashboard.putData(field);
+    // SmartDashboard.putNumber("Drivetrain Yaw",
+    // navX.getRotation2d().getDegrees());
 
-      for (SN_SwerveModule mod : modules) {
-        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Speed",
-            Units.metersToFeet(mod.getState().speedMetersPerSecond));
-        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Distance",
-            Units.metersToFeet(mod.getPosition().distanceMeters));
-        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Angle",
-            mod.getState().angle.getDegrees());
-        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Absolute Encoder Angle",
-            mod.getAbsoluteEncoder().getDegrees());
-        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Raw Absolute Encoder Angle",
-            mod.getRawAbsoluteEncoder());
-      }
-    }
+    // field.setRobotPose(getPose());
+    // SmartDashboard.putData(field);
+
+    // for (SN_SwerveModule mod : modules) {
+    // SmartDashboard.putNumber("Module " + mod.moduleNumber + " Speed",
+    // Units.metersToFeet(mod.getState().speedMetersPerSecond));
+    // SmartDashboard.putNumber("Module " + mod.moduleNumber + " Distance",
+    // Units.metersToFeet(mod.getPosition().distanceMeters));
+    // SmartDashboard.putNumber("Module " + mod.moduleNumber + " Angle",
+    // mod.getState().angle.getDegrees());
+    // SmartDashboard.putNumber("Module " + mod.moduleNumber + " Absolute Encoder
+    // Angle",
+    // mod.getAbsoluteEncoder().getDegrees());
+    // SmartDashboard.putNumber("Module " + mod.moduleNumber + " Raw Absolute
+    // Encoder Angle",
+    // mod.getRawAbsoluteEncoder());
+    // }
+    // }
   }
 }
