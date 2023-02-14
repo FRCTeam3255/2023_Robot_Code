@@ -9,7 +9,6 @@ public class RobotMap {
     public static final int DRIVER_USB = 0;
     public static final int OPERATOR_USB = 1;
     public static final int SWITCHBOARD_USB = 2;
-    public static final int BLINKIN_PWM = 0;
   }
 
   public static final class mapDrivetrain {
@@ -40,8 +39,8 @@ public class RobotMap {
     public static final int SHOULDER_CAN = 10;
     public static final int ELBOW_CAN = 11;
 
-    public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 29;
-    public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 30;
+    public static final int SHOULDER_ABSOLUTE_ENCODER_DIO = 2;
+    public static final int ELBOW_ABSOLUTE_ENCODER_DIO = 3;
   }
 
   public static final class mapIntake {
@@ -63,4 +62,7 @@ public class RobotMap {
     public static final int TREADS_RIGHT_MOTOR_CAN = 41;
   }
 
+  public static final class mapLEDs {
+    public static final int BLINKIN_PWM = 0;
+  }
 }

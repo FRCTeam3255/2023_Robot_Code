@@ -12,6 +12,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,7 +24,7 @@ public class Collector extends SubsystemBase {
   SN_CANSparkMax pivotMotor;
   SN_CANSparkMax rollerMotor;
 
-  AbsoluteEncoder pivotAbsoluteEncoder;
+  DutyCycleEncoder pivotAbsoluteEncoder;
 
   TalonFXConfiguration pivotMotorConfig;
 
@@ -31,7 +32,7 @@ public class Collector extends SubsystemBase {
     pivotMotor = new SN_CANSparkMax(mapCollector.PIVOT_MOTOR_CAN);
     rollerMotor = new SN_CANSparkMax(mapCollector.ROLLER_MOTOR_CAN);
 
-    pivotAbsoluteEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    pivotAbsoluteEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
 
     pivotMotorConfig = new TalonFXConfiguration();
 
@@ -99,7 +100,7 @@ public class Collector extends SubsystemBase {
    * @return Position of absolute encoder
    */
   public double getPivotAbsoluteEncoder() {
-    return pivotAbsoluteEncoder.getPosition();
+    return pivotAbsoluteEncoder.getAbsolutePosition();
   }
 
   /**
@@ -140,7 +141,7 @@ public class Collector extends SubsystemBase {
       SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
       SmartDashboard.putNumber("Collector Pivot Position", getPivotMotorPosition());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder());
-      SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getPosition());
+      SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getAbsolutePosition());
     }
   }
 }

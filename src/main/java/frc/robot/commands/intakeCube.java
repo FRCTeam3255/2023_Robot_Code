@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import com.frcteam3255.components.SN_Blinkin;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -22,9 +21,8 @@ public class intakeCube extends SequentialCommandGroup {
   Collector subCollector;
   Intake subIntake;
   Arm subArm;
-  SN_Blinkin leds;
 
-  public intakeCube(Arm subArm, Collector subCollector, Intake subIntake, SN_Blinkin leds) {
+  public intakeCube(Arm subArm, Collector subCollector, Intake subIntake) {
     addCommands(
         // - Deploy collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())),
@@ -53,9 +51,8 @@ public class intakeCube extends SequentialCommandGroup {
                 prefArm.armPresetMidShoulderAngle)),
 
         // - Retract collector
-        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
+        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
 
-        // - Set LEDs
-        new InstantCommand(() -> leds.setPattern(Constants.INTAKE_CUBE_LED_PATTERN)));
+    );
   }
 }

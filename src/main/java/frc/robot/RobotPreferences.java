@@ -148,14 +148,34 @@ public class RobotPreferences {
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
 
-    public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", 15);
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 2);
+        "armPresetCollectorShoulderAngle", 0);
+    public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
+        "armPresetCollectorElbowAngle", 0);
 
-    public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 4);
+    public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
+        "armPresetStowShoulderAngle", -90);
+    public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
+        "armPresetStowElbowAngle", 70);
+
+    public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
+        "armPresetLowShoulderAngle", -90);
+    public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
+        "armPresetLowElbowAngle", 0);
+
+    public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
+        "armPresetConeShoulderAngle", 2);
+    public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
+        "armPresetConeElbowAngle", 15);
+
     public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 15);
+        "armPresetMidShoulderAngle", 0);
+    public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
+        "armPresetMidElbowAngle", 0);
+
+    public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
+        "armPresetHighShoulderAngle", 45);
+    public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
+        "armPresetHighElbowAngle", 0);
   }
 }
