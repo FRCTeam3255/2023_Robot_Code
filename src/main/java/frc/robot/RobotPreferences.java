@@ -116,8 +116,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 0.75);
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
-    // radius of circle centered on shoulder joint where the arm tip cannot reach
-    // (inches)
+    public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 15);
+    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
 
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
         "shoulderForwardSoftLimit", true);
