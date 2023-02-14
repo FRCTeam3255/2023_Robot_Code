@@ -17,6 +17,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -24,7 +25,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -173,6 +173,30 @@ public class Drivetrain extends SubsystemBase {
         new HashMap<>(),
         false,
         this);
+  }
+
+  /**
+   * Drive the drivetrain with positional absolute heading control.
+   * 
+   * @param velocity Desired translational velocity in meters per second, and
+   *                 desired absolute rotational position
+   */
+  public void driveAlignAngle(Pose2d velocity) {
+
+    // tell the theta PID controller the goal rotation.
+    thetaPID.setGoal(velocity.getRotation().getRadians());
+
+    // calculate the angle setpoint based off where we are now.
+    // note that this will not just be the rotation we passed in, it will be some
+    // position inbetween.
+    double angleSetpoint = thetaPID.calculate(getPose().getRotation().getRadians());
+
+    // create a new velocity Pose2d with the same translation as the on that was
+    // passed in, but with the output of the theta PID controller for rotation.
+    Pose2d newVelocity = new Pose2d(velocity.getTranslation(), Rotation2d.fromRadians(angleSetpoint));
+
+    // pass the new velocity to the normal drive command
+    drive(newVelocity);
   }
 
   /**
