@@ -148,7 +148,7 @@ public final class Constants {
     public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
   }
 
-  public static final class constChargerTreads {
+  public static final class constCharger {
     public static final boolean LEFT_MOTOR_INVERTED = false;
     public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
 
