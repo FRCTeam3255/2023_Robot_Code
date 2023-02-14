@@ -286,6 +286,12 @@ public class Drivetrain extends SubsystemBase {
     isFieldRelative = false;
   }
 
+  public void resetPID() {
+    xPID.reset(getPose().getX());
+    yPID.reset(getPose().getY());
+    thetaPID.reset(getPose().getRotation().getRadians());
+  }
+
   /**
    * Get the current estimated position of the drivetrain.
    * 
