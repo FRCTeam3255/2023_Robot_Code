@@ -150,9 +150,9 @@ public final class Constants {
 
   public static final class constChargerTreads {
     public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = true;
+    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
 
-    public static final int RESET_ENCODERS = 0;
+    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
   }
 
   public static final class constIntake {
