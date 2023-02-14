@@ -196,13 +196,13 @@ public final class Constants {
   }
 
   public static final class constVision {
-    public static final String lifecamPhotonName = "Microsoft_LifeCam_HD-3000";
-    public static final String ARPhotonName = "Global_Shutter_Camera";
-    public static final String OVPhotonName = "Arducam_OV9281_USB_Camera";
+    public static final String LIFECAM_PHOTON_NAME = "Microsoft_LifeCam_HD-3000";
+    public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
+    public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
 
     public enum GamePiece {
