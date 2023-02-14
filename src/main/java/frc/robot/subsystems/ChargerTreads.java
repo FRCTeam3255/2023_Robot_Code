@@ -10,6 +10,7 @@ import com.frcteam3255.components.motors.SN_CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constChargerTreads;
 import frc.robot.RobotMap.mapChargerTreads;
+import frc.robot.RobotPreferences.prefChargerTreads;
 
 public class ChargerTreads extends SubsystemBase {
 
@@ -34,9 +35,14 @@ public class ChargerTreads extends SubsystemBase {
     rightMotor.setNeutralMode(constChargerTreads.NEUTRAL_MODE);
   }
 
-  public void setMotorSpeed(double speed) {
-    leftMotor.set(ControlMode.PercentOutput, speed);
-    rightMotor.set(ControlMode.PercentOutput, speed);
+  public void runMotors() {
+    leftMotor.set(ControlMode.PercentOutput, prefChargerTreads.chargerSpeed.getValue());
+    rightMotor.set(ControlMode.PercentOutput, prefChargerTreads.chargerSpeed.getValue());
+  }
+
+  public void stopMotors() {
+    leftMotor.neutralOutput();
+    rightMotor.neutralOutput();
   }
 
   @Override
