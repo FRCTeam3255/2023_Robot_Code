@@ -51,8 +51,8 @@ public class Arm extends SubsystemBase {
 
     configure();
 
-    // Timer.delay(2.25);
-    // resetJointsToAbsolute();
+    Timer.delay(2.25);
+    resetJointsToAbsolute();
   }
 
   public void configure() {
@@ -275,10 +275,8 @@ public class Arm extends SubsystemBase {
    * encoders.
    */
   public void resetJointsToAbsolute() {
-    // resetShoulderToAbsolute();
-    // resetElbowToAbsolute();
-    shoulderJoint.setSelectedSensorPosition(SN_Math.degreesToFalcon(-90.0, constArm.SHOULDER_GEAR_RATIO));
-    elbowJoint.setSelectedSensorPosition(SN_Math.degreesToFalcon(0.0, constArm.ELBOW_GEAR_RATIO));
+    resetShoulderToAbsolute();
+    resetElbowToAbsolute();
   }
 
   /**
