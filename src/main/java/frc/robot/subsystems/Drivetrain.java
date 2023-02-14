@@ -176,6 +176,29 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * Drive the drivetrain to a specified position in meters.
+   * 
+   * @param position Desired position in meters
+   */
+  public void driveToPosition(Pose2d position) {
+
+    // tell the x and y PID controllers the goal position.
+    xPID.setGoal(position.getX());
+    yPID.setGoal(position.getY());
+
+    // create a velocity Pose2d with the calculated x and y positions, and the
+    // positional rotation.
+    Pose2d velocity = new Pose2d(
+        xPID.calculate(getPose().getX()),
+        yPID.calculate(getPose().getY()),
+        position.getRotation());
+
+    // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
+    // rotation and pass the translational values to drive().
+    driveAlignAngle(velocity);
+  }
+
+  /**
    * Drive the drivetrain with positional absolute heading control.
    * 
    * @param velocity Desired translational velocity in meters per second, and
