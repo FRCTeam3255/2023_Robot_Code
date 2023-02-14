@@ -100,20 +100,24 @@ public class RobotPreferences {
   }
 
   public static final class prefArm {
-    public static final SN_DoublePreference shoulderArbitraryFeedForward = new SN_DoublePreference(
-        "shoulderArbitraryFeedForward", 0);
     public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.00005);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 0.75);
+    // degrees per second
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 45);
+    // degrees per second per second
+    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 45);
+    // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
 
-    public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
-        "elbowArbitraryFeedForward", 0);
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.00005);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 0.75);
+    // degrees per second
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 45);
+    // degrees per second per second
+    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 45);
+    // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
     // radius of circle centered on shoulder joint where the arm tip cannot reach
