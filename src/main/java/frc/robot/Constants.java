@@ -211,11 +211,11 @@ public final class Constants {
   }
 
   public static final class constLEDs {
-    public static final PatternType hasConeColor = PatternType.Yellow;
-    public static final PatternType hasCubeColor = PatternType.Violet;
+    public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
+    public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
 
-    public static final PatternType failureColor = PatternType.Red;
+    public static final PatternType FAILURE_COLOR = PatternType.Red;
 
-    public static final PatternType defaultColor = PatternType.Black;
+    public static final PatternType DEFAULT_COLOR = PatternType.Black;
   }
 }
