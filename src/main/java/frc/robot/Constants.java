@@ -130,6 +130,7 @@ public final class Constants {
       MODULE_3.position);
 
   public static final PatternType INTAKE_CUBE_LED_PATTERN = PatternType.Violet;
+  public static final PatternType INTAKE_CONE_LED_PATTERN = PatternType.Yellow;
 
   public static final class constControllers {
     public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
@@ -213,4 +214,12 @@ public final class Constants {
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-80.0);
   }
 
+  public static final class constLEDs {
+    public static final PatternType hasConeColor = PatternType.Yellow;
+    public static final PatternType hasCubeColor = PatternType.Violet;
+
+    public static final PatternType failureColor = PatternType.Red;
+
+    public static final PatternType defaultColor = PatternType.Black;
+  }
 }
