@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.I2C;
 
 public class RobotMap {
 
+  // order of subsystems (and adjacent classes) shall be:
+  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+
   public static final class mapControllers {
 
     public static final int DRIVER_USB = 0;
@@ -31,8 +34,6 @@ public class RobotMap {
 
     public static final String CAN_BUS = "Swerve";
   }
-
-  // arm, intake, collector, charger
 
   public static final class mapArm {
 
