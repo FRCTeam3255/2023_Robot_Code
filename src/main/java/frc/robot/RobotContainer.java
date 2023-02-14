@@ -36,22 +36,23 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
-  private final Drivetrain subDrivetrain = new Drivetrain();
-  private final Intake subIntake = new Intake();
-  private final Arm subArm = new Arm();
-  private final Vision subVision = new Vision();
-  private final Collector subCollector = new Collector();
-  private final Charger subCharger = new Charger();
-  private final LEDs subLEDs = new LEDs();
-
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
   private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
 
+  private final Drivetrain subDrivetrain = new Drivetrain();
+  private final Arm subArm = new Arm();
+  private final Intake subIntake = new Intake();
+  private final Collector subCollector = new Collector();
+  private final Charger subCharger = new Charger();
+  private final Vision subVision = new Vision();
+  private final LEDs subLEDs = new LEDs();
+
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
+    subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(
         new RunCommand(
             () -> subCollector.setPivotMotorSpeed(
@@ -59,9 +60,8 @@ public class RobotContainer {
                     conOperator.getAxisRSY(),
                     constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
             subCollector));
-    subIntake.setDefaultCommand(subIntake.holdCommand());
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
-    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
 
     configureBindings();
   }
