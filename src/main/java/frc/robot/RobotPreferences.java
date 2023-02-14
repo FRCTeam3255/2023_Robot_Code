@@ -53,7 +53,7 @@ public class RobotPreferences {
   }
 
   public static final class prefChargerTreads {
-    public static final SN_DoublePreference motorSpeed = new SN_DoublePreference("motorSpeed", 0.25);
+    public static final SN_DoublePreference chargerSpeed = new SN_DoublePreference("chargerSpeed", 0.25);
 
   }
 
