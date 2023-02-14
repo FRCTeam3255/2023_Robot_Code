@@ -120,18 +120,6 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
-    // radius of circle centered on shoulder joint where the arm tip cannot reach
-    // (inches)
-
-    public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
-        "shoulderForwardSoftLimit", true);
-    public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(
-        "shoulderReverseSoftLimit", true);
-    public static final SN_BooleanPreference elbowForwardSoftLimit = new SN_BooleanPreference(
-        "elbowForwardSoftLimit", true);
-    public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
-        "elbowReverseSoftLimit", true);
-
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
         "armPresetCollectorShoulderAngle", 0);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
