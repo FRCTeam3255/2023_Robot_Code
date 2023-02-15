@@ -38,7 +38,11 @@ public class Drive extends CommandBase {
   Translation2d translationVelocity;
   double translationScalar;
 
+  boolean isRotationPositional;
+  Rotation2d positionalRotation;
+
   Pose2d velocity;
+  Pose2d velocityRotation;
 
   public Drive(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
 
@@ -55,6 +59,28 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
 
+    isRotationPositional = false;
+
+    if (conDriver.btn_A.getAsBoolean()) {
+      isRotationPositional = true;
+      positionalRotation = Rotation2d.fromDegrees(180);
+    }
+
+    if (conDriver.btn_B.getAsBoolean()) {
+      isRotationPositional = true;
+      positionalRotation = Rotation2d.fromDegrees(-90);
+    }
+
+    if (conDriver.btn_X.getAsBoolean()) {
+      isRotationPositional = true;
+      positionalRotation = Rotation2d.fromDegrees(90);
+    }
+
+    if (conDriver.btn_Y.getAsBoolean()) {
+      isRotationPositional = true;
+      positionalRotation = Rotation2d.fromDegrees(0);
+    }
+
     xVelocity = conDriver.getAxisLSY();
     yVelocity = -conDriver.getAxisLSX();
     rVelocity = -conDriver.getAxisRSX();
@@ -65,6 +91,10 @@ public class Drive extends CommandBase {
     rVelocity = MathUtil.applyDeadband(rVelocity, constControllers.DRIVER_RIGHT_STICK_X_DEADBAND);
     translationScalar = MathUtil.applyDeadband(translationScalar, constControllers.DRIVER_RIGHT_TRIGGER_DEADBAND);
 
+    if (rVelocity > 0) {
+      isRotationPositional = false;
+    }
+
     xVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     yVelocity *= Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     rVelocity *= Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
@@ -72,11 +102,19 @@ public class Drive extends CommandBase {
 
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(translationScalar);
 
-    velocity = new Pose2d(
-        translationVelocity,
-        new Rotation2d(rVelocity));
+    if (isRotationPositional) {
+      velocityRotation = new Pose2d(
+          translationVelocity,
+          positionalRotation);
 
-    subDrivetrain.drive(velocity);
+      subDrivetrain.driveAlignAngle(velocityRotation);
+    } else {
+      velocity = new Pose2d(
+          translationVelocity,
+          new Rotation2d(rVelocity));
+
+      subDrivetrain.drive(velocity);
+    }
   }
 
   @Override
