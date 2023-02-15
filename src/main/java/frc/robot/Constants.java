@@ -148,7 +148,7 @@ public final class Constants {
     public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
   }
 
-  public static final class constChargerTreads {
+  public static final class constCharger {
     public static final boolean LEFT_MOTOR_INVERTED = false;
     public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
 
@@ -188,9 +188,6 @@ public final class Constants {
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
 
-    public static final double SHOULDER_GEAR_RATIO = 200.0;
-    public static final double ELBOW_GEAR_RATIO = 150.0;
-
     // offsets are when both joints are facing to the right (0 degrees on unit
     // circle is at (1, 0))
 
@@ -200,7 +197,7 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    // prac bot does not have abs encs atm
+    // TODO: get prac bot abs offsets
     public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
     public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
 

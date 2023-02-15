@@ -56,10 +56,10 @@ public class RobotMap {
     public static final int PIVOT_ABSOLUTE_ENCODER_DIO = 1;
   }
 
-  public static final class mapChargerTreads {
+  public static final class mapCharger {
 
-    public static final int TREADS_LEFT_MOTOR_CAN = 40;
-    public static final int TREADS_RIGHT_MOTOR_CAN = 41;
+    public static final int LEFT_MOTOR_CAN = 40;
+    public static final int RIGHT_MOTOR_CAN = 41;
   }
 
   public static final class mapLEDs {

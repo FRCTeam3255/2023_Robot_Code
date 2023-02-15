@@ -24,7 +24,7 @@ import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.intakeCube;
-import frc.robot.subsystems.ChargerTreads;
+import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
@@ -41,7 +41,7 @@ public class RobotContainer {
   private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
   private final Collector subCollector = new Collector();
-  private final ChargerTreads subChargerTreads = new ChargerTreads();
+  private final Charger subCharger = new Charger();
   private final LEDs subLEDs = new LEDs();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
@@ -61,7 +61,7 @@ public class RobotContainer {
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
-    subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
 
     configureBindings();
   }
