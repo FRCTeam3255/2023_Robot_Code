@@ -39,7 +39,7 @@ public class Drive extends CommandBase {
   double translationScalar;
 
   boolean isRotationPositional;
-  Rotation2d positionalRotation;
+  Rotation2d rotationPositional;
 
   Pose2d velocity;
   Pose2d velocityRotation;
@@ -63,22 +63,22 @@ public class Drive extends CommandBase {
 
     if (conDriver.btn_A.getAsBoolean()) {
       isRotationPositional = true;
-      positionalRotation = Rotation2d.fromDegrees(180);
+      rotationPositional = Rotation2d.fromDegrees(180);
     }
 
     if (conDriver.btn_B.getAsBoolean()) {
       isRotationPositional = true;
-      positionalRotation = Rotation2d.fromDegrees(-90);
+      rotationPositional = Rotation2d.fromDegrees(-90);
     }
 
     if (conDriver.btn_X.getAsBoolean()) {
       isRotationPositional = true;
-      positionalRotation = Rotation2d.fromDegrees(90);
+      rotationPositional = Rotation2d.fromDegrees(90);
     }
 
     if (conDriver.btn_Y.getAsBoolean()) {
       isRotationPositional = true;
-      positionalRotation = Rotation2d.fromDegrees(0);
+      rotationPositional = Rotation2d.fromDegrees(0);
     }
 
     xVelocity = conDriver.getAxisLSY();
@@ -105,9 +105,10 @@ public class Drive extends CommandBase {
     if (isRotationPositional) {
       velocityRotation = new Pose2d(
           translationVelocity,
-          positionalRotation);
+          rotationPositional);
 
       subDrivetrain.driveAlignAngle(velocityRotation);
+
     } else {
       velocity = new Pose2d(
           translationVelocity,
