@@ -6,17 +6,11 @@ package frc.robot;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
-import com.frcteam3255.components.SN_Blinkin;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -24,17 +18,14 @@ import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefChargerTreads;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
-import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.ChargerTreads;
 import frc.robot.RobotPreferences.prefCollector;
-import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
@@ -45,12 +36,12 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
-  private final ChargerTreads subChargerTreads = new ChargerTreads();
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
   private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
   private final Collector subCollector = new Collector();
+  private final ChargerTreads subChargerTreads = new ChargerTreads();
   private final LEDs subLEDs = new LEDs();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
