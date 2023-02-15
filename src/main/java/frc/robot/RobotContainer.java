@@ -61,7 +61,7 @@ public class RobotContainer {
             subCollector));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
-    subArm.setDefaultCommand(new MoveArm(subArm, subCollector));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
 
     configureBindings();
   }
