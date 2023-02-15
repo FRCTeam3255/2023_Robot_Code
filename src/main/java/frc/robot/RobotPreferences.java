@@ -107,6 +107,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
     public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 0.75);
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
+    public static final SN_DoublePreference shoulderLoweringAngle = new SN_DoublePreference("shohulderLoweringAngle",
+        5);
 
     public static final SN_DoublePreference elbowArbitraryFeedForward = new SN_DoublePreference(
         "elbowArbitraryFeedForward", 0);
