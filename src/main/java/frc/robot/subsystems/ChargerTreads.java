@@ -7,10 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constChargerTreads;
 import frc.robot.RobotMap.mapChargerTreads;
+import frc.robot.RobotPreferences.prefChargerTreads;
 
 public class ChargerTreads extends SubsystemBase {
 
@@ -30,32 +30,22 @@ public class ChargerTreads extends SubsystemBase {
 
     leftMotor.setInverted(constChargerTreads.LEFT_MOTOR_INVERTED);
     rightMotor.setInverted(constChargerTreads.RIGHT_MOTOR_INVERTED);
+
+    leftMotor.setNeutralMode(constChargerTreads.NEUTRAL_MODE);
+    rightMotor.setNeutralMode(constChargerTreads.NEUTRAL_MODE);
   }
 
-  public void resetChargerTreadsEncodersCount() {
-    leftMotor.setSelectedSensorPosition(constChargerTreads.RESET_ENCODERS);
-    rightMotor.setSelectedSensorPosition(constChargerTreads.RESET_ENCODERS);
+  public void runMotors() {
+    leftMotor.set(ControlMode.PercentOutput, prefChargerTreads.chargerSpeed.getValue());
+    rightMotor.set(ControlMode.PercentOutput, prefChargerTreads.chargerSpeed.getValue());
   }
 
-  public double getLeftEncoderCount() {
-    return leftMotor.getSelectedSensorPosition();
-  }
-
-  public double getRightEncoderCount() {
-    return rightMotor.getSelectedSensorPosition();
-  }
-
-  public void setMotorSpeed(double speed) {
-    leftMotor.set(ControlMode.PercentOutput, speed);
-    rightMotor.set(ControlMode.PercentOutput, speed);
+  public void stopMotors() {
+    leftMotor.neutralOutput();
+    rightMotor.neutralOutput();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Charger Treads Left Encoder", getLeftEncoderCount());
-    SmartDashboard.putNumber("Charger Treads Right Encoder", getRightEncoderCount());
-
-    SmartDashboard.putBoolean("is Left Charger Tread Inverted", constChargerTreads.LEFT_MOTOR_INVERTED);
-    SmartDashboard.putBoolean("is Right Charger Tread Inverted", constChargerTreads.RIGHT_MOTOR_INVERTED);
   }
 }
