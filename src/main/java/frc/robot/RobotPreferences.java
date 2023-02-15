@@ -50,10 +50,30 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
         "autoMaxAccelFeet", 1.0);
+
+    public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 0);
+    public static final SN_DoublePreference teleTransI = new SN_DoublePreference("teleTransI", 0);
+    public static final SN_DoublePreference teleTransD = new SN_DoublePreference("teleTransD", 0);
+    // feet per second
+    public static final SN_DoublePreference teleTransMaxSpeed = new SN_DoublePreference("teleTransMaxSpeed", 16.3);
+    // feet per second per second
+    public static final SN_DoublePreference teleTransMaxAccel = new SN_DoublePreference("teleTransMaxAccel", 5);
+    // inches
+    public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
+
+    public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 0);
+    public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);
+    public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0);
+    // degrees per second
+    public static final SN_DoublePreference teleThetaMaxSpeed = new SN_DoublePreference("teleThetaMaxSpeed", 360);
+    // degrees per second per second
+    public static final SN_DoublePreference teleThetaMaxAccel = new SN_DoublePreference("teleThetaMaxAccel", 360);
+    // degrees
+    public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
   }
 
   public static final class prefChargerTreads {
-    public static final SN_DoublePreference motorSpeed = new SN_DoublePreference("motorSpeed", 0.25);
+    public static final SN_DoublePreference chargerSpeed = new SN_DoublePreference("chargerSpeed", 0.25);
 
   }
 

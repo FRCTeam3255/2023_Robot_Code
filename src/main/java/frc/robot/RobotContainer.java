@@ -36,12 +36,12 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
-  private final ChargerTreads subChargerTreads = new ChargerTreads();
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Intake subIntake = new Intake();
   private final Arm subArm = new Arm();
   private final Vision subVision = new Vision();
   private final Collector subCollector = new Collector();
+  private final ChargerTreads subChargerTreads = new ChargerTreads();
   private final LEDs subLEDs = new LEDs();
 
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
