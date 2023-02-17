@@ -200,8 +200,10 @@ public final class Constants {
     public static final String ARPhotonName = "Global_Shutter_Camera";
     public static final String OVPhotonName = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d robotToAR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+        new Rotation3d(0, 0, 0));
+    public static final Transform3d robotToOV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
 
