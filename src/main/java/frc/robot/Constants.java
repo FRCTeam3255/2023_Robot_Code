@@ -148,9 +148,8 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    // TODO: get prac bot abs offsets
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.045874);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.121968);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
@@ -186,6 +185,8 @@ public final class Constants {
 
     public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
+
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.290520);
   }
 
   public static final class constCharger {
@@ -200,8 +201,10 @@ public final class Constants {
     public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
     public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+        new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
 

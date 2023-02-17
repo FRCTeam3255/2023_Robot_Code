@@ -43,6 +43,9 @@ public class Arm extends SubsystemBase {
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
 
+    goalShoulderAngle = new Rotation2d();
+    goalElbowAngle = new Rotation2d();
+
     shoulderPID = new ProfiledPIDController(
         prefArm.shoulderP.getValue(),
         prefArm.shoulderI.getValue(),
@@ -281,8 +284,6 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw Degrees",
-          Units.rotationsToDegrees(elbowEncoder.getAbsolutePosition()));
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
