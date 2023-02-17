@@ -8,9 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.utils.SN_Math;
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -99,8 +98,11 @@ public class Collector extends SubsystemBase {
    * 
    * @return Position of absolute encoder
    */
-  public double getPivotAbsoluteEncoder() {
-    return pivotAbsoluteEncoder.getAbsolutePosition();
+  public Rotation2d getPivotAbsoluteEncoder() {
+    double rotations = pivotAbsoluteEncoder.getAbsolutePosition();
+    rotations -= Units.radiansToRotations(constCollector.PIVOT_ABSOLUTE_ENCODER_OFFSET);
+    rotations %= 1.0;
+    return Rotation2d.fromRotations(rotations);
   }
 
   /**
@@ -108,7 +110,7 @@ public class Collector extends SubsystemBase {
    */
   private void resetPivotMotorToAbsolute() {
     double absoluteEncoderCount = SN_Math.degreesToFalcon(
-        getPivotAbsoluteEncoder(),
+        getPivotAbsoluteEncoder().getDegrees(),
         constCollector.GEAR_RATIO);
     pivotMotor.setSelectedSensorPosition(absoluteEncoderCount);
   }
@@ -140,7 +142,7 @@ public class Collector extends SubsystemBase {
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
       SmartDashboard.putNumber("Collector Pivot Position", getPivotMotorPosition());
-      SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder());
+      SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder().getDegrees());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getAbsolutePosition());
     }
   }

@@ -18,7 +18,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -148,7 +148,6 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    // TODO: get prac bot abs offsets
     public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.045874);
     public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.121968);
 
@@ -186,6 +185,8 @@ public final class Constants {
 
     public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
+
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.290520);
   }
 
   public static final class constCharger {
