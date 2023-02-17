@@ -284,8 +284,6 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw Degrees",
-          Units.rotationsToDegrees(elbowEncoder.getAbsolutePosition()));
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
