@@ -31,24 +31,24 @@ public class SetLEDs extends CommandBase {
   public void execute() {
     switch (subIntake.getGamePieceType()) {
       case CONE:
-        desiredPattern = constLEDs.hasConeColor;
+        desiredPattern = constLEDs.HAS_CONE_COLOR;
         break;
       case CUBE:
-        desiredPattern = constLEDs.hasCubeColor;
+        desiredPattern = constLEDs.HAS_CUBE_COLOR;
         break;
       case HUH:
-        desiredPattern = constLEDs.failureColor;
+        desiredPattern = constLEDs.FAILURE_COLOR;
         break;
       case NONE:
         if (subIntake.isGamePieceCollected()) {
-          desiredPattern = constLEDs.failureColor;
+          desiredPattern = constLEDs.FAILURE_COLOR;
           break;
         }
         // TODO: Create a conditional that returns CONE or CUBE; Numpad input?
         // We don't have a game piece and we WANT something
 
         // We dont have a game piece or want a game piece; default color
-        desiredPattern = constLEDs.defaultColor;
+        desiredPattern = constLEDs.DEFAULT_COLOR;
         break;
     }
 

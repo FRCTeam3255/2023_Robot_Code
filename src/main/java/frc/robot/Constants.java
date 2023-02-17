@@ -168,13 +168,13 @@ public final class Constants {
     public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
     // RGB game piece colors
-    public static final double coneColorR = 0.34509;
-    public static final double coneColorG = 0.51764;
-    public static final double coneColorB = 0.13333;
+    public static final double CONE_COLOR_R = 0.34509;
+    public static final double CONE_COLOR_G = 0.51764;
+    public static final double CONE_COLOR_B = 0.13333;
 
-    public static final double cubeColorR = 0.22745;
-    public static final double cubeColorG = 0.39607;
-    public static final double cubeColorB = 0.37254;
+    public static final double CUBE_COLOR_R = 0.22745;
+    public static final double CUBE_COLOR_G = 0.39607;
+    public static final double CUBE_COLOR_B = 0.37254;
   }
 
   public static final class constCollector {
@@ -197,15 +197,15 @@ public final class Constants {
   }
 
   public static final class constVision {
-    public static final String lifecamPhotonName = "Microsoft_LifeCam_HD-3000";
-    public static final String ARPhotonName = "Global_Shutter_Camera";
-    public static final String OVPhotonName = "Arducam_OV9281_USB_Camera";
+    public static final String LIFECAM_PHOTON_NAME = "Microsoft_LifeCam_HD-3000";
+    public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
+    public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d robotToAR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
         new Rotation3d(0, 0, 0));
-    public static final Transform3d robotToOV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
-    public static final Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
+    public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
 
     public enum GamePiece {
@@ -214,11 +214,11 @@ public final class Constants {
   }
 
   public static final class constLEDs {
-    public static final PatternType hasConeColor = PatternType.Yellow;
-    public static final PatternType hasCubeColor = PatternType.Violet;
+    public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
+    public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
 
-    public static final PatternType failureColor = PatternType.Red;
+    public static final PatternType FAILURE_COLOR = PatternType.Red;
 
-    public static final PatternType defaultColor = PatternType.Black;
+    public static final PatternType DEFAULT_COLOR = PatternType.Black;
   }
 }
