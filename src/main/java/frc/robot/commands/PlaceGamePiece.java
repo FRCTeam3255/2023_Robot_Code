@@ -26,22 +26,25 @@ public class PlaceGamePiece extends SequentialCommandGroup {
   Collector subCollector;
   Intake subIntake;
 
-  SN_DoublePreference armX;
-  SN_DoublePreference armY;
+  SN_DoublePreference shoulderDegrees;
+  SN_DoublePreference elbowDegrees;
 
-  public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake, SN_DoublePreference armX,
-      SN_DoublePreference armY) {
+  public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake, SN_DoublePreference shoulderDegrees,
+      SN_DoublePreference elbowDegrees) {
 
     this.subArm = subArm;
     this.subCollector = subCollector;
     this.subIntake = subIntake;
 
+    this.shoulderDegrees = shoulderDegrees;
+    this.elbowDegrees = elbowDegrees;
+
     addCommands(
         // Deploy collector
-        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())),
+        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
 
         // Move arm to desired position
-        new InstantCommand(() -> subArm.setGoalAngles(armX, armY)),
+        new InstantCommand(() -> subArm.setGoalAngles(this.shoulderDegrees, this.elbowDegrees)),
 
         // Set motors to release speed until game piece is placed
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
