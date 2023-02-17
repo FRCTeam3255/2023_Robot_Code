@@ -151,13 +151,9 @@ public class Arm extends SubsystemBase {
         position.getRadians(),
         constArm.ELBOW_REVERSE_LIMIT,
         constArm.ELBOW_FORWARD_LIMIT);
-    shoulderPID.setGoal(radians);
+    elbowPID.setGoal(radians);
 
-    System.out.println("!!!!!!!!!!!!!!!!!!goal radians elbow + " + Units.radiansToDegrees(radians));
-
-    shoulderJoint.set(ControlMode.PercentOutput, shoulderPID.calculate(getElbowPosition().getRadians()));
-    System.out.println("**********************************88888 calced percent output  +"
-        + shoulderPID.calculate(getElbowPosition().getRadians()));
+    elbowJoint.set(ControlMode.PercentOutput, elbowPID.calculate(getElbowPosition().getRadians()));
   }
 
   /**
@@ -289,6 +285,11 @@ public class Arm extends SubsystemBase {
     setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
+  public void resetPID() {
+    shoulderPID.reset(getShoulderPosition().getRadians());
+    elbowPID.reset(getElbowPosition().getRadians());
+  }
+
   @Override
   public void periodic() {
 
@@ -312,8 +313,6 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
-
-      SmartDashboard.putNumber("!arm elbow p", elbowPID.getP());
     }
   }
 }
