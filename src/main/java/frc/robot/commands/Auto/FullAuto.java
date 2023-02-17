@@ -31,7 +31,7 @@ public class FullAuto extends SequentialCommandGroup {
   // TODO:
   // Place cube
   // Drive/Rotate
-  // Intake Cube ✓
+  // Intake Cube
   // Drive to charge station
   // Dock/Engage
 
