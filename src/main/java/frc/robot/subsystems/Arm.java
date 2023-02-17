@@ -43,6 +43,9 @@ public class Arm extends SubsystemBase {
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
 
+    goalShoulderAngle = new Rotation2d();
+    goalElbowAngle = new Rotation2d();
+
     shoulderPID = new ProfiledPIDController(
         prefArm.shoulderP.getValue(),
         prefArm.shoulderI.getValue(),
