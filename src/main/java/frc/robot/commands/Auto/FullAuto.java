@@ -6,10 +6,12 @@ package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.commands.IntakeCone;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.intakeCube;
 
@@ -23,7 +25,7 @@ public class FullAuto extends SequentialCommandGroup {
   Drivetrain drivetrain;
   Intake intake;
 
-  intakeCube intakeCube;
+  IntakeCone intakeCone;
   MoveArm moveArm;
 
   // TODO:
@@ -34,20 +36,24 @@ public class FullAuto extends SequentialCommandGroup {
   // Dock/Engage
 
   public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake,
-      intakeCube intakeCube, MoveArm moveArm) {
+      intakeCube intakeCone, MoveArm moveArm) {
 
     arm = subArm;
     collector = subCollector;
     drivetrain = subDrivetrain;
     intake = subIntake;
 
-    intakeCube = new intakeCube(subArm, subCollector, subIntake, null);
+    intakeCone = new intakeCube(subArm, subCollector, subIntake);
     moveArm = new MoveArm(subArm, subCollector);
 
     addCommands(
-        // Placeholder
-        Commands.parallel(moveArm),
+        // TODO: Change this to placeCone once command is created
+        intakeCone,
 
-        Commands.parallel(intakeCube));
+        Commands.parallel(intakeCone).withTimeout(2),
+
+        // drivetrain.twoConePath should be the updated FullAuto path
+        Commands.parallel(drivetrain.swerveAutoBuilder.fullAuto(drivetrain.twoConePath)
+            .andThen(new InstantCommand(() -> drivetrain.neutralDriveOutputs(), drivetrain))));
   }
 }
