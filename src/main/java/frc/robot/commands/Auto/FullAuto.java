@@ -44,7 +44,6 @@ public class FullAuto extends SequentialCommandGroup {
     intake = subIntake;
 
     intakeCone = new intakeCube(subArm, subCollector, subIntake);
-    moveArm = new MoveArm(subArm, subCollector);
 
     addCommands(
         // TODO: Change this to placeCone once command is created
