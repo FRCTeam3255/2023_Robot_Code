@@ -201,10 +201,10 @@ public class Arm extends SubsystemBase {
   public Rotation2d getShoulderPosition() {
     double rotations = shoulderEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
-    rotations %= 1.0;
+    rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
 
     if (constArm.SHOULDER_ABSOLUTE_ENCODER_INVERT) {
-      return Rotation2d.fromRotations(rotations).unaryMinus();
+      return Rotation2d.fromRotations(-rotations);
     } else {
       return Rotation2d.fromRotations(rotations);
     }
@@ -218,10 +218,10 @@ public class Arm extends SubsystemBase {
   public Rotation2d getElbowPosition() {
     double rotations = elbowEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
-    rotations %= 1.0;
+    rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
 
     if (constArm.ELBOW_ABSOLUTE_ENCODER_INVERT) {
-      return Rotation2d.fromRotations(rotations).unaryMinus();
+      return Rotation2d.fromRotations(-rotations);
     } else {
       return Rotation2d.fromRotations(rotations);
     }
@@ -313,6 +313,12 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
+
+      SmartDashboard.putNumber("Arm PID Shoulder Goal", Units.radiansToDegrees(shoulderPID.getGoal().position));
+      SmartDashboard.putNumber("Arm PID Shoudler Error", Units.radiansToDegrees(shoulderPID.getPositionError()));
+
+      SmartDashboard.putNumber("Arm PID Elbow Goal", Units.radiansToDegrees(elbowPID.getGoal().position));
+      SmartDashboard.putNumber("Arm PID Elbow Error", Units.radiansToDegrees(elbowPID.getPositionError()));
     }
   }
 }
