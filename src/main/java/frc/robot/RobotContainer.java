@@ -90,6 +90,7 @@ public class RobotContainer {
 
     // Operator
 
+    conOperator.POV_West.onTrue(Commands.runOnce(() -> subArm.configure()));
     // Run IntakeCube command
     conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake));
 

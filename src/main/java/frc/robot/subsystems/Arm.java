@@ -153,7 +153,11 @@ public class Arm extends SubsystemBase {
         constArm.ELBOW_FORWARD_LIMIT);
     shoulderPID.setGoal(radians);
 
+    System.out.println("!!!!!!!!!!!!!!!!!!goal radians elbow + " + Units.radiansToDegrees(radians));
+
     shoulderJoint.set(ControlMode.PercentOutput, shoulderPID.calculate(getElbowPosition().getRadians()));
+    System.out.println("**********************************88888 calced percent output  +"
+        + shoulderPID.calculate(getElbowPosition().getRadians()));
   }
 
   /**
@@ -202,7 +206,12 @@ public class Arm extends SubsystemBase {
     double rotations = shoulderEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
     rotations %= 1.0;
-    return Rotation2d.fromRotations(rotations);
+
+    if (constArm.SHOULDER_ABSOLUTE_ENCODER_INVERT) {
+      return Rotation2d.fromRotations(rotations).unaryMinus();
+    } else {
+      return Rotation2d.fromRotations(rotations);
+    }
   }
 
   /**
@@ -214,7 +223,13 @@ public class Arm extends SubsystemBase {
     double rotations = elbowEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
     rotations %= 1.0;
-    return Rotation2d.fromRotations(rotations);
+
+    if (constArm.ELBOW_ABSOLUTE_ENCODER_INVERT) {
+      return Rotation2d.fromRotations(rotations).unaryMinus();
+    } else {
+      return Rotation2d.fromRotations(rotations);
+    }
+
   }
 
   /**
@@ -279,11 +294,13 @@ public class Arm extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw Inverted", 1 - shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw Inverted", 1 - elbowEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
@@ -295,6 +312,8 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
+
+      SmartDashboard.putNumber("!arm elbow p", elbowPID.getP());
     }
   }
 }
