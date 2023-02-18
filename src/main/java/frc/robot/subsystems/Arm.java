@@ -138,7 +138,7 @@ public class Arm extends SubsystemBase {
         constArm.SHOULDER_FORWARD_LIMIT);
     shoulderPID.setGoal(radians);
 
-    shoulderJoint.set(ControlMode.PercentOutput, shoulderPID.calculate(getShoulderPosition().getRadians()));
+    setShoulderPercentOutput(shoulderPID.calculate(getShoulderPosition().getRadians()));
   }
 
   /**
@@ -153,7 +153,7 @@ public class Arm extends SubsystemBase {
         constArm.ELBOW_FORWARD_LIMIT);
     elbowPID.setGoal(radians);
 
-    elbowJoint.set(ControlMode.PercentOutput, elbowPID.calculate(getElbowPosition().getRadians()));
+    setElbowPercentOutput(elbowPID.calculate(getElbowPosition().getRadians()));
   }
 
   /**
@@ -173,7 +173,17 @@ public class Arm extends SubsystemBase {
    * @param percent Percent output to set
    */
   public void setShoulderPercentOutput(double percent) {
-    shoulderJoint.set(ControlMode.PercentOutput, percent * prefArm.shoulderMaxSpeed.getValue());
+    double output = percent;
+
+    if (getShoulderPosition().getRadians() > constArm.SHOULDER_FORWARD_LIMIT && output > 0) {
+      output = 0;
+    }
+
+    if (getShoulderPosition().getRadians() < constArm.SHOULDER_REVERSE_LIMIT && output < 0) {
+      output = 0;
+    }
+
+    shoulderJoint.set(ControlMode.PercentOutput, output);
   }
 
   /**
@@ -182,7 +192,18 @@ public class Arm extends SubsystemBase {
    * @param percent Percent output to set
    */
   public void setElbowPercentOutput(double percent) {
-    elbowJoint.set(ControlMode.PercentOutput, percent * prefArm.elbowMaxSpeed.getValue());
+
+    double output = percent;
+
+    if (getElbowPosition().getRadians() > constArm.ELBOW_FORWARD_LIMIT && output > 0) {
+      output = 0;
+    }
+
+    if (getElbowPosition().getRadians() < constArm.ELBOW_REVERSE_LIMIT && output < 0) {
+      output = 0;
+    }
+
+    elbowJoint.set(ControlMode.PercentOutput, output);
   }
 
   /**
