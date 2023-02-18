@@ -18,25 +18,26 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final class constVision {
-    public static final String lifecamPhotonName = "Microsoft_LifeCam_HD-3000";
-    public static final String ARPhotonName = "Global_Shutter_Camera";
-    public static final String OVPhotonName = "Arducam_OV9281_USB_Camera";
-
-    public static final Transform3d robotToAR = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d robotToOV = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d robotToLifecam = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
-        new Rotation3d(0, 0, 0));
-  }
-
-  public enum GamePiece {
-    NONE, CUBE, CONE, HUH
-  }
-
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
-  // NEO (big and small) encoder counts per rotation
-  public static final double NEO_ENCODER_CPR = 42;
+  // order of subsystems (and adjacent classes) shall be:
+  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+
+  public static final class constControllers {
+    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
+    public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
+    public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
+    public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
+    public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
+    public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+
+    public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
+    public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
+    public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
+    public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
+    public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
+    public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
+  }
 
   // Drivetrain (no subclass)
 
@@ -129,61 +130,14 @@ public final class Constants {
       MODULE_2.position,
       MODULE_3.position);
 
-  public static final PatternType INTAKE_CUBE_LED_PATTERN = PatternType.Violet;
-  public static final PatternType INTAKE_CONE_LED_PATTERN = PatternType.Yellow;
-
-  public static final class constControllers {
-    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
-    public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
-    public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
-    public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
-    public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
-    public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
-
-    public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
-    public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
-    public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
-    public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
-    public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
-    public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
-  }
-
-  public static final class constCharger {
-    public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
-
-    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
-  }
-
-  public static final class constIntake {
-    public static final boolean LEFT_MOTOR_INVERTED = true;
-    public static final boolean RIGHT_MOTOR_INVERTED = false;
-
-    public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
-
-    // RGB game piece colors
-    public static final double coneColorR = 0.34509;
-    public static final double coneColorG = 0.51764;
-    public static final double coneColorB = 0.13333;
-
-    public static final double cubeColorR = 0.22745;
-    public static final double cubeColorG = 0.39607;
-    public static final double cubeColorB = 0.37254;
-  }
-
-  public static final class constCollector {
-    public static final double GEAR_RATIO = 100;
-
-    public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
-    public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
-
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
-    public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
-  }
+  // end drivetrain section
 
   public static final class constArm {
     public static final boolean SHOULDER_MOTOR_INVERT = false;
     public static final boolean ELBOW_MOTOR_INVERT = true;
+
+    public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = true;
+    public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
 
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
@@ -197,26 +151,77 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    // TODO: get prac bot abs offsets
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.0);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.045874);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.121968);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
 
-    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(130.0);
-    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-157.0);
+    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
+    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(65.0);
-    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-80.0);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(60.0);
+    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-60.0);
+  }
+
+  public static final class constIntake {
+    public static final boolean LEFT_MOTOR_INVERTED = true;
+    public static final boolean RIGHT_MOTOR_INVERTED = false;
+
+    public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
+
+    // RGB game piece colors
+    public static final double CONE_COLOR_R = 0.34509;
+    public static final double CONE_COLOR_G = 0.51764;
+    public static final double CONE_COLOR_B = 0.13333;
+
+    public static final double CUBE_COLOR_R = 0.22745;
+    public static final double CUBE_COLOR_G = 0.39607;
+    public static final double CUBE_COLOR_B = 0.37254;
+  }
+
+  public static final class constCollector {
+    public static final double GEAR_RATIO = 100;
+
+    public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
+    public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
+
+    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
+    public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
+
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.290520);
+  }
+
+  public static final class constCharger {
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
+
+    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
+  }
+
+  public static final class constVision {
+    public static final String LIFECAM_PHOTON_NAME = "Microsoft_LifeCam_HD-3000";
+    public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
+    public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
+
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+        new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+    public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
+        new Rotation3d(0, 0, 0));
+
+    public enum GamePiece {
+      NONE, CUBE, CONE, HUH
+    }
   }
 
   public static final class constLEDs {
-    public static final PatternType hasConeColor = PatternType.Yellow;
-    public static final PatternType hasCubeColor = PatternType.Violet;
+    public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
+    public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
 
-    public static final PatternType failureColor = PatternType.Red;
+    public static final PatternType FAILURE_COLOR = PatternType.Red;
 
-    public static final PatternType defaultColor = PatternType.Black;
+    public static final PatternType DEFAULT_COLOR = PatternType.Black;
   }
 }

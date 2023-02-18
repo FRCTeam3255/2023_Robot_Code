@@ -43,6 +43,9 @@ public class Arm extends SubsystemBase {
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
 
+    goalShoulderAngle = new Rotation2d();
+    goalElbowAngle = new Rotation2d();
+
     shoulderPID = new ProfiledPIDController(
         prefArm.shoulderP.getValue(),
         prefArm.shoulderI.getValue(),
@@ -135,7 +138,7 @@ public class Arm extends SubsystemBase {
         constArm.SHOULDER_FORWARD_LIMIT);
     shoulderPID.setGoal(radians);
 
-    shoulderJoint.set(ControlMode.PercentOutput, shoulderPID.calculate(getShoulderPosition().getRadians()));
+    setShoulderPercentOutput(shoulderPID.calculate(getShoulderPosition().getRadians()));
   }
 
   /**
@@ -148,9 +151,9 @@ public class Arm extends SubsystemBase {
         position.getRadians(),
         constArm.ELBOW_REVERSE_LIMIT,
         constArm.ELBOW_FORWARD_LIMIT);
-    shoulderPID.setGoal(radians);
+    elbowPID.setGoal(radians);
 
-    shoulderJoint.set(ControlMode.PercentOutput, shoulderPID.calculate(getElbowPosition().getRadians()));
+    setElbowPercentOutput(elbowPID.calculate(getElbowPosition().getRadians()));
   }
 
   /**
@@ -170,7 +173,17 @@ public class Arm extends SubsystemBase {
    * @param percent Percent output to set
    */
   public void setShoulderPercentOutput(double percent) {
-    shoulderJoint.set(ControlMode.PercentOutput, percent * prefArm.shoulderMaxSpeed.getValue());
+    double output = percent;
+
+    if (getShoulderPosition().getRadians() > constArm.SHOULDER_FORWARD_LIMIT && output > 0) {
+      output = 0;
+    }
+
+    if (getShoulderPosition().getRadians() < constArm.SHOULDER_REVERSE_LIMIT && output < 0) {
+      output = 0;
+    }
+
+    shoulderJoint.set(ControlMode.PercentOutput, output);
   }
 
   /**
@@ -179,7 +192,18 @@ public class Arm extends SubsystemBase {
    * @param percent Percent output to set
    */
   public void setElbowPercentOutput(double percent) {
-    elbowJoint.set(ControlMode.PercentOutput, percent * prefArm.elbowMaxSpeed.getValue());
+
+    double output = percent;
+
+    if (getElbowPosition().getRadians() > constArm.ELBOW_FORWARD_LIMIT && output > 0) {
+      output = 0;
+    }
+
+    if (getElbowPosition().getRadians() < constArm.ELBOW_REVERSE_LIMIT && output < 0) {
+      output = 0;
+    }
+
+    elbowJoint.set(ControlMode.PercentOutput, output);
   }
 
   /**
@@ -198,8 +222,13 @@ public class Arm extends SubsystemBase {
   public Rotation2d getShoulderPosition() {
     double rotations = shoulderEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
-    rotations %= 1.0;
-    return Rotation2d.fromRotations(rotations);
+    rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
+
+    if (constArm.SHOULDER_ABSOLUTE_ENCODER_INVERT) {
+      return Rotation2d.fromRotations(-rotations);
+    } else {
+      return Rotation2d.fromRotations(rotations);
+    }
   }
 
   /**
@@ -210,8 +239,14 @@ public class Arm extends SubsystemBase {
   public Rotation2d getElbowPosition() {
     double rotations = elbowEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
-    rotations %= 1.0;
-    return Rotation2d.fromRotations(rotations);
+    rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
+
+    if (constArm.ELBOW_ABSOLUTE_ENCODER_INVERT) {
+      return Rotation2d.fromRotations(-rotations);
+    } else {
+      return Rotation2d.fromRotations(rotations);
+    }
+
   }
 
   /**
@@ -271,18 +306,23 @@ public class Arm extends SubsystemBase {
     setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
+  public void resetPID() {
+    shoulderPID.reset(getShoulderPosition().getRadians());
+    elbowPID.reset(getElbowPosition().getRadians());
+  }
+
   @Override
   public void periodic() {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw Inverted", 1 - shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw Degrees",
-          Units.rotationsToDegrees(elbowEncoder.getAbsolutePosition()));
+      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw Inverted", 1 - elbowEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
@@ -294,6 +334,12 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
+
+      SmartDashboard.putNumber("Arm PID Shoulder Goal", Units.radiansToDegrees(shoulderPID.getGoal().position));
+      SmartDashboard.putNumber("Arm PID Shoudler Error", Units.radiansToDegrees(shoulderPID.getPositionError()));
+
+      SmartDashboard.putNumber("Arm PID Elbow Goal", Units.radiansToDegrees(elbowPID.getGoal().position));
+      SmartDashboard.putNumber("Arm PID Elbow Error", Units.radiansToDegrees(elbowPID.getPositionError()));
     }
   }
 }

@@ -36,32 +36,25 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
-  private final Drivetrain subDrivetrain = new Drivetrain();
-  private final Intake subIntake = new Intake();
-  private final Arm subArm = new Arm();
-  private final Vision subVision = new Vision();
-  private final Collector subCollector = new Collector();
-  private final Charger subCharger = new Charger();
-  private final LEDs subLEDs = new LEDs();
-
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
   private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
 
+  private final Drivetrain subDrivetrain = new Drivetrain();
+  private final Arm subArm = new Arm();
+  private final Intake subIntake = new Intake();
+  private final Collector subCollector = new Collector();
+  private final Charger subCharger = new Charger();
+  private final Vision subVision = new Vision();
+  private final LEDs subLEDs = new LEDs();
+
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
-    subCollector.setDefaultCommand(
-        new RunCommand(
-            () -> subCollector.setPivotMotorSpeed(
-                MathUtil.applyDeadband(
-                    conOperator.getAxisRSY(),
-                    constControllers.OPERATOR_RIGHT_STICK_Y_DEADBAND)),
-            subCollector));
-    subIntake.setDefaultCommand(subIntake.holdCommand());
-    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
+    subIntake.setDefaultCommand(subIntake.holdCommand());
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
 
     configureBindings();
   }
@@ -90,11 +83,14 @@ public class RobotContainer {
 
     // Operator
 
+    conOperator.POV_West.onTrue(Commands.runOnce(() -> subArm.configure()));
     // Run IntakeCube command
-    conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector, subIntake));
+    // conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector,
+    // subIntake));
 
     // TODO: Run IntakeCone command (btn_RB)
-    conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
+    // conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake,
+    // subArm));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
@@ -114,30 +110,31 @@ public class RobotContainer {
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
 
-    // TODO: Create button to manually adjust arm
-    // shoulder: btn_LS
-    // elbow: btn_RS
-
     // Set Collector to starting config and stop the rollers
-    conOperator.POV_North
-        .onTrue(
-            Commands.runOnce(
-                () -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
-                .alongWith(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0))));
+    // conOperator.POV_North
+    // .onTrue(
+    // Commands.runOnce(
+    // () ->
+    // subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
+    // .alongWith(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0))));
 
     // Set Collector rollers to intake height and spin the rollers
-    conOperator.POV_South
-        .onTrue(
-            Commands
-                .runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue()))
-                .alongWith(
-                    Commands.runOnce(() -> subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))));
+    // conOperator.POV_South
+    // .onTrue(
+    // Commands
+    // .runOnce(() ->
+    // subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue()))
+    // .alongWith(
+    // Commands.runOnce(() ->
+    // subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))));
 
     // Spin the Intake forward
-    conOperator.btn_Start.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed)));
+    conOperator.btn_Start
+        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
     // Spin the Intake in reverse
-    conOperator.btn_Back.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed)));
+    conOperator.btn_Back
+        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
   }
 
   public Command getAutonomousCommand() {

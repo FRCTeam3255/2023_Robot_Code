@@ -7,6 +7,9 @@ public class RobotPreferences {
 
   public static final boolean useNetworkTables = false;
 
+  // order of subsystems (and adjacent classes) shall be:
+  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+
   public static final class prefDrivetrain {
 
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);
@@ -72,75 +75,28 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
   }
 
-  public static final class prefCharger {
-    public static final SN_DoublePreference chargerSpeed = new SN_DoublePreference("chargerSpeed", 0.25);
-
-  }
-
-  public static final class prefIntake {
-    public static final SN_DoublePreference colorMatcherConfidence = new SN_DoublePreference("colorMatcherConfidence",
-        0.95);
-    // TODO: Find what proximity is needed for the sensor
-    public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
-
-    public static final SN_DoublePreference intakeIntakeSpeed = new SN_DoublePreference("intakeIntakeSpeed", 0.5);
-    public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
-    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.5);
-  }
-
-  public static final class prefVision {
-
-    public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(
-        "measurementStdDevsFeet", 1);
-    public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
-        "measurementStdDevsDegrees", 10);
-  }
-
-  public static final class prefCollector {
-
-    // TODO: Find PID values
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.09);
-    public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
-    public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
-
-    // allowable closed loop error in degrees
-    public static final SN_DoublePreference pivotTolerance = new SN_DoublePreference(
-        "pivotTolerance", 2);
-    public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
-        "pivotMaxSpeed", 0.25);
-
-    public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
-        "pivotAngleStartingConfig", 0);
-    public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
-        "pivotAngleCubeCollecting", 90);
-    public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
-        "pivotAngleClimb", 180);
-
-    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", 1);
-  }
-
   public static final class prefArm {
-    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.00005);
+    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 2);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
     // degrees per second
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 45);
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 180);
     // degrees per second per second
-    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 45);
+    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 235);
     // degrees
-    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.01);
 
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.00005);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 1.75);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
     // degrees per second
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 45);
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 180);
     // degrees per second per second
-    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 45);
+    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 235);
     // degrees
-    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.01);
 
-    public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 15);
+    public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
 
     public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
@@ -151,7 +107,7 @@ public class RobotPreferences {
         "elbowForwardSoftLimit", true);
     public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
         "elbowReverseSoftLimit", true);
-        
+
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
         "armPresetCollectorShoulderAngle", 0);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
@@ -182,4 +138,52 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
         "armPresetHighElbowAngle", 0);
   }
+
+  public static final class prefIntake {
+    public static final SN_DoublePreference colorMatcherConfidence = new SN_DoublePreference("colorMatcherConfidence",
+        0.95);
+    // TODO: Find what proximity is needed for the sensor
+    public static final SN_DoublePreference gamePieceProximity = new SN_DoublePreference("gamePieceProximity", 100);
+
+    public static final SN_DoublePreference intakeIntakeSpeed = new SN_DoublePreference("intakeIntakeSpeed", 0.5);
+    public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
+    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.5);
+  }
+
+  public static final class prefCollector {
+
+    // TODO: Find PID values
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.09);
+    public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
+    public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
+
+    // allowable closed loop error in degrees
+    public static final SN_DoublePreference pivotTolerance = new SN_DoublePreference(
+        "pivotTolerance", 2);
+    public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
+        "pivotMaxSpeed", 0.25);
+
+    public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
+        "pivotAngleStartingConfig", 0);
+    public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
+        "pivotAngleCubeCollecting", 90);
+    public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
+        "pivotAngleClimb", 180);
+
+    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", 1);
+  }
+
+  public static final class prefCharger {
+    public static final SN_DoublePreference chargerSpeed = new SN_DoublePreference("chargerSpeed", 0.25);
+
+  }
+
+  public static final class prefVision {
+
+    public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(
+        "measurementStdDevsFeet", 1);
+    public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
+        "measurementStdDevsDegrees", 10);
+  }
+
 }
