@@ -110,10 +110,6 @@ public class RobotContainer {
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
 
-    // TODO: Create button to manually adjust arm
-    // shoulder: btn_LS
-    // elbow: btn_RS
-
     // Set Collector to starting config and stop the rollers
     // conOperator.POV_North
     // .onTrue(
