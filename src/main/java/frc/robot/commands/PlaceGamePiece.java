@@ -41,8 +41,9 @@ public class PlaceGamePiece extends SequentialCommandGroup {
     this.elbowDegrees = elbowDegrees;
 
     addCommands(
-        // Deploy collector
-        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
+        // Retract collector
+        // new InstantCommand(() ->
+        // subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
 
         // Move arm to desired position
         new InstantCommand(() -> subArm.setGoalAngles(this.shoulderDegrees, this.elbowDegrees)),
