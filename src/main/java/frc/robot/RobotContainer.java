@@ -133,10 +133,12 @@ public class RobotContainer {
     // subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))));
 
     // Spin the Intake forward
-    conOperator.btn_Start.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed)));
+    conOperator.btn_Start
+        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
     // Spin the Intake in reverse
-    conOperator.btn_Back.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed)));
+    conOperator.btn_Back
+        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
   }
 
   public Command getAutonomousCommand() {
