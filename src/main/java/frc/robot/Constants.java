@@ -171,13 +171,13 @@ public final class Constants {
     public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
     // RGB game piece colors
-    public static final double CONE_COLOR_R = 0.34509;
-    public static final double CONE_COLOR_G = 0.51764;
-    public static final double CONE_COLOR_B = 0.13333;
+    public static final double CONE_COLOR_R = 0.2980392156862745;
+    public static final double CONE_COLOR_G = 0.3654901960784314;
+    public static final double CONE_COLOR_B = 0.3309803921568627;
 
-    public static final double CUBE_COLOR_R = 0.22745;
-    public static final double CUBE_COLOR_G = 0.39607;
-    public static final double CUBE_COLOR_B = 0.37254;
+    public static final double CUBE_COLOR_R = 0.3176470588235294;
+    public static final double CUBE_COLOR_G = 0.34039215686274515;
+    public static final double CUBE_COLOR_B = 0.3356862745098039;
   }
 
   public static final class constCollector {
