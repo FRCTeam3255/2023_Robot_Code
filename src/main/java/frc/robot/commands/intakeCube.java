@@ -28,10 +28,10 @@ public class intakeCube extends SequentialCommandGroup {
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue())),
 
         // - Move arm to collector
-        new InstantCommand(
-            () -> subArm.setJointPositions(
-                prefArm.armPresetCollectorElbowAngle,
-                prefArm.armPresetCollectorShoulderAngle)),
+        // new InstantCommand(
+        // () -> subArm.setJointPositions(
+        // prefArm.armPresetCollectorElbowAngle,
+        // prefArm.armPresetCollectorShoulderAngle)),
 
         // - Spin intake & rollers until a game piece is collected
         Commands.parallel(
@@ -45,10 +45,10 @@ public class intakeCube extends SequentialCommandGroup {
             new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed))),
 
         // - Raise arm to mid shelf position
-        new InstantCommand(
-            () -> subArm.setJointPositions(
-                prefArm.armPresetMidElbowAngle,
-                prefArm.armPresetMidShoulderAngle)),
+        // new InstantCommand(
+        // () -> subArm.setJointPositions(
+        // prefArm.armPresetMidElbowAngle,
+        // prefArm.armPresetMidShoulderAngle)),
 
         // - Retract collector
         new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))

@@ -117,21 +117,11 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Set the rotational positions of the shoulder and elbow joints.
-   * 
-   * @param shoulderAngle Shoulder position in degrees
-   * @param elbowAngle    Elbow position in degrees
-   */
-  public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {
-    setJointPositions(Rotation2d.fromDegrees(shoulderAngle.getValue()), Rotation2d.fromDegrees(elbowAngle.getValue()));
-  }
-
-  /**
    * Set the rotational position of the shoulder joint.
    * 
    * @param position Rotational position to set shoulder
    */
-  public void setShoulderPosition(Rotation2d position) {
+  private void setShoulderPosition(Rotation2d position) {
     double radians = MathUtil.clamp(
         position.getRadians(),
         constArm.SHOULDER_REVERSE_LIMIT,
@@ -146,7 +136,7 @@ public class Arm extends SubsystemBase {
    * 
    * @param degrees Rotational position to set elbow
    */
-  public void setElbowPosition(Rotation2d position) {
+  private void setElbowPosition(Rotation2d position) {
     double radians = MathUtil.clamp(
         position.getRadians(),
         constArm.ELBOW_REVERSE_LIMIT,
@@ -154,35 +144,6 @@ public class Arm extends SubsystemBase {
     shoulderPID.setGoal(radians);
 
     shoulderJoint.set(ControlMode.PercentOutput, shoulderPID.calculate(getElbowPosition().getRadians()));
-  }
-
-  /**
-   * Set the percent output of the shoulder and elbow joint.
-   * 
-   * @param shoulderPercent Shoulder percent output
-   * @param elbowPercent    Elbow percent output
-   */
-  public void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
-    setShoulderPercentOutput(shoulderPercent);
-    setElbowPercentOutput(elbowPercent);
-  }
-
-  /**
-   * Set the percent output of the shoulder joint motor.
-   * 
-   * @param percent Percent output to set
-   */
-  public void setShoulderPercentOutput(double percent) {
-    shoulderJoint.set(ControlMode.PercentOutput, percent * prefArm.shoulderMaxSpeed.getValue());
-  }
-
-  /**
-   * Set the percent output of the elbow joint motor.
-   * 
-   * @param percent Percent output to set
-   */
-  public void setElbowPercentOutput(double percent) {
-    elbowJoint.set(ControlMode.PercentOutput, percent * prefArm.elbowMaxSpeed.getValue());
   }
 
   /**
@@ -222,7 +183,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Position of of arm tip in meters
    */
-  public Translation2d getArmTipPosition() {
+  private Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
 
