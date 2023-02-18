@@ -90,10 +90,6 @@ public class Intake extends SubsystemBase {
     return false;
   }
 
-  public boolean isGamePieceScored() {
-    return !isGamePieceCollected();
-  }
-
   public void setMotorSpeed(SN_DoublePreference speed) {
     setMotorSpeed(speed.getValue());
   }

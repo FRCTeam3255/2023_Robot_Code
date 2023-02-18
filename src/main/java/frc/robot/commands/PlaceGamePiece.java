@@ -7,6 +7,7 @@ package frc.robot.commands;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Debug;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.constVision.GamePiece;
@@ -46,11 +47,26 @@ public class PlaceGamePiece extends SequentialCommandGroup {
         // Move arm to desired position
         new InstantCommand(() -> subArm.setGoalAngles(this.shoulderDegrees, this.elbowDegrees)),
 
-        // Set motors to release speed until game piece is placed
-        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
-            // Reverse intake until intake switch is no longer pressed,
-            // plus a delay to allow it time to exit the intake
-            .until(subIntake::isGamePieceScored).withTimeout(0.25), // TODO: Change 0.25 to tuned seconds value
+        // Detect game piece type
+        new InstantCommand(() -> {
+          if (subIntake.getGamePieceType() == GamePiece.CONE) {
+            Commands.parallel(
+                // If game piece is a cone, then release and back away in parallel
+                new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
+                    .until(() -> !subIntake.isGamePieceCollected())
+                    .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
+
+                // Move elbow to stow position to prevent hitting the node
+                new InstantCommand(
+                    () -> subArm.setGoalAngles(this.shoulderDegrees, prefArm.armPresetStowElbowAngle)));
+
+          } else if (subIntake.getGamePieceType() == GamePiece.CUBE) {
+            // If game piece is a cube, then angle elbow downward and release
+            new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
+                .until(() -> !subIntake.isGamePieceCollected())
+                .withTimeout(prefIntake.intakeReleaseDelay.getValue());
+          }
+        }),
 
         // Move arm to stow position
         new InstantCommand(
