@@ -225,6 +225,9 @@ public final class Constants {
     public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
     public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
 
+    public static final PatternType DESIRED_CONE_COLOR = PatternType.StrobeGold;
+    public static final PatternType DESIRED_CUBE_COLOR = PatternType.StrobeBlue;
+
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;

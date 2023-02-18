@@ -148,22 +148,22 @@ public class RobotContainer {
     conOperator.btn_Back.onTrue(Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed)));
 
     // Numpad
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> desiredGamePiece = GamePiece.CONE));
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> desiredGamePiece = GamePiece.CUBE));
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FIRST));
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SECOND));
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.THIRD));
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FOURTH));
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FIFTH));
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SIXTH));
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SEVENTH));
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.EIGHTH));
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.NINTH));
 
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.HYBRID));
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.MID));
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.HIGH));
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.HYBRID));
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.MID));
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.HIGH));
 
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FIRST));
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SECOND));
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.THIRD));
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FOURTH));
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FIFTH));
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SIXTH));
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SEVENTH));
-    conNumpad.btn_13.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.EIGHTH));
-    conNumpad.btn_14.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.NINTH));
+    conNumpad.btn_13.onTrue(Commands.runOnce(() -> desiredGamePiece = GamePiece.CONE));
+    conNumpad.btn_14.onTrue(Commands.runOnce(() -> desiredGamePiece = GamePiece.CUBE));
   }
 
   public Command getAutonomousCommand() {

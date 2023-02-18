@@ -50,10 +50,10 @@ public class SetLEDs extends CommandBase {
 
         // We don't have a game piece and we WANT something
         if (desiredGamePiece == GamePiece.CONE) {
-          desiredPattern = constLEDs.HAS_CONE_COLOR;
+          desiredPattern = constLEDs.DESIRED_CONE_COLOR;
           break;
         } else if (desiredGamePiece == GamePiece.CUBE) {
-          desiredPattern = constLEDs.HAS_CUBE_COLOR;
+          desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
           break;
         }
 
