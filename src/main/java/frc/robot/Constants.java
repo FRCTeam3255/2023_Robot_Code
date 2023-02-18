@@ -144,6 +144,9 @@ public final class Constants {
     public static final boolean SHOULDER_MOTOR_INVERT = false;
     public static final boolean ELBOW_MOTOR_INVERT = true;
 
+    public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = true;
+    public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
+
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
 
@@ -162,11 +165,11 @@ public final class Constants {
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
 
-    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(130.0);
-    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-157.0);
+    public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
+    public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(65.0);
-    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-80.0);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(60.0);
+    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-60.0);
   }
 
   public static final class constIntake {

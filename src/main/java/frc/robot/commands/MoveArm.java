@@ -34,6 +34,7 @@ public class MoveArm extends CommandBase {
   @Override
   public void initialize() {
     subArm.setGoalAngles(subArm.getShoulderPosition(), subArm.getElbowPosition());
+    subArm.resetPID();
   }
 
   @Override
@@ -41,7 +42,7 @@ public class MoveArm extends CommandBase {
 
     goalShoulderAngle = Rotation2d.fromDegrees(
         subArm.getGoalShoulderAngle().getDegrees()
-            + (conOperator.getAxisLSX() * prefArm.shoulderAdjustRange.getValue()));
+            + (conOperator.getAxisLSY() * prefArm.shoulderAdjustRange.getValue()));
 
     goalElbowAngle = Rotation2d.fromDegrees(
         subArm.getGoalElbowAngle().getDegrees()

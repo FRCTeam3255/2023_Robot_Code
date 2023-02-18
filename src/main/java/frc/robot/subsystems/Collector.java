@@ -143,7 +143,7 @@ public class Collector extends SubsystemBase {
     // This method will be called once per scheduler run
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Collector Pivot Motor Encoder", pivotMotor.getSelectedSensorPosition());
-      SmartDashboard.putNumber("Collector Pivot Position", getPivotMotorPosition());
+      SmartDashboard.putNumber("Collector Pivot Position", Units.radiansToDegrees(getPivotMotorPosition()));
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder().getDegrees());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getAbsolutePosition());
     }
