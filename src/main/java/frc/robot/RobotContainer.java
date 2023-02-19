@@ -26,6 +26,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
@@ -61,6 +62,7 @@ public class RobotContainer {
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
     subIntake.setDefaultCommand(subIntake.holdCommand());
+    subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, desiredGamePiece));
 
@@ -91,7 +93,6 @@ public class RobotContainer {
 
     // Operator
 
-    conOperator.POV_West.onTrue(Commands.runOnce(() -> subArm.configure()));
     // Run IntakeCube command
     // conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector,
     // subIntake));
@@ -125,22 +126,12 @@ public class RobotContainer {
     conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null));
 
     // Set Collector to starting config and stop the rollers
-    // conOperator.POV_North
-    // .onTrue(
-    // Commands.runOnce(
-    // () ->
-    // subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue()))
-    // .alongWith(Commands.runOnce(() -> subCollector.setRollerMotorSpeed(0))));
+    conOperator.POV_North
+        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
 
     // Set Collector rollers to intake height and spin the rollers
-    // conOperator.POV_South
-    // .onTrue(
-    // Commands
-    // .runOnce(() ->
-    // subCollector.setPivotMotorAngle(prefCollector.pivotAngleCubeCollecting.getValue()))
-    // .alongWith(
-    // Commands.runOnce(() ->
-    // subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue()))));
+    conOperator.POV_South
+        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
 
     // Spin the Intake forward
     conOperator.btn_Start
