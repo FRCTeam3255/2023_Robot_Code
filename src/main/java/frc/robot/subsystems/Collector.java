@@ -162,6 +162,12 @@ public class Collector extends SubsystemBase {
         .degreesToRadians(prefCollector.pivotTolerance.getValue()));
   }
 
+  public boolean isPivotMotorInToleranceForRoller() {
+    return Math.abs(getGoalPosition().getRadians() - getPivotMotorPosition()) < (Units
+        .degreesToRadians(
+            prefCollector.pivotTolerance.getValue() * prefCollector.rollerToleranceMultiplier.getValue()));
+  }
+
   /**
    * Set the goal position of the pivot motor in degrees.
    * 
