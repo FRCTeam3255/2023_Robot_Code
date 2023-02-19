@@ -18,7 +18,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = true;
+  public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -190,7 +190,7 @@ public final class Constants {
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
 
     public static final boolean PIVOT_MOTOR_INVERT = false;
-    public static final boolean ROLLER_MOTOR_INVERT = false;
+    public static final boolean ROLLER_MOTOR_INVERT = true;
     public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
