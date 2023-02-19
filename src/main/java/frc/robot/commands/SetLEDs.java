@@ -5,9 +5,11 @@
 package frc.robot.commands;
 
 import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constLEDs;
+import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 
@@ -15,8 +17,9 @@ public class SetLEDs extends CommandBase {
   LEDs subLEDs;
   Intake subIntake;
   PatternType desiredPattern;
+  GamePiece desiredGamePiece;
 
-  public SetLEDs(LEDs subLEDs, Intake subIntake) {
+  public SetLEDs(LEDs subLEDs, Intake subIntake, GamePiece desiredGamePiece) {
     this.subLEDs = subLEDs;
     this.subIntake = subIntake;
 
@@ -44,8 +47,15 @@ public class SetLEDs extends CommandBase {
           desiredPattern = constLEDs.FAILURE_COLOR;
           break;
         }
-        // TODO: Create a conditional that returns CONE or CUBE; Numpad input?
+
         // We don't have a game piece and we WANT something
+        if (desiredGamePiece == GamePiece.CONE) {
+          desiredPattern = constLEDs.DESIRED_CONE_COLOR;
+          break;
+        } else if (desiredGamePiece == GamePiece.CUBE) {
+          desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
+          break;
+        }
 
         // We dont have a game piece or want a game piece; default color
         desiredPattern = constLEDs.DEFAULT_COLOR;
