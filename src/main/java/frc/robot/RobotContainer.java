@@ -54,8 +54,7 @@ public class RobotContainer {
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
     subIntake.setDefaultCommand(subIntake.holdCommand());
-    // subCollector.setDefaultCommand(new PivotCollector(subCollector));
-    subCollector.setDefaultCommand(Commands.run(() -> subCollector.setRollerMotorSpeed(1), subCollector));
+    subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake));
 
