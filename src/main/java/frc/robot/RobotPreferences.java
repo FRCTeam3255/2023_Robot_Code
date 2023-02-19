@@ -159,9 +159,9 @@ public class RobotPreferences {
 
     // allowable closed loop error in degrees
     public static final SN_DoublePreference pivotTolerance = new SN_DoublePreference(
-        "pivotTolerance", 2);
+        "pivotTolerance", .5);
     public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
-        "pivotMaxSpeed", 0.25);
+        "pivotMaxSpeed", 1);
 
     public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
         "pivotAngleStartingConfig", 206);
@@ -170,7 +170,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
         "pivotAngleClimb", 0);
 
-    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", 1);
+    public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", .5);
+
+    public static final SN_DoublePreference rollerToleranceMultiplier = new SN_DoublePreference(
+        "rollerToleranceMultiplier", 10);
   }
 
   public static final class prefCharger {
