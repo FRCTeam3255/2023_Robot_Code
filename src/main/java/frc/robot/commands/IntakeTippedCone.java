@@ -39,6 +39,7 @@ public class IntakeTippedCone extends SequentialCommandGroup {
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
 
         // Move backwards until game piece is collected
+        // TODO: Add driving code in parallel with intake
 
         // Set motors to hold speed
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
