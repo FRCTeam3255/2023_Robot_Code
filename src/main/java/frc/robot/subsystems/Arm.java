@@ -117,21 +117,11 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Set the rotational positions of the shoulder and elbow joints.
-   * 
-   * @param shoulderAngle Shoulder position in degrees
-   * @param elbowAngle    Elbow position in degrees
-   */
-  public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {
-    setJointPositions(Rotation2d.fromDegrees(shoulderAngle.getValue()), Rotation2d.fromDegrees(elbowAngle.getValue()));
-  }
-
-  /**
    * Set the rotational position of the shoulder joint.
    * 
    * @param position Rotational position to set shoulder
    */
-  public void setShoulderPosition(Rotation2d position) {
+  private void setShoulderPosition(Rotation2d position) {
     double radians = MathUtil.clamp(
         position.getRadians(),
         constArm.SHOULDER_REVERSE_LIMIT,
@@ -146,7 +136,7 @@ public class Arm extends SubsystemBase {
    * 
    * @param degrees Rotational position to set elbow
    */
-  public void setElbowPosition(Rotation2d position) {
+  private void setElbowPosition(Rotation2d position) {
     double radians = MathUtil.clamp(
         position.getRadians(),
         constArm.ELBOW_REVERSE_LIMIT,
@@ -254,7 +244,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Position of of arm tip in meters
    */
-  public Translation2d getArmTipPosition() {
+  private Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
 
