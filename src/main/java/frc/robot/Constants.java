@@ -37,6 +37,14 @@ public final class Constants {
     public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
     public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
     public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
+
+    public enum ScoringLevel {
+      NONE, HYBRID, MID, HIGH;
+    }
+
+    public enum ScoringColumn {
+      NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
+    }
   }
 
   // Drivetrain (no subclass)
@@ -186,10 +194,17 @@ public final class Constants {
     public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
     public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
 
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
+    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(207);
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.290520);
+    public static final boolean PIVOT_MOTOR_INVERT = false;
+    public static final boolean ROLLER_MOTOR_INVERT = true;
+    public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
+
+    public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
+    public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
+
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.864313);
   }
 
   public static final class constCharger {
@@ -219,6 +234,9 @@ public final class Constants {
   public static final class constLEDs {
     public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
     public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
+
+    public static final PatternType DESIRED_CONE_COLOR = PatternType.StrobeGold;
+    public static final PatternType DESIRED_CUBE_COLOR = PatternType.StrobeBlue;
 
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
