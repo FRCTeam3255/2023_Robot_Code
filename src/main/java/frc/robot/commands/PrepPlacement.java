@@ -34,8 +34,6 @@ public class PrepPlacement extends InstantCommand {
     this.subIntake = subIntake;
     this.scoringColumn = scoringColumn;
     this.scoringLevel = scoringLevel;
-
-    addRequirements(subArm);
   }
 
   @Override
