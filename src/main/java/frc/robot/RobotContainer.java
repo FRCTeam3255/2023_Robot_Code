@@ -28,6 +28,7 @@ import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
+import frc.robot.commands.PrepPlacement;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
@@ -53,10 +54,6 @@ public class RobotContainer {
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
-  private GamePiece desiredGamePiece = GamePiece.NONE;
-  private ScoringLevel scoringLevel = ScoringLevel.NONE;
-  private ScoringColumn scoringColumn = ScoringColumn.NONE;
-
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
@@ -64,7 +61,7 @@ public class RobotContainer {
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
-    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, desiredGamePiece));
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
   }
@@ -123,7 +120,7 @@ public class RobotContainer {
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null));
+    conOperator.POV_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake).repeatedly());
 
     // Set Collector to starting config and stop the rollers
     conOperator.POV_North
@@ -142,22 +139,22 @@ public class RobotContainer {
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
 
     // Numpad
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FIRST));
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SECOND));
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.THIRD));
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FOURTH));
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.FIFTH));
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SIXTH));
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.SEVENTH));
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.EIGHTH));
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> scoringColumn = ScoringColumn.NINTH));
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.FIRST));
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.SECOND));
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.THIRD));
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.FOURTH));
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.FIFTH));
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.SIXTH));
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.SEVENTH));
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.EIGHTH));
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.NINTH));
 
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.HYBRID));
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.MID));
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> scoringLevel = ScoringLevel.HIGH));
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.MID));
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HIGH));
 
-    conNumpad.btn_13.onTrue(Commands.runOnce(() -> desiredGamePiece = GamePiece.CONE));
-    conNumpad.btn_14.onTrue(Commands.runOnce(() -> desiredGamePiece = GamePiece.CUBE));
+    conNumpad.btn_13.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
+    conNumpad.btn_14.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
   }
 
   public Command getAutonomousCommand() {
