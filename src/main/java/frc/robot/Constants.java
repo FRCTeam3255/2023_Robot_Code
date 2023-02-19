@@ -37,6 +37,14 @@ public final class Constants {
     public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
     public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
     public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
+
+    public enum ScoringLevel {
+      NONE, HYBRID, MID, HIGH;
+    }
+
+    public enum ScoringColumn {
+      NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
+    }
   }
 
   // Drivetrain (no subclass)
@@ -219,6 +227,9 @@ public final class Constants {
   public static final class constLEDs {
     public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
     public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
+
+    public static final PatternType DESIRED_CONE_COLOR = PatternType.StrobeGold;
+    public static final PatternType DESIRED_CUBE_COLOR = PatternType.StrobeBlue;
 
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
