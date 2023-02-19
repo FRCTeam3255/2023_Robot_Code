@@ -10,6 +10,10 @@ public class RobotPreferences {
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
 
+  public static final class prefControllers {
+    public static final SN_DoublePreference rumbleOutput = new SN_DoublePreference("rumbleOutput", 0.5);
+  }
+
   public static final class prefDrivetrain {
 
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);

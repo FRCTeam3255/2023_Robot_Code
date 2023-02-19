@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefCollector;
+import frc.robot.RobotPreferences.prefControllers;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
@@ -42,7 +43,8 @@ public class IntakeCone extends SequentialCommandGroup {
         // - Spin intake and rumble the controller until a game piece is collected
         Commands.parallel(
             new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
-            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0.5))
+            new InstantCommand(
+                () -> conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue()))
                 .until(subIntake::isGamePieceCollected)),
 
         // - Set motors to hold speed
