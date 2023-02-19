@@ -7,8 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -24,6 +26,8 @@ public class Collector extends SubsystemBase {
   SN_CANSparkMax pivotMotor;
   SN_CANSparkMax rollerMotor;
 
+  Rotation2d goalPosition;
+
   DutyCycleEncoder pivotAbsoluteEncoder;
 
   TalonFXConfiguration pivotMotorConfig;
@@ -31,6 +35,8 @@ public class Collector extends SubsystemBase {
   public Collector() {
     pivotMotor = new SN_CANSparkMax(mapCollector.PIVOT_MOTOR_CAN);
     rollerMotor = new SN_CANSparkMax(mapCollector.ROLLER_MOTOR_CAN);
+
+    goalPosition = new Rotation2d();
 
     pivotAbsoluteEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
 
@@ -45,11 +51,11 @@ public class Collector extends SubsystemBase {
     pivotMotor.configFactoryDefault();
     rollerMotor.configFactoryDefault();
 
+    pivotMotor.encoder.setPositionConversionFactor(SN_Math.TALONFX_ENCODER_PULSES_PER_COUNT);
+
     pivotMotorConfig.slot0.kP = prefCollector.pivotP.getValue();
     pivotMotorConfig.slot0.kI = prefCollector.pivotI.getValue();
     pivotMotorConfig.slot0.kD = prefCollector.pivotD.getValue();
-
-    pivotMotor.encoder.setPositionConversionFactor(SN_Math.TALONFX_ENCODER_PULSES_PER_COUNT);
 
     pivotMotorConfig.forwardSoftLimitEnable = constCollector.PIVOT_FORWARD_LIMIT_ENABLE;
     pivotMotorConfig.reverseSoftLimitEnable = constCollector.PIVOT_REVERSE_LIMIT_ENABLE;
@@ -61,12 +67,14 @@ public class Collector extends SubsystemBase {
         Units.radiansToDegrees(constCollector.PIVOT_REVERSE_LIMIT_VALUE),
         constCollector.GEAR_RATIO);
 
-    pivotMotorConfig.slot0.allowableClosedloopError = SN_Math
-        .degreesToFalcon(prefCollector.pivotTolerance.getValue(),
-            constCollector.GEAR_RATIO);
     pivotMotorConfig.slot0.closedLoopPeakOutput = prefCollector.pivotMaxSpeed.getValue();
 
     pivotMotor.configAllSettings(pivotMotorConfig);
+
+    pivotMotor.setInverted(constCollector.PIVOT_MOTOR_INVERT);
+    pivotMotor.setNeutralMode(constCollector.PIVOT_MOTOR_NEUTRAL_MODE);
+
+    rollerMotor.setInverted(constCollector.ROLLER_MOTOR_INVERT);
   }
 
   /**
@@ -76,7 +84,13 @@ public class Collector extends SubsystemBase {
    */
   public void setPivotMotorAngle(double angle) {
     double position = SN_Math.degreesToFalcon(angle, constCollector.GEAR_RATIO);
-    pivotMotor.set(ControlMode.Position, position);
+
+    if (isPivotMotorInTolerance()) {
+      pivotMotor.set(0);
+    } else {
+      pivotMotor.set(ControlMode.Position, position);
+    }
+
   }
 
   /**
@@ -103,14 +117,19 @@ public class Collector extends SubsystemBase {
   public Rotation2d getPivotAbsoluteEncoder() {
     double rotations = pivotAbsoluteEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constCollector.PIVOT_ABSOLUTE_ENCODER_OFFSET);
-    rotations %= 1.0;
-    return Rotation2d.fromRotations(rotations);
+    rotations = MathUtil.inputModulus(rotations, -1, 1);
+
+    if (constCollector.PIVOT_ABSOLUTE_ENCODER_INVERT) {
+      return Rotation2d.fromRotations(-rotations);
+    } else {
+      return Rotation2d.fromRotations(rotations);
+    }
   }
 
   /**
    * Reset the pivot motor encoder to the absolute encoder position
    */
-  private void resetPivotMotorToAbsolute() {
+  public void resetPivotMotorToAbsolute() {
     double absoluteEncoderCount = SN_Math.degreesToFalcon(
         getPivotAbsoluteEncoder().getDegrees(),
         constCollector.GEAR_RATIO);
@@ -138,6 +157,44 @@ public class Collector extends SubsystemBase {
     rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public boolean isPivotMotorInTolerance() {
+    return Math.abs(getGoalPosition().getRadians() - getPivotMotorPosition()) < (Units
+        .degreesToRadians(prefCollector.pivotTolerance.getValue()));
+  }
+
+  public boolean isPivotMotorInToleranceForRoller() {
+    return Math.abs(getGoalPosition().getRadians() - getPivotMotorPosition()) < (Units
+        .degreesToRadians(
+            prefCollector.pivotTolerance.getValue() * prefCollector.rollerToleranceMultiplier.getValue()));
+  }
+
+  /**
+   * Set the goal position of the pivot motor in degrees.
+   * 
+   * @param goalPosition Goal position in degrees
+   */
+  public void setGoalPosition(SN_DoublePreference goalPosition) {
+    setGoalPosition(Rotation2d.fromDegrees(goalPosition.getValue()));
+  }
+
+  /**
+   * Set the goal position of the pivot motor as a Rotation2d.
+   * 
+   * @param goalPosition Goal position of the pivot motor
+   */
+  public void setGoalPosition(Rotation2d goalPosition) {
+    this.goalPosition = goalPosition;
+  }
+
+  /**
+   * Get the goal position of the pivot motor as a Rotation2d.
+   * 
+   * @return Goal position of the pivot motor
+   */
+  public Rotation2d getGoalPosition() {
+    return goalPosition;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -146,6 +203,15 @@ public class Collector extends SubsystemBase {
       SmartDashboard.putNumber("Collector Pivot Position", Units.radiansToDegrees(getPivotMotorPosition()));
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder", getPivotAbsoluteEncoder().getDegrees());
       SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw", pivotAbsoluteEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("Collector Pivot Absolute Encoder Raw Inverted",
+          -pivotAbsoluteEncoder.getAbsolutePosition());
+      SmartDashboard.putBoolean("Collector Pivot Is In Tolerance", isPivotMotorInTolerance());
+      SmartDashboard.putNumber("Collector Goal Pivot Angle", getGoalPosition().getDegrees());
+
+      SmartDashboard.putNumber("Collector Roller Motor Output", rollerMotor.getMotorOutputPercent());
+
+      SmartDashboard.putNumber("Collector Pivot PID Error",
+          SN_Math.falconToDegrees(pivotMotor.getClosedLoopError(), constCollector.GEAR_RATIO));
     }
   }
 }
