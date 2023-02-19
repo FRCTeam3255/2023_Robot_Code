@@ -28,7 +28,7 @@ public class PivotCollector extends CommandBase {
   public void execute() {
     subCollector.setPivotMotorAngle(subCollector.getGoalPosition().getDegrees());
 
-    if (subCollector.isPivotMotorInTolerance()
+    if (subCollector.isPivotMotorInToleranceForRoller()
         && subCollector.getGoalPosition().getDegrees() == prefCollector.pivotAngleCubeCollecting.getValue()) {
       subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue());
     } else {
