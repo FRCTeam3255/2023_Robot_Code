@@ -308,6 +308,22 @@ public class Arm extends SubsystemBase {
     elbowPID.reset(getElbowPosition().getRadians());
   }
 
+  public void setGoalAnglesFromNumpad() {
+    switch (scoringLevel) {
+      case HYBRID:
+        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+        break;
+      case MID:
+        setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle);
+        break;
+      case HIGH:
+        setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle);
+        break;
+      case NONE:
+        return;
+    }
+  }
+
   @Override
   public void periodic() {
 

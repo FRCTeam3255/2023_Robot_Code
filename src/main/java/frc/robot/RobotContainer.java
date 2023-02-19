@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.ejml.data.Submatrix;
+
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
 import com.frcteam3255.joystick.SN_SwitchboardStick;
@@ -28,7 +30,6 @@ import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
-import frc.robot.commands.PrepPlacement;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
@@ -120,7 +121,11 @@ public class RobotContainer {
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.POV_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake).repeatedly());
+    // Prep Place; Will be rebound to Left Trigger
+    conOperator.POV_East.onTrue(Commands.runOnce(() -> subArm.setGoalAnglesFromNumpad()));
+
+    // Place Game piece; Will be rebound to Right Trigger
+    conOperator.POV_West.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
     conOperator.POV_North

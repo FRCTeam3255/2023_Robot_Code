@@ -4,15 +4,12 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.preferences.SN_DoublePreference;
-import com.frcteam3255.utils.SN_Debug;
-
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotPreferences.prefArm;
-import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
@@ -27,26 +24,15 @@ public class PlaceGamePiece extends SequentialCommandGroup {
   Collector subCollector;
   Intake subIntake;
 
-  SN_DoublePreference shoulderDegrees;
-  SN_DoublePreference elbowDegrees;
-
-  public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake, SN_DoublePreference shoulderDegrees,
-      SN_DoublePreference elbowDegrees) {
+  public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake) {
 
     this.subArm = subArm;
     this.subCollector = subCollector;
     this.subIntake = subIntake;
 
-    this.shoulderDegrees = shoulderDegrees;
-    this.elbowDegrees = elbowDegrees;
-
     addCommands(
-        // Retract collector
-        // new InstantCommand(() ->
-        // subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
-
         // Move arm to desired position
-        new InstantCommand(() -> subArm.setGoalAngles(this.shoulderDegrees, this.elbowDegrees)),
+        new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
 
         // Detect game piece type
         new InstantCommand(() -> {
@@ -59,7 +45,8 @@ public class PlaceGamePiece extends SequentialCommandGroup {
 
                 // Move elbow to stow position to prevent hitting the node
                 new InstantCommand(
-                    () -> subArm.setGoalAngles(this.shoulderDegrees, prefArm.armPresetStowElbowAngle)));
+                    () -> subArm.setGoalAngles(subArm.getGoalShoulderAngle(),
+                        Rotation2d.fromDegrees(prefArm.armPresetStowElbowAngle.getValue()))));
 
           } else if (subIntake.getGamePieceType() == GamePiece.CUBE) {
             // If game piece is a cube, then angle elbow downward and release
