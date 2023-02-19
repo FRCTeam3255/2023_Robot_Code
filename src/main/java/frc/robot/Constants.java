@@ -194,10 +194,17 @@ public final class Constants {
     public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
     public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
 
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
+    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(207);
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.290520);
+    public static final boolean PIVOT_MOTOR_INVERT = false;
+    public static final boolean ROLLER_MOTOR_INVERT = true;
+    public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
+
+    public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
+    public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
+
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.864313);
   }
 
   public static final class constCharger {
