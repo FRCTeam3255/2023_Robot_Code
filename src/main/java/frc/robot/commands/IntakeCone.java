@@ -5,7 +5,10 @@
 package frc.robot.commands;
 
 import com.frcteam3255.components.SN_Blinkin;
+import com.frcteam3255.joystick.SN_F310Gamepad;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -21,8 +24,9 @@ public class IntakeCone extends SequentialCommandGroup {
   Intake subIntake;
   Arm subArm;
   SN_Blinkin leds;
+  SN_F310Gamepad conOperator;
 
-  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm) {
+  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm, SN_F310Gamepad conOperator) {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.subArm = subArm;
@@ -35,8 +39,11 @@ public class IntakeCone extends SequentialCommandGroup {
         new InstantCommand(
             () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
 
-        // - Spin intake until a game piece is collected
-        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
+        // - Spin intake and rumble the controller until a game piece is collected
+        Commands.parallel(
+            new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
+            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0.5))
+                .until(subIntake::isGamePieceCollected)),
 
         // - Set motors to hold speed
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
