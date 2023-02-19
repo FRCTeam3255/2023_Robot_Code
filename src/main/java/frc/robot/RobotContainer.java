@@ -27,6 +27,7 @@ import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
+import frc.robot.commands.PrepPlacement;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
@@ -122,7 +123,7 @@ public class RobotContainer {
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null));
+    conOperator.POV_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake, scoringColumn, scoringLevel));
 
     // Set Collector to starting config and stop the rollers
     // conOperator.POV_North
