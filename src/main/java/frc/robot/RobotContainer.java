@@ -26,6 +26,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.intakeCube;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
@@ -117,6 +118,12 @@ public class RobotContainer {
     // Set high Arm preset
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
+
+    // TODO: Create button to manually adjust arm
+    // shoulder: btn_LS
+    // elbow: btn_RS
+
+    conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null));
 
     // Set Collector to starting config and stop the rollers
     // conOperator.POV_North
