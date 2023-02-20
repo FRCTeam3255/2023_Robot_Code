@@ -13,7 +13,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.MoveArm;
-import frc.robot.commands.intakeCube;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,21 +28,21 @@ public class FullAuto extends SequentialCommandGroup {
   MoveArm moveArm;
 
   // TODO:
-  // Place cube
+  // Place cone
   // Drive/Rotate
-  // Intake Cube
+  // Intake cone
   // Drive to charge station
   // Dock/Engage
 
   public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake,
-      intakeCube intakeCone, MoveArm moveArm) {
+      IntakeCone intakeCone, MoveArm moveArm) {
 
     arm = subArm;
     collector = subCollector;
     drivetrain = subDrivetrain;
     intake = subIntake;
 
-    intakeCone = new intakeCube(subArm, subCollector, subIntake);
+    intakeCone = new IntakeCone(subCollector, subIntake, subArm);
 
     addCommands(
         // TODO: Change this to placeCone once command is created
