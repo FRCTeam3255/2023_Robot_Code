@@ -120,7 +120,7 @@ public class RobotContainer {
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.btn_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake).repeatedly());
+    conOperator.btn_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake, conOperator).repeatedly());
 
     // Set Collector to starting config and stop the rollers
     conOperator.btn_North

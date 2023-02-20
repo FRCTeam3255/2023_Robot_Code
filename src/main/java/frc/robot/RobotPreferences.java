@@ -12,6 +12,7 @@ public class RobotPreferences {
 
   public static final class prefControllers {
     public static final SN_DoublePreference rumbleOutput = new SN_DoublePreference("rumbleOutput", 0.5);
+    public static final SN_DoublePreference rumbleDelay = new SN_DoublePreference("rumbleDelay", 1);
   }
 
   public static final class prefDrivetrain {

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
+import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Debug;
 
@@ -29,13 +30,13 @@ public class PlaceGamePiece extends SequentialCommandGroup {
   Arm subArm;
   Collector subCollector;
   Intake subIntake;
-  SN_F310Gamepad conOperator;
+  SN_XboxController conOperator;
 
   SN_DoublePreference shoulderDegrees;
   SN_DoublePreference elbowDegrees;
 
   public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake, SN_DoublePreference shoulderDegrees,
-      SN_DoublePreference elbowDegrees, SN_F310Gamepad conOperator) {
+      SN_DoublePreference elbowDegrees, SN_XboxController conOperator) {
 
     this.subArm = subArm;
     this.subCollector = subCollector;
