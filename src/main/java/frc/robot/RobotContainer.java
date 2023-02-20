@@ -88,6 +88,8 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
+    conDriver.btn_RBump.onTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
+
     // Operator
 
     // Run IntakeCube command
