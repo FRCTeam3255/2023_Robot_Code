@@ -14,12 +14,15 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -41,6 +44,10 @@ public class Drivetrain extends SubsystemBase {
   private boolean isFieldRelative;
 
   private Field2d field;
+
+  private ProfiledPIDController xPID;
+  private ProfiledPIDController yPID;
+  private ProfiledPIDController thetaPID;
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
@@ -69,6 +76,30 @@ public class Drivetrain extends SubsystemBase {
 
     field = new Field2d();
 
+    xPID = new ProfiledPIDController(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+
+    yPID = new ProfiledPIDController(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+
+    thetaPID = new ProfiledPIDController(
+        prefDrivetrain.teleThetaP.getValue(),
+        prefDrivetrain.teleThetaI.getValue(),
+        prefDrivetrain.teleThetaD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
+            Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
+
     linePath = PathPlanner.loadPath("linePath",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
@@ -86,6 +117,37 @@ public class Drivetrain extends SubsystemBase {
     for (SN_SwerveModule mod : modules) {
       mod.configure();
     }
+
+    xPID.setPID(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue());
+    xPID.setConstraints(new TrapezoidProfile.Constraints(
+        Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+        Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+    xPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleTransTolerance.getValue()));
+    xPID.reset(getPose().getX());
+
+    yPID.setPID(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue());
+    yPID.setConstraints(new TrapezoidProfile.Constraints(
+        Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
+        Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
+    yPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleThetaTolerance.getValue()));
+    yPID.reset(getPose().getY());
+
+    thetaPID.setPID(
+        prefDrivetrain.teleThetaP.getValue(),
+        prefDrivetrain.teleThetaI.getValue(),
+        prefDrivetrain.teleThetaD.getValue());
+    thetaPID.setConstraints(new TrapezoidProfile.Constraints(
+        Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
+        Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
+    thetaPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleThetaTolerance.getValue()));
+    thetaPID.reset(getPose().getRotation().getRadians());
+    thetaPID.enableContinuousInput(-Math.PI, Math.PI);
 
     // (i think) since the drive motor inversions takes a meanful amount of time, it
     // eats the instruction to reset the encoder counts. so we just wait a second
@@ -111,6 +173,53 @@ public class Drivetrain extends SubsystemBase {
         new HashMap<>(),
         false,
         this);
+  }
+
+  /**
+   * Drive the drivetrain to a specified position in meters.
+   * 
+   * @param position Desired position in meters
+   */
+  public void driveToPosition(Pose2d position) {
+
+    // tell the x and y PID controllers the goal position.
+    xPID.setGoal(position.getX());
+    yPID.setGoal(position.getY());
+
+    // create a velocity Pose2d with the calculated x and y positions, and the
+    // positional rotation.
+    Pose2d velocity = new Pose2d(
+        xPID.calculate(getPose().getX()),
+        yPID.calculate(getPose().getY()),
+        position.getRotation());
+
+    // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
+    // rotation and pass the translational values to drive().
+    driveAlignAngle(velocity);
+  }
+
+  /**
+   * Drive the drivetrain with positional absolute heading control.
+   * 
+   * @param velocity Desired translational velocity in meters per second, and
+   *                 desired absolute rotational position
+   */
+  public void driveAlignAngle(Pose2d velocity) {
+
+    // tell the theta PID controller the goal rotation.
+    thetaPID.setGoal(velocity.getRotation().getRadians());
+
+    // calculate the angle setpoint based off where we are now.
+    // note that this will not just be the rotation we passed in, it will be some
+    // position inbetween.
+    double angleSetpoint = thetaPID.calculate(getPose().getRotation().getRadians());
+
+    // create a new velocity Pose2d with the same translation as the on that was
+    // passed in, but with the output of the theta PID controller for rotation.
+    Pose2d newVelocity = new Pose2d(velocity.getTranslation(), Rotation2d.fromRadians(angleSetpoint));
+
+    // pass the new velocity to the normal drive command
+    drive(newVelocity);
   }
 
   /**
@@ -175,6 +284,12 @@ public class Drivetrain extends SubsystemBase {
    */
   public void setRobotRelative() {
     isFieldRelative = false;
+  }
+
+  public void resetPID() {
+    xPID.reset(getPose().getX());
+    yPID.reset(getPose().getY());
+    thetaPID.reset(getPose().getRotation().getRadians());
   }
 
   /**
@@ -244,6 +359,14 @@ public class Drivetrain extends SubsystemBase {
         pose);
   }
 
+  public boolean isTiltedForward() {
+    return navX.getRoll() > prefDrivetrain.tiltedThreshold.getValue();
+  }
+
+  public boolean isTiltedBackwards() {
+    return navX.getRoll() < -prefDrivetrain.tiltedThreshold.getValue();
+  }
+
   @Override
   public void periodic() {
 
@@ -256,6 +379,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
       SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
+
+      SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());
+      SmartDashboard.putBoolean("is Tilted Backwards", isTiltedBackwards());
 
       SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
 

@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
-import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
@@ -37,8 +37,8 @@ public class Intake extends SubsystemBase {
     colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
-    coneColor = new Color(constIntake.coneColorR, constIntake.coneColorG, constIntake.coneColorB);
-    cubeColor = new Color(constIntake.cubeColorR, constIntake.cubeColorG, constIntake.cubeColorB);
+    coneColor = new Color(constIntake.CONE_COLOR_R, constIntake.CONE_COLOR_G, constIntake.CONE_COLOR_B);
+    cubeColor = new Color(constIntake.CUBE_COLOR_R, constIntake.CUBE_COLOR_G, constIntake.CUBE_COLOR_B);
 
     colorMatcher.addColorMatch(coneColor);
     colorMatcher.addColorMatch(cubeColor);
