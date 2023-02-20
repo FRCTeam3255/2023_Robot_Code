@@ -58,10 +58,5 @@ public class PrepPlacement extends InstantCommand {
         return;
     }
     subArm.setGoalAngles(shoulderDegrees, elbowDegrees);
-
-    // Rumble the controller
-    conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    Timer.delay(prefControllers.rumbleDelay.getValue());
-    conOperator.setRumble(RumbleType.kBothRumble, 0);
   }
 }
