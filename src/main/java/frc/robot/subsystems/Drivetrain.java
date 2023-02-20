@@ -359,6 +359,14 @@ public class Drivetrain extends SubsystemBase {
         pose);
   }
 
+  public boolean isTiltedForward() {
+    return navX.getRoll() > prefDrivetrain.tiltedThreshold.getValue();
+  }
+
+  public boolean isTiltedBackwards() {
+    return navX.getRoll() < prefDrivetrain.tiltedThreshold.getValue();
+  }
+
   @Override
   public void periodic() {
 
