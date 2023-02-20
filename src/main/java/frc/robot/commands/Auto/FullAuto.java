@@ -28,11 +28,11 @@ public class FullAuto extends SequentialCommandGroup {
   MoveArm moveArm;
 
   // TODO:
-  // Place cone
-  // Drive/Rotate
-  // Intake cone
-  // Drive to charge station
-  // Dock/Engage
+  // [ ] Place cone
+  // [X] Drive/Rotate (auto path)
+  // [X] Intake cone
+  // [X] Drive to charge station (auto path)
+  // [ ] Dock/Engage - Requires gyro logic
 
   public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake,
       IntakeCone intakeCone, MoveArm moveArm) {
@@ -48,10 +48,12 @@ public class FullAuto extends SequentialCommandGroup {
         // TODO: Change this to placeCone once command is created
         intakeCone,
 
-        Commands.parallel(intakeCone).withTimeout(2),
+        Commands.parallel(
+            // TODO: drivetrain.twoConePath should be the updated FullAuto path
+            drivetrain.swerveAutoBuilder.fullAuto(drivetrain.twoConePath)
+                .andThen(new InstantCommand(() -> drivetrain.neutralDriveOutputs(), drivetrain)),
 
-        // drivetrain.twoConePath should be the updated FullAuto path
-        Commands.parallel(drivetrain.swerveAutoBuilder.fullAuto(drivetrain.twoConePath)
-            .andThen(new InstantCommand(() -> drivetrain.neutralDriveOutputs(), drivetrain))));
+            // Delay to make sure intake doesn't collide after placing cone
+            intakeCone.withTimeout(2)));
   }
 }
