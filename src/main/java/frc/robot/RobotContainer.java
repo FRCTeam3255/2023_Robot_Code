@@ -161,7 +161,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new FullAuto(subArm, subCollector, subDrivetrain, subIntake, null, null)
+    return new FullAuto(subArm, subCollector, subDrivetrain, subIntake)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain));
   }
 }

@@ -11,6 +11,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.RobotPreferences.prefArm;
 import frc.robot.commands.Dock;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.MoveArm;
@@ -26,24 +27,19 @@ public class FullAuto extends SequentialCommandGroup {
   Drivetrain drivetrain;
   Intake intake;
 
-  PlaceGamePiece placeGamePiece;
   IntakeCone intakeCone;
-  MoveArm moveArm;
   Dock dock;
 
-  public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake,
-      IntakeCone intakeCone, MoveArm moveArm) {
+  public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake) {
 
     arm = subArm;
     collector = subCollector;
     drivetrain = subDrivetrain;
     intake = subIntake;
 
-    placeGamePiece = new PlaceGamePiece(subArm, subCollector, subIntake, null, null);
-    intakeCone = new IntakeCone(subCollector, subIntake, subArm);
-
     addCommands(
-        placeGamePiece,
+        new PlaceGamePiece(subArm, subCollector, subIntake, prefArm.armPresetHighShoulderAngle,
+            prefArm.armPresetHighElbowAngle),
 
         Commands.parallel(
             // TODO: drivetrain.twoConePath should be the updated FullAuto path
