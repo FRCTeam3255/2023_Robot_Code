@@ -380,6 +380,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
+      SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());
+      SmartDashboard.putBoolean("is Tilted Backwards", isTiltedBackwards());
+
       SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
 
       field.setRobotPose(getPose());
