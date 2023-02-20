@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import org.ejml.data.Submatrix;
-
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
 import com.frcteam3255.joystick.SN_SwitchboardStick;
