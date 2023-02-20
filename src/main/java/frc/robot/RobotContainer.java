@@ -123,7 +123,7 @@ public class RobotContainer {
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null));
+    conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null, conOperator));
 
     // Set Collector to starting config and stop the rollers
     conOperator.POV_North

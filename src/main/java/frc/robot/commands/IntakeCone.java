@@ -31,6 +31,7 @@ public class IntakeCone extends SequentialCommandGroup {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.subArm = subArm;
+    this.conOperator = conOperator;
 
     addCommands(
         // - Retract collector
@@ -47,8 +48,10 @@ public class IntakeCone extends SequentialCommandGroup {
                 () -> conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue()))
                 .until(subIntake::isGamePieceCollected)),
 
-        // - Set motors to hold speed
-        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
+        // - Set motors to hold speed and stop the rumble
+        Commands.parallel(
+            new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
+            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0))),
 
         // - Raise arm to stow position
         new InstantCommand(
