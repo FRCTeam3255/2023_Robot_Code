@@ -53,13 +53,21 @@ public class Vision extends SubsystemBase {
   }
 
   public Optional<EstimatedRobotPose> getPoseFromARCamera(Pose2d referencePose) {
-    ARCameraPoseEstimator.setReferencePose(referencePose);
-    return ARCameraPoseEstimator.update();
+    try {
+      ARCameraPoseEstimator.setReferencePose(referencePose);
+      return ARCameraPoseEstimator.update();
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   public Optional<EstimatedRobotPose> getPoseFromOVCamera(Pose2d referencePose) {
-    OVCameraPoseEstimator.setReferencePose(referencePose);
-    return OVCameraPoseEstimator.update();
+    try {
+      OVCameraPoseEstimator.setReferencePose(referencePose);
+      return OVCameraPoseEstimator.update();
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   @Override
