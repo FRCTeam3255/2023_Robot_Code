@@ -24,6 +24,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
+import frc.robot.commands.IntakeCube;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
@@ -94,8 +95,7 @@ public class RobotContainer {
     // Operator
 
     // Run IntakeCube command
-    // conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector,
-    // subIntake));
+    conOperator.btn_LBump.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
 
     // TODO: Run IntakeCone command (btn_RB)
     // conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake,
@@ -118,12 +118,6 @@ public class RobotContainer {
     // Set high Arm preset
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
-
-    // TODO: Create button to manually adjust arm
-    // shoulder: btn_LS
-    // elbow: btn_RS
-
-    conOperator.POV_East.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake, null, null));
 
     // Set Collector to starting config and stop the rollers
     conOperator.POV_North

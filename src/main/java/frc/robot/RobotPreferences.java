@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
+import com.frcteam3255.preferences.SN_ZeroDoublePreference;
 
 public class RobotPreferences {
 
@@ -137,6 +138,9 @@ public class RobotPreferences {
         "armPresetHighShoulderAngle", 45);
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
         "armPresetHighElbowAngle", 0);
+
+    public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
+    public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
   }
 
   public static final class prefIntake {
