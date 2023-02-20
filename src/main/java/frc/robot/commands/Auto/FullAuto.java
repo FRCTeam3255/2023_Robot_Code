@@ -28,14 +28,12 @@ public class FullAuto extends SequentialCommandGroup {
   Intake intake;
 
   IntakeCone intakeCone;
-  Dock dock;
 
   public FullAuto(Arm subArm, Collector subCollector, Drivetrain subDrivetrain, Intake subIntake) {
 
     arm = subArm;
     collector = subCollector;
     drivetrain = subDrivetrain;
-    intake = subIntake;
 
     addCommands(
         new PlaceGamePiece(subArm, subCollector, subIntake, prefArm.armPresetHighShoulderAngle,
@@ -47,8 +45,8 @@ public class FullAuto extends SequentialCommandGroup {
                 .andThen(new InstantCommand(() -> drivetrain.neutralDriveOutputs(), drivetrain)),
 
             // Delay to make sure intake doesn't collide after placing cone
-            intakeCone.withTimeout(2)),
+            new IntakeCone(subCollector, subIntake, subArm)),
 
-        dock);
+        new Dock(subDrivetrain));
   }
 }
