@@ -5,10 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.constVision.GamePiece;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
@@ -32,25 +31,22 @@ public class PlaceGamePiece extends SequentialCommandGroup {
 
     addCommands(
         new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
+        new WaitCommand(4),
 
-        new InstantCommand(() -> {
-          if (subIntake.getGamePieceType() == GamePiece.CUBE) {
-            new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
-                .until(() -> !subIntake.isGamePieceCollected())
-                .withTimeout(prefIntake.intakeReleaseDelay.getValue());
-          } else {
-            // Assume game piece is a cone
-            Commands.parallel(
-                new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
-                    .until(() -> !subIntake.isGamePieceCollected())
-                    .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
+        // if (subIntake.getGamePieceType() == GamePiece.CUBE) {
+        // new InstantCommand(() ->
+        // subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
+        // .until(() -> !subIntake.isGamePieceCollected())
+        // .withTimeout(prefIntake.intakeReleaseDelay.getValue());
+        // } else {
+        // Assume game piece is a cone
+        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake)
+            .until(() -> !subIntake.isGamePieceCollected())
+            .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
-                // Move elbow to stow position to prevent hitting the node
-                new InstantCommand(
-                    () -> subArm.setGoalAngles(subArm.getGoalShoulderAngle(),
-                        Rotation2d.fromDegrees(prefArm.armPresetStowElbowAngle.getValue()))));
-          }
-        }),
+        // Move elbow to stow position to prevent hitting the node
+        new InstantCommand(() -> subArm.setGoalAngles(subArm.getGoalShoulderAngle(),
+            Rotation2d.fromDegrees(prefArm.armPresetStowElbowAngle.getValue()))),
 
         // Move arm to stow position
         new InstantCommand(
