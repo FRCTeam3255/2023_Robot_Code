@@ -31,17 +31,19 @@ public class PlaceGamePiece extends SequentialCommandGroup {
   Collector subCollector;
   Intake subIntake;
   SN_XboxController conOperator;
+  SN_XboxController conDriver;
 
   SN_DoublePreference shoulderDegrees;
   SN_DoublePreference elbowDegrees;
 
   public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake, SN_DoublePreference shoulderDegrees,
-      SN_DoublePreference elbowDegrees, SN_XboxController conOperator) {
+      SN_DoublePreference elbowDegrees, SN_XboxController conOperator, SN_XboxController conDriver) {
 
     this.subArm = subArm;
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.conOperator = conOperator;
+    this.conDriver = conDriver;
 
     this.shoulderDegrees = shoulderDegrees;
     this.elbowDegrees = elbowDegrees;
@@ -63,8 +65,13 @@ public class PlaceGamePiece extends SequentialCommandGroup {
                 new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
                     .until(() -> !subIntake.isGamePieceCollected())
                     .withTimeout(prefIntake.intakeReleaseDelay.getValue())
-                    .andThen(new InstantCommand(
-                        () -> conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue()))),
+                    .andThen(Commands.parallel(
+                        new InstantCommand(
+                            () -> conOperator.setRumble(RumbleType.kBothRumble,
+                                prefControllers.rumbleOutput.getValue()))),
+                        new InstantCommand(
+                            () -> conDriver.setRumble(RumbleType.kBothRumble,
+                                prefControllers.rumbleOutput.getValue()))),
 
                 // Move elbow to stow position to prevent hitting the node
                 new InstantCommand(
@@ -76,8 +83,11 @@ public class PlaceGamePiece extends SequentialCommandGroup {
             new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
                 .until(() -> !subIntake.isGamePieceCollected())
                 .withTimeout(prefIntake.intakeReleaseDelay.getValue())
-                .andThen(new InstantCommand(
-                    () -> conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue())));
+                .andThen(Commands.parallel(
+                    new InstantCommand(
+                        () -> conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue()))),
+                    new InstantCommand(
+                        () -> conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue())));
           }
         }),
 
@@ -85,6 +95,7 @@ public class PlaceGamePiece extends SequentialCommandGroup {
         Commands.parallel(
             new InstantCommand(
                 () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
-            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0))));
+            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0))),
+        new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
   }
 }

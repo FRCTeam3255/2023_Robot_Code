@@ -27,12 +27,15 @@ public class IntakeCone extends SequentialCommandGroup {
   Arm subArm;
   SN_Blinkin leds;
   SN_XboxController conOperator;
+  SN_XboxController conDriver;
 
-  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm, SN_XboxController conOperator) {
+  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm, SN_XboxController conOperator,
+      SN_XboxController conDriver) {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
     this.subArm = subArm;
     this.conOperator = conOperator;
+    this.conDriver = conDriver;
 
     addCommands(
         // - Retract collector
@@ -42,17 +45,21 @@ public class IntakeCone extends SequentialCommandGroup {
         new InstantCommand(
             () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
 
-        // - Spin intake and rumble the controller until a game piece is collected
+        // - Spin intake and rumble the controllers until a game piece is collected
         Commands.parallel(
             new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
             new InstantCommand(
                 () -> conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue()))
+                .until(subIntake::isGamePieceCollected),
+            new InstantCommand(
+                () -> conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue()))
                 .until(subIntake::isGamePieceCollected)),
 
         // - Set motors to hold speed and stop the rumble
         Commands.parallel(
             new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
-            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0))),
+            new InstantCommand(() -> conOperator.setRumble(RumbleType.kBothRumble, 0)),
+            new InstantCommand(() -> conDriver.setRumble(RumbleType.kBothRumble, 0))),
 
         // - Raise arm to stow position
         new InstantCommand(
