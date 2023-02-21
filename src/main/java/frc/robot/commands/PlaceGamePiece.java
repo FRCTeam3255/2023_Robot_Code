@@ -31,14 +31,16 @@ public class PlaceGamePiece extends SequentialCommandGroup {
     this.subIntake = subIntake;
 
     addCommands(
-        // Move arm to desired position
         new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
 
-        // Detect game piece type
         new InstantCommand(() -> {
-          if (subIntake.getGamePieceType() == GamePiece.CONE) {
+          if (subIntake.getGamePieceType() == GamePiece.CUBE) {
+            new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
+                .until(() -> !subIntake.isGamePieceCollected())
+                .withTimeout(prefIntake.intakeReleaseDelay.getValue());
+          } else {
+            // Assume game piece is a cone
             Commands.parallel(
-                // If game piece is a cone, then release and back away in parallel
                 new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
                     .until(() -> !subIntake.isGamePieceCollected())
                     .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
@@ -47,12 +49,6 @@ public class PlaceGamePiece extends SequentialCommandGroup {
                 new InstantCommand(
                     () -> subArm.setGoalAngles(subArm.getGoalShoulderAngle(),
                         Rotation2d.fromDegrees(prefArm.armPresetStowElbowAngle.getValue()))));
-
-          } else if (subIntake.getGamePieceType() == GamePiece.CUBE) {
-            // If game piece is a cube, then angle elbow downward and release
-            new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
-                .until(() -> !subIntake.isGamePieceCollected())
-                .withTimeout(prefIntake.intakeReleaseDelay.getValue());
           }
         }),
 

@@ -121,10 +121,10 @@ public class RobotContainer {
     // elbow: btn_RS
 
     // Prep Place; Will be rebound to Left Trigger
-    conOperator.POV_East.onTrue(Commands.runOnce(() -> subArm.setGoalAnglesFromNumpad()));
+    conOperator.btn_East.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
 
     // Place Game piece; Will be rebound to Right Trigger
-    conOperator.POV_West.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
+    conOperator.btn_West.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
     conOperator.btn_North
