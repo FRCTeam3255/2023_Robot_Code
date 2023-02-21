@@ -304,11 +304,18 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean isShoulderInTolerance() {
-    return shoulderPID.getPositionError() < shoulderPID.getPositionTolerance() * 10;
+    return (getShoulderPosition().getRadians()
+        - getGoalShoulderAngle().getRadians()) < (Units.degreesToRadians(prefArm.shoulderTolerance.getValue()));
+  }
+
+  public boolean isElbowInTolerance() {
+    return (getElbowPosition().getRadians()
+        - getGoalElbowAngle().getRadians()) < Units
+            .degreesToRadians(prefArm.elbowTolerance.getValue());
   }
 
   public boolean areJointsInTolerance() {
-    return shoulderPID.atGoal() && elbowPID.atGoal();
+    return isShoulderInTolerance() && isElbowInTolerance();
   }
 
   public void resetPID() {
@@ -346,12 +353,11 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm PID Shoulder Goal", Units.radiansToDegrees(shoulderPID.getGoal().position));
       SmartDashboard.putNumber("Arm PID Shoudler Error", Units.radiansToDegrees(shoulderPID.getPositionError()));
-      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", shoulderPID.atGoal());
-      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance 2 electric bongalono", isShoulderInTolerance());
+      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", isShoulderInTolerance());
 
       SmartDashboard.putNumber("Arm PID Elbow Goal", Units.radiansToDegrees(elbowPID.getGoal().position));
       SmartDashboard.putNumber("Arm PID Elbow Error", Units.radiansToDegrees(elbowPID.getPositionError()));
-      SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", elbowPID.atGoal());
+      SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
 
       SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
     }
