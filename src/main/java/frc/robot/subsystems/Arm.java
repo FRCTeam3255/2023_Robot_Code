@@ -47,6 +47,9 @@ public class Arm extends SubsystemBase {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
     elbowJoint = new TalonFX(mapArm.ELBOW_CAN);
 
+    shoulderConfig = new TalonFXConfiguration();
+    elbowConfig = new TalonFXConfiguration();
+
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
 
