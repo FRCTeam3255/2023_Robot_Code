@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
@@ -27,8 +28,8 @@ import frc.robot.RobotPreferences.prefArm;
 
 public class Arm extends SubsystemBase {
 
-  SN_CANSparkMax shoulderJoint;
-  SN_CANSparkMax elbowJoint;
+  TalonFX shoulderJoint;
+  TalonFX elbowJoint;
 
   DutyCycleEncoder shoulderEncoder;
   DutyCycleEncoder elbowEncoder;
@@ -44,8 +45,8 @@ public class Arm extends SubsystemBase {
   public ScoringColumn scoringColumn = ScoringColumn.NONE;
 
   public Arm() {
-    shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
-    elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
+    shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
+    elbowJoint = new TalonFX(mapArm.ELBOW_CAN);
 
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
