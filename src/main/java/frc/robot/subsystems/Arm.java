@@ -6,13 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.preferences.SN_DoublePreference;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,14 +30,14 @@ public class Arm extends SubsystemBase {
   TalonFX shoulderJoint;
   TalonFX elbowJoint;
 
+  TalonFXConfiguration shoulderConfig;
+  TalonFXConfiguration elbowConfig;
+
   DutyCycleEncoder shoulderEncoder;
   DutyCycleEncoder elbowEncoder;
 
   Rotation2d goalShoulderAngle;
   Rotation2d goalElbowAngle;
-
-  ProfiledPIDController shoulderPID;
-  ProfiledPIDController elbowPID;
 
   public GamePiece desiredGamePiece = GamePiece.NONE;
   public ScoringLevel scoringLevel = ScoringLevel.NONE;
@@ -53,22 +53,6 @@ public class Arm extends SubsystemBase {
     goalShoulderAngle = new Rotation2d();
     goalElbowAngle = new Rotation2d();
 
-    shoulderPID = new ProfiledPIDController(
-        prefArm.shoulderP.getValue(),
-        prefArm.shoulderI.getValue(),
-        prefArm.shoulderD.getValue(),
-        new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefArm.shoulderMaxSpeed.getValue()),
-            Units.degreesToRadians(prefArm.shoulderMaxAccel.getValue())));
-
-    elbowPID = new ProfiledPIDController(
-        prefArm.elbowP.getValue(),
-        prefArm.elbowI.getValue(),
-        prefArm.elbowD.getValue(),
-        new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefArm.elbowMaxSpeed.getValue()),
-            Units.degreesToRadians(prefArm.elbowMaxAccel.getValue())));
-
     configure();
   }
 
@@ -77,34 +61,54 @@ public class Arm extends SubsystemBase {
     // shoulder config
     shoulderJoint.configFactoryDefault();
 
+    shoulderConfig.slot0.kP = prefArm.shoulderP.getValue();
+    shoulderConfig.slot0.kI = prefArm.shoulderI.getValue();
+    shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
+
+    shoulderConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
+        prefArm.shoulderTolerance.getValue(),
+        constArm.SHOULDER_GEAR_RATIO);
+
+    shoulderConfig.slot0.closedLoopPeakOutput = prefArm.shoulderClosedLoopPeakOutput.getValue();
+
+    shoulderConfig.forwardSoftLimitEnable = true;
+    shoulderConfig.reverseSoftLimitEnable = true;
+
+    shoulderConfig.forwardSoftLimitThreshold = SN_Math
+        .degreesToFalcon(Units.radiansToDegrees(constArm.SHOULDER_FORWARD_LIMIT), constArm.SHOULDER_GEAR_RATIO);
+    shoulderConfig.reverseSoftLimitThreshold = SN_Math
+        .degreesToFalcon(Units.radiansToDegrees(constArm.SHOULDER_REVERSE_LIMIT), constArm.SHOULDER_GEAR_RATIO);
+
+    shoulderJoint.configAllSettings(shoulderConfig);
+
     shoulderJoint.setInverted(constArm.SHOULDER_MOTOR_INVERT);
     shoulderJoint.setNeutralMode(constArm.SHOULDER_MOTOR_BREAK);
-
-    shoulderPID.setPID(
-        prefArm.shoulderP.getValue(),
-        prefArm.shoulderI.getValue(),
-        prefArm.shoulderD.getValue());
-    shoulderPID.setConstraints(
-        new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefArm.shoulderMaxSpeed.getValue()),
-            Units.degreesToRadians(prefArm.shoulderMaxAccel.getValue())));
-    shoulderPID.setTolerance(Units.degreesToRadians(prefArm.shoulderTolerance.getValue()));
 
     // elbow config
     elbowJoint.configFactoryDefault();
 
+    elbowConfig.slot0.kP = prefArm.elbowP.getValue();
+    elbowConfig.slot0.kI = prefArm.elbowI.getValue();
+    elbowConfig.slot0.kD = prefArm.elbowD.getValue();
+
+    elbowConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
+        prefArm.elbowTolerance.getValue(),
+        constArm.ELBOW_GEAR_RATIO);
+
+    elbowConfig.slot0.closedLoopPeakOutput = prefArm.elbowClosedLoopPeakOutput.getValue();
+
+    elbowConfig.forwardSoftLimitEnable = true;
+    elbowConfig.reverseSoftLimitEnable = true;
+
+    elbowConfig.forwardSoftLimitThreshold = SN_Math
+        .degreesToFalcon(Units.radiansToDegrees(constArm.ELBOW_FORWARD_LIMIT), constArm.ELBOW_GEAR_RATIO);
+    elbowConfig.reverseSoftLimitThreshold = SN_Math
+        .degreesToFalcon(Units.radiansToDegrees(constArm.ELBOW_FORWARD_LIMIT), constArm.ELBOW_GEAR_RATIO);
+
+    shoulderJoint.configAllSettings(elbowConfig);
+
     elbowJoint.setInverted(constArm.ELBOW_MOTOR_INVERT);
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
-
-    elbowPID.setPID(
-        prefArm.elbowP.getValue(),
-        prefArm.elbowI.getValue(),
-        prefArm.elbowD.getValue());
-    elbowPID.setConstraints(
-        new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefArm.elbowMaxSpeed.getValue()),
-            Units.degreesToRadians(prefArm.elbowMaxAccel.getValue())));
-    elbowPID.setTolerance(Units.degreesToRadians(prefArm.elbowTolerance.getValue()));
   }
 
   public void setJointsNeutralMode() {
@@ -129,13 +133,9 @@ public class Arm extends SubsystemBase {
    * @param position Rotational position to set shoulder
    */
   private void setShoulderPosition(Rotation2d position) {
-    double radians = MathUtil.clamp(
-        position.getRadians(),
-        constArm.SHOULDER_REVERSE_LIMIT,
-        constArm.SHOULDER_FORWARD_LIMIT);
-    shoulderPID.setGoal(radians);
+    double counts = SN_Math.degreesToFalcon(position.getDegrees(), constArm.SHOULDER_GEAR_RATIO);
 
-    setShoulderPercentOutput(shoulderPID.calculate(getShoulderPosition().getRadians()));
+    shoulderJoint.set(ControlMode.Position, counts);
   }
 
   /**
@@ -144,13 +144,9 @@ public class Arm extends SubsystemBase {
    * @param degrees Rotational position to set elbow
    */
   private void setElbowPosition(Rotation2d position) {
-    double radians = MathUtil.clamp(
-        position.getRadians(),
-        constArm.ELBOW_REVERSE_LIMIT,
-        constArm.ELBOW_FORWARD_LIMIT);
-    elbowPID.setGoal(radians);
+    double counts = SN_Math.degreesToFalcon(position.getDegrees(), constArm.ELBOW_GEAR_RATIO);
 
-    setElbowPercentOutput(elbowPID.calculate(getElbowPosition().getRadians()));
+    elbowJoint.set(ControlMode.Position, counts);
   }
 
   /**
@@ -170,17 +166,7 @@ public class Arm extends SubsystemBase {
    * @param percent Percent output to set
    */
   public void setShoulderPercentOutput(double percent) {
-    double output = percent;
-
-    if (getShoulderPosition().getRadians() > constArm.SHOULDER_FORWARD_LIMIT && output > 0) {
-      output = 0;
-    }
-
-    if (getShoulderPosition().getRadians() < constArm.SHOULDER_REVERSE_LIMIT && output < 0) {
-      output = 0;
-    }
-
-    shoulderJoint.set(ControlMode.PercentOutput, output);
+    shoulderJoint.set(ControlMode.PercentOutput, percent);
   }
 
   /**
@@ -189,18 +175,7 @@ public class Arm extends SubsystemBase {
    * @param percent Percent output to set
    */
   public void setElbowPercentOutput(double percent) {
-
-    double output = percent;
-
-    if (getElbowPosition().getRadians() > constArm.ELBOW_FORWARD_LIMIT && output > 0) {
-      output = 0;
-    }
-
-    if (getElbowPosition().getRadians() < constArm.ELBOW_REVERSE_LIMIT && output < 0) {
-      output = 0;
-    }
-
-    elbowJoint.set(ControlMode.PercentOutput, output);
+    elbowJoint.set(ControlMode.PercentOutput, percent);
   }
 
   /**
@@ -303,11 +278,6 @@ public class Arm extends SubsystemBase {
     setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
-  public void resetPID() {
-    shoulderPID.reset(getShoulderPosition().getRadians());
-    elbowPID.reset(getElbowPosition().getRadians());
-  }
-
   @Override
   public void periodic() {
 
@@ -336,11 +306,11 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
 
-      SmartDashboard.putNumber("Arm PID Shoulder Goal", Units.radiansToDegrees(shoulderPID.getGoal().position));
-      SmartDashboard.putNumber("Arm PID Shoudler Error", Units.radiansToDegrees(shoulderPID.getPositionError()));
+      SmartDashboard.putNumber("Arm PID Shoulder Goal", shoulderJoint.getClosedLoopTarget());
+      SmartDashboard.putNumber("Arm PID Shoudler Error", shoulderJoint.getClosedLoopError());
 
-      SmartDashboard.putNumber("Arm PID Elbow Goal", Units.radiansToDegrees(elbowPID.getGoal().position));
-      SmartDashboard.putNumber("Arm PID Elbow Error", Units.radiansToDegrees(elbowPID.getPositionError()));
+      SmartDashboard.putNumber("Arm PID Elbow Goal", elbowJoint.getClosedLoopTarget());
+      SmartDashboard.putNumber("Arm PID Elbow Error", elbowJoint.getClosedLoopError());
     }
   }
 }

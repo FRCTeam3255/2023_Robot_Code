@@ -36,7 +36,6 @@ public class MoveArm extends CommandBase {
   @Override
   public void initialize() {
     subArm.setGoalAngles(subArm.getShoulderPosition(), subArm.getElbowPosition());
-    subArm.resetPID();
   }
 
   @Override

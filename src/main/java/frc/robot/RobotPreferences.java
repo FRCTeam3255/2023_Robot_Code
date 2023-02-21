@@ -86,33 +86,32 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
     // degrees per second
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 180);
+    // public static final SN_DoublePreference shoulderMaxSpeed = new
+    // SN_DoublePreference("shoulderMaxSpeed", 180);
     // degrees per second per second
-    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 235);
+    // public static final SN_DoublePreference shoulderMaxAccel = new
+    // SN_DoublePreference("shoulderMaxAccel", 235);
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
+    public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
+        "shoulderClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 1.75);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
     // degrees per second
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 180);
+    // public static final SN_DoublePreference elbowMaxSpeed = new
+    // SN_DoublePreference("elbowMaxSpeed", 180);
     // degrees per second per second
-    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 235);
+    // public static final SN_DoublePreference elbowMaxAccel = new
+    // SN_DoublePreference("elbowMaxAccel", 235);
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
+    public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
+        "elbowClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
-
-    public static final SN_BooleanPreference shoulderForwardSoftLimit = new SN_BooleanPreference(
-        "shoulderForwardSoftLimit", true);
-    public static final SN_BooleanPreference shoulderReverseSoftLimit = new SN_BooleanPreference(
-        "shoulderReverseSoftLimit", true);
-    public static final SN_BooleanPreference elbowForwardSoftLimit = new SN_BooleanPreference(
-        "elbowForwardSoftLimit", true);
-    public static final SN_BooleanPreference elbowReverseSoftLimit = new SN_BooleanPreference(
-        "elbowReverseSoftLimit", true);
 
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
         "armPresetCollectorShoulderAngle", 0);
