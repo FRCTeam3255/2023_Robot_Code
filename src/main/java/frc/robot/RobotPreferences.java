@@ -5,7 +5,7 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = true;
+  public static final boolean useNetworkTables = false;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -171,7 +171,7 @@ public class RobotPreferences {
         "pivotMaxSpeed", 1);
 
     public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
-        "pivotAngleStartingConfig", 206);
+        "pivotAngleStartingConfig", 197);
     public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
         "pivotAngleCubeCollecting", 28);
     public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
