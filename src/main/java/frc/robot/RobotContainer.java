@@ -107,7 +107,8 @@ public class RobotContainer {
 
     // Set low Arm preset
     conOperator.btn_A.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
+        .runOnce(
+            () -> subArm.setGoalAngles(prefArm.armPresetCollectorShoulderAngle, prefArm.armPresetCollectorElbowAngle)));
 
     // Set mid Arm preset
     conOperator.btn_X.onTrue(Commands

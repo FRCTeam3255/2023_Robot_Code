@@ -116,9 +116,9 @@ public class RobotPreferences {
         "elbowReverseSoftLimit", true);
 
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 0);
+        "armPresetCollectorShoulderAngle", 25);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", 0);
+        "armPresetCollectorElbowAngle", -92.5);
 
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
@@ -145,8 +145,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
         "armPresetHighElbowAngle", 0);
 
+    public static final SN_DoublePreference armPresetPostCollectorShoulderAngle = new SN_DoublePreference(
+        "armPresetPostCollectorShoulderAngle", 45);
+
     public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
     public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
+
+    public static final SN_DoublePreference armToleranceFudge = new SN_DoublePreference("armToleranceFudge", 5);
   }
 
   public static final class prefIntake {

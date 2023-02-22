@@ -37,13 +37,17 @@ public class IntakeCube extends SequentialCommandGroup {
             () -> subArm.setGoalAngles(prefArm.armPresetCollectorShoulderAngle, prefArm.armPresetCollectorElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
         new IntakeGamePiece(subIntake).until(() -> subIntake.isGamePieceCollected()),
-        // shoulder high, elbow collect cube
+        // raise shoulder, keep elbow still
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetCollectorElbowAngle)),
+            () -> subArm.setGoalAngles(
+                prefArm.armPresetPostCollectorShoulderAngle,
+                prefArm.armPresetCollectorElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
-        // arm high node
+        // stick elbow out while keeping shoulder still
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)),
+            () -> subArm.setGoalAngles(
+                prefArm.armPresetPostCollectorShoulderAngle,
+                prefArm.armPresetStraightElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
         // collector retract
         Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)),
