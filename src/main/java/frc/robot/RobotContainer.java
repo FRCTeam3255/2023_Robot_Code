@@ -112,9 +112,9 @@ public class RobotContainer {
     conOperator.btn_X.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
 
-    // Set high Arm preset
+    // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
 
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
@@ -124,15 +124,17 @@ public class RobotContainer {
     conOperator.btn_East.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
 
     // Place Game piece; Will be rebound to Right Trigger
-    conOperator.btn_West.onTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
+    conOperator.btn_West.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
-    conOperator.btn_North
-        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
+    // conOperator.btn_North
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
 
     // Set Collector rollers to intake height and spin the rollers
-    conOperator.btn_South
-        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
+    // conOperator.btn_South
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
 
     // Spin the Intake forward
     conOperator.btn_Start

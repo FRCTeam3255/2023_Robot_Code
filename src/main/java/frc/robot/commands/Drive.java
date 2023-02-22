@@ -70,8 +70,8 @@ public class Drive extends CommandBase {
   public void execute() {
 
     xVelocity = xAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
-    yVelocity = yAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
-    rVelocity = rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
+    yVelocity = -yAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
+    rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
     translationScalar = SN_Math.interpolate(slowAxis.getAsDouble(), 0, 1, 1, prefDrivetrain.triggerValue.getValue());
 
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(translationScalar);
