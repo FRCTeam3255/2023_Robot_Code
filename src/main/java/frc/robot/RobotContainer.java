@@ -130,6 +130,12 @@ public class RobotContainer {
     conOperator.btn_South
         .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
 
+    // Set the LEDs to "We want a cone"
+    conOperator.btn_West.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
+
+    // Set the LEDs to "We want a cube"
+    conOperator.btn_East.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
+
     // Spin the Intake forward
     conOperator.btn_Start
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
@@ -152,9 +158,6 @@ public class RobotContainer {
     conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
     conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.MID));
     conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HIGH));
-
-    conNumpad.btn_13.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
-    conNumpad.btn_14.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
   }
 
   public Command getAutonomousCommand() {
