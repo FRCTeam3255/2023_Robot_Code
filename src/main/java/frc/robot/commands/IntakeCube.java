@@ -22,39 +22,53 @@ public class IntakeCube extends SequentialCommandGroup {
 
     addCommands(
         // arm stow
-        Commands
-            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
+        Commands.runOnce(() -> subArm.setGoalAngles(
+            prefArm.armPresetStowShoulderAngle,
+            prefArm.armPresetStowElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
+
         // collector deploy
         Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)),
         Commands.waitUntil(() -> subCollector.isPivotMotorInTolerance()),
+
         // arm out
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetStraightShoulderAngle, prefArm.armPresetStraightElbowAngle)),
+            () -> subArm.setGoalAngles(
+                prefArm.armPresetStraightShoulderAngle,
+                prefArm.armPresetStraightElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
+
         // arm collect cube, until cube collected
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetCollectorShoulderAngle, prefArm.armPresetCollectorElbowAngle)),
+            () -> subArm.setGoalAngles(
+                prefArm.armPresetCollectorShoulderAngle,
+                prefArm.armPresetCollectorElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
+
         new IntakeGamePiece(subIntake).until(() -> subIntake.isGamePieceCollected()),
+
         // raise shoulder, keep elbow still
         Commands.runOnce(
             () -> subArm.setGoalAngles(
                 prefArm.armPresetPostCollectorShoulderAngle,
                 prefArm.armPresetCollectorElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
+
         // stick elbow out while keeping shoulder still
         Commands.runOnce(
             () -> subArm.setGoalAngles(
                 prefArm.armPresetPostCollectorShoulderAngle,
                 prefArm.armPresetStraightElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()),
+
         // collector retract
         Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)),
         Commands.waitUntil(() -> subCollector.isPivotMotorInTolerance()),
+
         // arm stow
-        Commands
-            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
+        Commands.runOnce(() -> subArm.setGoalAngles(
+            prefArm.armPresetStowShoulderAngle,
+            prefArm.armPresetStowElbowAngle)),
         Commands.waitUntil(() -> subArm.areJointsInTolerance()));
   }
 }
