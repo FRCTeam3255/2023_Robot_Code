@@ -151,7 +151,8 @@ public class RobotPreferences {
     public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
     public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
 
-    public static final SN_DoublePreference armToleranceFudge = new SN_DoublePreference("armToleranceFudge", 5);
+    public static final SN_DoublePreference armToleranceFudgeFactor = new SN_DoublePreference(
+        "armToleranceFudgeFactor", 5);
   }
 
   public static final class prefIntake {

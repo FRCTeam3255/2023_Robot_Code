@@ -305,12 +305,12 @@ public class Arm extends SubsystemBase {
 
   public boolean isShoulderInTolerance() {
     return Math.abs(getShoulderPosition().getRadians() - getGoalShoulderAngle().getRadians()) < (Units
-        .degreesToRadians(prefArm.shoulderTolerance.getValue() * prefArm.armToleranceFudge.getValue()));
+        .degreesToRadians(prefArm.shoulderTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue()));
   }
 
   public boolean isElbowInTolerance() {
     return Math.abs(getElbowPosition().getRadians() - getGoalElbowAngle().getRadians()) < Units
-        .degreesToRadians(prefArm.elbowTolerance.getValue() * prefArm.armToleranceFudge.getValue());
+        .degreesToRadians(prefArm.elbowTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue());
   }
 
   public boolean areJointsInTolerance() {
