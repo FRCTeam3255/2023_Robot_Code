@@ -5,7 +5,7 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = true;
+  public static final boolean useNetworkTables = false;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -73,6 +73,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleThetaMaxAccel = new SN_DoublePreference("teleThetaMaxAccel", 360);
     // degrees
     public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
+
+    // degrees
+    public static final SN_DoublePreference tiltedThreshold = new SN_DoublePreference("tiltedThreshold", 14);
+
+    // feet per second
+    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 5);
   }
 
   public static final class prefArm {
@@ -84,7 +90,7 @@ public class RobotPreferences {
     // degrees per second per second
     public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 235);
     // degrees
-    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.01);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
 
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 1.75);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
@@ -94,7 +100,7 @@ public class RobotPreferences {
     // degrees per second per second
     public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 235);
     // degrees
-    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.01);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
@@ -165,7 +171,7 @@ public class RobotPreferences {
         "pivotMaxSpeed", 1);
 
     public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
-        "pivotAngleStartingConfig", 206);
+        "pivotAngleStartingConfig", 197);
     public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
         "pivotAngleCubeCollecting", 28);
     public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(

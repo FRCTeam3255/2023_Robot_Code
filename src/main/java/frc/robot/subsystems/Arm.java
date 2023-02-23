@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.MathUtil;
@@ -19,13 +19,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constArm;
+import frc.robot.Constants.constControllers.ScoringColumn;
+import frc.robot.Constants.constControllers.ScoringLevel;
+import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
 
 public class Arm extends SubsystemBase {
 
-  SN_CANSparkMax shoulderJoint;
-  SN_CANSparkMax elbowJoint;
+  TalonFX shoulderJoint;
+  TalonFX elbowJoint;
 
   DutyCycleEncoder shoulderEncoder;
   DutyCycleEncoder elbowEncoder;
@@ -36,9 +39,13 @@ public class Arm extends SubsystemBase {
   ProfiledPIDController shoulderPID;
   ProfiledPIDController elbowPID;
 
+  public GamePiece desiredGamePiece = GamePiece.NONE;
+  public ScoringLevel scoringLevel = ScoringLevel.NONE;
+  public ScoringColumn scoringColumn = ScoringColumn.NONE;
+
   public Arm() {
-    shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
-    elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
+    shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
+    elbowJoint = new TalonFX(mapArm.ELBOW_CAN);
 
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
@@ -303,6 +310,10 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
+    SmartDashboard.putString("scoringLevel", scoringLevel.toString());
+    SmartDashboard.putString("scoringColumn", scoringColumn.toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
