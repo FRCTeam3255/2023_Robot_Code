@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 
+import com.frcteam3255.utils.SN_Math;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -273,6 +274,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * Reset the lastAngle values for each module.
+   */
+  public void resetLastAngles() {
+    for (SN_SwerveModule mod : modules) {
+      mod.resetLastAngleToCurrentPosition();
+    }
+  }
+
+  /**
    * Set the drive method to use field relative drive controls
    */
   public void setFieldRelative() {
@@ -401,6 +411,8 @@ public class Drivetrain extends SubsystemBase {
             mod.getRawAbsoluteEncoder());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Drive Output Percent",
             mod.getDriveMotorOutputPercent());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Last Angle",
+            SN_Math.falconToDegrees(mod.getLastAngle(), Constants.STEER_GEAR_RATIO));
       }
     }
   }

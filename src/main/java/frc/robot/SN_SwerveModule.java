@@ -54,7 +54,7 @@ public class SN_SwerveModule {
     driveConfiguration = new TalonFXConfiguration();
     steerConfiguration = new TalonFXConfiguration();
 
-    lastAngle = 0;
+    lastAngle = steerMotor.getSelectedSensorPosition();
 
     configure();
   }
@@ -133,8 +133,8 @@ public class SN_SwerveModule {
         Constants.STEER_GEAR_RATIO);
 
     // if the module doesn't actually have any speed, don't bother steering it
-    if (Math.abs(
-        state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue() * Constants.MAX_MODULE_SPEED)) {
+    if (Math
+        .abs(state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue() * Constants.MAX_MODULE_SPEED)) {
 
       angle = lastAngle;
     }
@@ -160,6 +160,22 @@ public class SN_SwerveModule {
         Constants.STEER_GEAR_RATIO);
 
     steerMotor.setSelectedSensorPosition(absoluteEncoderCount);
+  }
+
+  /**
+   * Reset the lastAngle value to the current steer motor position.
+   */
+  public void resetLastAngleToCurrentPosition() {
+    lastAngle = steerMotor.getSelectedSensorPosition();
+  }
+
+  /**
+   * Get the lastAngle value in Falcon encoder counts
+   * 
+   * @return
+   */
+  public double getLastAngle() {
+    return lastAngle;
   }
 
   /**
