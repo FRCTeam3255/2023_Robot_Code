@@ -136,14 +136,14 @@ public class RobotPreferences {
         "armPresetConeElbowAngle", 15);
 
     public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", -62);
+        "armPresetMidShoulderAngle", -59);
     public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 41);
+        "armPresetMidElbowAngle", 40);
 
     public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
-        "armPresetHighShoulderAngle", -13);
+        "armPresetHighShoulderAngle", -11);
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
-        "armPresetHighElbowAngle", 31);
+        "armPresetHighElbowAngle", 25);
 
     public static final SN_DoublePreference armPresetCubeMidShoulderAngle = new SN_DoublePreference(
         "armPresetCubeMidShoulderAngle", -95.5);
@@ -182,7 +182,7 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference intakeIntakeSpeed = new SN_DoublePreference("intakeIntakeSpeed", 0.5);
     public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
-    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.5);
+    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.1);
     public static final SN_DoublePreference intakeReleaseDelay = new SN_DoublePreference("intakeReleaseDelay", 1);
   }
 
