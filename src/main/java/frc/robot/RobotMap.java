@@ -65,6 +65,6 @@ public class RobotMap {
   }
 
   public static final class mapLEDs {
-    public static final int BLINKIN_PWM = 0;
+    public static final int BLINKIN_PWM = 9;
   }
 }
