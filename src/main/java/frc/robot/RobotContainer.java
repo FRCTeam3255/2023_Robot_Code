@@ -77,12 +77,9 @@ public class RobotContainer {
 
     // "reset gyro" for field relative but actually resets the orientation at a
     // higher level
-    conDriver.btn_A
+    conDriver.btn_Back
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
-    conDriver.btn_B
-        .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPose(new Pose2d())));
 
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
