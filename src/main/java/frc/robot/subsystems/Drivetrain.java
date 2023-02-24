@@ -15,6 +15,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -48,7 +49,7 @@ public class Drivetrain extends SubsystemBase {
 
   private ProfiledPIDController xPID;
   private ProfiledPIDController yPID;
-  private ProfiledPIDController thetaPID;
+  private PIDController thetaPID;
 
   private Rotation2d goalAngle;
 
@@ -95,13 +96,10 @@ public class Drivetrain extends SubsystemBase {
             Units.feetToMeters(prefDrivetrain.teleTransMaxSpeed.getValue()),
             Units.feetToMeters(prefDrivetrain.teleTransMaxAccel.getValue())));
 
-    thetaPID = new ProfiledPIDController(
+    thetaPID = new PIDController(
         prefDrivetrain.teleThetaP.getValue(),
         prefDrivetrain.teleThetaI.getValue(),
-        prefDrivetrain.teleThetaD.getValue(),
-        new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
-            Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
+        prefDrivetrain.teleThetaD.getValue());
 
     linePath = PathPlanner.loadPath("linePath",
         new PathConstraints(
@@ -145,12 +143,9 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaP.getValue(),
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
-    thetaPID.setConstraints(new TrapezoidProfile.Constraints(
-        Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
-        Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
     thetaPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleThetaTolerance.getValue()));
-    thetaPID.reset(getPose().getRotation().getRadians());
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
+    thetaPID.reset();
 
     // (i think) since the drive motor inversions takes a meanful amount of time, it
     // eats the instruction to reset the encoder counts. so we just wait a second
@@ -210,12 +205,15 @@ public class Drivetrain extends SubsystemBase {
   public void driveAlignAngle(Pose2d velocity) {
 
     // tell the theta PID controller the goal rotation.
-    thetaPID.setGoal(velocity.getRotation().getRadians());
+    thetaPID.setSetpoint(velocity.getRotation().getRadians());
 
     // calculate the angle setpoint based off where we are now.
-    // note that this will not just be the rotation we passed in, it will be some
-    // position inbetween.
     double angleSetpoint = thetaPID.calculate(getPose().getRotation().getRadians());
+
+    // limit the PID output to a maximum rotational speed
+    if (angleSetpoint > Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue())) {
+      angleSetpoint = Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue());
+    }
 
     // create a new velocity Pose2d with the same translation as the on that was
     // passed in, but with the output of the theta PID controller for rotation.
@@ -342,7 +340,7 @@ public class Drivetrain extends SubsystemBase {
   public void resetPID() {
     xPID.reset(getPose().getX());
     yPID.reset(getPose().getY());
-    thetaPID.reset(getPose().getRotation().getRadians());
+    thetaPID.reset();
   }
 
   /**
