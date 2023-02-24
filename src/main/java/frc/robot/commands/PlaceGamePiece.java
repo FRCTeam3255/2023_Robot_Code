@@ -32,16 +32,18 @@ public class PlaceGamePiece extends SequentialCommandGroup {
         new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
         new WaitUntilCommand(() -> subArm.areJointsInTolerance()),
 
-        // Assume game piece is a cone (Hopefully it just works with a cube)
-
+        // Lower the arm UNLESS
+        // Its a hybrid node, we provided no scoring level, or its a cube node
         new InstantCommand(() -> subArm.setGoalAngles(
             Rotation2d.fromDegrees(
                 subArm.getGoalShoulderAngle().getDegrees() - prefArm.armShoulderLoweringAngle.getValue()),
             Rotation2d.fromDegrees(
                 subArm.getGoalElbowAngle().getDegrees() - prefArm.armElbowLoweringAngle.getValue())))
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE),
+            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
+                || subArm.isCubeNode()),
         new WaitUntilCommand(() -> subArm.areJointsInTolerance())
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE),
+            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
+                || subArm.isCubeNode()),
 
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake)
             .until(() -> !subIntake.isGamePieceCollected()),
