@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 
+import com.frcteam3255.preferences.SN_DoublePreference;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -48,6 +49,8 @@ public class Drivetrain extends SubsystemBase {
   private ProfiledPIDController xPID;
   private ProfiledPIDController yPID;
   private ProfiledPIDController thetaPID;
+
+  private Rotation2d goalAngle;
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
@@ -301,6 +304,39 @@ public class Drivetrain extends SubsystemBase {
    */
   public void setRobotRelative() {
     isFieldRelative = false;
+  }
+
+  /**
+   * Set the goal angle for absolute rotation.
+   * <p>
+   * This variable will not do anything within the drivetrain subsystem, and is
+   * just to be used in the Drive command.
+   * 
+   * @param goalAngle Goal Drivetrain angle for absolute rotation
+   */
+  public void setGoalAngle(Rotation2d goalAngle) {
+    this.goalAngle = goalAngle;
+  }
+
+  /**
+   * Set the goal angle for absolute rotation in degrees.
+   * <p>
+   * This variable will not do anything within the drivetrain subsystem, and is
+   * just to be used in the Drive command.
+   * 
+   * @param goalAngle Goal Drivetrain angle for absolute rotation in degrees
+   */
+  public void setGoalAngle(SN_DoublePreference goalAngle) {
+    this.goalAngle = Rotation2d.fromDegrees(goalAngle.getValue());
+  }
+
+  /**
+   * Get the current goal angle.
+   * 
+   * @return Current goal angle
+   */
+  public Rotation2d getGoalAngle() {
+    return goalAngle;
   }
 
   public void resetPID() {
