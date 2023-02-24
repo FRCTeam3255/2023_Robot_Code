@@ -263,7 +263,24 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue());
+      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue(), false);
+    }
+  }
+
+  /**
+   * Turn all the wheels inward to be better against defense.
+   */
+  public void setDefenseMode() {
+    SwerveModuleState[] desiredStates = {
+        new SwerveModuleState(0, Constants.MODULE_0_DEFENSE_ANGLE),
+        new SwerveModuleState(0, Constants.MODULE_1_DEFENSE_ANGLE),
+        new SwerveModuleState(0, Constants.MODULE_2_DEFENSE_ANGLE),
+        new SwerveModuleState(0, Constants.MODULE_3_DEFENSE_ANGLE) };
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
+
+    for (SN_SwerveModule mod : modules) {
+      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue(), true);
     }
   }
 
