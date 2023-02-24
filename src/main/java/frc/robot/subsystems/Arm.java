@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
 import frc.robot.Constants.constControllers.ScoringColumn;
 import frc.robot.Constants.constControllers.ScoringLevel;
@@ -281,6 +282,61 @@ public class Arm extends SubsystemBase {
     setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
+  public boolean isShoulderInTolerance() {
+    return Math.abs(getShoulderPosition().getRadians() - getGoalShoulderAngle().getRadians()) < (Units
+        .degreesToRadians(prefArm.shoulderTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue()));
+  }
+
+  public boolean isElbowInTolerance() {
+    return Math.abs(getElbowPosition().getRadians() - getGoalElbowAngle().getRadians()) < Units
+        .degreesToRadians(prefArm.elbowTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue());
+  }
+
+  public boolean areJointsInTolerance() {
+    return isShoulderInTolerance() && isElbowInTolerance();
+  }
+
+  public boolean isCubeNode() {
+    if (scoringColumn == ScoringColumn.SECOND || scoringColumn == ScoringColumn.FIFTH
+        || scoringColumn == ScoringColumn.EIGHTH) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public void setGoalAnglesFromNumpad() {
+    if (isCubeNode()) {
+      switch (scoringLevel) {
+        case HYBRID:
+          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+          break;
+        case MID:
+          setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+          break;
+        case HIGH:
+          setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+          break;
+        case NONE:
+          return;
+      }
+    } else {
+      switch (scoringLevel) {
+        case HYBRID:
+          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+          break;
+        case MID:
+          setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle);
+          break;
+        case HIGH:
+          setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle);
+          break;
+        case NONE:
+          return;
+      }
+    }
+  }
+
   @Override
   public void periodic() {
 
@@ -311,9 +367,14 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm PID Shoulder Goal", shoulderJoint.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm PID Shoudler Error", shoulderJoint.getClosedLoopError());
+      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", isShoulderInTolerance());
 
       SmartDashboard.putNumber("Arm PID Elbow Goal", elbowJoint.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm PID Elbow Error", elbowJoint.getClosedLoopError());
+      SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
+
+      SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
+
     }
   }
 }
