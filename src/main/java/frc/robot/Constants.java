@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,7 +19,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -138,6 +139,11 @@ public final class Constants {
       MODULE_2.position,
       MODULE_3.position);
 
+  public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+  public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
+  public static final Rotation2d MODULE_2_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
+  public static final Rotation2d MODULE_3_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+
   // end drivetrain section
 
   public static final class constArm {
@@ -159,8 +165,8 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.400931);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.130771);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.418674);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.135709);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);

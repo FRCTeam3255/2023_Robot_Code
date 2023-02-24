@@ -21,10 +21,11 @@ import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCube;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
-import frc.robot.commands.PrepPlacement;
+import frc.robot.commands.PlaceGamePiece;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
@@ -101,11 +102,12 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
+    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
+
     // Operator
 
     // Run IntakeCube command
-    // conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector,
-    // subIntake));
+    conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
 
     // TODO: Run IntakeCone command (btn_RB)
     // conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake,
@@ -119,21 +121,26 @@ public class RobotContainer {
 
     // Set low Arm preset
     conOperator.btn_A.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
+        .runOnce(
+            () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
 
     // Set mid Arm preset
     conOperator.btn_X.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
 
-    // Set high Arm preset
+    // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
 
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.btn_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake).repeatedly());
+    // Prep Place; Will be rebound to Left Trigger
+    conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+
+    // Place Game piece; Will be rebound to Right Trigger
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
     conOperator.btn_North
