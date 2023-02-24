@@ -139,8 +139,8 @@ public final class Constants {
       MODULE_2.position,
       MODULE_3.position);
 
-  public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
-  public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+  public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+  public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
   public static final Rotation2d MODULE_2_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
   public static final Rotation2d MODULE_3_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
 
