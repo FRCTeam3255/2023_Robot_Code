@@ -75,6 +75,7 @@ public class Drive extends CommandBase {
     this.westTrigger = westTrigger;
 
     isRotationPositional = false;
+    rotationPosition = new Rotation2d();
 
     addRequirements(this.subDrivetrain);
   }
@@ -82,23 +83,70 @@ public class Drive extends CommandBase {
   @Override
   public void initialize() {
     isRotationPositional = false;
+    rotationPosition = new Rotation2d();
   }
 
   @Override
   public void execute() {
 
+    // get all the joystick axes and scale them to the correct units
     xVelocity = xAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     yVelocity = -yAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
     translationScalar = SN_Math.interpolate(slowAxis.getAsDouble(), 0, 1, 1, prefDrivetrain.triggerValue.getValue());
 
+    // scale down the translation velocity from the driver input
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(translationScalar);
 
-    velocity = new Pose2d(
-        translationVelocity,
-        new Rotation2d(rVelocity));
+    // if the driver is moving the rotation joystick just listen to that input,
+    // don't do any positional rotation
+    if (Math.abs(rVelocity) > 0) {
+      isRotationPositional = false;
+    }
+    // if the driver isn't moving the rotation joystick, check if they pressed any
+    // of the rotation buttons. each button corresponds to a cardinal direction
+    else {
 
-    subDrivetrain.drive(velocity);
+      if (northTrigger.getAsBoolean()) {
+        isRotationPositional = true;
+        rotationPosition = Rotation2d.fromDegrees(90);
+      }
+
+      if (eastTrigger.getAsBoolean()) {
+        isRotationPositional = true;
+        rotationPosition = Rotation2d.fromDegrees(0);
+      }
+
+      if (southTrigger.getAsBoolean()) {
+        isRotationPositional = true;
+        rotationPosition = Rotation2d.fromDegrees(-90);
+      }
+
+      if (westTrigger.getAsBoolean()) {
+        isRotationPositional = true;
+        rotationPosition = Rotation2d.fromDegrees(180);
+      }
+
+    }
+
+    // if the driver isn't using the rotation joystick and also pressed a rotation
+    // button, use driveAlignAngle for positional rotation control
+    if (isRotationPositional) {
+      velocity = new Pose2d(
+          translationVelocity,
+          rotationPosition);
+      subDrivetrain.driveAlignAngle(velocity);
+    }
+    // if the driver didn't press any rotation buttons or used the rotation
+    // joystick, just drive normally with the rotation joystick controlling the rate
+    // of rotation
+    else {
+      velocity = new Pose2d(
+          translationVelocity,
+          Rotation2d.fromRadians(rVelocity));
+      subDrivetrain.drive(velocity);
+    }
+
   }
 
   @Override
