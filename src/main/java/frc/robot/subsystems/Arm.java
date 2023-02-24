@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
 import frc.robot.Constants.constControllers.ScoringColumn;
 import frc.robot.Constants.constControllers.ScoringLevel;
@@ -115,6 +114,21 @@ public class Arm extends SubsystemBase {
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
   }
 
+  public void resetJointEncodersToAbsolute() {
+    resetShoulderJointToAbsolute();
+    resetElbowJointToAbsolute();
+  }
+
+  private void resetShoulderJointToAbsolute() {
+    shoulderJoint.setSelectedSensorPosition(
+        SN_Math.degreesToFalcon(getShoulderAbsoluteEncoder().getDegrees(), constArm.SHOULDER_GEAR_RATIO));
+  }
+
+  private void resetElbowJointToAbsolute() {
+    elbowJoint.setSelectedSensorPosition(
+        SN_Math.degreesToFalcon(getElbowAbsoluteEncoder().getDegrees(), constArm.ELBOW_GEAR_RATIO));
+  }
+
   public void setJointsNeutralMode() {
     shoulderJoint.setNeutralMode(constArm.SHOULDER_MOTOR_BREAK);
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
@@ -195,7 +209,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Shoulder absolute encoder reading
    */
-  public Rotation2d getShoulderPosition() {
+  public Rotation2d getShoulderAbsoluteEncoder() {
     double rotations = shoulderEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
     rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
@@ -212,7 +226,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Elbow absolute encoder reading
    */
-  public Rotation2d getElbowPosition() {
+  public Rotation2d getElbowAbsoluteEncoder() {
     double rotations = elbowEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
     rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
@@ -222,7 +236,26 @@ public class Arm extends SubsystemBase {
     } else {
       return Rotation2d.fromRotations(rotations);
     }
+  }
 
+  /**
+   * Get the shoulder joint position from the motor.
+   * 
+   * @return Shoulder joint position
+   */
+  public Rotation2d getShoulderPosition() {
+    return Rotation2d
+        .fromDegrees(SN_Math.falconToDegrees(shoulderJoint.getSelectedSensorPosition(), constArm.SHOULDER_GEAR_RATIO));
+  }
+
+  /**
+   * Get the elbow joint position from the motor.
+   * 
+   * @return Elbow joint position
+   */
+  public Rotation2d getElbowPosition() {
+    return Rotation2d
+        .fromDegrees(SN_Math.falconToDegrees(elbowJoint.getSelectedSensorPosition(), constArm.ELBOW_GEAR_RATIO));
   }
 
   /**
@@ -365,12 +398,16 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
       SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
 
-      SmartDashboard.putNumber("Arm PID Shoulder Goal", shoulderJoint.getClosedLoopTarget());
-      SmartDashboard.putNumber("Arm PID Shoudler Error", shoulderJoint.getClosedLoopError());
+      SmartDashboard.putNumber("Arm PID Shoulder Goal",
+          SN_Math.falconToDegrees(shoulderJoint.getClosedLoopTarget(), constArm.SHOULDER_GEAR_RATIO));
+      SmartDashboard.putNumber("Arm PID Shoudler Error",
+          SN_Math.falconToDegrees(shoulderJoint.getClosedLoopError(), constArm.SHOULDER_GEAR_RATIO));
       SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", isShoulderInTolerance());
 
-      SmartDashboard.putNumber("Arm PID Elbow Goal", elbowJoint.getClosedLoopTarget());
-      SmartDashboard.putNumber("Arm PID Elbow Error", elbowJoint.getClosedLoopError());
+      SmartDashboard.putNumber("Arm PID Elbow Goal",
+          SN_Math.falconToDegrees(elbowJoint.getClosedLoopTarget(), constArm.ELBOW_GEAR_RATIO));
+      SmartDashboard.putNumber("Arm PID Elbow Error",
+          SN_Math.falconToDegrees(elbowJoint.getClosedLoopError(), constArm.ELBOW_GEAR_RATIO));
       SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
 
       SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
