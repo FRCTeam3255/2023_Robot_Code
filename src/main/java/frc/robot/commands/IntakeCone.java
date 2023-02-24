@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.frcteam3255.components.SN_Blinkin;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -29,20 +30,28 @@ public class IntakeCone extends SequentialCommandGroup {
 
     addCommands(
         // - Retract collector
-        new InstantCommand(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
+        Commands.runOnce(() -> subCollector.setPivotMotorAngle(prefCollector.pivotAngleStartingConfig.getValue())),
+
+        // - Wait until the collector has reached the desired position
+        // TODO: Change to waitUntil once the method is merged into qa
+        Commands.waitSeconds(5),
 
         // - Lower the arm so that the intake is cone level
-        new InstantCommand(
+        Commands.runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
+
+        // - Wait until the arm has reached the desired position
+        // TODO: Change to waitUntil once the method is merged into qa
+        Commands.waitSeconds(5),
 
         // - Spin intake until a game piece is collected
         new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
 
         // - Set motors to hold speed
-        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed)),
+        subIntake.holdCommand(),
 
         // - Raise arm to stow position
-        new InstantCommand(
+        Commands.runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
   }
 }
