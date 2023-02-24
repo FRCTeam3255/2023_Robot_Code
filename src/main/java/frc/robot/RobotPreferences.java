@@ -145,6 +145,16 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
         "armPresetHighElbowAngle", 31);
 
+    public static final SN_DoublePreference armPresetCubeMidShoulderAngle = new SN_DoublePreference(
+        "armPresetCubeMidShoulderAngle", -95.5);
+    public static final SN_DoublePreference armPresetCubeMidElbowAngle = new SN_DoublePreference(
+        "armPresetCubeMidElbowAngle", 22);
+
+    public static final SN_DoublePreference armPresetCubeHighShoulderAngle = new SN_DoublePreference(
+        "armPresetCubeHighShoulderAngle", 37.5);
+    public static final SN_DoublePreference armPresetCubeHighElbowAngle = new SN_DoublePreference(
+        "armPresetCubeHighElbowAngle", -30.5);
+
     public static final SN_DoublePreference armPresetShoulderShelf = new SN_DoublePreference("armPresetShoulderShelf",
         0);
     public static final SN_DoublePreference armPresetElbowShelf = new SN_DoublePreference("armPresetElbowShelf", 0);
