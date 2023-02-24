@@ -2,10 +2,11 @@ package frc.robot;
 
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
+import com.frcteam3255.preferences.SN_ZeroDoublePreference;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = true;
+  public static final boolean useNetworkTables = false;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -73,6 +74,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleThetaMaxAccel = new SN_DoublePreference("teleThetaMaxAccel", 360);
     // degrees
     public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
+
+    // degrees
+    public static final SN_DoublePreference tiltedThreshold = new SN_DoublePreference("tiltedThreshold", 14);
+
+    // feet per second
+    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 5);
   }
 
   public static final class prefArm {
@@ -84,7 +91,7 @@ public class RobotPreferences {
     // degrees per second per second
     public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 235);
     // degrees
-    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.01);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
 
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 1.75);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
@@ -94,7 +101,7 @@ public class RobotPreferences {
     // degrees per second per second
     public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 235);
     // degrees
-    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.01);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
@@ -109,9 +116,9 @@ public class RobotPreferences {
         "elbowReverseSoftLimit", true);
 
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 0);
+        "armPresetCollectorShoulderAngle", 25);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", 0);
+        "armPresetCollectorElbowAngle", -92.5);
 
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
@@ -124,19 +131,47 @@ public class RobotPreferences {
         "armPresetLowElbowAngle", 0);
 
     public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
-        "armPresetConeShoulderAngle", 2);
+        "armPresetConeShoulderAngle", -90);
     public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
-        "armPresetConeElbowAngle", 15);
+        "armPresetConeElbowAngle", -8);
 
     public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
-        "armPresetMidShoulderAngle", 0);
+        "armPresetMidShoulderAngle", -59);
     public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
-        "armPresetMidElbowAngle", 0);
+        "armPresetMidElbowAngle", 40);
 
     public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
-        "armPresetHighShoulderAngle", 45);
+        "armPresetHighShoulderAngle", -11);
     public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
-        "armPresetHighElbowAngle", 0);
+        "armPresetHighElbowAngle", 25);
+
+    public static final SN_DoublePreference armPresetCubeMidShoulderAngle = new SN_DoublePreference(
+        "armPresetCubeMidShoulderAngle", -95.5);
+    public static final SN_DoublePreference armPresetCubeMidElbowAngle = new SN_DoublePreference(
+        "armPresetCubeMidElbowAngle", 22);
+
+    public static final SN_DoublePreference armPresetCubeHighShoulderAngle = new SN_DoublePreference(
+        "armPresetCubeHighShoulderAngle", 37.5);
+    public static final SN_DoublePreference armPresetCubeHighElbowAngle = new SN_DoublePreference(
+        "armPresetCubeHighElbowAngle", -30.5);
+
+    public static final SN_DoublePreference armPresetShoulderShelf = new SN_DoublePreference("armPresetShoulderShelf",
+        0);
+    public static final SN_DoublePreference armPresetElbowShelf = new SN_DoublePreference("armPresetElbowShelf", 0);
+
+    public static final SN_DoublePreference armShoulderLoweringAngle = new SN_DoublePreference(
+        "armShoulderLoweringAngle", 0);
+    public static final SN_DoublePreference armElbowLoweringAngle = new SN_DoublePreference("armElbowLoweringAngle",
+        25);
+
+    public static final SN_DoublePreference armPresetPostCollectorShoulderAngle = new SN_DoublePreference(
+        "armPresetPostCollectorShoulderAngle", 45);
+
+    public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
+    public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
+
+    public static final SN_DoublePreference armToleranceFudgeFactor = new SN_DoublePreference(
+        "armToleranceFudgeFactor", 5);
   }
 
   public static final class prefIntake {
@@ -147,8 +182,8 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference intakeIntakeSpeed = new SN_DoublePreference("intakeIntakeSpeed", 0.5);
     public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
-    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.5);
-    public static final SN_DoublePreference intakeReleaseDelay = new SN_DoublePreference("intakeReleaseDelay", 0.25);
+    public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.25);
+    public static final SN_DoublePreference intakeReleaseDelay = new SN_DoublePreference("intakeReleaseDelay", 1);
   }
 
   public static final class prefCollector {
@@ -165,7 +200,7 @@ public class RobotPreferences {
         "pivotMaxSpeed", 1);
 
     public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
-        "pivotAngleStartingConfig", 206);
+        "pivotAngleStartingConfig", 197);
     public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
         "pivotAngleCubeCollecting", 28);
     public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(

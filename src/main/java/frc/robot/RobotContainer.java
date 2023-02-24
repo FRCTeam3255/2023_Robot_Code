@@ -4,11 +4,9 @@
 
 package frc.robot;
 
-import com.frcteam3255.joystick.SN_F310Gamepad;
-
+import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,7 +14,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
-import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constControllers.ScoringColumn;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
@@ -24,11 +21,11 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
+import frc.robot.commands.IntakeCube;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
-import frc.robot.commands.PrepPlacement;
 import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
@@ -37,12 +34,11 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
-  private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER_USB);
-  private final SN_F310Gamepad conOperator = new SN_F310Gamepad(mapControllers.OPERATOR_USB);
+  private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
+  private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
@@ -56,8 +52,14 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    subDrivetrain.setDefaultCommand(new Drive(subDrivetrain, conDriver));
-    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator));
+    subDrivetrain
+        .setDefaultCommand(new Drive(
+            subDrivetrain,
+            conDriver.axis_LeftY,
+            conDriver.axis_LeftX,
+            conDriver.axis_RightX,
+            conDriver.axis_RightTrigger));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
@@ -84,19 +86,19 @@ public class RobotContainer {
             () -> subDrivetrain.resetPose(new Pose2d())));
 
     // while true do robot oriented, default to field oriented
-    conDriver.btn_LBump
+    conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
+    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
 
     // Operator
 
     // Run IntakeCube command
-    // conOperator.btn_LBump.onTrue(new intakeCube(subArm, subCollector,
-    // subIntake));
+    conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
 
     // TODO: Run IntakeCone command (btn_RB)
-    // conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake,
-    // subArm));
+    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
@@ -106,29 +108,40 @@ public class RobotContainer {
 
     // Set low Arm preset
     conOperator.btn_A.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
+        .runOnce(
+            () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
 
     // Set mid Arm preset
     conOperator.btn_X.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
 
-    // Set high Arm preset
+    // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle)));
+        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
 
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    conOperator.POV_East.onTrue(new PrepPlacement(subArm, subDrivetrain, subIntake).repeatedly());
+    // Prep Place; Will be rebound to Left Trigger
+    conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+
+    // Place Game piece; Will be rebound to Right Trigger
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
-    conOperator.POV_North
+    conOperator.btn_North
         .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
 
     // Set Collector rollers to intake height and spin the rollers
-    conOperator.POV_South
+    conOperator.btn_South
         .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
+
+    // Set the LEDs to "We want a cone"
+    conOperator.btn_West.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
+
+    // Set the LEDs to "We want a cube"
+    conOperator.btn_East.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
 
     // Spin the Intake forward
     conOperator.btn_Start
@@ -152,9 +165,6 @@ public class RobotContainer {
     conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
     conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.MID));
     conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HIGH));
-
-    conNumpad.btn_13.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
-    conNumpad.btn_14.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
   }
 
   public Command getAutonomousCommand() {
