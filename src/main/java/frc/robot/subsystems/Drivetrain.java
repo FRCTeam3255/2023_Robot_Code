@@ -146,7 +146,7 @@ public class Drivetrain extends SubsystemBase {
         Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
         Units.degreesToRadians(prefDrivetrain.teleThetaMaxAccel.getValue())));
     thetaPID.setTolerance(Units.inchesToMeters(prefDrivetrain.teleThetaTolerance.getValue()));
-    thetaPID.reset(getPose().getRotation().getRadians());
+    thetaPID.reset(getRotation().getRadians());
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
 
     // (i think) since the drive motor inversions takes a meanful amount of time, it
@@ -212,7 +212,7 @@ public class Drivetrain extends SubsystemBase {
     // calculate the angle setpoint based off where we are now.
     // note that this will not just be the rotation we passed in, it will be some
     // position inbetween.
-    double angleSetpoint = thetaPID.calculate(getPose().getRotation().getRadians());
+    double angleSetpoint = thetaPID.calculate(getRotation().getRadians());
 
     // create a new velocity Pose2d with the same translation as the on that was
     // passed in, but with the output of the theta PID controller for rotation.
@@ -237,7 +237,7 @@ public class Drivetrain extends SubsystemBase {
           velocity.getX(),
           velocity.getY(),
           velocity.getRotation().getRadians(),
-          getPose().getRotation());
+          getRotation());
     } else {
       chassisSpeeds = new ChassisSpeeds(
           velocity.getX(),
@@ -306,7 +306,7 @@ public class Drivetrain extends SubsystemBase {
   public void resetPID() {
     xPID.reset(getPose().getX());
     yPID.reset(getPose().getY());
-    thetaPID.reset(getPose().getRotation().getRadians());
+    thetaPID.reset(getRotation().getRadians());
   }
 
   /**
@@ -316,6 +316,24 @@ public class Drivetrain extends SubsystemBase {
    */
   public Pose2d getPose() {
     return poseEstimator.getEstimatedPosition();
+  }
+
+  /**
+   * Get the rotation of the drivetrain. This method currently just uses the navX
+   * yaw, but this is subject to change.
+   * 
+   * @return Rotation of drivetrain
+   */
+  public Rotation2d getRotation() {
+    return navX.getRotation2d();
+  }
+
+  /**
+   * Reset the rotation of the drivetrain to zero. This method currently just
+   * resets the navX yaw, but this is subject to change.
+   */
+  public void resetRotation() {
+    navX.reset();
   }
 
   /**
