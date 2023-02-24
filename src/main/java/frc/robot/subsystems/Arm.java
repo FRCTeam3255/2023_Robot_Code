@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.MathUtil;
@@ -18,14 +18,18 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
+import frc.robot.Constants.constControllers.ScoringColumn;
+import frc.robot.Constants.constControllers.ScoringLevel;
+import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
 
 public class Arm extends SubsystemBase {
 
-  SN_CANSparkMax shoulderJoint;
-  SN_CANSparkMax elbowJoint;
+  TalonFX shoulderJoint;
+  TalonFX elbowJoint;
 
   DutyCycleEncoder shoulderEncoder;
   DutyCycleEncoder elbowEncoder;
@@ -36,9 +40,13 @@ public class Arm extends SubsystemBase {
   ProfiledPIDController shoulderPID;
   ProfiledPIDController elbowPID;
 
+  public GamePiece desiredGamePiece = GamePiece.NONE;
+  public ScoringLevel scoringLevel = ScoringLevel.NONE;
+  public ScoringColumn scoringColumn = ScoringColumn.NONE;
+
   public Arm() {
-    shoulderJoint = new SN_CANSparkMax(mapArm.SHOULDER_CAN);
-    elbowJoint = new SN_CANSparkMax(mapArm.ELBOW_CAN);
+    shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
+    elbowJoint = new TalonFX(mapArm.ELBOW_CAN);
 
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
@@ -117,21 +125,11 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Set the rotational positions of the shoulder and elbow joints.
-   * 
-   * @param shoulderAngle Shoulder position in degrees
-   * @param elbowAngle    Elbow position in degrees
-   */
-  public void setJointPositions(SN_DoublePreference shoulderAngle, SN_DoublePreference elbowAngle) {
-    setJointPositions(Rotation2d.fromDegrees(shoulderAngle.getValue()), Rotation2d.fromDegrees(elbowAngle.getValue()));
-  }
-
-  /**
    * Set the rotational position of the shoulder joint.
    * 
    * @param position Rotational position to set shoulder
    */
-  public void setShoulderPosition(Rotation2d position) {
+  private void setShoulderPosition(Rotation2d position) {
     double radians = MathUtil.clamp(
         position.getRadians(),
         constArm.SHOULDER_REVERSE_LIMIT,
@@ -146,7 +144,7 @@ public class Arm extends SubsystemBase {
    * 
    * @param degrees Rotational position to set elbow
    */
-  public void setElbowPosition(Rotation2d position) {
+  private void setElbowPosition(Rotation2d position) {
     double radians = MathUtil.clamp(
         position.getRadians(),
         constArm.ELBOW_REVERSE_LIMIT,
@@ -254,7 +252,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Position of of arm tip in meters
    */
-  public Translation2d getArmTipPosition() {
+  private Translation2d getArmTipPosition() {
     double a1 = constArm.SHOULDER_LENGTH;
     double a2 = constArm.ELBOW_LENGTH;
 
@@ -306,13 +304,72 @@ public class Arm extends SubsystemBase {
     setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
+  public boolean isShoulderInTolerance() {
+    return Math.abs(getShoulderPosition().getRadians() - getGoalShoulderAngle().getRadians()) < (Units
+        .degreesToRadians(prefArm.shoulderTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue()));
+  }
+
+  public boolean isElbowInTolerance() {
+    return Math.abs(getElbowPosition().getRadians() - getGoalElbowAngle().getRadians()) < Units
+        .degreesToRadians(prefArm.elbowTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue());
+  }
+
+  public boolean areJointsInTolerance() {
+    return isShoulderInTolerance() && isElbowInTolerance();
+  }
+
   public void resetPID() {
     shoulderPID.reset(getShoulderPosition().getRadians());
     elbowPID.reset(getElbowPosition().getRadians());
   }
 
+  public boolean isCubeNode() {
+    if (scoringColumn == ScoringColumn.SECOND || scoringColumn == ScoringColumn.FIFTH
+        || scoringColumn == ScoringColumn.EIGHTH) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public void setGoalAnglesFromNumpad() {
+    if (isCubeNode()) {
+      switch (scoringLevel) {
+        case HYBRID:
+          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+          break;
+        case MID:
+          setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+          break;
+        case HIGH:
+          setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+          break;
+        case NONE:
+          return;
+      }
+    } else {
+      switch (scoringLevel) {
+        case HYBRID:
+          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+          break;
+        case MID:
+          setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle);
+          break;
+        case HIGH:
+          setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle);
+          break;
+        case NONE:
+          return;
+      }
+    }
+  }
+
   @Override
   public void periodic() {
+
+    SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
+    SmartDashboard.putString("scoringLevel", scoringLevel.toString());
+    SmartDashboard.putString("scoringColumn", scoringColumn.toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
@@ -337,9 +394,13 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putNumber("Arm PID Shoulder Goal", Units.radiansToDegrees(shoulderPID.getGoal().position));
       SmartDashboard.putNumber("Arm PID Shoudler Error", Units.radiansToDegrees(shoulderPID.getPositionError()));
+      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", isShoulderInTolerance());
 
       SmartDashboard.putNumber("Arm PID Elbow Goal", Units.radiansToDegrees(elbowPID.getGoal().position));
       SmartDashboard.putNumber("Arm PID Elbow Error", Units.radiansToDegrees(elbowPID.getPositionError()));
+      SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
+
+      SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
     }
   }
 }

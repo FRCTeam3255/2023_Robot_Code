@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,7 +19,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -138,13 +139,18 @@ public final class Constants {
       MODULE_2.position,
       MODULE_3.position);
 
+  public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+  public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
+  public static final Rotation2d MODULE_2_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
+  public static final Rotation2d MODULE_3_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+
   // end drivetrain section
 
   public static final class constArm {
-    public static final boolean SHOULDER_MOTOR_INVERT = false;
-    public static final boolean ELBOW_MOTOR_INVERT = true;
+    public static final boolean SHOULDER_MOTOR_INVERT = true;
+    public static final boolean ELBOW_MOTOR_INVERT = false;
 
-    public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = true;
+    public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = false;
     public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
 
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
@@ -159,8 +165,8 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.045874);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.121968);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.418674);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.135709);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
@@ -168,8 +174,8 @@ public final class Constants {
     public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
     public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(60.0);
-    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-60.0);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(100);
+    public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
   }
 
   public static final class constIntake {
@@ -194,10 +200,17 @@ public final class Constants {
     public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
     public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
 
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(100);
+    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(195);
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.290520);
+    public static final boolean PIVOT_MOTOR_INVERT = false;
+    public static final boolean ROLLER_MOTOR_INVERT = true;
+    public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
+
+    public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
+    public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
+
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
   }
 
   public static final class constCharger {

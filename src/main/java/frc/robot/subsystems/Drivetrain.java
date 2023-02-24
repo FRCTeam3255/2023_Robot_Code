@@ -262,7 +262,24 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue());
+      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue(), false);
+    }
+  }
+
+  /**
+   * Turn all the wheels inward to be better against defense.
+   */
+  public void setDefenseMode() {
+    SwerveModuleState[] desiredStates = {
+        new SwerveModuleState(0, Constants.MODULE_0_DEFENSE_ANGLE),
+        new SwerveModuleState(0, Constants.MODULE_1_DEFENSE_ANGLE),
+        new SwerveModuleState(0, Constants.MODULE_2_DEFENSE_ANGLE),
+        new SwerveModuleState(0, Constants.MODULE_3_DEFENSE_ANGLE) };
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
+
+    for (SN_SwerveModule mod : modules) {
+      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue(), true);
     }
   }
 
@@ -359,6 +376,14 @@ public class Drivetrain extends SubsystemBase {
         pose);
   }
 
+  public boolean isTiltedForward() {
+    return navX.getRoll() > prefDrivetrain.tiltedThreshold.getValue();
+  }
+
+  public boolean isTiltedBackwards() {
+    return navX.getRoll() < -prefDrivetrain.tiltedThreshold.getValue();
+  }
+
   @Override
   public void periodic() {
 
@@ -371,6 +396,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
       SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
+
+      SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());
+      SmartDashboard.putBoolean("is Tilted Backwards", isTiltedBackwards());
 
       SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
 
