@@ -111,15 +111,15 @@ public class Intake extends SubsystemBase {
   public void periodic() {
 
     SmartDashboard.putString("Current Game Piece", getGamePieceType().toString());
+    SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
+      SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
       SmartDashboard.putString("Intake Color Sensor Color", colorSensor.getColor().toHexString());
       SmartDashboard.putNumber("Intake Color Sensor Red", colorSensor.getRed());
       SmartDashboard.putNumber("Intake Color Sensor Green", colorSensor.getGreen());
       SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
       SmartDashboard.putNumber("Intake Color Sensor Proximity", colorSensor.getProximity());
-      SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
-      SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
     }
   }
 }

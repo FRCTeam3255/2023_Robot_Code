@@ -105,7 +105,7 @@ public class SN_SwerveModule {
    * @param isDriveOpenLoop Is the drive motor velocity set using open or closed
    *                        loop control
    */
-  public void setDesiredState(SwerveModuleState desiredState, boolean isDriveOpenLoop) {
+  public void setDesiredState(SwerveModuleState desiredState, boolean isDriveOpenLoop, boolean steerWhenStill) {
     SwerveModuleState state = CTREModuleState.optimize(desiredState, getState().angle);
 
     if (isDriveOpenLoop) {
@@ -133,8 +133,8 @@ public class SN_SwerveModule {
         Constants.STEER_GEAR_RATIO);
 
     // if the module doesn't actually have any speed, don't bother steering it
-    if (Math.abs(
-        state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue() * Constants.MAX_MODULE_SPEED)) {
+    if ((Math.abs(state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue() * Constants.MAX_MODULE_SPEED))
+        && !steerWhenStill) {
 
       angle = lastAngle;
     }
