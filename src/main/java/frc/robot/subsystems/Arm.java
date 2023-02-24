@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
 import frc.robot.Constants.constControllers.ScoringColumn;
 import frc.robot.Constants.constControllers.ScoringLevel;
@@ -322,19 +323,44 @@ public class Arm extends SubsystemBase {
     elbowPID.reset(getElbowPosition().getRadians());
   }
 
+  public boolean isCubeNode() {
+    if (scoringColumn == ScoringColumn.SECOND || scoringColumn == ScoringColumn.FIFTH
+        || scoringColumn == ScoringColumn.EIGHTH) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public void setGoalAnglesFromNumpad() {
-    switch (scoringLevel) {
-      case HYBRID:
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-        break;
-      case MID:
-        setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle);
-        break;
-      case HIGH:
-        setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle);
-        break;
-      case NONE:
-        return;
+    if (isCubeNode()) {
+      switch (scoringLevel) {
+        case HYBRID:
+          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+          break;
+        case MID:
+          setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+          break;
+        case HIGH:
+          setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+          break;
+        case NONE:
+          return;
+      }
+    } else {
+      switch (scoringLevel) {
+        case HYBRID:
+          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+          break;
+        case MID:
+          setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle);
+          break;
+        case HIGH:
+          setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle);
+          break;
+        case NONE:
+          return;
+      }
     }
   }
 
