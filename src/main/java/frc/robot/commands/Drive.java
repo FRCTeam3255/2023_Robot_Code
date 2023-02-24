@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import com.frcteam3255.joystick.SN_F310Gamepad;
-import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
