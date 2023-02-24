@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
+import com.frcteam3255.preferences.SN_ZeroDoublePreference;
 
 public class RobotPreferences {
 
@@ -115,9 +116,9 @@ public class RobotPreferences {
         "elbowReverseSoftLimit", true);
 
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
-        "armPresetCollectorShoulderAngle", 0);
+        "armPresetCollectorShoulderAngle", 25);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
-        "armPresetCollectorElbowAngle", 0);
+        "armPresetCollectorElbowAngle", -92.5);
 
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
@@ -152,6 +153,15 @@ public class RobotPreferences {
         "armShoulderLoweringAngle", 0);
     public static final SN_DoublePreference armElbowLoweringAngle = new SN_DoublePreference("armElbowLoweringAngle",
         25);
+
+    public static final SN_DoublePreference armPresetPostCollectorShoulderAngle = new SN_DoublePreference(
+        "armPresetPostCollectorShoulderAngle", 45);
+
+    public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
+    public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
+
+    public static final SN_DoublePreference armToleranceFudgeFactor = new SN_DoublePreference(
+        "armToleranceFudgeFactor", 5);
   }
 
   public static final class prefIntake {
