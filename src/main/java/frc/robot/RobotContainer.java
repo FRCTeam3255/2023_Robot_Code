@@ -57,7 +57,11 @@ public class RobotContainer {
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
-            conDriver.axis_RightTrigger));
+            conDriver.axis_RightTrigger,
+            conDriver.btn_X,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_Y));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(new PivotCollector(subCollector));

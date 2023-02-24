@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
@@ -38,18 +39,29 @@ public class Drive extends CommandBase {
   DoubleSupplier rotationAxis;
   DoubleSupplier slowAxis;
 
+  Trigger northTrigger;
+  Trigger eastTrigger;
+  Trigger southTrigger;
+  Trigger westTrigger;
+
   Translation2d translationVelocity;
   double translationScalar;
 
   Pose2d velocity;
-  Pose2d velocityRotation;
+
+  boolean isRotationPositional;
+  Rotation2d rotationPosition;
 
   public Drive(
       Drivetrain subDrivetrain,
       DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis,
-      DoubleSupplier slowAxis) {
+      DoubleSupplier slowAxis,
+      Trigger northTrigger,
+      Trigger eastTrigger,
+      Trigger southTrigger,
+      Trigger westTrigger) {
 
     this.subDrivetrain = subDrivetrain;
 
@@ -57,12 +69,19 @@ public class Drive extends CommandBase {
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
     this.slowAxis = slowAxis;
+    this.northTrigger = northTrigger;
+    this.eastTrigger = eastTrigger;
+    this.southTrigger = southTrigger;
+    this.westTrigger = westTrigger;
+
+    isRotationPositional = false;
 
     addRequirements(this.subDrivetrain);
   }
 
   @Override
   public void initialize() {
+    isRotationPositional = false;
   }
 
   @Override
