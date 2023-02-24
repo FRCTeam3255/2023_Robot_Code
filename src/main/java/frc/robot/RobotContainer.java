@@ -122,20 +122,18 @@ public class RobotContainer {
     // elbow: btn_RS
 
     // Prep Place; Will be rebound to Left Trigger
-    conOperator.btn_East.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+    conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
 
     // Place Game piece; Will be rebound to Right Trigger
-    conOperator.btn_West.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
-    // conOperator.btn_North
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
+    conOperator.btn_North
+        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
 
     // Set Collector rollers to intake height and spin the rollers
-    // conOperator.btn_South
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
+    conOperator.btn_South
+        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
 
     // Set the LEDs to "We want a cone"
     conOperator.btn_West.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));

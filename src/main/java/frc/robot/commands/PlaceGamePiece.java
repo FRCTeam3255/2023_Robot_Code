@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
@@ -15,9 +16,6 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PlaceGamePiece extends SequentialCommandGroup {
 
   Arm subArm;
@@ -30,29 +28,19 @@ public class PlaceGamePiece extends SequentialCommandGroup {
     this.subCollector = subCollector;
     this.subIntake = subIntake;
 
-    // TODO: Replace ALL ARM WAIT COMMANDS to arm is within tolerance when that
-    // method is pushed to QA
-
     addCommands(
         new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
-        new WaitCommand(1),
-        // if (subIntake.getGamePieceType() == GamePiece.CUBE) {
-        // new InstantCommand(() ->
-        // subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed))
-        // .until(() -> !subIntake.isGamePieceCollected())
-        // .withTimeout(prefIntake.intakeReleaseDelay.getValue());
-        // } else {
+        new WaitUntilCommand(() -> subArm.areJointsInTolerance()),
 
         // Assume game piece is a cone (Hopefully it just works with a cube)
 
-        // Lower the arm slightly if its not a hybrid node or we never gave a level
         new InstantCommand(() -> subArm.setGoalAngles(
             Rotation2d.fromDegrees(
                 subArm.getGoalShoulderAngle().getDegrees() - prefArm.armShoulderLoweringAngle.getValue()),
             Rotation2d.fromDegrees(
                 subArm.getGoalElbowAngle().getDegrees() - prefArm.armElbowLoweringAngle.getValue())))
             .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE),
-        new WaitCommand(2)
+        new WaitUntilCommand(() -> subArm.areJointsInTolerance())
             .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE),
 
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake)
