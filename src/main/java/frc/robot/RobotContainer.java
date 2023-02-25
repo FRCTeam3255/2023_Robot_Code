@@ -19,6 +19,7 @@ import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
@@ -96,8 +97,7 @@ public class RobotContainer {
     conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
 
     // TODO: Run IntakeCone command (btn_RB)
-    // conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake,
-    // subArm));
+    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
