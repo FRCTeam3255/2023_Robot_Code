@@ -53,6 +53,7 @@ public class Drivetrain extends SubsystemBase {
 
   public PathPlannerTrajectory linePath;
   public PathPlannerTrajectory twoConePath;
+  public PathPlannerTrajectory fullAuto;
 
   public Drivetrain() {
 
@@ -106,6 +107,11 @@ public class Drivetrain extends SubsystemBase {
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     twoConePath = PathPlanner.loadPath("twoConePath",
+        new PathConstraints(
+            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    fullAuto = PathPlanner.loadPath("fullAuto",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));

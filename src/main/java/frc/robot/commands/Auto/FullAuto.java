@@ -40,8 +40,7 @@ public class FullAuto extends SequentialCommandGroup {
             prefArm.armPresetHighElbowAngle),
 
         Commands.parallel(
-            // TODO: drivetrain.twoConePath should be the updated FullAuto path
-            drivetrain.swerveAutoBuilder.fullAuto(drivetrain.twoConePath)
+            drivetrain.swerveAutoBuilder.fullAuto(drivetrain.fullAuto)
                 .andThen(new InstantCommand(() -> drivetrain.neutralDriveOutputs(), drivetrain)),
 
             // Delay to make sure intake doesn't collide after placing cone
