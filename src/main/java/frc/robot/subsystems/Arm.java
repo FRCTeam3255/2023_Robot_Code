@@ -109,9 +109,9 @@ public class Arm extends SubsystemBase {
     elbowConfig.forwardSoftLimitThreshold = SN_Math
         .degreesToFalcon(Units.radiansToDegrees(constArm.ELBOW_FORWARD_LIMIT), constArm.ELBOW_GEAR_RATIO);
     elbowConfig.reverseSoftLimitThreshold = SN_Math
-        .degreesToFalcon(Units.radiansToDegrees(constArm.ELBOW_FORWARD_LIMIT), constArm.ELBOW_GEAR_RATIO);
+        .degreesToFalcon(Units.radiansToDegrees(constArm.ELBOW_REVERSE_LIMIT), constArm.ELBOW_GEAR_RATIO);
 
-    shoulderJoint.configAllSettings(elbowConfig);
+    elbowJoint.configAllSettings(elbowConfig);
 
     elbowJoint.setInverted(constArm.ELBOW_MOTOR_INVERT);
     elbowJoint.setNeutralMode(constArm.ELBOW_MOTOR_BREAK);
