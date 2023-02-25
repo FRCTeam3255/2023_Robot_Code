@@ -362,10 +362,10 @@ public class Arm extends SubsystemBase {
           setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
           break;
         case MID:
-          setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle);
+          setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
           break;
         case HIGH:
-          setGoalAngles(prefArm.armPresetHighShoulderAngle, prefArm.armPresetHighElbowAngle);
+          setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
           break;
         case NONE:
           return;

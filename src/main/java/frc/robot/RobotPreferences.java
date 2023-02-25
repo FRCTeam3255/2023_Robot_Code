@@ -65,13 +65,11 @@ public class RobotPreferences {
     // inches
     public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
 
-    public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 0);
+    public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 8.0);
     public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);
-    public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0);
+    public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0.2);
     // degrees per second
     public static final SN_DoublePreference teleThetaMaxSpeed = new SN_DoublePreference("teleThetaMaxSpeed", 360);
-    // degrees per second per second
-    public static final SN_DoublePreference teleThetaMaxAccel = new SN_DoublePreference("teleThetaMaxAccel", 360);
     // degrees
     public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
 
@@ -114,58 +112,71 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
 
+    // preset to intake cube from collector
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
         "armPresetCollectorShoulderAngle", 25);
     public static final SN_DoublePreference armPresetCollectorElbowAngle = new SN_DoublePreference(
         "armPresetCollectorElbowAngle", -92.5);
 
+    // preset to stow arm within frame
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
     public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
         "armPresetStowElbowAngle", 70);
 
+    // preset to score cone AND cube in hybrid node
     public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
         "armPresetLowShoulderAngle", -90);
     public static final SN_DoublePreference armPresetLowElbowAngle = new SN_DoublePreference(
         "armPresetLowElbowAngle", 0);
 
+    // preset to intake cone from ground
     public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
-        "armPresetConeShoulderAngle", 2);
+        "armPresetConeShoulderAngle", -90);
     public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
-        "armPresetConeElbowAngle", 15);
+        "armPresetConeElbowAngle", -8);
 
-    public static final SN_DoublePreference armPresetMidShoulderAngle = new SN_DoublePreference(
+    // preset to score cone on mid node
+    public static final SN_DoublePreference armPresetConeMidShoulderAngle = new SN_DoublePreference(
         "armPresetMidShoulderAngle", -59);
-    public static final SN_DoublePreference armPresetMidElbowAngle = new SN_DoublePreference(
+    public static final SN_DoublePreference armPresetConeMidElbowAngle = new SN_DoublePreference(
         "armPresetMidElbowAngle", 40);
 
-    public static final SN_DoublePreference armPresetHighShoulderAngle = new SN_DoublePreference(
+    // preset to score cone on high node
+    public static final SN_DoublePreference armPresetConeHighShoulderAngle = new SN_DoublePreference(
         "armPresetHighShoulderAngle", -11);
-    public static final SN_DoublePreference armPresetHighElbowAngle = new SN_DoublePreference(
+    public static final SN_DoublePreference armPresetConeHighElbowAngle = new SN_DoublePreference(
         "armPresetHighElbowAngle", 25);
 
+    // preset to score cube on mid node
     public static final SN_DoublePreference armPresetCubeMidShoulderAngle = new SN_DoublePreference(
         "armPresetCubeMidShoulderAngle", -95.5);
     public static final SN_DoublePreference armPresetCubeMidElbowAngle = new SN_DoublePreference(
         "armPresetCubeMidElbowAngle", 22);
 
+    // preset to score cube on high node
     public static final SN_DoublePreference armPresetCubeHighShoulderAngle = new SN_DoublePreference(
         "armPresetCubeHighShoulderAngle", 37.5);
     public static final SN_DoublePreference armPresetCubeHighElbowAngle = new SN_DoublePreference(
         "armPresetCubeHighElbowAngle", -30.5);
 
-    public static final SN_DoublePreference armPresetShoulderShelf = new SN_DoublePreference("armPresetShoulderShelf",
-        0);
-    public static final SN_DoublePreference armPresetElbowShelf = new SN_DoublePreference("armPresetElbowShelf", 0);
+    // preset to collect cone (or cube) from shelf
+    public static final SN_DoublePreference armPresetShoulderShelf = new SN_DoublePreference(
+        "armPresetShoulderShelf", 0);
+    public static final SN_DoublePreference armPresetElbowShelf = new SN_DoublePreference(
+        "armPresetElbowShelf", 0);
 
+    // amount to lower joints by when scoring
     public static final SN_DoublePreference armShoulderLoweringAngle = new SN_DoublePreference(
         "armShoulderLoweringAngle", 0);
-    public static final SN_DoublePreference armElbowLoweringAngle = new SN_DoublePreference("armElbowLoweringAngle",
-        25);
+    public static final SN_DoublePreference armElbowLoweringAngle = new SN_DoublePreference(
+        "armElbowLoweringAngle", 25);
 
+    // position shoulder goes to when transitioning from collector preset
     public static final SN_DoublePreference armPresetPostCollectorShoulderAngle = new SN_DoublePreference(
         "armPresetPostCollectorShoulderAngle", 45);
 
+    // preset to stick arm straight out
     public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
     public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
 
