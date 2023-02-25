@@ -8,7 +8,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -20,6 +20,7 @@ import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
@@ -57,7 +58,11 @@ public class RobotContainer {
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
-            conDriver.axis_RightTrigger));
+            conDriver.axis_RightTrigger,
+            conDriver.btn_Y,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_X));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(new PivotCollector(subCollector));
@@ -65,10 +70,22 @@ public class RobotContainer {
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
+
+    Timer.delay(2.5);
+    resetToAbsolutePositions();
   }
 
   public void configureNeutralModes() {
     subArm.setJointsNeutralMode();
+  }
+
+  /**
+   * Reset all the applicable motor encoders to their corresponding absolute
+   * encoder.
+   */
+  public void resetToAbsolutePositions() {
+    subDrivetrain.resetSteerMotorEncodersToAbsolute();
+    subCollector.resetPivotMotorToAbsolute();
   }
 
   private void configureBindings() {
@@ -77,9 +94,9 @@ public class RobotContainer {
 
     // "reset gyro" for field relative but actually resets the orientation at a
     // higher level
-    conDriver.btn_A
+    conDriver.btn_Back
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+            () -> subDrivetrain.resetRotation()));
     conDriver.btn_B
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d())));
@@ -97,8 +114,7 @@ public class RobotContainer {
     conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
 
     // TODO: Run IntakeCone command (btn_RB)
-    // conOperator.btn_RBump.whileTrue(new IntakeCone(subCollector, subIntake,
-    // subArm));
+    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
