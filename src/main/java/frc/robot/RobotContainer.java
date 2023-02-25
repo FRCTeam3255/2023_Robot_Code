@@ -57,7 +57,11 @@ public class RobotContainer {
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
-            conDriver.axis_RightTrigger));
+            conDriver.axis_RightTrigger,
+            conDriver.btn_Y,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_X));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(new PivotCollector(subCollector));
@@ -77,7 +81,7 @@ public class RobotContainer {
 
     // "reset gyro" for field relative but actually resets the orientation at a
     // higher level
-    conDriver.btn_A
+    conDriver.btn_Back
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetRotation()));
     conDriver.btn_B
