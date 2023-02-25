@@ -205,7 +205,7 @@ public class Drivetrain extends SubsystemBase {
     thetaPID.setSetpoint(velocity.getRotation().getRadians());
 
     // calculate the angle setpoint based off where we are now.
-    double angleSetpoint = thetaPID.calculate(getPose().getRotation().getRadians());
+    double angleSetpoint = thetaPID.calculate(getRotation().getRadians());
 
     // limit the PID output to a maximum rotational speed
     if (angleSetpoint > Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue())) {
@@ -235,7 +235,7 @@ public class Drivetrain extends SubsystemBase {
           velocity.getX(),
           velocity.getY(),
           velocity.getRotation().getRadians(),
-          getPose().getRotation());
+          getRotation());
     } else {
       chassisSpeeds = new ChassisSpeeds(
           velocity.getX(),
@@ -314,6 +314,24 @@ public class Drivetrain extends SubsystemBase {
    */
   public Pose2d getPose() {
     return poseEstimator.getEstimatedPosition();
+  }
+
+  /**
+   * Get the rotation of the drivetrain. This method currently just uses the navX
+   * yaw, but this is subject to change.
+   * 
+   * @return Rotation of drivetrain
+   */
+  public Rotation2d getRotation() {
+    return navX.getRotation2d();
+  }
+
+  /**
+   * Reset the rotation of the drivetrain to zero. This method currently just
+   * resets the navX yaw, but this is subject to change.
+   */
+  public void resetRotation() {
+    navX.reset();
   }
 
   /**

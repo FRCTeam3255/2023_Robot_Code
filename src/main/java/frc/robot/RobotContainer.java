@@ -8,7 +8,6 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -84,7 +83,10 @@ public class RobotContainer {
     // higher level
     conDriver.btn_Back
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+            () -> subDrivetrain.resetRotation()));
+    conDriver.btn_B
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPose(new Pose2d())));
 
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
