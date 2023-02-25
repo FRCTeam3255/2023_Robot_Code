@@ -65,9 +65,9 @@ public class RobotPreferences {
     // inches
     public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
 
-    public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 0);
+    public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 8.0);
     public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);
-    public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0);
+    public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0.2);
     // degrees per second
     public static final SN_DoublePreference teleThetaMaxSpeed = new SN_DoublePreference("teleThetaMaxSpeed", 360);
     // degrees
