@@ -8,6 +8,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -69,10 +70,22 @@ public class RobotContainer {
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
+
+    Timer.delay(2.5);
+    resetToAbsolutePositions();
   }
 
   public void configureNeutralModes() {
     subArm.setJointsNeutralMode();
+  }
+
+  /**
+   * Reset all the applicable motor encoders to their corresponding absolute
+   * encoder.
+   */
+  public void resetToAbsolutePositions() {
+    subDrivetrain.resetSteerMotorEncodersToAbsolute();
+    subCollector.resetPivotMotorToAbsolute();
   }
 
   private void configureBindings() {

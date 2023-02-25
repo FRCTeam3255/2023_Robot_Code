@@ -289,6 +289,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * Reset the steer motor encoders to the absolute encoders.
+   */
+  public void resetSteerMotorEncodersToAbsolute() {
+    for (SN_SwerveModule mod : modules) {
+      mod.resetSteerMotorEncodersToAbsolute();
+    }
+  }
+
+  /**
    * Set the drive method to use field relative drive controls
    */
   public void setFieldRelative() {
