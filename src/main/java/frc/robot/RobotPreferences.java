@@ -6,7 +6,7 @@ import com.frcteam3255.preferences.SN_ZeroDoublePreference;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = false;
+  public static final boolean useNetworkTables = true;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
@@ -81,9 +81,9 @@ public class RobotPreferences {
   }
 
   public static final class prefArm {
-    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 2);
+    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.1);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
-    public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
+    public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 3.0);
     // degrees per second
     // public static final SN_DoublePreference shoulderMaxSpeed = new
     // SN_DoublePreference("shoulderMaxSpeed", 180);
@@ -93,11 +93,11 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
     public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
-        "shoulderClosedLoopPeakOutput", 1);
+        "shoulderClosedLoopPeakOutput", 0.75);
 
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 1.75);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
-    public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
+    public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 3.0);
     // degrees per second
     // public static final SN_DoublePreference elbowMaxSpeed = new
     // SN_DoublePreference("elbowMaxSpeed", 180);
@@ -107,7 +107,7 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
-        "elbowClosedLoopPeakOutput", 1);
+        "elbowClosedLoopPeakOutput", 0.75);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
