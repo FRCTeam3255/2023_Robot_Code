@@ -13,6 +13,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -323,7 +324,7 @@ public class Drivetrain extends SubsystemBase {
    * @return Rotation of drivetrain
    */
   public Rotation2d getRotation() {
-    return navX.getRotation2d();
+    return Rotation2d.fromRadians(MathUtil.angleModulus(navX.getRotation2d().getRadians()));
   }
 
   /**
@@ -417,6 +418,9 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putBoolean("is Tilted Backwards", isTiltedBackwards());
 
       SmartDashboard.putNumber("Drivetrain Yaw", navX.getRotation2d().getDegrees());
+
+      SmartDashboard.putNumber("Drivetrain Theta Goal", Units.radiansToDegrees(thetaPID.getSetpoint()));
+      SmartDashboard.putNumber("Drivetrain Theta Error", Units.radiansToDegrees(thetaPID.getPositionError()));
 
       field.setRobotPose(getPose());
       SmartDashboard.putData(field);
