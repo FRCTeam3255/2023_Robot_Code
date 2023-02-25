@@ -168,44 +168,43 @@ public class RobotContainer {
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
 
     // Numpad
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.FIRST));
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.SECOND));
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.THIRD));
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_1));
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_2));
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_3));
 
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.FIRST));
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.SECOND));
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.THIRD));
+
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.FOURTH;
       subArm.scoringLevel = ScoringLevel.MID;
     }));
 
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.FIFTH;
       subArm.scoringLevel = ScoringLevel.MID;
     }));
 
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.SIXTH;
       subArm.scoringLevel = ScoringLevel.MID;
     }));
 
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.SEVENTH;
       subArm.scoringLevel = ScoringLevel.HIGH;
     }));
 
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.EIGHTH;
       subArm.scoringLevel = ScoringLevel.HIGH;
     }));
 
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.NINTH;
       subArm.scoringLevel = ScoringLevel.HIGH;
     }));
-
-    // TODO: Change these to buttons 1, 2, and 3 on the num pad
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_1));
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_2));
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_3));
   }
 
   public Command getAutonomousCommand() {
