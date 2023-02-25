@@ -155,6 +155,9 @@ public final class Constants {
     public static final boolean SHOULDER_MOTOR_INVERT = true;
     public static final boolean ELBOW_MOTOR_INVERT = false;
 
+    public static final double SHOULDER_GEAR_RATIO = 200.0;
+    public static final double ELBOW_GEAR_RATIO = 200.0;
+
     public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = false;
     public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
 
@@ -179,7 +182,7 @@ public final class Constants {
     public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
     public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(100);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
   }
 
