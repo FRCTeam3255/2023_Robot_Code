@@ -9,7 +9,8 @@ public class RobotPreferences {
   public static final boolean useNetworkTables = false;
 
   // order of subsystems (and adjacent classes) shall be:
-  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+  // controllers, drivetrain, arm, intake, collector, charger (if it exists),
+  // vision, leds
 
   public static final class prefDrivetrain {
 
@@ -220,11 +221,6 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference rollerToleranceMultiplier = new SN_DoublePreference(
         "rollerToleranceMultiplier", 10);
-  }
-
-  public static final class prefCharger {
-    public static final SN_DoublePreference chargerSpeed = new SN_DoublePreference("chargerSpeed", 0.25);
-
   }
 
   public static final class prefVision {
