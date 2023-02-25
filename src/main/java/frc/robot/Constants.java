@@ -177,7 +177,7 @@ public final class Constants {
     public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
     public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(100);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
   }
 
