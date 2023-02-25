@@ -44,8 +44,12 @@ public final class Constants {
       NONE, HYBRID, MID, HIGH;
     }
 
-    public enum ScoringColumn {
+    public enum ScoringButton {
       NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
+    }
+
+    public enum ScoringGrid {
+      NONE, GRID_1, GRID_2, GRID_3;
     }
   }
 
