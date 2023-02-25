@@ -53,6 +53,9 @@ public class Intake extends SubsystemBase {
     leftMotor.setInverted(constIntake.LEFT_MOTOR_INVERTED);
     rightMotor.setInverted(constIntake.RIGHT_MOTOR_INVERTED);
 
+    leftMotor.setNeutralMode(constIntake.NEUTRAL_MODE);
+    rightMotor.setNeutralMode(constIntake.NEUTRAL_MODE);
+
     colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
   }
 
