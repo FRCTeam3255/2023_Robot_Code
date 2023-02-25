@@ -8,7 +8,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -56,7 +56,11 @@ public class RobotContainer {
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
-            conDriver.axis_RightTrigger));
+            conDriver.axis_RightTrigger,
+            conDriver.btn_Y,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_X));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subCollector.setDefaultCommand(new PivotCollector(subCollector));
@@ -64,10 +68,22 @@ public class RobotContainer {
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
+
+    Timer.delay(2.5);
+    resetToAbsolutePositions();
   }
 
   public void configureNeutralModes() {
     subArm.setJointsNeutralMode();
+  }
+
+  /**
+   * Reset all the applicable motor encoders to their corresponding absolute
+   * encoder.
+   */
+  public void resetToAbsolutePositions() {
+    subDrivetrain.resetSteerMotorEncodersToAbsolute();
+    subCollector.resetPivotMotorToAbsolute();
   }
 
   private void configureBindings() {
@@ -76,9 +92,9 @@ public class RobotContainer {
 
     // "reset gyro" for field relative but actually resets the orientation at a
     // higher level
-    conDriver.btn_A
+    conDriver.btn_Back
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPose(new Pose2d(subDrivetrain.getPose().getTranslation(), new Rotation2d(0)))));
+            () -> subDrivetrain.resetRotation()));
     conDriver.btn_B
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetPose(new Pose2d())));
@@ -111,7 +127,8 @@ public class RobotContainer {
 
     // Set mid Arm preset
     conOperator.btn_X.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetMidShoulderAngle, prefArm.armPresetMidElbowAngle)));
+        .runOnce(
+            () -> subArm.setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle)));
 
     // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
