@@ -58,8 +58,6 @@ public class Arm extends SubsystemBase {
     goalElbowAngle = new Rotation2d();
 
     configure();
-    Timer.delay(2.5);
-    resetJointEncodersToAbsolute();
   }
 
   public void configure() {
