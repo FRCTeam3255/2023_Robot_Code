@@ -343,15 +343,22 @@ public class Arm extends SubsystemBase {
   }
 
   public void setGoalAnglesFromNumpad() {
-
     if (isCubeNode()) {
-      System.out.println("Cube");
+      if (scoringLevel == ScoringLevel.MID) {
+        setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+      } else {
+        setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+      }
 
     } else if (isConeNode()) {
-      System.out.println("Cone");
+      if (scoringLevel == ScoringLevel.MID) {
+        setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
+      } else {
+        setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
+      }
 
     } else {
-      scoringLevel = ScoringLevel.MID;
+      setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
     }
   }
 
