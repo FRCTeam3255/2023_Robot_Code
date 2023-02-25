@@ -19,7 +19,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = true;
+  public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger, vision, leds
