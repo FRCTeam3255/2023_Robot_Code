@@ -22,7 +22,8 @@ public final class Constants {
   public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // order of subsystems (and adjacent classes) shall be:
-  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+  // controllers, drivetrain, arm, intake, collector, charger (if it exists),
+  // vision, leds
 
   public static final class constControllers {
     public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
@@ -211,13 +212,6 @@ public final class Constants {
     public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
 
     public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
-  }
-
-  public static final class constCharger {
-    public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
-
-    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
   }
 
   public static final class constVision {

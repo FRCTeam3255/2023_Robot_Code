@@ -26,7 +26,6 @@ import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
-import frc.robot.subsystems.Charger;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
@@ -46,7 +45,6 @@ public class RobotContainer {
   private final Arm subArm = new Arm();
   private final Intake subIntake = new Intake();
   private final Collector subCollector = new Collector();
-  private final Charger subCharger = new Charger();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
