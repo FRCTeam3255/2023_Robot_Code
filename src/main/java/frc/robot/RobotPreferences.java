@@ -82,25 +82,33 @@ public class RobotPreferences {
   }
 
   public static final class prefArm {
-    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 2);
+    public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.1);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
-    public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 0);
+    public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 1.5);
     // degrees per second
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 180);
+    // public static final SN_DoublePreference shoulderMaxSpeed = new
+    // SN_DoublePreference("shoulderMaxSpeed", 180);
     // degrees per second per second
-    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 235);
+    // public static final SN_DoublePreference shoulderMaxAccel = new
+    // SN_DoublePreference("shoulderMaxAccel", 235);
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
+    public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
+        "shoulderClosedLoopPeakOutput", 0.6);
 
-    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 1.75);
+    public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
-    public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 0);
+    public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 1.5);
     // degrees per second
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 180);
+    // public static final SN_DoublePreference elbowMaxSpeed = new
+    // SN_DoublePreference("elbowMaxSpeed", 180);
     // degrees per second per second
-    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 235);
+    // public static final SN_DoublePreference elbowMaxAccel = new
+    // SN_DoublePreference("elbowMaxAccel", 235);
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
+    public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
+        "elbowClosedLoopPeakOutput", 0.6);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
@@ -115,7 +123,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
     public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
-        "armPresetStowElbowAngle", 70);
+        "armPresetStowElbowAngle", 60);
 
     // preset to score cone AND cube in hybrid node
     public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
@@ -203,9 +211,11 @@ public class RobotPreferences {
         "pivotMaxSpeed", 1);
 
     public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
-        "pivotAngleStartingConfig", 197);
+        "pivotAngleStartingConfig", 195);
     public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
-        "pivotAngleCubeCollecting", 28);
+        "pivotAngleCubeCollecting", 32);
+    public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
+        "pivotAngleClimb", 0);
 
     public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", .5);
 

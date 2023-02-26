@@ -83,6 +83,7 @@ public class RobotContainer {
    */
   public void resetToAbsolutePositions() {
     subDrivetrain.resetSteerMotorEncodersToAbsolute();
+    subArm.resetJointEncodersToAbsolute();
     subCollector.resetPivotMotorToAbsolute();
   }
 
