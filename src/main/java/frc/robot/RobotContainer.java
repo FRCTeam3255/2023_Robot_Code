@@ -131,18 +131,20 @@ public class RobotContainer {
         .runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle)));
 
-    // Set Shelf Arm preset
+    // Set Shelf Arm preset & Spin Intake
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
+
+    conOperator.btn_Y.whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
     // elbow: btn_RS
 
-    // Prep Place; Will be rebound to Left Trigger
+    // Prep Place
     conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
 
-    // Place Game piece; Will be rebound to Right Trigger
+    // Place Game piece
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
