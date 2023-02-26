@@ -186,6 +186,8 @@ public final class Constants {
     public static final boolean LEFT_MOTOR_INVERTED = true;
     public static final boolean RIGHT_MOTOR_INVERTED = false;
 
+    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
+
     public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
     // RGB game piece colors
