@@ -15,6 +15,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -29,6 +30,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive extends CommandBase {
 
   Drivetrain subDrivetrain;
+  Arm subArm;
 
   double xVelocity;
   double yVelocity;
@@ -54,6 +56,7 @@ public class Drive extends CommandBase {
 
   public Drive(
       Drivetrain subDrivetrain,
+      Arm subArm,
       DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis,
@@ -64,6 +67,7 @@ public class Drive extends CommandBase {
       Trigger westTrigger) {
 
     this.subDrivetrain = subDrivetrain;
+    this.subArm = subArm;
 
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -106,7 +110,6 @@ public class Drive extends CommandBase {
     // if the driver isn't moving the rotation joystick, check if they pressed any
     // of the rotation buttons. each button corresponds to a cardinal direction
     else {
-
       if (northTrigger.getAsBoolean()) {
         isRotationPositional = true;
         rotationPosition = Rotation2d.fromDegrees(0);
@@ -126,7 +129,11 @@ public class Drive extends CommandBase {
         isRotationPositional = true;
         rotationPosition = Rotation2d.fromDegrees(90);
       }
-
+    }
+    // If the shoulder is extended, disable rotation buttons to
+    // prevent tipping or slamming into things
+    if (subArm.getGoalShoulderAngle().getDegrees() == 90 && subArm.isShoulderInTolerance()) {
+      isRotationPositional = false;
     }
 
     // if the driver isn't using the rotation joystick and also pressed a rotation
