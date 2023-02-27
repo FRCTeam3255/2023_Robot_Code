@@ -128,11 +128,6 @@ public class RobotContainer {
         .runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
 
-    // Set mid Arm preset
-    conOperator.btn_X.onTrue(Commands
-        .runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle)));
-
     // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
