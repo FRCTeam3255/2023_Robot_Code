@@ -135,6 +135,8 @@ public class RobotContainer {
     // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
+    conOperator.btn_Y
+        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
@@ -173,9 +175,20 @@ public class RobotContainer {
     conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_2));
     conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_3));
 
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.FIRST));
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.SECOND));
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringButton = ScoringButton.THIRD));
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.scoringLevel = ScoringLevel.HYBRID;
+      subArm.scoringButton = ScoringButton.FIRST;
+    }));
+
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.scoringLevel = ScoringLevel.HYBRID;
+      subArm.scoringButton = ScoringButton.SECOND;
+    }));
+
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.scoringLevel = ScoringLevel.HYBRID;
+      subArm.scoringButton = ScoringButton.THIRD;
+    }));
 
     conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
       subArm.scoringButton = ScoringButton.FOURTH;

@@ -189,6 +189,8 @@ public final class Constants {
   public static final class constIntake {
     public static final boolean LEFT_MOTOR_INVERTED = true;
     public static final boolean RIGHT_MOTOR_INVERTED = false;
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean RIGHT_MOTOR_INVERTED = true;
 
     public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
 
