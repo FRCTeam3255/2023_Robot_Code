@@ -96,15 +96,13 @@ public class RobotContainer {
     conDriver.btn_Back
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetRotation()));
-    conDriver.btn_B
-        .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPose(new Pose2d())));
 
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
+    // Set defense mode
     conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
 
     // Operator
@@ -112,10 +110,14 @@ public class RobotContainer {
     // Run IntakeCube command
     conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
 
-    // TODO: Run IntakeCone command (btn_RB)
+    // Run IntakeCone command
     conOperator.btn_RightBumper.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
-    // TODO: Run PrepPlace command (btn_LT)
-    // TODO: Run PlaceGamePiece command (btn_RT)
+
+    // Prep Place
+    conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+
+    // Place Game piece
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set stow Arm preset
     conOperator.btn_B.onTrue(Commands
@@ -138,12 +140,6 @@ public class RobotContainer {
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
     // elbow: btn_RS
-
-    // Prep Place; Will be rebound to Left Trigger
-    conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
-
-    // Place Game piece; Will be rebound to Right Trigger
-    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
 
     // Set Collector to starting config and stop the rollers
     conOperator.btn_North
