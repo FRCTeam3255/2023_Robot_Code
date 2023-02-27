@@ -19,10 +19,11 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = true;
+  public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // order of subsystems (and adjacent classes) shall be:
-  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+  // controllers, drivetrain, arm, intake, collector, charger (if it exists),
+  // vision, leds
 
   public static final class constControllers {
     public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
@@ -150,6 +151,9 @@ public final class Constants {
     public static final boolean SHOULDER_MOTOR_INVERT = true;
     public static final boolean ELBOW_MOTOR_INVERT = false;
 
+    public static final double SHOULDER_GEAR_RATIO = 200.0;
+    public static final double ELBOW_GEAR_RATIO = 200.0;
+
     public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = false;
     public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
 
@@ -174,13 +178,15 @@ public final class Constants {
     public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
     public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(100);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
   }
 
   public static final class constIntake {
     public static final boolean LEFT_MOTOR_INVERTED = true;
     public static final boolean RIGHT_MOTOR_INVERTED = false;
+
+    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
 
     public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
 
@@ -211,13 +217,6 @@ public final class Constants {
     public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
 
     public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
-  }
-
-  public static final class constCharger {
-    public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
-
-    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
   }
 
   public static final class constVision {
