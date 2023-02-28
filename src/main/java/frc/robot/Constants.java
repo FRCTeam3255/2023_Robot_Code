@@ -278,6 +278,7 @@ public final class Constants {
     public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
 
     public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
+    public static final double PRAC_PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
   }
 
   public static final class constVision {
