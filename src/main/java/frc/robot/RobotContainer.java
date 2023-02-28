@@ -50,7 +50,7 @@ public class RobotContainer {
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
-  private static DigitalInput pracBotSwitch;
+  private static DigitalInput pracBotSwitch = new DigitalInput(9);
 
   public RobotContainer() {
 
@@ -72,8 +72,6 @@ public class RobotContainer {
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
-
-    pracBotSwitch = new DigitalInput(9);
 
     Timer.delay(2.5);
     resetToAbsolutePositions();
