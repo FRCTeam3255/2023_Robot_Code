@@ -92,13 +92,18 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 250.927734;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 204.433594;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 151.787109;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 246.005859;
+
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
   public static final SN_SwerveModuleConstants MODULE_0 = new SN_SwerveModuleConstants(
       mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
       mapDrivetrain.FRONT_LEFT_STEER_CAN,
       mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-      250.927734, // absolute encoder offset
+      FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -108,7 +113,7 @@ public final class Constants {
       mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
       mapDrivetrain.FRONT_RIGHT_STEER_CAN,
       mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-      204.433594, // absolute encoder offset
+      FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -118,7 +123,7 @@ public final class Constants {
       mapDrivetrain.BACK_LEFT_DRIVE_CAN,
       mapDrivetrain.BACK_LEFT_STEER_CAN,
       mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
-      151.787109, // absolute encoder offset
+      BACK_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -128,7 +133,7 @@ public final class Constants {
       mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
       mapDrivetrain.BACK_RIGHT_STEER_CAN,
       mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-      246.005859, // absolute encoder offset
+      BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -139,6 +144,59 @@ public final class Constants {
       MODULE_1.position,
       MODULE_2.position,
       MODULE_3.position);
+
+  public static final double PRAC_FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 250.927734;
+  public static final double PRAC_FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 204.433594;
+  public static final double PRAC_BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 151.787109;
+  public static final double PRAC_BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 246.005859;
+
+  // module positions follow the WPILib robot coordinate system
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
+  public static final SN_SwerveModuleConstants PRAC_MODULE_0 = new SN_SwerveModuleConstants(
+      mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
+      mapDrivetrain.FRONT_LEFT_STEER_CAN,
+      mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
+      FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          WHEELBASE / 2.0,
+          TRACK_WIDTH / 2.0),
+      0);
+
+  public static final SN_SwerveModuleConstants PRAC_MODULE_1 = new SN_SwerveModuleConstants(
+      mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
+      mapDrivetrain.FRONT_RIGHT_STEER_CAN,
+      mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
+      FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          WHEELBASE / 2.0,
+          -TRACK_WIDTH / 2.0),
+      1);
+
+  public static final SN_SwerveModuleConstants PRAC_MODULE_2 = new SN_SwerveModuleConstants(
+      mapDrivetrain.BACK_LEFT_DRIVE_CAN,
+      mapDrivetrain.BACK_LEFT_STEER_CAN,
+      mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
+      BACK_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          -WHEELBASE / 2.0,
+          TRACK_WIDTH / 2.0),
+      2);
+
+  public static final SN_SwerveModuleConstants PRAC_MODULE_3 = new SN_SwerveModuleConstants(
+      mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
+      mapDrivetrain.BACK_RIGHT_STEER_CAN,
+      mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
+      BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          -WHEELBASE / 2.0,
+          -TRACK_WIDTH / 2.0),
+      3);
+
+  public static final SwerveDriveKinematics PRAC_SWERVE_KINEMATICS = new SwerveDriveKinematics(
+      PRAC_MODULE_0.position,
+      PRAC_MODULE_1.position,
+      PRAC_MODULE_2.position,
+      PRAC_MODULE_3.position);
 
   public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
   public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
