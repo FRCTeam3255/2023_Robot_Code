@@ -39,7 +39,7 @@ public class Drive extends CommandBase {
   DoubleSupplier xAxis;
   DoubleSupplier yAxis;
   DoubleSupplier rotationAxis;
-  DoubleSupplier slowAxis;
+  DoubleSupplier fastAxis;
 
   Trigger northTrigger;
   Trigger eastTrigger;
@@ -61,7 +61,7 @@ public class Drive extends CommandBase {
       DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis,
-      DoubleSupplier slowAxis,
+      DoubleSupplier fastAxis,
       Trigger northTrigger,
       Trigger eastTrigger,
       Trigger southTrigger,
@@ -73,7 +73,7 @@ public class Drive extends CommandBase {
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
-    this.slowAxis = slowAxis;
+    this.fastAxis = fastAxis;
     this.northTrigger = northTrigger;
     this.eastTrigger = eastTrigger;
     this.southTrigger = southTrigger;
@@ -99,7 +99,7 @@ public class Drive extends CommandBase {
     xVelocity = xAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     yVelocity = -yAxis.getAsDouble() * Units.feetToMeters(prefDrivetrain.driveSpeed.getValue());
     rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
-    translationScalar = SN_Math.interpolate(slowAxis.getAsDouble(), 0, 1, 1, prefDrivetrain.triggerValue.getValue());
+    translationScalar = SN_Math.interpolate(fastAxis.getAsDouble(), 0, 1, prefDrivetrain.triggerValue.getValue(), 1);
 
     // scale down the translation velocity from the driver input
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(translationScalar);
