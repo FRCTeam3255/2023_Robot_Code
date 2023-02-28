@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     SmartDashboard.putBoolean("*NT Prefs*", RobotPreferences.useNetworkTables);
+    SmartDashboard.putBoolean("*Prac Bot*", RobotContainer.isPracticeBot());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
