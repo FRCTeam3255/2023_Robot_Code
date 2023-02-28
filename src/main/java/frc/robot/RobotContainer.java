@@ -54,6 +54,7 @@ public class RobotContainer {
     subDrivetrain
         .setDefaultCommand(new Drive(
             subDrivetrain,
+            subArm,
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,

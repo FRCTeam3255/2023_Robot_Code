@@ -209,9 +209,8 @@ public class Drivetrain extends SubsystemBase {
     double angleSetpoint = thetaPID.calculate(getRotation().getRadians());
 
     // limit the PID output to a maximum rotational speed
-    if (angleSetpoint > Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue())) {
-      angleSetpoint = Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue());
-    }
+    angleSetpoint = MathUtil.clamp(angleSetpoint, -Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
+        Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()));
 
     // create a new velocity Pose2d with the same translation as the on that was
     // passed in, but with the output of the theta PID controller for rotation.
