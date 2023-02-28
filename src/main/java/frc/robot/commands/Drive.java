@@ -15,6 +15,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -29,6 +30,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive extends CommandBase {
 
   Drivetrain subDrivetrain;
+  Arm subArm;
 
   double xVelocity;
   double yVelocity;
@@ -51,9 +53,11 @@ public class Drive extends CommandBase {
 
   boolean isRotationPositional;
   Rotation2d rotationPosition;
+  Rotation2d lastRotationPosition;
 
   public Drive(
       Drivetrain subDrivetrain,
+      Arm subArm,
       DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis,
@@ -64,6 +68,7 @@ public class Drive extends CommandBase {
       Trigger westTrigger) {
 
     this.subDrivetrain = subDrivetrain;
+    this.subArm = subArm;
 
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -76,6 +81,7 @@ public class Drive extends CommandBase {
 
     isRotationPositional = false;
     rotationPosition = new Rotation2d();
+    lastRotationPosition = new Rotation2d();
 
     addRequirements(this.subDrivetrain);
   }
@@ -127,6 +133,16 @@ public class Drive extends CommandBase {
         rotationPosition = Rotation2d.fromDegrees(90);
       }
 
+    }
+
+    // if the shoulder is at -90 just remember the current rotation position
+    if (subArm.getGoalShoulderAngle().getDegrees() == -90 && subArm.isShoulderInTolerance()) {
+      lastRotationPosition = rotationPosition;
+    }
+    // if the shoulder isn't at -90 override the button press and just go to the
+    // last valid rotation position
+    else {
+      rotationPosition = lastRotationPosition;
     }
 
     // if the driver isn't using the rotation joystick and also pressed a rotation
