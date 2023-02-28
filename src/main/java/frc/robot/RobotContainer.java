@@ -8,6 +8,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
@@ -48,6 +49,8 @@ public class RobotContainer {
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
+  private static DigitalInput pracBotSwitch;
+
   public RobotContainer() {
 
     subDrivetrain
@@ -68,6 +71,8 @@ public class RobotContainer {
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
+
+    pracBotSwitch = new DigitalInput(9);
 
     Timer.delay(2.5);
     resetToAbsolutePositions();
@@ -181,6 +186,10 @@ public class RobotContainer {
     conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
     conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.MID));
     conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HIGH));
+  }
+
+  public static boolean isPracticeBot() {
+    return !pracBotSwitch.get();
   }
 
   public Command getAutonomousCommand() {
