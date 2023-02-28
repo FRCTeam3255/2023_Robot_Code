@@ -123,7 +123,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetStowShoulderAngle = new SN_DoublePreference(
         "armPresetStowShoulderAngle", -90);
     public static final SN_DoublePreference armPresetStowElbowAngle = new SN_DoublePreference(
-        "armPresetStowElbowAngle", 60);
+        "armPresetStowElbowAngle", 66);
 
     // preset to score cone AND cube in hybrid node
     public static final SN_DoublePreference armPresetLowShoulderAngle = new SN_DoublePreference(
@@ -135,7 +135,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference armPresetConeShoulderAngle = new SN_DoublePreference(
         "armPresetConeShoulderAngle", -90);
     public static final SN_DoublePreference armPresetConeElbowAngle = new SN_DoublePreference(
-        "armPresetConeElbowAngle", -8);
+        "armPresetConeElbowAngle", -15);
 
     // preset to score cone on mid node
     public static final SN_DoublePreference armPresetConeMidShoulderAngle = new SN_DoublePreference(
