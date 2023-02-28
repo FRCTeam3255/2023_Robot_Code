@@ -70,7 +70,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);
     public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0.2);
     // degrees per second
-    public static final SN_DoublePreference teleThetaMaxSpeed = new SN_DoublePreference("teleThetaMaxSpeed", 360);
+    public static final SN_DoublePreference teleThetaMaxSpeed = new SN_DoublePreference("teleThetaMaxSpeed", 180);
     // degrees
     public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
 
