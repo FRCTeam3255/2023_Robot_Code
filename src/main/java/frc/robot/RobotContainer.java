@@ -15,7 +15,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
-import frc.robot.Constants.constControllers.ScoringColumn;
+import frc.robot.Constants.constControllers.ScoringButton;
+import frc.robot.Constants.constControllers.ScoringGrid;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
@@ -139,6 +140,8 @@ public class RobotContainer {
     // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
+    conOperator.btn_Y
+        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
     // TODO: Create button to manually adjust arm
     // shoulder: btn_LS
@@ -173,19 +176,54 @@ public class RobotContainer {
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
 
     // Numpad
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.FIRST));
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.SECOND));
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.THIRD));
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.FOURTH));
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.FIFTH));
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.SIXTH));
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.SEVENTH));
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.EIGHTH));
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> subArm.scoringColumn = ScoringColumn.NINTH));
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_1));
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_2));
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_3));
 
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.MID));
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HIGH));
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.scoringLevel = ScoringLevel.HYBRID;
+      subArm.scoringButton = ScoringButton.FIRST;
+    }));
+
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.scoringLevel = ScoringLevel.HYBRID;
+      subArm.scoringButton = ScoringButton.SECOND;
+    }));
+
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.scoringLevel = ScoringLevel.HYBRID;
+      subArm.scoringButton = ScoringButton.THIRD;
+    }));
+
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.scoringButton = ScoringButton.FOURTH;
+      subArm.scoringLevel = ScoringLevel.MID;
+    }));
+
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+      subArm.scoringButton = ScoringButton.FIFTH;
+      subArm.scoringLevel = ScoringLevel.MID;
+    }));
+
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.scoringButton = ScoringButton.SIXTH;
+      subArm.scoringLevel = ScoringLevel.MID;
+    }));
+
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
+      subArm.scoringButton = ScoringButton.SEVENTH;
+      subArm.scoringLevel = ScoringLevel.HIGH;
+    }));
+
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+      subArm.scoringButton = ScoringButton.EIGHTH;
+      subArm.scoringLevel = ScoringLevel.HIGH;
+    }));
+
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+      subArm.scoringButton = ScoringButton.NINTH;
+      subArm.scoringLevel = ScoringLevel.HIGH;
+    }));
   }
 
   public static boolean isPracticeBot() {

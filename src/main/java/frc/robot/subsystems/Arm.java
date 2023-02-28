@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
-import frc.robot.Constants.constControllers.ScoringColumn;
+import frc.robot.Constants.constControllers.ScoringButton;
+import frc.robot.Constants.constControllers.ScoringGrid;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapArm;
@@ -45,7 +46,8 @@ public class Arm extends SubsystemBase {
 
   public GamePiece desiredGamePiece = GamePiece.NONE;
   public ScoringLevel scoringLevel = ScoringLevel.NONE;
-  public ScoringColumn scoringColumn = ScoringColumn.NONE;
+  public ScoringButton scoringButton = ScoringButton.NONE;
+  public ScoringGrid scoringGrid = ScoringGrid.NONE;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -342,8 +344,16 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean isCubeNode() {
-    if (scoringColumn == ScoringColumn.SECOND || scoringColumn == ScoringColumn.FIFTH
-        || scoringColumn == ScoringColumn.EIGHTH) {
+    if (scoringButton == ScoringButton.FIFTH || scoringButton == ScoringButton.EIGHTH) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean isConeNode() {
+    if (scoringButton == ScoringButton.FOURTH || scoringButton == ScoringButton.SIXTH
+        || scoringButton == ScoringButton.SEVENTH || scoringButton == ScoringButton.NINTH) {
       return true;
     } else {
       return false;
@@ -352,33 +362,21 @@ public class Arm extends SubsystemBase {
 
   public void setGoalAnglesFromNumpad() {
     if (isCubeNode()) {
-      switch (scoringLevel) {
-        case HYBRID:
-          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-          break;
-        case MID:
-          setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
-          break;
-        case HIGH:
-          setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
-          break;
-        case NONE:
-          return;
+      if (scoringLevel == ScoringLevel.MID) {
+        setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+      } else {
+        setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
       }
+
+    } else if (isConeNode()) {
+      if (scoringLevel == ScoringLevel.MID) {
+        setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
+      } else {
+        setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
+      }
+
     } else {
-      switch (scoringLevel) {
-        case HYBRID:
-          setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-          break;
-        case MID:
-          setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
-          break;
-        case HIGH:
-          setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
-          break;
-        case NONE:
-          return;
-      }
+      setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
     }
   }
 
@@ -387,7 +385,7 @@ public class Arm extends SubsystemBase {
 
     SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
     SmartDashboard.putString("scoringLevel", scoringLevel.toString());
-    SmartDashboard.putString("scoringColumn", scoringColumn.toString());
+    SmartDashboard.putString("scoringColumn", scoringButton.toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
