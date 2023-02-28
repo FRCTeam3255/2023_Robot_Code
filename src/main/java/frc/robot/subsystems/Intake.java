@@ -74,7 +74,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean getLimitSwitch() {
-    return leftMotor.getReverseLimitSwitch(constIntake.LIMIT_SWITCH_TYPE).isPressed();
+    return rightMotor.getReverseLimitSwitch(constIntake.LIMIT_SWITCH_TYPE).isPressed();
   }
 
   public boolean isGamePieceCollected() {
