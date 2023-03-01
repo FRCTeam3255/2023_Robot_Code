@@ -79,6 +79,25 @@ public class RobotPreferences {
 
     // feet per second
     public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 5);
+
+    // current limiting (values taken from BaseFalconSwerve)
+    public static final SN_BooleanPreference driveEnableCurrentLimit = new SN_BooleanPreference(
+        "driveEnableCurrentLimit", true);
+    public static final SN_DoublePreference driveHoldingCurrentLimit = new SN_DoublePreference(
+        "driveHoldingCurrentLimit", 35);
+    public static final SN_DoublePreference drivePeakCurrentLimit = new SN_DoublePreference(
+        "drivePeakCurrentLimit", 60);
+    public static final SN_DoublePreference drivePeakCurrentTime = new SN_DoublePreference(
+        "drivePeakCurrentTime", 0.1);
+
+    public static final SN_BooleanPreference steerEnableCurrentLimit = new SN_BooleanPreference(
+        "steerEnableCurrentLimit", true);
+    public static final SN_DoublePreference steerHoldingCurrentLimit = new SN_DoublePreference(
+        "steerHoldingCurrentLimit", 25);
+    public static final SN_DoublePreference steerPeakCurrentLimit = new SN_DoublePreference(
+        "steerPeakCurrentLimit", 40);
+    public static final SN_DoublePreference steerPeakCurrentTime = new SN_DoublePreference(
+        "steerPeakCurrentTime", 0.1);
   }
 
   public static final class prefArm {

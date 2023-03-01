@@ -13,19 +13,16 @@ import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
 public class PlaceGamePiece extends SequentialCommandGroup {
 
   Arm subArm;
-  Collector subCollector;
   Intake subIntake;
 
-  public PlaceGamePiece(Arm subArm, Collector subCollector, Intake subIntake) {
+  public PlaceGamePiece(Arm subArm, Intake subIntake) {
 
     this.subArm = subArm;
-    this.subCollector = subCollector;
     this.subIntake = subIntake;
 
     addCommands(

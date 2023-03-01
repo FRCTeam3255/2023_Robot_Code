@@ -10,17 +10,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
 public class IntakeCone extends SequentialCommandGroup {
-  Collector subCollector;
   Intake subIntake;
   Arm subArm;
   SN_Blinkin leds;
 
-  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm) {
-    this.subCollector = subCollector;
+  public IntakeCone(Intake subIntake, Arm subArm) {
     this.subIntake = subIntake;
     this.subArm = subArm;
 
