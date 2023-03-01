@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -34,6 +35,9 @@ public class SN_SwerveModule {
 
   private TalonFXConfiguration driveConfiguration;
   private TalonFXConfiguration steerConfiguration;
+
+  private SupplyCurrentLimitConfiguration driveCurrentLimit;
+  private SupplyCurrentLimitConfiguration steerCurrentLimit;
 
   private double lastAngle;
 
@@ -72,6 +76,14 @@ public class SN_SwerveModule {
     driveConfiguration.slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.slot0.kD = prefDrivetrain.driveD.getValue();
 
+    driveCurrentLimit = new SupplyCurrentLimitConfiguration(
+        prefDrivetrain.driveEnableCurrentLimit.getValue(),
+        prefDrivetrain.driveHoldingCurrentLimit.getValue(),
+        prefDrivetrain.drivePeakCurrentLimit.getValue(),
+        prefDrivetrain.drivePeakCurrentTime.getValue());
+
+    driveConfiguration.supplyCurrLimit = driveCurrentLimit;
+
     driveMotor.configAllSettings(driveConfiguration);
 
     driveMotor.setNeutralMode(Constants.DRIVE_NEUTRAL_MODE);
@@ -84,6 +96,14 @@ public class SN_SwerveModule {
     steerConfiguration.slot0.kP = prefDrivetrain.steerP.getValue();
     steerConfiguration.slot0.kI = prefDrivetrain.steerI.getValue();
     steerConfiguration.slot0.kD = prefDrivetrain.steerD.getValue();
+
+    steerCurrentLimit = new SupplyCurrentLimitConfiguration(
+        prefDrivetrain.steerEnableCurrentLimit.getValue(),
+        prefDrivetrain.steerHoldingCurrentLimit.getValue(),
+        prefDrivetrain.drivePeakCurrentLimit.getValue(),
+        prefDrivetrain.drivePeakCurrentTime.getValue());
+
+    steerConfiguration.supplyCurrLimit = steerCurrentLimit;
 
     steerMotor.configAllSettings(steerConfiguration);
 

@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringGrid;
@@ -23,12 +22,9 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
-import frc.robot.commands.IntakeCube;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
-import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
-import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
@@ -46,7 +42,7 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
   private final Intake subIntake = new Intake();
-  private final Collector subCollector = new Collector();
+  // private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
@@ -66,9 +62,9 @@ public class RobotContainer {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X));
-    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
+    subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
-    subCollector.setDefaultCommand(new PivotCollector(subCollector));
+    // subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
@@ -89,7 +85,7 @@ public class RobotContainer {
   public void resetToAbsolutePositions() {
     subDrivetrain.resetSteerMotorEncodersToAbsolute();
     subArm.resetJointEncodersToAbsolute();
-    subCollector.resetPivotMotorToAbsolute();
+    // subCollector.resetPivotMotorToAbsolute();
   }
 
   private void configureBindings() {
@@ -115,10 +111,11 @@ public class RobotContainer {
     // Operator
 
     // Run IntakeCube command
-    conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake, subCollector));
+    // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
+    // subCollector));
 
     // TODO: Run IntakeCone command (btn_RB)
-    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subCollector, subIntake, subArm));
+    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subIntake, subArm));
     // TODO: Run PrepPlace command (btn_LT)
     // TODO: Run PlaceGamePiece command (btn_RT)
 
@@ -150,15 +147,17 @@ public class RobotContainer {
     conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
 
     // Place Game piece; Will be rebound to Right Trigger
-    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subCollector, subIntake));
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
 
-    // Set Collector to starting config and stop the rollers
-    conOperator.btn_North
-        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
+    // // Set Collector to starting config and stop the rollers
+    // conOperator.btn_North
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
 
-    // Set Collector rollers to intake height and spin the rollers
-    conOperator.btn_South
-        .onTrue(Commands.runOnce(() -> subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
+    // // Set Collector rollers to intake height and spin the rollers
+    // conOperator.btn_South
+    // .onTrue(Commands.runOnce(() ->
+    // subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
 
     // Set the LEDs to "We want a cone"
     conOperator.btn_West.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));

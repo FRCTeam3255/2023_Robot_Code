@@ -10,28 +10,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
 public class IntakeCone extends SequentialCommandGroup {
-  Collector subCollector;
   Intake subIntake;
   Arm subArm;
   SN_Blinkin leds;
 
-  public IntakeCone(Collector subCollector, Intake subIntake, Arm subArm) {
-    this.subCollector = subCollector;
+  public IntakeCone(Intake subIntake, Arm subArm) {
     this.subIntake = subIntake;
     this.subArm = subArm;
 
     addCommands(
-        // - Stow arm
-        Commands
-            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
-
-        // - Wait until the arm has reached the desired position
-        Commands.waitUntil(subArm::areJointsInTolerance),
-
         // - Lower the arm so that the intake is cone level
         Commands.runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
@@ -44,10 +34,7 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Raise arm to stow position
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
-
-        // - Wait until the arm has reached the desired position
-        Commands.waitUntil(subArm::areJointsInTolerance));
+            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
 
   }
 }
