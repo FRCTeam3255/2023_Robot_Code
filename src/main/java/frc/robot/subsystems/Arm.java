@@ -380,12 +380,90 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public boolean coneHighLeft() {
+    if (scoringButton == ScoringButton.FOURTH) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean cubeHigh() {
+    if (scoringButton == ScoringButton.FIFTH) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean coneHighRight() {
+    if (scoringButton == ScoringButton.SIXTH) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean coneMidLeft() {
+    if (scoringButton == ScoringButton.SEVENTH) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean cubeMid() {
+    if (scoringButton == ScoringButton.EIGHTH) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean coneMidRight() {
+    if (scoringButton == ScoringButton.NINTH) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean hybridLeft() {
+    if (scoringButton == ScoringButton.THIRD) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean hybridMid() {
+    if (scoringButton == ScoringButton.SECOND) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean hybridRight() {
+    if (scoringButton == ScoringButton.FIRST) {
+      return true;
+    }
+    return false;
+  }
+
   @Override
   public void periodic() {
 
-    SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
-    SmartDashboard.putString("scoringLevel", scoringLevel.toString());
-    SmartDashboard.putString("scoringColumn", scoringButton.toString());
+    if (!Constants.COMPETITION_MODE) {
+      SmartDashboard.putString("scoringLevel", scoringLevel.toString());
+      SmartDashboard.putString("scoringColumn", scoringButton.toString());
+    }
+
+    SmartDashboard.putString("    Desired Game Piece    ", desiredGamePiece.toString());
+
+    if (Constants.COMPETITION_MODE) {
+      SmartDashboard.putBoolean("   Cone High Left", coneHighLeft());
+      SmartDashboard.putBoolean("   Cube High", cubeHigh());
+      SmartDashboard.putBoolean("   Cone High Right", coneHighRight());
+      SmartDashboard.putBoolean("   Cone Mid Left", coneMidLeft());
+      SmartDashboard.putBoolean("   Cube Mid", cubeMid());
+      SmartDashboard.putBoolean("   Cone Mid Right", coneMidRight());
+      SmartDashboard.putBoolean("   Hybrid Left", hybridLeft());
+      SmartDashboard.putBoolean("   Hybrid Mid", hybridMid());
+      SmartDashboard.putBoolean("   Hybrid Right", hybridRight());
+    }
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());

@@ -110,11 +110,28 @@ public class Intake extends SubsystemBase {
     return this.run(() -> setMotorSpeed(prefIntake.intakeHoldSpeed));
   }
 
+  public boolean isGamePieceCube() {
+    if (getGamePieceType() == GamePiece.CUBE) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isGamePieceCone() {
+    if (getGamePieceType() == GamePiece.CONE) {
+      return true;
+    }
+    return false;
+  }
+
   @Override
   public void periodic() {
 
-    SmartDashboard.putString("Current Game Piece", getGamePieceType().toString());
-    SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
+    SmartDashboard.putString("    Current Game Piece    ", getGamePieceType().toString());
+    SmartDashboard.putBoolean("   Intake Is Game Piece Collected", isGamePieceCollected());
+
+    SmartDashboard.putBoolean("   Piece Is Cube", isGamePieceCube());
+    SmartDashboard.putBoolean("   Piece Is Cone", isGamePieceCone());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());

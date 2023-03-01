@@ -180,18 +180,18 @@ public class RobotContainer {
     conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_3));
 
     conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-      subArm.scoringLevel = ScoringLevel.HYBRID;
       subArm.scoringButton = ScoringButton.FIRST;
+      subArm.scoringLevel = ScoringLevel.HYBRID;
     }));
 
     conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
-      subArm.scoringLevel = ScoringLevel.HYBRID;
       subArm.scoringButton = ScoringButton.SECOND;
+      subArm.scoringLevel = ScoringLevel.HYBRID;
     }));
 
     conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
-      subArm.scoringLevel = ScoringLevel.HYBRID;
       subArm.scoringButton = ScoringButton.THIRD;
+      subArm.scoringLevel = ScoringLevel.HYBRID;
     }));
 
     conNumpad.btn_9.onTrue(Commands.runOnce(() -> {

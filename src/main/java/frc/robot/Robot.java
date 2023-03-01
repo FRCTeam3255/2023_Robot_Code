@@ -35,8 +35,10 @@ public class Robot extends TimedRobot {
     // Runs the Scheduler. This is responsible for polling
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putBoolean("*NT Prefs*", RobotPreferences.useNetworkTables);
-    SmartDashboard.putBoolean("*Prac Bot*", RobotContainer.isPracticeBot());
+    if (!Constants.COMPETITION_MODE) {
+      SmartDashboard.putBoolean("*NT Prefs*", RobotPreferences.useNetworkTables);
+      SmartDashboard.putBoolean("*Prac Bot*", RobotContainer.isPracticeBot());
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

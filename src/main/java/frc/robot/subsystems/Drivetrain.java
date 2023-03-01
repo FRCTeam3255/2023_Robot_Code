@@ -430,7 +430,7 @@ public class Drivetrain extends SubsystemBase {
 
     updatePoseEstimator();
 
-    SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
+    SmartDashboard.putBoolean("   Drivetrain Field Relative   ", isFieldRelative);
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
 

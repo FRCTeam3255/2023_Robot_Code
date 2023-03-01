@@ -19,6 +19,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
+  public static final boolean COMPETITION_MODE = true;
   public static final boolean OUTPUT_DEBUG_VALUES = false;
 
   // order of subsystems (and adjacent classes) shall be:
