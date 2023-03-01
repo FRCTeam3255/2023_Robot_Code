@@ -23,6 +23,7 @@ import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
+import frc.robot.commands.Auto.EngageAuto;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
@@ -228,9 +229,17 @@ public class RobotContainer {
     return !pracBotSwitch.get();
   }
 
+  public void setOpenLoop() {
+    subDrivetrain.isDriveOpenLoop = true;
+    subDrivetrain.configure();
+  }
+
+  public void setClosedLoop() {
+    subDrivetrain.isDriveOpenLoop = false;
+    subDrivetrain.configure();
+  }
+
   public Command getAutonomousCommand() {
-    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.bigLPath)
-        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(),
-            subDrivetrain));
+    return new EngageAuto(subDrivetrain);
   }
 }
