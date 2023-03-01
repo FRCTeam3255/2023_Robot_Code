@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.frcteam3255.preferences.SN_Preferences;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +27,8 @@ public class Robot extends TimedRobot {
     } else {
       SN_Preferences.useDefaults();
     }
+
+    CameraServer.startAutomaticCapture();
 
     m_robotContainer = new RobotContainer();
   }
