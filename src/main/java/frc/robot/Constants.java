@@ -253,7 +253,7 @@ public final class Constants {
 
     public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
 
-    public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
+    public static final boolean LIMIT_SWITCH_INVERTED = true;
 
     // RGB game piece colors
     public static final double CONE_COLOR_R = 0.34509;
