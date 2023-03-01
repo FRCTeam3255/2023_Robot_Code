@@ -4,9 +4,8 @@
 
 package frc.robot.commands.Auto;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Dock;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -20,8 +19,6 @@ public class EngageAuto extends SequentialCommandGroup {
 
     addCommands(
         subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.engagePath)
-            .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(), subDrivetrain)),
-
-        new Dock(subDrivetrain));
+            .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
   }
 }
