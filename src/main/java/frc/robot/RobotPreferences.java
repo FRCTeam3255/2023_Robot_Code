@@ -27,7 +27,7 @@ public class RobotPreferences {
     // (a stopped wheel shouldn't steer)
     public static final SN_DoublePreference percentToSteer = new SN_DoublePreference("percentToSteer", 0.01);
 
-    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", false);
+    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", true);
 
     // max translational speed in feet per second while driving using a controller
     // 16.3 FPS is maximum due to gearing

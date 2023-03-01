@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constCollector;
 import frc.robot.RobotMap.mapCollector;
 import frc.robot.RobotPreferences.prefCollector;
@@ -28,6 +29,7 @@ public class Collector extends SubsystemBase {
   Rotation2d goalPosition;
 
   DutyCycleEncoder pivotAbsoluteEncoder;
+  double pivotEncoderOffset;
 
   TalonFXConfiguration pivotMotorConfig;
 
@@ -38,6 +40,12 @@ public class Collector extends SubsystemBase {
     goalPosition = new Rotation2d();
 
     pivotAbsoluteEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
+
+    if (RobotContainer.isPracticeBot()) {
+      pivotEncoderOffset = constCollector.PRAC_PIVOT_ABSOLUTE_ENCODER_OFFSET;
+    } else {
+      pivotEncoderOffset = constCollector.PIVOT_ABSOLUTE_ENCODER_OFFSET;
+    }
 
     pivotMotorConfig = new TalonFXConfiguration();
 
@@ -113,7 +121,7 @@ public class Collector extends SubsystemBase {
    */
   public Rotation2d getPivotAbsoluteEncoder() {
     double rotations = pivotAbsoluteEncoder.getAbsolutePosition();
-    rotations -= Units.radiansToRotations(constCollector.PIVOT_ABSOLUTE_ENCODER_OFFSET);
+    rotations -= Units.radiansToRotations(pivotEncoderOffset);
     rotations = MathUtil.inputModulus(rotations, -1, 1);
 
     if (constCollector.PIVOT_ABSOLUTE_ENCODER_INVERT) {

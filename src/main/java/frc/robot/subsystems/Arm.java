@@ -15,10 +15,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
 import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringGrid;
@@ -38,6 +38,9 @@ public class Arm extends SubsystemBase {
   DutyCycleEncoder shoulderEncoder;
   DutyCycleEncoder elbowEncoder;
 
+  double shoulderOffset;
+  double elbowOffset;
+
   Rotation2d goalShoulderAngle;
   Rotation2d goalElbowAngle;
 
@@ -55,6 +58,14 @@ public class Arm extends SubsystemBase {
 
     shoulderEncoder = new DutyCycleEncoder(mapArm.SHOULDER_ABSOLUTE_ENCODER_DIO);
     elbowEncoder = new DutyCycleEncoder(mapArm.ELBOW_ABSOLUTE_ENCODER_DIO);
+
+    if (RobotContainer.isPracticeBot()) {
+      shoulderOffset = constArm.PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET;
+      elbowOffset = constArm.PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET;
+    } else {
+      shoulderOffset = constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET;
+      elbowOffset = constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET;
+    }
 
     goalShoulderAngle = new Rotation2d();
     goalElbowAngle = new Rotation2d();
@@ -214,7 +225,7 @@ public class Arm extends SubsystemBase {
    */
   public Rotation2d getShoulderAbsoluteEncoder() {
     double rotations = shoulderEncoder.getAbsolutePosition();
-    rotations -= Units.radiansToRotations(constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET);
+    rotations -= Units.radiansToRotations(shoulderOffset);
     rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
 
     if (constArm.SHOULDER_ABSOLUTE_ENCODER_INVERT) {
@@ -231,7 +242,7 @@ public class Arm extends SubsystemBase {
    */
   public Rotation2d getElbowAbsoluteEncoder() {
     double rotations = elbowEncoder.getAbsolutePosition();
-    rotations -= Units.radiansToRotations(constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET);
+    rotations -= Units.radiansToRotations(elbowOffset);
     rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
 
     if (constArm.ELBOW_ABSOLUTE_ENCODER_INVERT) {
@@ -378,13 +389,11 @@ public class Arm extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw Inverted", 1 - shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw Inverted", 1 - elbowEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());

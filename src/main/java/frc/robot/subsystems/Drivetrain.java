@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.SN_SwerveModule;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefVision;
@@ -40,6 +41,8 @@ public class Drivetrain extends SubsystemBase {
   private SN_SwerveModule[] modules;
 
   private AHRS navX;
+
+  private SwerveDriveKinematics swerveKinematics;
 
   private SwerveDrivePoseEstimator poseEstimator;
 
@@ -58,18 +61,31 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
 
-    modules = new SN_SwerveModule[] {
-        new SN_SwerveModule(Constants.MODULE_0),
-        new SN_SwerveModule(Constants.MODULE_1),
-        new SN_SwerveModule(Constants.MODULE_2),
-        new SN_SwerveModule(Constants.MODULE_3)
-    };
+    if (RobotContainer.isPracticeBot()) {
+      modules = new SN_SwerveModule[] {
+          new SN_SwerveModule(Constants.PRAC_MODULE_0),
+          new SN_SwerveModule(Constants.PRAC_MODULE_1),
+          new SN_SwerveModule(Constants.PRAC_MODULE_2),
+          new SN_SwerveModule(Constants.PRAC_MODULE_3)
+      };
+
+      swerveKinematics = Constants.PRAC_SWERVE_KINEMATICS;
+    } else {
+      modules = new SN_SwerveModule[] {
+          new SN_SwerveModule(Constants.MODULE_0),
+          new SN_SwerveModule(Constants.MODULE_1),
+          new SN_SwerveModule(Constants.MODULE_2),
+          new SN_SwerveModule(Constants.MODULE_3)
+      };
+
+      swerveKinematics = Constants.SWERVE_KINEMATICS;
+    }
 
     navX = new AHRS();
     navX.reset();
 
     poseEstimator = new SwerveDrivePoseEstimator(
-        Constants.SWERVE_KINEMATICS,
+        swerveKinematics,
         navX.getRotation2d(),
         getModulePositions(),
         new Pose2d());
@@ -156,7 +172,7 @@ public class Drivetrain extends SubsystemBase {
     swerveAutoBuilder = new SwerveAutoBuilder(
         this::getPose,
         this::resetPose,
-        Constants.SWERVE_KINEMATICS,
+        swerveKinematics,
         new PIDConstants(
             prefDrivetrain.autoTransP.getValue(),
             prefDrivetrain.autoTransI.getValue(),
@@ -243,7 +259,7 @@ public class Drivetrain extends SubsystemBase {
           velocity.getRotation().getRadians());
     }
 
-    SwerveModuleState[] desiredStates = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] desiredStates = swerveKinematics.toSwerveModuleStates(chassisSpeeds);
 
     setModuleStates(desiredStates);
 
