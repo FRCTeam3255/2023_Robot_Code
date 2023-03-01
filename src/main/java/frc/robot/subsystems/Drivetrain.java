@@ -58,6 +58,7 @@ public class Drivetrain extends SubsystemBase {
 
   public PathPlannerTrajectory linePath;
   public PathPlannerTrajectory twoConePath;
+  public PathPlannerTrajectory bigLPath;
 
   public Drivetrain() {
 
@@ -125,6 +126,10 @@ public class Drivetrain extends SubsystemBase {
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
+    bigLPath = PathPlanner.loadPath("bigL", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
     configure();
   }
 
@@ -183,7 +188,7 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.autoThetaD.getValue()),
         this::setModuleStates,
         new HashMap<>(),
-        false,
+        true,
         this);
   }
 

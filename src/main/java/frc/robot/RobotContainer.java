@@ -230,7 +230,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.twoConePath)
+    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.bigLPath)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(),
             subDrivetrain));
   }
