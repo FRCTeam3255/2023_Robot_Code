@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import com.frcteam3255.preferences.SN_DoublePreference;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -31,13 +29,15 @@ public class SetArmGoalAngles extends SequentialCommandGroup {
     addCommands(
         Commands.sequence(
             // Stow, wait, then go
-            new InstantCommand(
+            Commands.runOnce(
                 () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
-            new WaitUntilCommand(() -> subArm.areJointsInTolerance()),
+            Commands.waitUntil(subArm::areJointsInTolerance),
             Commands.runOnce(() -> subArm.setGoalAngles(desiredShoulderAngle, desiredElbowAngle)))
 
             // unless we are already going there
-            .unless(() -> (subArm.getGoalShoulderAngle().getDegrees() == desiredShoulderAngle.getValue())
-                && subArm.getGoalElbowAngle().getDegrees() == desiredElbowAngle.getValue()));
+            .unless(() -> {
+              return (subArm.getGoalShoulderAngle().getDegrees() == desiredShoulderAngle.getValue())
+                  && subArm.getGoalElbowAngle().getDegrees() == desiredElbowAngle.getValue();
+            }));
   }
 }

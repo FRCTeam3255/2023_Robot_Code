@@ -31,13 +31,12 @@ public class IntakeCone extends SequentialCommandGroup {
         Commands.waitUntil(subArm::areJointsInTolerance),
 
         // - Spin intake until a game piece is collected
-        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected)
+        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
 
-    // - Raise arm to stow position
-    // Commands.runOnce(
-    // () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle,
-    // prefArm.armPresetStowElbowAngle))
-    );
+        // - Raise arm to stow position
+        Commands.runOnce(
+            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle,
+                prefArm.armPresetStowElbowAngle)));
 
   }
 }
