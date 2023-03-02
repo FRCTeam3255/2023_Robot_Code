@@ -4,12 +4,12 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
-import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.constLEDs;
-import frc.robot.Constants.constVision.GamePiece;
+import frc.robot.Constants.constControllers.ScoringButton;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 
@@ -17,11 +17,12 @@ public class SetLEDs extends CommandBase {
   LEDs subLEDs;
   Intake subIntake;
   PatternType desiredPattern;
-  GamePiece desiredGamePiece;
+  Arm subArm;
 
-  public SetLEDs(LEDs subLEDs, Intake subIntake, GamePiece desiredGamePiece) {
+  public SetLEDs(LEDs subLEDs, Intake subIntake, Arm subArm) {
     this.subLEDs = subLEDs;
     this.subIntake = subIntake;
+    this.subArm = subArm;
 
     addRequirements(subLEDs);
   }
@@ -32,34 +33,48 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
-    switch (subIntake.getGamePieceType()) {
-      case CONE:
-        desiredPattern = constLEDs.HAS_CONE_COLOR;
-        break;
-      case CUBE:
-        desiredPattern = constLEDs.HAS_CUBE_COLOR;
-        break;
-      case HUH:
-        desiredPattern = constLEDs.FAILURE_COLOR;
-        break;
-      case NONE:
-        if (subIntake.isGamePieceCollected()) {
-          desiredPattern = constLEDs.FAILURE_COLOR;
-          break;
-        }
+    // switch (subIntake.getGamePieceType()) {
+    // case CONE:
+    // desiredPattern = constLEDs.HAS_CONE_COLOR;
+    // break;
+    // case CUBE:
+    // desiredPattern = constLEDs.HAS_CUBE_COLOR;
+    // break;
+    // case HUH:
+    // desiredPattern = constLEDs.FAILURE_COLOR;
+    // break;
+    // case NONE:
+    // if (subIntake.isGamePieceCollected()) {
+    // desiredPattern = constLEDs.FAILURE_COLOR;
+    // break;
+    // }
 
-        // We don't have a game piece and we WANT something
-        if (desiredGamePiece == GamePiece.CONE) {
-          desiredPattern = constLEDs.DESIRED_CONE_COLOR;
-          break;
-        } else if (desiredGamePiece == GamePiece.CUBE) {
-          desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
-          break;
-        }
+    // // We don't have a game piece and we WANT something
+    // if (desiredGamePiece == GamePiece.CONE) {
+    // desiredPattern = constLEDs.DESIRED_CONE_COLOR;
+    // break;
+    // } else if (desiredGamePiece == GamePiece.CUBE) {
+    // desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
+    // break;
+    // }
 
-        // We dont have a game piece or want a game piece; default color
-        desiredPattern = constLEDs.DEFAULT_COLOR;
-        break;
+    // // We dont have a game piece or want a game piece; default color
+    // desiredPattern = constLEDs.DEFAULT_COLOR;
+    // break;
+    // }
+
+    if (subIntake.isGamePieceCollected()) {
+      desiredPattern = SN_Blinkin.PatternType.Green;
+    } else {
+
+      if (subArm.scoringButton == ScoringButton.EIGHTH) {
+        desiredPattern = SN_Blinkin.PatternType.BlueViolet;
+      } else if (subArm.scoringButton == ScoringButton.NINTH) {
+        desiredPattern = SN_Blinkin.PatternType.Yellow;
+      } else {
+        desiredPattern = SN_Blinkin.PatternType.Black;
+      }
+
     }
 
     subLEDs.setLEDPattern(desiredPattern);
