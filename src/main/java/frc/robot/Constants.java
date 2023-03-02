@@ -99,7 +99,7 @@ public final class Constants {
   public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.720703;
   public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 72.333984;
   public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.869141;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 304.980469;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 293.466797;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
