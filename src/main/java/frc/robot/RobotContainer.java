@@ -66,7 +66,7 @@ public class RobotContainer {
     subIntake.setDefaultCommand(subIntake.holdCommand());
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
-    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm));
 
     configureBindings();
 
