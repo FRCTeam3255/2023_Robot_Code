@@ -27,8 +27,6 @@ public class RobotPreferences {
     // (a stopped wheel shouldn't steer)
     public static final SN_DoublePreference percentToSteer = new SN_DoublePreference("percentToSteer", 0.01);
 
-    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", true);
-
     // max translational speed in feet per second while driving using a controller
     // 16.3 FPS is maximum due to gearing
     public static final SN_DoublePreference driveSpeed = new SN_DoublePreference("driveSpeed", 16.3);
@@ -200,6 +198,11 @@ public class RobotPreferences {
     public static final SN_ZeroDoublePreference armPresetStraightShoulderAngle = new SN_ZeroDoublePreference();
     public static final SN_ZeroDoublePreference armPresetStraightElbowAngle = new SN_ZeroDoublePreference();
 
+    public static final SN_DoublePreference armShootCubeHighShoulderAngle = new SN_DoublePreference(
+        "armShootCubeHighShoulderAngle", -99);
+    public static final SN_DoublePreference armShootCubeHighElbowAngle = new SN_DoublePreference(
+        "armShootCubeHighElbowAngle", 32);
+
     public static final SN_DoublePreference armToleranceFudgeFactor = new SN_DoublePreference(
         "armToleranceFudgeFactor", 5);
   }
@@ -214,6 +217,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeHoldSpeed = new SN_DoublePreference("intakeHoldSpeed", 0.05);
     public static final SN_DoublePreference intakeReleaseSpeed = new SN_DoublePreference("intakeReleaseSpeed", -0.25);
     public static final SN_DoublePreference intakeReleaseDelay = new SN_DoublePreference("intakeReleaseDelay", 1);
+
+    public static final SN_DoublePreference intakeShootSpeedHigh = new SN_DoublePreference("intakeShootSpeedHigh",
+        -0.75);
   }
 
   public static final class prefCollector {

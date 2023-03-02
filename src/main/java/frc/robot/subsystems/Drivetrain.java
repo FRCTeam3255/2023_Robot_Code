@@ -56,8 +56,11 @@ public class Drivetrain extends SubsystemBase {
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
-  public PathPlannerTrajectory linePath;
-  public PathPlannerTrajectory twoConePath;
+  public PathPlannerTrajectory cubeThenMobilityTop;
+  public PathPlannerTrajectory cubeThenDockPath;
+  public PathPlannerTrajectory cubeThenMobilityBottom;
+
+  public boolean isDriveOpenLoop = true;
 
   public Drivetrain() {
 
@@ -115,15 +118,18 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
 
-    linePath = PathPlanner.loadPath("linePath",
+    cubeThenMobilityBottom = PathPlanner.loadPath("cubeThenMobilityBottom",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    twoConePath = PathPlanner.loadPath("twoConePath",
-        new PathConstraints(
-            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+    cubeThenMobilityTop = PathPlanner.loadPath("cubeThenMobilityTop", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    cubeThenDockPath = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     configure();
   }
@@ -175,7 +181,7 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.autoThetaD.getValue()),
         this::setModuleStates,
         new HashMap<>(),
-        false,
+        true,
         this);
   }
 
@@ -268,7 +274,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue(), false);
+      mod.setDesiredState(desiredStates[mod.moduleNumber], isDriveOpenLoop, false);
     }
   }
 
@@ -285,7 +291,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue(), true);
+      mod.setDesiredState(desiredStates[mod.moduleNumber], isDriveOpenLoop, true);
     }
   }
 

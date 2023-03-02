@@ -10,6 +10,8 @@ import com.frcteam3255.joystick.SN_SwitchboardStick;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -24,6 +26,9 @@ import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
+import frc.robot.commands.Auto.CubeThenDock;
+import frc.robot.commands.Auto.CubeThenMobilityBottom;
+import frc.robot.commands.Auto.CubeThenMobilityTop;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
@@ -31,7 +36,6 @@ import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class RobotContainer {
 
@@ -47,6 +51,7 @@ public class RobotContainer {
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
 
   public RobotContainer() {
@@ -67,10 +72,12 @@ public class RobotContainer {
     subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+    // subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm));
 
     configureBindings();
+    configureAutoSelector();
 
     Timer.delay(2.5);
     resetToAbsolutePositions();
@@ -233,9 +240,28 @@ public class RobotContainer {
     return !pracBotSwitch.get();
   }
 
+  public void setOpenLoop() {
+    subDrivetrain.isDriveOpenLoop = true;
+    subDrivetrain.configure();
+  }
+
+  public void setClosedLoop() {
+    subDrivetrain.isDriveOpenLoop = false;
+    subDrivetrain.configure();
+  }
+
+  private void configureAutoSelector() {
+    autoChooser.setDefaultOption("null", null);
+
+    autoChooser.addOption("Cube Then Mobility Bottom", new CubeThenMobilityBottom(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Cube Then Mobility Top", new CubeThenMobilityTop(subDrivetrain, subIntake, subArm));
+
+    autoChooser.addOption("Cube Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
+
+    SmartDashboard.putData(autoChooser);
+  }
+
   public Command getAutonomousCommand() {
-    return subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.twoConePath)
-        .andThen(new InstantCommand(() -> subDrivetrain.neutralDriveOutputs(),
-            subDrivetrain));
+    return autoChooser.getSelected();
   }
 }
