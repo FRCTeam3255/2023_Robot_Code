@@ -161,14 +161,6 @@ public class Drivetrain extends SubsystemBase {
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
     thetaPID.reset();
 
-    // (i think) since the drive motor inversions takes a meanful amount of time, it
-    // eats the instruction to reset the encoder counts. so we just wait a second
-    // after inverting the modules to reset the steer motor encoders to absolute
-    Timer.delay(1.0);
-    for (SN_SwerveModule mod : modules) {
-      mod.resetSteerMotorEncodersToAbsolute();
-    }
-
     swerveAutoBuilder = new SwerveAutoBuilder(
         this::getPose,
         this::resetPose,
