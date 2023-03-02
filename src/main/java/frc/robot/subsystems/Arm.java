@@ -364,15 +364,23 @@ public class Arm extends SubsystemBase {
     if (isCubeNode()) {
       if (scoringLevel == ScoringLevel.MID) {
         setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
-      } else {
+      } else if (scoringLevel == ScoringLevel.HIGH) {
         setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+      } else if (scoringLevel == ScoringLevel.HYBRID) {
+        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+      } else if (scoringLevel == ScoringLevel.NONE) {
+        // do nothing in this case
       }
 
     } else if (isConeNode()) {
       if (scoringLevel == ScoringLevel.MID) {
         setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
-      } else {
+      } else if (scoringLevel == ScoringLevel.HIGH) {
         setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
+      } else if (scoringLevel == ScoringLevel.HYBRID) {
+        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+      } else if (scoringLevel == ScoringLevel.NONE) {
+        // do nothing in this case
       }
 
     } else {

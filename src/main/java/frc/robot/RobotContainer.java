@@ -131,11 +131,10 @@ public class RobotContainer {
     conOperator.btn_A.onTrue(Commands
         .runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
 
     // Set mid Arm preset
-    conOperator.btn_X.onTrue(Commands
-        .runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle)));
+    conOperator.btn_X.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
 
     // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
@@ -148,7 +147,8 @@ public class RobotContainer {
     // elbow: btn_RS
 
     // Prep Place; Will be rebound to Left Trigger
-    conOperator.btn_LeftTrigger.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+    // conOperator.btn_LeftTrigger.whileTrue(Commands.run(() ->
+    // subArm.setGoalAnglesFromNumpad()).repeatedly());
 
     // Place Game piece; Will be rebound to Right Trigger
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
@@ -178,52 +178,55 @@ public class RobotContainer {
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
 
     // Numpad
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_1));
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_2));
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid = ScoringGrid.GRID_3));
+    // conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
+    // ScoringGrid.GRID_1));
+    // conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
+    // ScoringGrid.GRID_2));
+    // conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
+    // ScoringGrid.GRID_3));
 
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-      subArm.scoringLevel = ScoringLevel.HYBRID;
-      subArm.scoringButton = ScoringButton.FIRST;
-    }));
+    // conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+    // subArm.scoringLevel = ScoringLevel.HYBRID;
+    // subArm.scoringButton = ScoringButton.FIRST;
+    // }));
 
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
-      subArm.scoringLevel = ScoringLevel.HYBRID;
-      subArm.scoringButton = ScoringButton.SECOND;
-    }));
+    // conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+    // subArm.scoringLevel = ScoringLevel.HYBRID;
+    // subArm.scoringButton = ScoringButton.SECOND;
+    // }));
 
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
-      subArm.scoringLevel = ScoringLevel.HYBRID;
-      subArm.scoringButton = ScoringButton.THIRD;
-    }));
+    // conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+    // subArm.scoringLevel = ScoringLevel.HYBRID;
+    // subArm.scoringButton = ScoringButton.THIRD;
+    // }));
 
     conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.FOURTH;
+      subArm.scoringButton = ScoringButton.NINTH;
       subArm.scoringLevel = ScoringLevel.MID;
     }));
 
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.FIFTH;
-      subArm.scoringLevel = ScoringLevel.MID;
-    }));
+    // conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+    // subArm.scoringButton = ScoringButton.FIFTH;
+    // subArm.scoringLevel = ScoringLevel.MID;
+    // }));
 
     conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.SIXTH;
+      subArm.scoringButton = ScoringButton.EIGHTH;
       subArm.scoringLevel = ScoringLevel.MID;
     }));
 
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.SEVENTH;
+      subArm.scoringButton = ScoringButton.NINTH;
       subArm.scoringLevel = ScoringLevel.HIGH;
     }));
 
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.EIGHTH;
-      subArm.scoringLevel = ScoringLevel.HIGH;
-    }));
+    // conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+    // subArm.scoringButton = ScoringButton.EIGHTH;
+    // subArm.scoringLevel = ScoringLevel.HIGH;
+    // }));
 
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.NINTH;
+      subArm.scoringButton = ScoringButton.EIGHTH;
       subArm.scoringLevel = ScoringLevel.HIGH;
     }));
   }
