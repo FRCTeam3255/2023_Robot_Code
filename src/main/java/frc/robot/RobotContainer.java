@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
+import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
@@ -51,6 +52,7 @@ public class RobotContainer {
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
 
   public RobotContainer() {
+    conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
 
     subDrivetrain
         .setDefaultCommand(new Drive(

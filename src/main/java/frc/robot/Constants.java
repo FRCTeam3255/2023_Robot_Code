@@ -25,19 +25,19 @@ public final class Constants {
   // vision, leds
 
   public static final class constControllers {
-    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
-    public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
-    public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
-    public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
-    public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
-    public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.05;
+    // public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
+    // public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
+    // public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
+    // public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
+    // public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
 
-    public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
-    public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
-    public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
-    public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
-    public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
-    public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
+    // public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
+    // public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
+    // public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
+    // public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
+    // public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
+    // public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
 
     public enum ScoringLevel {
       NONE, HYBRID, MID, HIGH;
@@ -95,10 +95,10 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
-  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 19.072266;
-  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 73.740234;
-  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 86.044922;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 315.000000;
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.720703;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 72.333984;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.869141;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 293.466797;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
@@ -230,8 +230,8 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.418606);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.829384);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.410000);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.820000);
 
     public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.346228);
     public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.127852);
