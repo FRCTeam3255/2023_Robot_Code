@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -26,7 +27,8 @@ public class PlaceGamePiece extends SequentialCommandGroup {
     this.subIntake = subIntake;
 
     addCommands(
-        new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
+        Commands.runOnce(() -> subArm.setGoalAngles(subArm.getGoalAnglesFromNumpad().getFirst(),
+            subArm.getGoalAnglesFromNumpad().getSecond())),
         new WaitUntilCommand(() -> subArm.areJointsInTolerance()),
 
         // Lower the arm UNLESS

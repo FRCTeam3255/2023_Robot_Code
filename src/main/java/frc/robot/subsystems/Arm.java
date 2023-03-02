@@ -11,6 +11,7 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
@@ -360,31 +361,31 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  public void setGoalAnglesFromNumpad() {
+  public Pair<SN_DoublePreference, SN_DoublePreference> getGoalAnglesFromNumpad() {
     if (isCubeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
+      switch (scoringLevel) {
+        case HIGH:
+          return new Pair<>(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+        case MID:
+          return new Pair<>(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+        case HYBRID:
+          return new Pair<>(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+        default:
+          return new Pair<>(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle);
       }
-
     } else if (isConeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
+      switch (scoringLevel) {
+        case HIGH:
+          return new Pair<>(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
+        case MID:
+          return new Pair<>(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
+        case HYBRID:
+          return new Pair<>(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+        default:
+          return new Pair<>(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle);
       }
-
     } else {
-      setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+      return new Pair<>(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
     }
   }
 

@@ -25,6 +25,7 @@ import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
+import frc.robot.commands.SetArmGoalAngles;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
@@ -124,17 +125,17 @@ public class RobotContainer {
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
 
     // Set low Arm preset
-    conOperator.btn_A.onTrue(Commands
-        .runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
+    conOperator.btn_A
+        .onTrue(new SetArmGoalAngles(subArm, prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
 
-    // Set mid Arm preset
-    conOperator.btn_X.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+    // Prep place
+    conOperator.btn_X.whileTrue(new SetArmGoalAngles(subArm, subArm.getGoalAnglesFromNumpad().getFirst(),
+        subArm.getGoalAnglesFromNumpad().getSecond()).repeatedly());
 
     // Set Shelf Arm preset
-    conOperator.btn_Y.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
+    conOperator.btn_Y
+        .onTrue(new SetArmGoalAngles(subArm, prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf));
     conOperator.btn_Y
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
