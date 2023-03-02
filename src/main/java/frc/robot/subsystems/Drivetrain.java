@@ -56,9 +56,9 @@ public class Drivetrain extends SubsystemBase {
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
-  public PathPlannerTrajectory lowMobility;
+  public PathPlannerTrajectory lowMobilityPath;
   public PathPlannerTrajectory centerDockPath;
-  public PathPlannerTrajectory highMobility;
+  public PathPlannerTrajectory highMobilityPath;
 
   public boolean isDriveOpenLoop = true;
 
@@ -118,16 +118,16 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
 
-    lowMobility = PathPlanner.loadPath("lowMobility",
+    lowMobilityPath = PathPlanner.loadPath("lowMobility",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    centerDockPath = PathPlanner.loadPath("centerDockPath", new PathConstraints(
+    centerDockPath = PathPlanner.loadPath("centerDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    highMobility = PathPlanner.loadPath("highMobility", new PathConstraints(
+    highMobilityPath = PathPlanner.loadPath("highMobility", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 

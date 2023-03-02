@@ -248,9 +248,9 @@ public class RobotContainer {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("null", null);
 
-    autoChooser.addOption("Low Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.lowMobility));
+    autoChooser.addOption("Low Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.lowMobilityPath));
     autoChooser.addOption("Center Dock", new EngageAuto(subDrivetrain));
-    autoChooser.addOption("High Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.highMobility));
+    autoChooser.addOption("High Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.highMobilityPath));
 
     SmartDashboard.putData(autoChooser);
   }
