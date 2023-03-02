@@ -127,8 +127,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
         "elbowClosedLoopPeakOutput", 0.6);
 
-    public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 30);
-    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
+    public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 0);
+    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 0);
 
     // preset to intake cube from collector
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(
@@ -188,7 +188,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference armShoulderLoweringAngle = new SN_DoublePreference(
         "armShoulderLoweringAngle", 0);
     public static final SN_DoublePreference armElbowLoweringAngle = new SN_DoublePreference(
-        "armElbowLoweringAngle", 25);
+        "armElbowLoweringAngle", 20);
 
     // position shoulder goes to when transitioning from collector preset
     public static final SN_DoublePreference armPresetPostCollectorShoulderAngle = new SN_DoublePreference(

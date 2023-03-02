@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
 
   SN_CANSparkMax leftMotor;
   SN_CANSparkMax rightMotor;
-  ColorSensorV3 colorSensor;
+  // ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
   Color coneColor;
   Color cubeColor;
@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
     leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
     rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
 
-    colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
+    // colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
     colorMatcher = new ColorMatch();
 
     coneColor = new Color(constIntake.CONE_COLOR_R, constIntake.CONE_COLOR_G, constIntake.CONE_COLOR_B);
@@ -63,19 +63,20 @@ public class Intake extends SubsystemBase {
     colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
   }
 
-  public GamePiece getGamePieceType() {
-    ColorMatchResult currentColor = colorMatcher.matchColor(colorSensor.getColor());
+  // public GamePiece getGamePieceType() {
+  // ColorMatchResult currentColor =
+  // colorMatcher.matchColor(colorSensor.getColor());
 
-    if (currentColor == null) {
-      return GamePiece.NONE;
-    } else if (currentColor.color == coneColor) {
-      return GamePiece.CONE;
-    } else if (currentColor.color == cubeColor) {
-      return GamePiece.CUBE;
-    }
+  // if (currentColor == null) {
+  // return GamePiece.NONE;
+  // } else if (currentColor.color == coneColor) {
+  // return GamePiece.CONE;
+  // } else if (currentColor.color == cubeColor) {
+  // return GamePiece.CUBE;
+  // }
 
-    return GamePiece.HUH;
-  }
+  // return GamePiece.HUH;
+  // }
 
   public boolean getLimitSwitch() {
     return constIntake.LIMIT_SWITCH_INVERTED ? !limitSwitch.get() : limitSwitch.get();
@@ -86,14 +87,15 @@ public class Intake extends SubsystemBase {
       return true;
     }
 
-    else if (colorSensor.getProximity() != 0
-        && colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
-      return true;
-    }
+    // else if (colorSensor.getProximity() != 0
+    // && colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
+    // return true;
+    // }
 
-    else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() == GamePiece.CUBE) {
-      return true;
-    }
+    // else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() ==
+    // GamePiece.CUBE) {
+    // return true;
+    // }
     return false;
   }
 
@@ -117,16 +119,20 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
 
-    SmartDashboard.putString("Current Game Piece", getGamePieceType().toString());
+    // SmartDashboard.putString("Current Game Piece",
+    // getGamePieceType().toString());
     SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
-      SmartDashboard.putString("Intake Color Sensor Color", colorSensor.getColor().toHexString());
-      SmartDashboard.putNumber("Intake Color Sensor Red", colorSensor.getRed());
-      SmartDashboard.putNumber("Intake Color Sensor Green", colorSensor.getGreen());
-      SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
-      SmartDashboard.putNumber("Intake Color Sensor Proximity", colorSensor.getProximity());
+      // SmartDashboard.putString("Intake Color Sensor Color",
+      // colorSensor.getColor().toHexString());
+      // SmartDashboard.putNumber("Intake Color Sensor Red", colorSensor.getRed());
+      // SmartDashboard.putNumber("Intake Color Sensor Green",
+      // colorSensor.getGreen());
+      // SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
+      // SmartDashboard.putNumber("Intake Color Sensor Proximity",
+      // colorSensor.getProximity());
     }
   }
 }
