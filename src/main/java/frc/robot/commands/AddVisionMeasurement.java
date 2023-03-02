@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
@@ -35,13 +36,13 @@ public class AddVisionMeasurement extends CommandBase {
     Optional<EstimatedRobotPose> ARresult = subVision.getPoseFromARCamera(subDrivetrain.getPose());
     Optional<EstimatedRobotPose> OVresult = subVision.getPoseFromOVCamera(subDrivetrain.getPose());
 
-    if (ARresult.isPresent()) {
+    if (ARresult.isPresent() && !RobotState.isAutonomous()) {
       estimatedPose = ARresult.get().estimatedPose.toPose2d();
       timestamp = ARresult.get().timestampSeconds;
       subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
     }
 
-    if (OVresult.isPresent()) {
+    if (OVresult.isPresent() && !RobotState.isAutonomous()) {
       estimatedPose = OVresult.get().estimatedPose.toPose2d();
       timestamp = OVresult.get().timestampSeconds;
       subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
