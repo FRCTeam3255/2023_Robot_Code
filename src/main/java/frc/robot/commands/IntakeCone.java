@@ -24,30 +24,20 @@ public class IntakeCone extends SequentialCommandGroup {
     this.subArm = subArm;
 
     addCommands(
-        // - Move the arm to stow unless we are already at cone level
-        Commands.sequence(
-            Commands.runOnce(
-                () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
-
-            Commands.waitUntil(subArm::areJointsInTolerance))
-
-            .unless(() -> subArm.getGoalShoulderAngle() == Rotation2d
-                .fromDegrees(prefArm.armPresetConeShoulderAngle.getValue())
-                && subArm.getGoalElbowAngle() == Rotation2d.fromDegrees(prefArm.armPresetConeElbowAngle.getValue())),
-
         // - Lower the arm so that the intake is cone level
-        Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
+        new SetArmGoalAngles(subArm, prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle),
 
         // - Wait until the arm has reached the desired position
         Commands.waitUntil(subArm::areJointsInTolerance),
 
         // - Spin intake until a game piece is collected
-        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected),
+        new IntakeGamePiece(subIntake).until(subIntake::isGamePieceCollected)
 
-        // - Raise arm to stow position
-        Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
+    // - Raise arm to stow position
+    // Commands.runOnce(
+    // () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle,
+    // prefArm.armPresetStowElbowAngle))
+    );
 
   }
 }

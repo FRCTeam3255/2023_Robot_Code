@@ -23,7 +23,7 @@ public class SetArmGoalAngles extends SequentialCommandGroup {
   SN_DoublePreference desiredShoulderAngle;
   SN_DoublePreference desiredElbowAngle;
 
-  public SetArmGoalAngles(Arm subarm, SN_DoublePreference desiredShoulderAngle, SN_DoublePreference desiredElbowAngle) {
+  public SetArmGoalAngles(Arm subArm, SN_DoublePreference desiredShoulderAngle, SN_DoublePreference desiredElbowAngle) {
     this.subArm = subArm;
     this.desiredShoulderAngle = desiredShoulderAngle;
     this.desiredElbowAngle = desiredElbowAngle;
@@ -37,7 +37,7 @@ public class SetArmGoalAngles extends SequentialCommandGroup {
             Commands.runOnce(() -> subArm.setGoalAngles(desiredShoulderAngle, desiredElbowAngle)))
 
             // unless we are already going there
-            .unless(() -> subArm.getGoalShoulderAngle() == Rotation2d.fromDegrees(desiredShoulderAngle.getValue())
-                && subArm.getGoalElbowAngle() == Rotation2d.fromDegrees(desiredElbowAngle.getValue())));
+            .unless(() -> (subArm.getGoalShoulderAngle().getDegrees() == desiredShoulderAngle.getValue())
+                && subArm.getGoalElbowAngle().getDegrees() == desiredElbowAngle.getValue()));
   }
 }
