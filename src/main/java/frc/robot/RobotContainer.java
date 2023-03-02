@@ -7,7 +7,6 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -17,11 +16,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers.ScoringButton;
-import frc.robot.Constants.constControllers.ScoringGrid;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
@@ -104,9 +101,6 @@ public class RobotContainer {
     conDriver.btn_Back
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetRotation()));
-    conDriver.btn_B
-        .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPose(new Pose2d())));
 
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
