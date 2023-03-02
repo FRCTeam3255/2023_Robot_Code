@@ -25,6 +25,7 @@ import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
+import frc.robot.commands.Auto.CubeThenDock;
 import frc.robot.commands.Auto.EngageAuto;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
@@ -68,7 +69,8 @@ public class RobotContainer {
     subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+    // subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm));
 
     configureBindings();
@@ -248,9 +250,11 @@ public class RobotContainer {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("null", null);
 
-    autoChooser.addOption("Low Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.lowMobilityPath));
+    autoChooser.addOption("Low Mobility", subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.lowMobilityPath));
     autoChooser.addOption("Center Dock", new EngageAuto(subDrivetrain));
-    autoChooser.addOption("High Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.highMobilityPath));
+    autoChooser.addOption("High Mobility", subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.highMobilityPath));
+
+    autoChooser.addOption("Cube Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
 
     SmartDashboard.putData(autoChooser);
   }

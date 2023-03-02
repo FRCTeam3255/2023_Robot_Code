@@ -59,6 +59,7 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory lowMobilityPath;
   public PathPlannerTrajectory centerDockPath;
   public PathPlannerTrajectory highMobilityPath;
+  public PathPlannerTrajectory cubeThenDockPath;
 
   public boolean isDriveOpenLoop = true;
 
@@ -128,6 +129,10 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     highMobilityPath = PathPlanner.loadPath("highMobility", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    cubeThenDockPath = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
