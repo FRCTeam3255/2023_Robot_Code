@@ -26,7 +26,6 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.Auto.CubeThenDock;
-import frc.robot.commands.Auto.EngageAuto;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
@@ -251,7 +250,6 @@ public class RobotContainer {
     autoChooser.setDefaultOption("null", null);
 
     autoChooser.addOption("Low Mobility", subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.lowMobilityPath));
-    autoChooser.addOption("Center Dock", new EngageAuto(subDrivetrain));
     autoChooser.addOption("High Mobility", subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.highMobilityPath));
 
     autoChooser.addOption("Cube Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
