@@ -18,7 +18,7 @@ public class EngageAuto extends SequentialCommandGroup {
     this.subDrivetrain = subDrivetrain;
 
     addCommands(
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.engagePath)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.centerDockPath)
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
   }
 }

@@ -56,10 +56,9 @@ public class Drivetrain extends SubsystemBase {
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
-  public PathPlannerTrajectory linePath;
-  public PathPlannerTrajectory twoConePath;
-  public PathPlannerTrajectory bigLPath;
-  public PathPlannerTrajectory engagePath;
+  public PathPlannerTrajectory lowMobility;
+  public PathPlannerTrajectory centerDockPath;
+  public PathPlannerTrajectory highMobility;
 
   public boolean isDriveOpenLoop = true;
 
@@ -119,21 +118,16 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
 
-    linePath = PathPlanner.loadPath("linePath",
+    lowMobility = PathPlanner.loadPath("lowMobility",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    twoConePath = PathPlanner.loadPath("twoConePath",
-        new PathConstraints(
-            Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    bigLPath = PathPlanner.loadPath("bigL", new PathConstraints(
+    centerDockPath = PathPlanner.loadPath("centerDockPath", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    engagePath = PathPlanner.loadPath("engage", new PathConstraints(
+    highMobility = PathPlanner.loadPath("highMobility", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 

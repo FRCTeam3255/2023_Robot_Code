@@ -10,6 +10,8 @@ import com.frcteam3255.joystick.SN_SwitchboardStick;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -31,7 +33,6 @@ import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class RobotContainer {
 
@@ -47,6 +48,7 @@ public class RobotContainer {
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
 
   public RobotContainer() {
@@ -70,6 +72,7 @@ public class RobotContainer {
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm.desiredGamePiece));
 
     configureBindings();
+    configureAutoSelector();
 
     Timer.delay(2.5);
     resetToAbsolutePositions();
@@ -239,7 +242,17 @@ public class RobotContainer {
     subDrivetrain.configure();
   }
 
+  private void configureAutoSelector() {
+    autoChooser.setDefaultOption("null", null);
+
+    autoChooser.addOption("Low Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.lowMobility));
+    autoChooser.addOption("Center Dock", new EngageAuto(subDrivetrain));
+    autoChooser.addOption("High Mobility", subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.highMobility));
+
+    SmartDashboard.putData(autoChooser);
+  }
+
   public Command getAutonomousCommand() {
-    return new EngageAuto(subDrivetrain);
+    return autoChooser.getSelected();
   }
 }
