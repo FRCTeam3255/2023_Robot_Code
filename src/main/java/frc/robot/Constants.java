@@ -18,7 +18,7 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
-  public static final boolean OUTPUT_DEBUG_VALUES = false;
+  public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger (if it exists),
@@ -95,10 +95,10 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
-  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.720703;
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 20.039062;
   public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 72.333984;
-  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.869141;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 293.466797;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.781250;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 289.863281;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
