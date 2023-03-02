@@ -388,8 +388,29 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public boolean highCone() {
+    return scoringButton == ScoringButton.NINTH;
+  }
+
+  public boolean highCube() {
+    return scoringButton == ScoringButton.SEVENTH;
+  }
+
+  public boolean midCone() {
+    return scoringButton == ScoringButton.SIXTH;
+  }
+
+  public boolean midCube() {
+    return scoringButton == ScoringButton.FOURTH;
+  }
+
   @Override
   public void periodic() {
+
+    SmartDashboard.putBoolean("   High Cone", highCone());
+    SmartDashboard.putBoolean("   High Cube", highCube());
+    SmartDashboard.putBoolean("   Mid Cone", midCone());
+    SmartDashboard.putBoolean("   Mid Cube", midCube());
 
     SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
     SmartDashboard.putString("scoringLevel", scoringLevel.toString());

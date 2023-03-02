@@ -121,7 +121,7 @@ public class Intake extends SubsystemBase {
 
     // SmartDashboard.putString("Current Game Piece",
     // getGamePieceType().toString());
-    SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
+    SmartDashboard.putBoolean("   Is Game Piece Collected", isGamePieceCollected());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
