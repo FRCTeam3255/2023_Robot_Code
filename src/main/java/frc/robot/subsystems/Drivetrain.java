@@ -65,6 +65,8 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory prepThenBottomCone;
   public PathPlannerTrajectory bottomConeThenDock;
 
+  public PathPlannerTrajectory stagingMarkThenDock;
+
   public boolean isDriveOpenLoop = true;
 
   public Drivetrain() {
@@ -149,6 +151,10 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     bottomConeThenDock = PathPlanner.loadPath("bottomConeThenDock", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    stagingMarkThenDock = PathPlanner.loadPath("stagingMarkThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 

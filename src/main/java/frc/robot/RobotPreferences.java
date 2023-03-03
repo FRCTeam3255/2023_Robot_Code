@@ -220,6 +220,8 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference intakeShootSpeedHigh = new SN_DoublePreference("intakeShootSpeedHigh",
         -0.75);
+    public static final SN_DoublePreference intakeShootSpeedChargeStation = new SN_DoublePreference(
+        "intakeShootSpeedChargeStation", -1);
   }
 
   public static final class prefCollector {
