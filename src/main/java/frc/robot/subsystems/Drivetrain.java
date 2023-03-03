@@ -60,6 +60,11 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeThenDockPath;
   public PathPlannerTrajectory cubeThenMobilityBottom;
 
+  public PathPlannerTrajectory cubeThenStagingMark;
+  public PathPlannerTrajectory stagingMarkThenPrep;
+  public PathPlannerTrajectory prepThenBottomCone;
+  public PathPlannerTrajectory bottomConeThenDock;
+
   public boolean isDriveOpenLoop = true;
 
   public Drivetrain() {
@@ -128,6 +133,22 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     cubeThenDockPath = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    cubeThenStagingMark = PathPlanner.loadPath("cubeThenStagingMark", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    stagingMarkThenPrep = PathPlanner.loadPath("stagingMarkThenPrep", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    prepThenBottomCone = PathPlanner.loadPath("prepThenBottomCone", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    bottomConeThenDock = PathPlanner.loadPath("bottomConeThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
