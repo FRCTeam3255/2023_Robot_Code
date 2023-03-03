@@ -180,9 +180,9 @@ public class RobotPreferences {
 
     // preset to collect cone (or cube) from shelf
     public static final SN_DoublePreference armPresetShoulderShelf = new SN_DoublePreference(
-        "armPresetShoulderShelf", 0);
+        "armPresetShoulderShelf", -20);
     public static final SN_DoublePreference armPresetElbowShelf = new SN_DoublePreference(
-        "armPresetElbowShelf", 0);
+        "armPresetElbowShelf", 10);
 
     // amount to lower joints by when scoring
     public static final SN_DoublePreference armShoulderLoweringAngle = new SN_DoublePreference(
