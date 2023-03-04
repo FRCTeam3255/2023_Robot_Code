@@ -176,7 +176,8 @@ public class RobotContainer {
 
     // Spin the Intake in reverse
     conOperator.btn_Back
-        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
+        .whileTrue(
+            Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
 
     // Numpad
     // conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid =

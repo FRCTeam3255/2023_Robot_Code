@@ -27,18 +27,18 @@ public class CubeThenMobilityOpen extends SequentialCommandGroup {
 
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetRotation()),
+        Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
+            subDrivetrain.cubeThenMobilityTop.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
 
-        Commands.waitSeconds(1),
-        subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenMobilityTop),
         Commands
             .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
             .until(() -> subArm.areJointsInTolerance()),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeShootSpeedHigh), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
         Commands

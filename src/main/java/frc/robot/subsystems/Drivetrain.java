@@ -384,6 +384,10 @@ public class Drivetrain extends SubsystemBase {
     navX.reset();
   }
 
+  public void setNavXAngleAdjustment(double adjustment) {
+    navX.setAngleAdjustment(adjustment);
+  }
+
   /**
    * Get an array of each module position. A position consists of a distance and
    * angle.
