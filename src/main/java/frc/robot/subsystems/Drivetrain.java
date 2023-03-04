@@ -57,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
   public SwerveAutoBuilder swerveAutoBuilder;
 
   public PathPlannerTrajectory cubeThenMobilityTop;
-  public PathPlannerTrajectory cubeThenDockPath;
+  public PathPlannerTrajectory cubeThenDock;
   public PathPlannerTrajectory cubeThenMobilityBottom;
 
   public PathPlannerTrajectory cubeThenStagingMark;
@@ -134,7 +134,7 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    cubeThenDockPath = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
+    cubeThenDock = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 

@@ -30,7 +30,7 @@ public class CubeDockShoot extends SequentialCommandGroup {
     addCommands(
         // Prep to shoot cube
         Commands.waitSeconds(1),
-        subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenDockPath),
+        subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenDock),
         Commands
             .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
             .until(() -> subArm.areJointsInTolerance()),

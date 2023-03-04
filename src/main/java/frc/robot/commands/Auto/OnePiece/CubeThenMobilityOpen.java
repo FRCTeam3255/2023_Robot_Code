@@ -15,23 +15,24 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeThenMobilityBottom extends SequentialCommandGroup {
-
+public class CubeThenMobilityTop extends SequentialCommandGroup {
   Drivetrain subDrivetrain;
   Intake subIntake;
   Arm subArm;
 
-  public CubeThenMobilityBottom(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
+  public CubeThenMobilityTop(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subArm = subArm;
 
     addCommands(
+        Commands.runOnce(() -> subDrivetrain.resetRotation()),
+
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
 
         Commands.waitSeconds(1),
-        subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenMobilityBottom),
+        subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenMobilityTop),
         Commands
             .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
             .until(() -> subArm.areJointsInTolerance()),
@@ -45,8 +46,7 @@ public class CubeThenMobilityBottom extends SequentialCommandGroup {
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenMobilityBottom)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenMobilityTop)
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
-
   }
 }
