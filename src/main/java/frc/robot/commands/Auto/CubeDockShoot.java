@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.commands.IntakeCone;
-import frc.robot.commands.PlaceGamePiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;

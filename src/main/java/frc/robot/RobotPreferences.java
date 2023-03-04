@@ -219,7 +219,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeReleaseDelay = new SN_DoublePreference("intakeReleaseDelay", 1);
 
     public static final SN_DoublePreference intakeShootSpeedHigh = new SN_DoublePreference("intakeShootSpeedHigh",
-        -0.75);
+        -0.65);
     public static final SN_DoublePreference intakeShootSpeedChargeStation = new SN_DoublePreference(
         "intakeShootSpeedChargeStation", -1);
   }

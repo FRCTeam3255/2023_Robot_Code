@@ -24,9 +24,9 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.Auto.CubeDockShoot;
-import frc.robot.commands.Auto.CubeThenDock;
-import frc.robot.commands.Auto.CubeThenMobilityBottom;
-import frc.robot.commands.Auto.CubeThenMobilityTop;
+import frc.robot.commands.Auto.OnePiece.CubeThenDock;
+import frc.robot.commands.Auto.OnePiece.CubeThenMobilityBottom;
+import frc.robot.commands.Auto.OnePiece.CubeThenMobilityTop;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
@@ -258,6 +258,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    subDrivetrain.resetRotation();
+
     return autoChooser.getSelected();
   }
 }
