@@ -15,12 +15,12 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeThenMobilityTop extends SequentialCommandGroup {
+public class CubeThenMobilityOpen extends SequentialCommandGroup {
   Drivetrain subDrivetrain;
   Intake subIntake;
   Arm subArm;
 
-  public CubeThenMobilityTop(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
+  public CubeThenMobilityOpen(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subArm = subArm;
