@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Auto;
+package frc.robot.commands.Auto.OnePiece;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -15,30 +15,40 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeThenMobilityTop extends SequentialCommandGroup {
+public class CubeThenMobilityCable extends SequentialCommandGroup {
+
   Drivetrain subDrivetrain;
   Intake subIntake;
   Arm subArm;
 
-  public CubeThenMobilityTop(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
+  public CubeThenMobilityCable(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subArm = subArm;
 
     addCommands(
-        Commands.waitSeconds(1),
-        subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenMobilityTop),
+        Commands.runOnce(() -> subDrivetrain.resetRotation()),
+        Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
+            subDrivetrain.cubeThenMobilityBottom.getInitialHolonomicPose().getRotation().getDegrees())),
+
+        Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
+            .until(() -> subIntake.isGamePieceCollected()),
+
         Commands
             .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
             .until(() -> subArm.areJointsInTolerance()),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeShootSpeedHigh), subIntake)
-            .until(() -> !subIntake.isGamePieceCollected()),
-        Commands.waitSeconds(prefIntake.intakeReleaseDelay.getValue()),
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
+            .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
+
+        Commands
+            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
+
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenMobilityTop)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenMobilityBottom)
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
+
   }
 }

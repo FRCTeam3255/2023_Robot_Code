@@ -108,6 +108,11 @@ public class Intake extends SubsystemBase {
     rightMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public void setMotorSpeedShoot(double speed) {
+    leftMotor.set(ControlMode.PercentOutput, speed * prefIntake.intakeLeftMotorMultiplier.getValue());
+    rightMotor.set(ControlMode.PercentOutput, speed);
+  }
+
   public Command releaseCommand() {
     return this.run(() -> setMotorSpeed(prefIntake.intakeReleaseSpeed));
   }

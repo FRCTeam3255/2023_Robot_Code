@@ -23,9 +23,11 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
-import frc.robot.commands.Auto.CubeThenDock;
-import frc.robot.commands.Auto.CubeThenMobilityBottom;
-import frc.robot.commands.Auto.CubeThenMobilityTop;
+import frc.robot.commands.Auto.CubeDockShoot;
+import frc.robot.commands.Auto.OnePiece.CenterCube;
+import frc.robot.commands.Auto.OnePiece.CubeThenDock;
+import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
+import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
@@ -174,7 +176,8 @@ public class RobotContainer {
 
     // Spin the Intake in reverse
     conOperator.btn_Back
-        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
+        .whileTrue(
+            Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
 
     // Numpad
     // conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
@@ -247,10 +250,13 @@ public class RobotContainer {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("null", null);
 
-    autoChooser.addOption("Cube Then Mobility Bottom", new CubeThenMobilityBottom(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Cube Then Mobility Top", new CubeThenMobilityTop(subDrivetrain, subIntake, subArm));
-
+    autoChooser.addOption("Cube Then Mobility Cable", new CubeThenMobilityCable(subDrivetrain, subIntake, subArm));
     autoChooser.addOption("Cube Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Center Cube (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
+
+    // autoChooser.addOption("Cube, Dock, Shoot", new CubeDockShoot(subDrivetrain,
+    // subIntake, subArm));
 
     SmartDashboard.putData(autoChooser);
   }
