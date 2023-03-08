@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
-import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -22,29 +21,34 @@ public final class Constants {
   public static final boolean OUTPUT_DEBUG_VALUES = true;
 
   // order of subsystems (and adjacent classes) shall be:
-  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+  // controllers, drivetrain, arm, intake, collector, charger (if it exists),
+  // vision, leds
 
   public static final class constControllers {
-    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.1;
-    public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
-    public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
-    public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
-    public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
-    public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
+    public static final double DRIVER_LEFT_STICK_X_DEADBAND = 0.05;
+    // public static final double DRIVER_LEFT_STICK_Y_DEADBAND = 0.1;
+    // public static final double DRIVER_RIGHT_STICK_X_DEADBAND = 0.1;
+    // public static final double DRIVER_RIGHT_STICK_Y_DEADBAND = 0.1;
+    // public static final double DRIVER_LEFT_TRIGGER_DEADBAND = 0.0;
+    // public static final double DRIVER_RIGHT_TRIGGER_DEADBAND = 0.0;
 
-    public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
-    public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
-    public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
-    public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
-    public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
-    public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
+    // public static final double OPERATOR_LEFT_STICK_X_DEADBAND = 0.1;
+    // public static final double OPERATOR_LEFT_STICK_Y_DEADBAND = 0.1;
+    // public static final double OPERATOR_RIGHT_STICK_X_DEADBAND = 0.1;
+    // public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
+    // public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
+    // public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
 
     public enum ScoringLevel {
       NONE, HYBRID, MID, HIGH;
     }
 
-    public enum ScoringColumn {
+    public enum ScoringButton {
       NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
+    }
+
+    public enum ScoringGrid {
+      NONE, GRID_1, GRID_2, GRID_3;
     }
   }
 
@@ -91,13 +95,18 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.544922;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 69.433594;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.517578;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 330.908203;
+
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
   public static final SN_SwerveModuleConstants MODULE_0 = new SN_SwerveModuleConstants(
       mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
       mapDrivetrain.FRONT_LEFT_STEER_CAN,
       mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-      250.927734, // absolute encoder offset
+      FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -107,7 +116,7 @@ public final class Constants {
       mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
       mapDrivetrain.FRONT_RIGHT_STEER_CAN,
       mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-      204.433594, // absolute encoder offset
+      FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -117,7 +126,7 @@ public final class Constants {
       mapDrivetrain.BACK_LEFT_DRIVE_CAN,
       mapDrivetrain.BACK_LEFT_STEER_CAN,
       mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
-      151.787109, // absolute encoder offset
+      BACK_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           TRACK_WIDTH / 2.0),
@@ -127,7 +136,7 @@ public final class Constants {
       mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
       mapDrivetrain.BACK_RIGHT_STEER_CAN,
       mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-      246.005859, // absolute encoder offset
+      BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
       new Translation2d(
           -WHEELBASE / 2.0,
           -TRACK_WIDTH / 2.0),
@@ -139,6 +148,59 @@ public final class Constants {
       MODULE_2.position,
       MODULE_3.position);
 
+  public static final double PRAC_FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 250.927734;
+  public static final double PRAC_FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 204.433594;
+  public static final double PRAC_BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 151.787109;
+  public static final double PRAC_BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 246.005859;
+
+  // module positions follow the WPILib robot coordinate system
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
+  public static final SN_SwerveModuleConstants PRAC_MODULE_0 = new SN_SwerveModuleConstants(
+      mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
+      mapDrivetrain.FRONT_LEFT_STEER_CAN,
+      mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
+      PRAC_FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          WHEELBASE / 2.0,
+          TRACK_WIDTH / 2.0),
+      0);
+
+  public static final SN_SwerveModuleConstants PRAC_MODULE_1 = new SN_SwerveModuleConstants(
+      mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
+      mapDrivetrain.FRONT_RIGHT_STEER_CAN,
+      mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
+      PRAC_FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          WHEELBASE / 2.0,
+          -TRACK_WIDTH / 2.0),
+      1);
+
+  public static final SN_SwerveModuleConstants PRAC_MODULE_2 = new SN_SwerveModuleConstants(
+      mapDrivetrain.BACK_LEFT_DRIVE_CAN,
+      mapDrivetrain.BACK_LEFT_STEER_CAN,
+      mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN,
+      PRAC_BACK_LEFT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          -WHEELBASE / 2.0,
+          TRACK_WIDTH / 2.0),
+      2);
+
+  public static final SN_SwerveModuleConstants PRAC_MODULE_3 = new SN_SwerveModuleConstants(
+      mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
+      mapDrivetrain.BACK_RIGHT_STEER_CAN,
+      mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
+      PRAC_BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET, // absolute encoder offset
+      new Translation2d(
+          -WHEELBASE / 2.0,
+          -TRACK_WIDTH / 2.0),
+      3);
+
+  public static final SwerveDriveKinematics PRAC_SWERVE_KINEMATICS = new SwerveDriveKinematics(
+      PRAC_MODULE_0.position,
+      PRAC_MODULE_1.position,
+      PRAC_MODULE_2.position,
+      PRAC_MODULE_3.position);
+
   public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
   public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
   public static final Rotation2d MODULE_2_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
@@ -149,6 +211,9 @@ public final class Constants {
   public static final class constArm {
     public static final boolean SHOULDER_MOTOR_INVERT = true;
     public static final boolean ELBOW_MOTOR_INVERT = false;
+
+    public static final double SHOULDER_GEAR_RATIO = 200.0;
+    public static final double ELBOW_GEAR_RATIO = 200.0;
 
     public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = false;
     public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
@@ -165,8 +230,11 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.418674);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.135709);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.470116);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.823558);
+
+    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.346228);
+    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.127852);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
@@ -174,15 +242,17 @@ public final class Constants {
     public static final double SHOULDER_FORWARD_LIMIT = Units.degreesToRadians(90.0);
     public static final double SHOULDER_REVERSE_LIMIT = Units.degreesToRadians(-135.0);
 
-    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(100);
+    public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
   }
 
   public static final class constIntake {
-    public static final boolean LEFT_MOTOR_INVERTED = true;
-    public static final boolean RIGHT_MOTOR_INVERTED = false;
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
 
-    public static final Type LIMIT_SWITCH_TYPE = Type.kNormallyOpen;
+    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
+
+    public static final boolean LIMIT_SWITCH_INVERTED = true;
 
     // RGB game piece colors
     public static final double CONE_COLOR_R = 0.2980392156862745;
@@ -210,14 +280,8 @@ public final class Constants {
     public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
     public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
-  }
-
-  public static final class constCharger {
-    public static final boolean LEFT_MOTOR_INVERTED = false;
-    public static final boolean RIGHT_MOTOR_INVERTED = !LEFT_MOTOR_INVERTED;
-
-    public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
+    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.981843);
+    public static final double PRAC_PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
   }
 
   public static final class constVision {

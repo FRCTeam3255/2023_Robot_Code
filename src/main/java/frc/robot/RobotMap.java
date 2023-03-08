@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.I2C;
 public class RobotMap {
 
   // order of subsystems (and adjacent classes) shall be:
-  // controllers, drivetrain, arm, intake, collector, charger, vision, leds
+  // controllers, drivetrain, arm, intake, collector, charger (if it exists),
+  // vision, leds
 
   public static final class mapControllers {
 
@@ -49,6 +50,7 @@ public class RobotMap {
     public static final I2C.Port COLOR_SENSOR_I2C = I2C.Port.kMXP;
     public static final int INTAKE_LEFT_MOTOR_CAN = 20;
     public static final int INTAKE_RIGHT_MOTOR_CAN = 21;
+    public static final int INTAKE_LIMIT_SWITCH_DIO = 4;
   }
 
   public static final class mapCollector {
@@ -58,13 +60,7 @@ public class RobotMap {
     public static final int PIVOT_ABSOLUTE_ENCODER_DIO = 1;
   }
 
-  public static final class mapCharger {
-
-    public static final int LEFT_MOTOR_CAN = 40;
-    public static final int RIGHT_MOTOR_CAN = 41;
-  }
-
   public static final class mapLEDs {
-    public static final int BLINKIN_PWM = 0;
+    public static final int BLINKIN_PWM = 9;
   }
 }
