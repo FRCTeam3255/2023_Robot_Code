@@ -135,16 +135,6 @@ public class Drive extends CommandBase {
 
     }
 
-    // if the shoulder is at -90 just remember the current rotation position
-    if (subArm.getGoalShoulderAngle().getDegrees() == -90 && subArm.isShoulderInTolerance()) {
-      lastRotationPosition = rotationPosition;
-    }
-    // if the shoulder isn't at -90 override the button press and just go to the
-    // last valid rotation position
-    else {
-      rotationPosition = lastRotationPosition;
-    }
-
     // if the driver isn't using the rotation joystick and also pressed a rotation
     // button, use driveAlignAngle for positional rotation control
     if (isRotationPositional) {
