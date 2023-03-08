@@ -119,10 +119,7 @@ public class RobotContainer {
     // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
     // subCollector));
 
-    // TODO: Run IntakeCone command (btn_RB)
     conOperator.btn_RightBumper.whileTrue(new IntakeCone(subIntake, subArm));
-    // TODO: Run PrepPlace command (btn_LT)
-    // TODO: Run PlaceGamePiece command (btn_RT)
 
     // Set stow Arm preset
     conOperator.btn_B.onTrue(Commands
@@ -142,10 +139,6 @@ public class RobotContainer {
         .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
     conOperator.btn_Y
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
-
-    // TODO: Create button to manually adjust arm
-    // shoulder: btn_LS
-    // elbow: btn_RS
 
     // Prep Place; Will be rebound to Left Trigger
     // conOperator.btn_LeftTrigger.whileTrue(Commands.run(() ->
