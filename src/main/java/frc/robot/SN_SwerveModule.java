@@ -228,6 +228,37 @@ public class SN_SwerveModule {
   }
 
   /**
+   * Gets the steer motor PID goal in native units.
+   * 
+   * @return Steer motor PID goal
+   */
+  public double getSteerMotorPIDGoal() {
+    return steerMotor.getClosedLoopTarget();
+  }
+
+  /**
+   * Gets the steer motor PID error in native units.
+   * 
+   * @return Steer motor PID error
+   */
+  public double getSteerMotorPIDError() {
+    return steerMotor.getClosedLoopError();
+  }
+
+  /**
+   * Get the "last angle" of the steer motor in native motor units.
+   * <p>
+   * At the end of each loop, the angle that was used was set to the last angle.
+   * The next loop, if the swerve module shouldn't steer, the angle gets set to
+   * this last angle.
+   * 
+   * @return "last angle" of steer motor
+   */
+  public double getLastAngle() {
+    return lastAngle;
+  }
+
+  /**
    * Get the current state of the swerve module. State includes a velocity and
    * angle.
    * 

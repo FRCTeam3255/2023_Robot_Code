@@ -491,6 +491,13 @@ public class Drivetrain extends SubsystemBase {
             mod.getRawAbsoluteEncoder());
         SmartDashboard.putNumber("Module " + mod.moduleNumber + " Drive Output Percent",
             mod.getDriveMotorOutputPercent());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Steer PID Goal",
+            mod.getSteerMotorPIDGoal());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Steer PID Error",
+            mod.getSteerMotorPIDError());
+        SmartDashboard.putNumber("Module " + mod.moduleNumber + " Steer Last Encoder Angle",
+            mod.getLastAngle());
+
       }
     }
   }
