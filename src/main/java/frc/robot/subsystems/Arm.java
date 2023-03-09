@@ -20,10 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
-import frc.robot.Constants.constControllers.ScoringButton;
-import frc.robot.Constants.constControllers.ScoringGrid;
-import frc.robot.Constants.constControllers.ScoringLevel;
-import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
 
@@ -44,10 +40,7 @@ public class Arm extends SubsystemBase {
   Rotation2d goalShoulderAngle;
   Rotation2d goalElbowAngle;
 
-  public GamePiece desiredGamePiece = GamePiece.NONE;
-  public ScoringLevel scoringLevel = ScoringLevel.NONE;
-  public ScoringButton scoringButton = ScoringButton.NONE;
-  public ScoringGrid scoringGrid = ScoringGrid.NONE;
+  int desiredNode;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -69,6 +62,8 @@ public class Arm extends SubsystemBase {
 
     goalShoulderAngle = new Rotation2d();
     goalElbowAngle = new Rotation2d();
+
+    desiredNode = 0;
 
     configure();
   }
@@ -344,56 +339,77 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean isCubeNode() {
-    if (scoringButton == ScoringButton.FIFTH || scoringButton == ScoringButton.EIGHTH) {
-      return true;
-    } else {
-      return false;
-    }
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 2 ||
+        gridlessNode == 5;
   }
 
   public boolean isConeNode() {
-    if (scoringButton == ScoringButton.FOURTH || scoringButton == ScoringButton.SIXTH
-        || scoringButton == ScoringButton.SEVENTH || scoringButton == ScoringButton.NINTH) {
-      return true;
-    } else {
-      return false;
-    }
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 1 ||
+        gridlessNode == 3 ||
+        gridlessNode == 4 ||
+        gridlessNode == 6;
+  }
+
+  public boolean isHighNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 1 ||
+        gridlessNode == 2 ||
+        gridlessNode == 3;
+  }
+
+  public boolean isMidNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 4 ||
+        gridlessNode == 5 ||
+        gridlessNode == 6;
+  }
+
+  public boolean isHybridNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 7 ||
+        gridlessNode == 8 ||
+        gridlessNode == 9;
+  }
+
+  public boolean isValidNode() {
+    return desiredNode > 0 && desiredNode <= 27;
+  }
+
+  /**
+   * Set the desired node. 0 represents no desired node, and there are a total of
+   * 27 nodes.
+   * 
+   * <pre>
+   *1, 2, 3, 10, 11, 12, 19, 20, 21
+   *4, 5, 6, 13, 14, 15, 22, 23, 24
+   *7, 8, 9, 16, 17, 18, 25, 26, 27
+   * </pre>
+   * 
+   * @param desiredNode Node to desire
+   */
+  public void setDesiredNode(int desiredNode) {
+    this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
   }
 
   public void setGoalAnglesFromNumpad() {
-    if (isCubeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
-      }
 
-    } else if (isConeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
-      }
-
-    } else {
+    if (isHybridNode()) {
       setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+    } else if (isCubeNode() && isHighNode()) {
+      setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+    } else if (isCubeNode() && isMidNode()) {
+      setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+    } else if (isConeNode() && isHighNode()) {
+      setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
+    } else if (isConeNode() && isMidNode()) {
+      setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
     }
   }
 
   @Override
   public void periodic() {
-
-    SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
-    SmartDashboard.putString("scoringLevel", scoringLevel.toString());
-    SmartDashboard.putString("scoringColumn", scoringButton.toString());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
@@ -427,6 +443,13 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
 
       SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
+
+      SmartDashboard.putNumber("Arm Desired Node", desiredNode);
+      SmartDashboard.putBoolean("Arm Is High Node", isHighNode());
+      SmartDashboard.putBoolean("Arm Is Mid Node", isMidNode());
+      SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
+      SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
+      SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
 
     }
   }

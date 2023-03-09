@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
-import frc.robot.Constants.constVision.GamePiece;
+import frc.robot.Constants.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
