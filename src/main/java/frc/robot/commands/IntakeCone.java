@@ -8,7 +8,7 @@ import com.frcteam3255.components.SN_Blinkin;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.RobotPreferences.prefArm;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
@@ -24,7 +24,7 @@ public class IntakeCone extends SequentialCommandGroup {
     addCommands(
         // - Lower the arm so that the intake is cone level
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetConeShoulderAngle, prefArm.armPresetConeElbowAngle)),
+            () -> subArm.setGoalArmState(ArmState.FLOOR_INTAKE)),
 
         // - Wait until the arm has reached the desired position
         Commands.waitUntil(subArm::areJointsInTolerance),
@@ -34,7 +34,7 @@ public class IntakeCone extends SequentialCommandGroup {
 
         // - Raise arm to stow position
         Commands.runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
+            () -> subArm.setGoalArmState(ArmState.STOWED)));
 
   }
 }

@@ -38,15 +38,6 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
 
-    switch () {
-      case ArmState:
-
-        break;
-
-      default:
-        break;
-    }
-
     shoulderAngle = Rotation2d.fromDegrees(
         subArm.getGoalShoulderAngle().getDegrees()
             + (shoulderAdjuster.getAsDouble() * prefArm.shoulderAdjustRange.getValue()));
