@@ -18,8 +18,8 @@ public class MoveArm extends CommandBase {
   DoubleSupplier shoulderAdjuster;
   DoubleSupplier elbowAdjuster;
 
-  Rotation2d goalShoulderAngle;
-  Rotation2d goalElbowAngle;
+  Rotation2d shoulderAngle;
+  Rotation2d elbowAngle;
 
   public MoveArm(Arm subArm, DoubleSupplier shoulderAdjuster, DoubleSupplier elbowAdjuster) {
     this.subArm = subArm;
@@ -32,21 +32,30 @@ public class MoveArm extends CommandBase {
 
   @Override
   public void initialize() {
-    subArm.setGoalAngles(subArm.getShoulderPosition(), subArm.getElbowPosition());
+    subArm.setGoalAnglesToCurrentAngles();
   }
 
   @Override
   public void execute() {
 
-    goalShoulderAngle = Rotation2d.fromDegrees(
+    switch () {
+      case ArmState:
+
+        break;
+
+      default:
+        break;
+    }
+
+    shoulderAngle = Rotation2d.fromDegrees(
         subArm.getGoalShoulderAngle().getDegrees()
             + (shoulderAdjuster.getAsDouble() * prefArm.shoulderAdjustRange.getValue()));
 
-    goalElbowAngle = Rotation2d.fromDegrees(
+    elbowAngle = Rotation2d.fromDegrees(
         subArm.getGoalElbowAngle().getDegrees()
             + (elbowAdjuster.getAsDouble() * prefArm.elbowAdjustRange.getValue()));
 
-    subArm.setJointPositions(goalShoulderAngle, goalElbowAngle);
+    subArm.setJointPositions(shoulderAngle, elbowAngle);
 
   }
 

@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
@@ -20,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringGrid;
 import frc.robot.Constants.constControllers.ScoringLevel;
@@ -44,6 +44,8 @@ public class Arm extends SubsystemBase {
   Rotation2d goalShoulderAngle;
   Rotation2d goalElbowAngle;
 
+  ArmState goalArmState;
+
   public GamePiece desiredGamePiece = GamePiece.NONE;
   public ScoringLevel scoringLevel = ScoringLevel.NONE;
   public ScoringButton scoringButton = ScoringButton.NONE;
@@ -67,8 +69,7 @@ public class Arm extends SubsystemBase {
       elbowOffset = constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET;
     }
 
-    goalShoulderAngle = new Rotation2d();
-    goalElbowAngle = new Rotation2d();
+    goalArmState = ArmState.NONE;
 
     configure();
   }
@@ -290,19 +291,66 @@ public class Arm extends SubsystemBase {
     return new Translation2d(x, y);
   }
 
-  /**
-   * Set the goal angles for the shoulder and elbow.
-   * 
-   * @param shoulderAngle Goal shoulder angle
-   * @param elbowAngle    Goal elbow angle
-   */
-  public void setGoalAngles(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
-    goalShoulderAngle = shoulderAngle;
-    goalElbowAngle = elbowAngle;
+  public void setGoalArmState(ArmState goalArmState) {
+    this.goalArmState = goalArmState;
+  }
+
+  public ArmState getGoalArmState() {
+    return goalArmState;
   }
 
   /**
-   * Get the goal shoulder angle.
+   * Set the goal shoulder and elbow angle from a given ArmState.
+   * 
+   * @param armState Arm state to set goal angles to
+   */
+  public void setGoalAnglesFromArmState(ArmState armState) {
+    setGoalAngles(armState.shoulderAngle, armState.elbowAngle);
+  }
+
+  /**
+   * Set the goal shoulder and elbow angles to the current shoulder and elbow
+   * angles. This is useful to use after reenabling, and the actual positions may
+   * have drifted away from the goal positions.
+   */
+  public void setGoalAnglesToCurrentAngles() {
+    setGoalAngles(getShoulderPosition(), getElbowPosition());
+  }
+
+  /**
+   * Given a current state and a goal state, get any state that must come
+   * inbetween the two given states. If the goal state can be traveled to directly
+   * from the current state, the goal state will be returned.
+   * 
+   * @param currentState The current state of the arm
+   * @param goalState    The goal state of the arm
+   * @return State that must come in between the two states; returns the goal
+   *         state if none exist
+   */
+  public ArmState getTransitionState(ArmState currentState, ArmState goalState) {
+
+    if (currentState == ArmState.SHELF_INTAKE
+        && goalState == ArmState.FLOOR_INTAKE) {
+      return ArmState.STOWED;
+    }
+
+    return goalState;
+
+  }
+
+  /**
+   * Set the goal shoulder and elbow angle.
+   * 
+   * @param goalShoulderAngle Goal shoulder angle
+   * @param goalElbowAngle    Goal elbow angle
+   */
+  private void setGoalAngles(Rotation2d goalShoulderAngle, Rotation2d goalElbowAngle) {
+    this.goalShoulderAngle = goalShoulderAngle;
+    this.goalElbowAngle = goalElbowAngle;
+  }
+
+  /**
+   * Get the goal shoulder angle
    * 
    * @return Goal shoulder angle
    */
@@ -311,22 +359,12 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Get the goal elbow angle.
+   * Get the goal elbow angle
    * 
-   * @return Goal elbow angle.
+   * @return Get the
    */
   public Rotation2d getGoalElbowAngle() {
     return goalElbowAngle;
-  }
-
-  /**
-   * Set the goal angles for the shoulder and elbow using SN_DoublePreferences.
-   * 
-   * @param shoulderDegrees Shoulder goal angle in degrees
-   * @param elbowDegrees    Elbow goal angle in degrees
-   */
-  public void setGoalAngles(SN_DoublePreference shoulderDegrees, SN_DoublePreference elbowDegrees) {
-    setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
   }
 
   public boolean isShoulderInTolerance() {
@@ -363,28 +401,28 @@ public class Arm extends SubsystemBase {
   public void setGoalAnglesFromNumpad() {
     if (isCubeNode()) {
       if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
+        setGoalArmState(ArmState.MID_CUBE_SCORE);
       } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
+        setGoalArmState(ArmState.HIGH_CUBE_SCORE_PLACE);
       } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+        setGoalArmState(ArmState.HYBRID_SCORE);
       } else if (scoringLevel == ScoringLevel.NONE) {
         // do nothing in this case
       }
 
     } else if (isConeNode()) {
       if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
+        setGoalArmState(ArmState.MID_CONE_SCORE);
       } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
+        setGoalArmState(ArmState.HIGH_CONE_SCORE);
       } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+        setGoalArmState(ArmState.HYBRID_SCORE);
       } else if (scoringLevel == ScoringLevel.NONE) {
         // do nothing in this case
       }
 
     } else {
-      setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+      setGoalArmState(ArmState.HYBRID_SCORE);
     }
   }
 
