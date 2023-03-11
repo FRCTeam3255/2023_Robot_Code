@@ -31,6 +31,7 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
+    desiredPattern = PatternType.ColorWavesPartyPalette;
     subLEDs.setLEDPattern(desiredPattern);
   }
 
