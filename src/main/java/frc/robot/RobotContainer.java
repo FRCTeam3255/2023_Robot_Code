@@ -18,13 +18,11 @@ import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
-import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -112,41 +110,23 @@ public class RobotContainer {
     // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
     // subCollector));
 
-    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subIntake, subArm));
+    // Intake Cone (rbump)
 
-    // Set stow Arm preset
+    // Set stow Arm preset (b)
 
-    // Set low Arm preset
+    // Set low Arm preset (a)
 
-    // Set mid Arm preset
+    // Set Shelf Arm preset (y)
 
-    // Set Shelf Arm preset
+    // prep place (x)
 
-    conOperator.btn_Y
-        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
+    // Place Game piece (rt)
 
-    // Prep Place; Will be rebound to Left Trigger
-    // conOperator.btn_LeftTrigger.whileTrue(Commands.run(() ->
-    // subArm.setGoalAnglesFromNumpad()).repeatedly());
-
-    // Place Game piece; Will be rebound to Right Trigger
-    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
-
-    // // Set Collector to starting config and stop the rollers
-    // conOperator.btn_North
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
-
-    // // Set Collector rollers to intake height and spin the rollers
-    // conOperator.btn_South
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
-
-    // Spin the Intake forward
+    // Spin the Intake forward (start)
     conOperator.btn_Start
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 
-    // Spin the Intake in reverse
+    // Spin the Intake in reverse (back)
     conOperator.btn_Back
         .whileTrue(
             Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
