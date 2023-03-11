@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.I2C;
-
 public class RobotMap {
 
   // order of subsystems (and adjacent classes) shall be:
@@ -47,7 +45,6 @@ public class RobotMap {
   }
 
   public static final class mapIntake {
-    public static final I2C.Port COLOR_SENSOR_I2C = I2C.Port.kMXP;
     public static final int INTAKE_LEFT_MOTOR_CAN = 20;
     public static final int INTAKE_RIGHT_MOTOR_CAN = 21;
     public static final int INTAKE_LIMIT_SWITCH_DIO = 4;
