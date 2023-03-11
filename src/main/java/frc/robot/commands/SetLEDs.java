@@ -75,10 +75,7 @@ public class SetLEDs extends CommandBase {
         desiredPattern = constLEDs.DEFAULT_COLOR;
       }
     }
-  }
-
-  subLEDs.setLEDPattern(desiredPattern);
-
+    subLEDs.setLEDPattern(desiredPattern);
   }
 
   @Override
