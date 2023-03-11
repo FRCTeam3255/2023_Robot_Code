@@ -32,10 +32,10 @@ public class Vision extends SubsystemBase {
     }
 
     PhotonCamera ARCamera = new PhotonCamera(constVision.AR_PHOTON_NAME);
-    Transform3d robotToAR = constVision.ROBOT_TO_AR;
+    Transform3d robotToAR = constVision.ROBOT_TO_OV;
 
     PhotonCamera OVCamera = new PhotonCamera(constVision.OV_PHOTON_NAME);
-    Transform3d robotToOV = constVision.ROBOT_TO_OV;
+    Transform3d robotToOV = constVision.ROBOT_TO_AR;
 
     PhotonCamera lifecam = new PhotonCamera(constVision.LIFECAM_PHOTON_NAME);
     Transform3d robotToLifecam = constVision.ROBOT_TO_LIFECAM;
