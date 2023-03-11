@@ -248,7 +248,7 @@ public class Arm extends SubsystemBase {
    * @return If the joint within tolerance of the goal
    */
   private boolean isJointInToleranceToAngle(Rotation2d jointRotation, Rotation2d goalRotation, Rotation2d tolerance) {
-    double jointToGoal = Math.abs(jointRotation.getRadians() - goalRotation.getDegrees());
+    double jointToGoal = Math.abs(jointRotation.getRadians() - goalRotation.getRadians());
     double fudgedTolerance = tolerance.getRadians() * prefArm.armToleranceFudgeFactor.getValue();
 
     return jointToGoal < fudgedTolerance;
@@ -365,6 +365,43 @@ public class Arm extends SubsystemBase {
     this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
   }
 
+  public void setStateFromDesiredNode() {
+    switch (desiredNode % 9) {
+      case 0:
+        setGoalState(ArmState.NONE);
+        break;
+      case 1:
+        setGoalState(ArmState.HIGH_CONE_SCORE);
+        break;
+      case 2:
+        setGoalState(ArmState.HIGH_CUBE_SCORE_PLACE);
+        break;
+      case 3:
+        setGoalState(ArmState.HIGH_CONE_SCORE);
+        break;
+      case 4:
+        setGoalState(ArmState.MID_CONE_SCORE);
+        break;
+      case 5:
+        setGoalState(ArmState.MID_CUBE_SCORE);
+        break;
+      case 6:
+        setGoalState(ArmState.MID_CONE_SCORE);
+        break;
+      case 7:
+        setGoalState(ArmState.HYBRID_SCORE);
+        break;
+      case 8:
+        setGoalState(ArmState.HYBRID_SCORE);
+        break;
+      case 9:
+        setGoalState(ArmState.HYBRID_SCORE);
+      default:
+        setGoalState(ArmState.NONE);
+        break;
+    }
+  }
+
   @Override
   public void periodic() {
 
@@ -403,7 +440,6 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
       SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
       SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
-
     }
   }
 }
