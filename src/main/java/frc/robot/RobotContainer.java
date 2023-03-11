@@ -21,6 +21,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
@@ -130,6 +131,7 @@ public class RobotContainer {
     conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.setStateFromDesiredNode()));
 
     // Place Game piece (rt)
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
 
     // Spin the Intake forward
     conOperator.btn_Start
