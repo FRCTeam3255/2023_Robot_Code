@@ -253,15 +253,6 @@ public final class Constants {
     public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
 
     public static final boolean LIMIT_SWITCH_INVERTED = true;
-
-    // RGB game piece colors
-    public static final double CONE_COLOR_R = 0.34509;
-    public static final double CONE_COLOR_G = 0.51764;
-    public static final double CONE_COLOR_B = 0.13333;
-
-    public static final double CUBE_COLOR_R = 0.22745;
-    public static final double CUBE_COLOR_G = 0.39607;
-    public static final double CUBE_COLOR_B = 0.37254;
   }
 
   public static final class constCollector {
