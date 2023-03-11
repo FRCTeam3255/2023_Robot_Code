@@ -229,7 +229,6 @@ public class RobotPreferences {
 
   public static final class prefCollector {
 
-    // TODO: Find PID values
     public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.09);
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
