@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
 
@@ -210,6 +211,43 @@ public class Arm extends SubsystemBase {
   private Rotation2d getElbowPosition() {
     return Rotation2d
         .fromDegrees(SN_Math.falconToDegrees(elbowJoint.getSelectedSensorPosition(), constArm.ELBOW_GEAR_RATIO));
+  }
+
+  /**
+   * Get the current state of the arm. If the arm is not currently at a valid
+   * state, this will return ArmState.NONE.
+   * 
+   * @return Current arm state.
+   */
+  public ArmState getCurrentState() {
+    for (ArmState state : ArmState.values()) {
+      if (areJointsInToleranceToState(state)) {
+        return state;
+      }
+    }
+
+    return ArmState.NONE;
+  }
+
+  private boolean isJointInToleranceToAngle(Rotation2d jointRotation, Rotation2d goalRotation, Rotation2d tolerance) {
+    double jointToGoal = Math.abs(jointRotation.getRadians() - goalRotation.getDegrees());
+    double fudgedTolerance = tolerance.getRadians() * prefArm.armToleranceFudgeFactor.getValue();
+
+    return jointToGoal < fudgedTolerance;
+  }
+
+  private boolean areJointsInToleranceToState(ArmState state) {
+    boolean isShoulderInTolerance = isJointInToleranceToAngle(
+        getShoulderPosition(),
+        state.shoulderAngle,
+        Rotation2d.fromDegrees(prefArm.shoulderTolerance.getValue()));
+
+    boolean isElbowInTolerance = isJointInToleranceToAngle(
+        getElbowPosition(),
+        state.elbowAngle,
+        Rotation2d.fromDegrees(prefArm.elbowTolerance.getValue()));
+
+    return isShoulderInTolerance && isElbowInTolerance;
   }
 
   /**
