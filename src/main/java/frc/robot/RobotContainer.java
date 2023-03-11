@@ -16,6 +16,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
@@ -23,11 +24,6 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
-import frc.robot.commands.Auto.CubeDockShoot;
-import frc.robot.commands.Auto.OnePiece.CenterCube;
-import frc.robot.commands.Auto.OnePiece.CubeThenDock;
-import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
-import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.RobotPreferences.prefIntake;
@@ -126,20 +122,20 @@ public class RobotContainer {
 
     // Set stow Arm preset
     conOperator.btn_B.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
+        .runOnce(() -> subArm.setGoalArmState(ArmState.STOWED)));
 
     // Set low Arm preset
     conOperator.btn_A.onTrue(Commands
         .runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
+            () -> subArm.setGoalArmState(ArmState.HYBRID_SCORE)));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
 
     // Set mid Arm preset
-    conOperator.btn_X.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+    conOperator.btn_X.whileTrue(Commands.run(() -> subArm.setGoalStateFromNumpad()).repeatedly());
 
     // Set Shelf Arm preset
     conOperator.btn_Y.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
+        .runOnce(() -> subArm.setGoalArmState(ArmState.SHELF_INTAKE)));
     conOperator.btn_Y
         .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
 

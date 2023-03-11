@@ -26,21 +26,8 @@ public class PlaceGamePiece extends SequentialCommandGroup {
     this.subIntake = subIntake;
 
     addCommands(
-        new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
+        new InstantCommand(() -> subArm.setGoalStateFromNumpad()),
         new WaitUntilCommand(() -> subArm.areJointsInTolerance()),
-
-        // Lower the arm UNLESS
-        // Its a hybrid node, we provided no scoring level, or its a cube node
-        new InstantCommand(() -> subArm.setGoalAngles(
-            Rotation2d.fromDegrees(
-                subArm.getGoalShoulderAngle().getDegrees() - prefArm.armShoulderLoweringAngle.getValue()),
-            Rotation2d.fromDegrees(
-                subArm.getGoalElbowAngle().getDegrees() - prefArm.armElbowLoweringAngle.getValue())))
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
-                || subArm.isCubeNode()),
-        new WaitUntilCommand(() -> subArm.areJointsInTolerance())
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
-                || subArm.isCubeNode()),
 
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake)
             .until(() -> !subIntake.isGamePieceCollected()),

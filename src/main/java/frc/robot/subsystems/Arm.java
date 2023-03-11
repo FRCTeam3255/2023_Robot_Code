@@ -41,11 +41,6 @@ public class Arm extends SubsystemBase {
   double shoulderOffset;
   double elbowOffset;
 
-  Rotation2d goalShoulderAngle;
-  Rotation2d goalElbowAngle;
-
-  ArmState goalArmState;
-
   public GamePiece desiredGamePiece = GamePiece.NONE;
   public ScoringLevel scoringLevel = ScoringLevel.NONE;
   public ScoringButton scoringButton = ScoringButton.NONE;
@@ -68,8 +63,6 @@ public class Arm extends SubsystemBase {
       shoulderOffset = constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET;
       elbowOffset = constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET;
     }
-
-    goalArmState = ArmState.NONE;
 
     configure();
   }
@@ -291,32 +284,6 @@ public class Arm extends SubsystemBase {
     return new Translation2d(x, y);
   }
 
-  public void setGoalArmState(ArmState goalArmState) {
-    this.goalArmState = goalArmState;
-  }
-
-  public ArmState getGoalArmState() {
-    return goalArmState;
-  }
-
-  /**
-   * Set the goal shoulder and elbow angle from a given ArmState.
-   * 
-   * @param armState Arm state to set goal angles to
-   */
-  public void setGoalAnglesFromArmState(ArmState armState) {
-    setGoalAngles(armState.shoulderAngle, armState.elbowAngle);
-  }
-
-  /**
-   * Set the goal shoulder and elbow angles to the current shoulder and elbow
-   * angles. This is useful to use after reenabling, and the actual positions may
-   * have drifted away from the goal positions.
-   */
-  public void setGoalAnglesToCurrentAngles() {
-    setGoalAngles(getShoulderPosition(), getElbowPosition());
-  }
-
   /**
    * Given a current state and a goal state, get any state that must come
    * inbetween the two given states. If the goal state can be traveled to directly
@@ -329,56 +296,8 @@ public class Arm extends SubsystemBase {
    */
   public ArmState getTransitionState(ArmState currentState, ArmState goalState) {
 
-    if (currentState == ArmState.SHELF_INTAKE
-        && goalState == ArmState.FLOOR_INTAKE) {
-      return ArmState.STOWED;
-    }
-
     return goalState;
 
-  }
-
-  /**
-   * Set the goal shoulder and elbow angle.
-   * 
-   * @param goalShoulderAngle Goal shoulder angle
-   * @param goalElbowAngle    Goal elbow angle
-   */
-  private void setGoalAngles(Rotation2d goalShoulderAngle, Rotation2d goalElbowAngle) {
-    this.goalShoulderAngle = goalShoulderAngle;
-    this.goalElbowAngle = goalElbowAngle;
-  }
-
-  /**
-   * Get the goal shoulder angle
-   * 
-   * @return Goal shoulder angle
-   */
-  public Rotation2d getGoalShoulderAngle() {
-    return goalShoulderAngle;
-  }
-
-  /**
-   * Get the goal elbow angle
-   * 
-   * @return Get the
-   */
-  public Rotation2d getGoalElbowAngle() {
-    return goalElbowAngle;
-  }
-
-  public boolean isShoulderInTolerance() {
-    return Math.abs(getShoulderPosition().getRadians() - getGoalShoulderAngle().getRadians()) < (Units
-        .degreesToRadians(prefArm.shoulderTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue()));
-  }
-
-  public boolean isElbowInTolerance() {
-    return Math.abs(getElbowPosition().getRadians() - getGoalElbowAngle().getRadians()) < Units
-        .degreesToRadians(prefArm.elbowTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue());
-  }
-
-  public boolean areJointsInTolerance() {
-    return isShoulderInTolerance() && isElbowInTolerance();
   }
 
   public boolean isCubeNode() {
@@ -395,34 +314,6 @@ public class Arm extends SubsystemBase {
       return true;
     } else {
       return false;
-    }
-  }
-
-  public void setGoalAnglesFromNumpad() {
-    if (isCubeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalArmState(ArmState.MID_CUBE_SCORE);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalArmState(ArmState.HIGH_CUBE_SCORE_PLACE);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalArmState(ArmState.HYBRID_SCORE);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
-      }
-
-    } else if (isConeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalArmState(ArmState.MID_CONE_SCORE);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalArmState(ArmState.HIGH_CONE_SCORE);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalArmState(ArmState.HYBRID_SCORE);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
-      }
-
-    } else {
-      setGoalArmState(ArmState.HYBRID_SCORE);
     }
   }
 
@@ -449,22 +340,15 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Tip Distance",
           Units.metersToInches(getArmTipPosition().getDistance(new Translation2d())));
 
-      SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
-      SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
-
       SmartDashboard.putNumber("Arm PID Shoulder Goal",
           SN_Math.falconToDegrees(shoulderJoint.getClosedLoopTarget(), constArm.SHOULDER_GEAR_RATIO));
       SmartDashboard.putNumber("Arm PID Shoudler Error",
           SN_Math.falconToDegrees(shoulderJoint.getClosedLoopError(), constArm.SHOULDER_GEAR_RATIO));
-      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", isShoulderInTolerance());
 
       SmartDashboard.putNumber("Arm PID Elbow Goal",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopTarget(), constArm.ELBOW_GEAR_RATIO));
       SmartDashboard.putNumber("Arm PID Elbow Error",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopError(), constArm.ELBOW_GEAR_RATIO));
-      SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
-
-      SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
 
     }
   }

@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 
@@ -21,6 +22,8 @@ public class MoveArm extends CommandBase {
   Rotation2d shoulderAngle;
   Rotation2d elbowAngle;
 
+  ArmState nextArmState;
+
   public MoveArm(Arm subArm, DoubleSupplier shoulderAdjuster, DoubleSupplier elbowAdjuster) {
     this.subArm = subArm;
 
@@ -33,10 +36,17 @@ public class MoveArm extends CommandBase {
   @Override
   public void initialize() {
     subArm.setGoalAnglesToCurrentAngles();
+    subArm.setGoalArmState(ArmState.NONE);
   }
 
   @Override
   public void execute() {
+
+    if (subArm.getCurrentArmState() != ArmState.NONE) {
+      nextArmState = subArm.getTransitionState(subArm.getCurrentArmState(), subArm.getGoalArmState());
+    }
+
+    subArm.setGoalAnglesFromArmState(nextArmState);
 
     shoulderAngle = Rotation2d.fromDegrees(
         subArm.getGoalShoulderAngle().getDegrees()
