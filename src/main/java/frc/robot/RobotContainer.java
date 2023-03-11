@@ -16,14 +16,15 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
-import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -113,10 +114,14 @@ public class RobotContainer {
     // Intake Cone (rbump)
 
     // Set stow Arm preset (b)
+    conOperator.btn_B.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
 
     // Set low Arm preset (a)
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.HYBRID_SCORE)));
 
     // Set Shelf Arm preset (y)
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.SHELF_INTAKE)))
+        .whileTrue(new IntakeGamePiece(subIntake));
 
     // prep place (x)
 
@@ -124,12 +129,11 @@ public class RobotContainer {
 
     // Spin the Intake forward (start)
     conOperator.btn_Start
-        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
+        .whileTrue(new IntakeGamePiece(subIntake));
 
     // Spin the Intake in reverse (back)
     conOperator.btn_Back
-        .whileTrue(
-            Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
+        .whileTrue(subIntake.releaseCommand());
   }
 
   public static boolean isPracticeBot() {
