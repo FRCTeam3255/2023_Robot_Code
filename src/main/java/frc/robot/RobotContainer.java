@@ -20,6 +20,7 @@ import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
@@ -71,8 +72,8 @@ public class RobotContainer {
     subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
-    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-    // subVision));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+        subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm));
 
     configureBindings();
