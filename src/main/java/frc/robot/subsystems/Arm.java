@@ -225,7 +225,6 @@ public class Arm extends SubsystemBase {
         return state;
       }
     }
-
     return ArmState.NONE;
   }
 
