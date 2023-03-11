@@ -6,12 +6,15 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
+import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +23,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
 import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapIntake;
+import frc.robot.RobotPreferences.prefControllers;
 import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
@@ -32,7 +36,12 @@ public class Intake extends SubsystemBase {
   Color cubeColor;
   DigitalInput limitSwitch;
 
-  public Intake() {
+  SN_XboxController conDriver;
+  SN_XboxController conOperator;
+
+  Boolean hasGamePiece;
+
+  public Intake(SN_XboxController conDriver, SN_XboxController conOperator) {
     leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
     rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
 
@@ -46,6 +55,11 @@ public class Intake extends SubsystemBase {
     colorMatcher.addColorMatch(cubeColor);
 
     limitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
+
+    this.conDriver = conDriver;
+    this.conOperator = conOperator;
+
+    hasGamePiece = false;
 
     configure();
   }
@@ -113,6 +127,14 @@ public class Intake extends SubsystemBase {
     rightMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public void setInstantRumble() {
+    conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
+    conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
+    Timer.delay(prefControllers.rumbleDelay.getValue());
+    conDriver.setRumble(RumbleType.kBothRumble, 0);
+    conDriver.setRumble(RumbleType.kBothRumble, 0);
+  }
+
   public Command releaseCommand() {
     return this.run(() -> setMotorSpeed(prefIntake.intakeReleaseSpeed));
   }
@@ -138,6 +160,14 @@ public class Intake extends SubsystemBase {
       // SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
       // SmartDashboard.putNumber("Intake Color Sensor Proximity",
       // colorSensor.getProximity());
+    }
+
+    if (hasGamePiece == false && getLimitSwitch() == true) {
+      hasGamePiece = true;
+    }
+    if (hasGamePiece == true && getLimitSwitch() == false) {
+      hasGamePiece = false;
+      setInstantRumble();
     }
   }
 }

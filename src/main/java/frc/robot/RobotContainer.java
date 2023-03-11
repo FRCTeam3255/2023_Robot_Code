@@ -47,7 +47,7 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
-  private final Intake subIntake = new Intake();
+  private final Intake subIntake = new Intake(conDriver, conOperator);
   // private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
