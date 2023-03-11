@@ -37,6 +37,8 @@ public class Arm extends SubsystemBase {
   double shoulderOffset;
   double elbowOffset;
 
+  ArmState goalState;
+
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
     elbowJoint = new TalonFX(mapArm.ELBOW_CAN);
@@ -54,6 +56,8 @@ public class Arm extends SubsystemBase {
       shoulderOffset = constArm.SHOULDER_ABSOLUTE_ENCODER_OFFSET;
       elbowOffset = constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET;
     }
+
+    goalState = ArmState.NONE;
 
     configure();
   }
@@ -228,6 +232,15 @@ public class Arm extends SubsystemBase {
     return ArmState.NONE;
   }
 
+  /**
+   * Check if a given joint rotation is within a given tolerance to a given goal
+   * rotation.
+   * 
+   * @param jointRotation Current rotation of joint
+   * @param goalRotation  Goal rotation of joint
+   * @param tolerance     Tolerance of joint rotation
+   * @return If the joint within tolerance of the goal
+   */
   private boolean isJointInToleranceToAngle(Rotation2d jointRotation, Rotation2d goalRotation, Rotation2d tolerance) {
     double jointToGoal = Math.abs(jointRotation.getRadians() - goalRotation.getDegrees());
     double fudgedTolerance = tolerance.getRadians() * prefArm.armToleranceFudgeFactor.getValue();
@@ -235,6 +248,12 @@ public class Arm extends SubsystemBase {
     return jointToGoal < fudgedTolerance;
   }
 
+  /**
+   * Check if the shoulder and elbow joints are within tolerance of a given state.
+   * 
+   * @param state State to check if joints are in tolerance to
+   * @return If joints are in tolerance of a given state
+   */
   private boolean areJointsInToleranceToState(ArmState state) {
     boolean isShoulderInTolerance = isJointInToleranceToAngle(
         getShoulderPosition(),
@@ -247,6 +266,24 @@ public class Arm extends SubsystemBase {
         Rotation2d.fromDegrees(prefArm.elbowTolerance.getValue()));
 
     return isShoulderInTolerance && isElbowInTolerance;
+  }
+
+  /**
+   * Get the goal arm state.
+   * 
+   * @return Goal arm state
+   */
+  public ArmState getGoalState() {
+    return goalState;
+  }
+
+  /**
+   * Set the goal arm state.
+   * 
+   * @param goalState Goal arm state
+   */
+  public void setGoalState(ArmState goalState) {
+    this.goalState = goalState;
   }
 
   /**
@@ -295,6 +332,9 @@ public class Arm extends SubsystemBase {
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopTarget(), constArm.ELBOW_GEAR_RATIO));
       SmartDashboard.putNumber("Arm PID Elbow Error",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopError(), constArm.ELBOW_GEAR_RATIO));
+
+      SmartDashboard.putString("Arm State", getCurrentState().toString());
+      SmartDashboard.putString("Arm Goal State", getGoalState().toString());
     }
   }
 }
