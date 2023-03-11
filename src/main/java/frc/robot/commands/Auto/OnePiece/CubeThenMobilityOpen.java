@@ -33,16 +33,18 @@ public class CubeThenMobilityOpen extends SequentialCommandGroup {
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
 
-        Commands
-            .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
-            .until(() -> subArm.areJointsInTolerance()),
+        // Commands
+        // .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle,
+        // prefArm.armShootCubeHighElbowAngle))
+        // .until(() -> subArm.areJointsInTolerance()),
         Commands.waitSeconds(0.5),
 
         Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
-        Commands
-            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
+        // Commands
+        // .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle,
+        // prefArm.armPresetStowElbowAngle)),
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 

@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
-import frc.robot.commands.IntakeCone;
-import frc.robot.commands.PlaceGamePiece;
+// import frc.robot.commands.IntakeCone;
+// import frc.robot.commands.PlaceGamePiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -29,15 +29,16 @@ public class CubeConeDock extends SequentialCommandGroup {
     this.subIntake = subIntake;
     this.subArm = subArm;
 
-    subArm.scoringLevel = ScoringLevel.HIGH;
+    // subArm.scoringLevel = ScoringLevel.HIGH;
 
     addCommands(
         // Prep to shoot cube
         Commands.waitSeconds(1),
         subDrivetrain.swerveAutoBuilder.resetPose(subDrivetrain.cubeThenDock),
-        Commands
-            .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
-            .until(() -> subArm.areJointsInTolerance()),
+        // Commands
+        // .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle,
+        // prefArm.armShootCubeHighElbowAngle))
+        // .until(() -> subArm.areJointsInTolerance()),
         Commands.waitSeconds(0.5),
 
         // Shoot cube
@@ -51,7 +52,8 @@ public class CubeConeDock extends SequentialCommandGroup {
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)),
 
         // Intake cone
-        new IntakeCone(subIntake, subArm).until(() -> subIntake.isGamePieceCollected()),
+        // new IntakeCone(subIntake, subArm).until(() ->
+        // subIntake.isGamePieceCollected()),
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
         // Drive to go prep
@@ -59,10 +61,11 @@ public class CubeConeDock extends SequentialCommandGroup {
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)),
 
         // Prep
-        Commands
-            .run(
-                () -> subArm.setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle))
-            .until(() -> subArm.areJointsInTolerance()),
+        // Commands
+        // .run(
+        // () -> subArm.setGoalAngles(prefArm.armPresetConeHighShoulderAngle,
+        // prefArm.armPresetConeHighElbowAngle))
+        // .until(() -> subArm.areJointsInTolerance()),
         Commands.waitSeconds(0.5),
 
         // Drive to go Place
@@ -70,7 +73,7 @@ public class CubeConeDock extends SequentialCommandGroup {
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)),
 
         // Place
-        new PlaceGamePiece(subArm, subIntake),
+        // new PlaceGamePiece(subArm, subIntake),
 
         // TODO: DRIVE BACK AND STOW
 
