@@ -117,7 +117,8 @@ public class RobotContainer {
     conOperator.btn_B.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
 
     // Set low Arm preset (a)
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.HYBRID_SCORE)));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.HYBRID_SCORE)))
+        .onTrue(Commands.runOnce(() -> subArm.setDesiredNode(7)));
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.SHELF_INTAKE)))
@@ -127,7 +128,7 @@ public class RobotContainer {
 
     // Place Game piece (rt)
 
-    // Spin the Intake forward (start)
+    // Spin the Intake forward
     conOperator.btn_Start
         .whileTrue(new IntakeGamePiece(subIntake));
 

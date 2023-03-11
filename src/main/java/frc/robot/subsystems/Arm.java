@@ -38,6 +38,10 @@ public class Arm extends SubsystemBase {
   double elbowOffset;
 
   ArmState goalState;
+  Rotation2d goalShoulderAngle;
+  Rotation2d goalElbowAngle;
+
+  int desiredNode;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -58,6 +62,8 @@ public class Arm extends SubsystemBase {
     }
 
     goalState = ArmState.NONE;
+
+    desiredNode = 0;
 
     configure();
   }
@@ -304,6 +310,61 @@ public class Arm extends SubsystemBase {
     return new Translation2d(x, y);
   }
 
+  public boolean isCubeNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 2 ||
+        gridlessNode == 5;
+  }
+
+  public boolean isConeNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 1 ||
+        gridlessNode == 3 ||
+        gridlessNode == 4 ||
+        gridlessNode == 6;
+  }
+
+  public boolean isHighNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 1 ||
+        gridlessNode == 2 ||
+        gridlessNode == 3;
+  }
+
+  public boolean isMidNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 4 ||
+        gridlessNode == 5 ||
+        gridlessNode == 6;
+  }
+
+  public boolean isHybridNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 7 ||
+        gridlessNode == 8 ||
+        gridlessNode == 9;
+  }
+
+  public boolean isValidNode() {
+    return desiredNode > 0 && desiredNode <= 27;
+  }
+
+  /**
+   * Set the desired node. 0 represents no desired node, and there are a total of
+   * 27 nodes.
+   * 
+   * <pre>
+   *1, 2, 3, 10, 11, 12, 19, 20, 21
+   *4, 5, 6, 13, 14, 15, 22, 23, 24
+   *7, 8, 9, 16, 17, 18, 25, 26, 27
+   * </pre>
+   * 
+   * @param desiredNode Node to desire
+   */
+  public void setDesiredNode(int desiredNode) {
+    this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
+  }
+
   @Override
   public void periodic() {
 
@@ -335,6 +396,14 @@ public class Arm extends SubsystemBase {
 
       SmartDashboard.putString("Arm State", getCurrentState().toString());
       SmartDashboard.putString("Arm Goal State", getGoalState().toString());
+
+      SmartDashboard.putNumber("Arm Desired Node", desiredNode);
+      SmartDashboard.putBoolean("Arm Is High Node", isHighNode());
+      SmartDashboard.putBoolean("Arm Is Mid Node", isMidNode());
+      SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
+      SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
+      SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
+
     }
   }
 }

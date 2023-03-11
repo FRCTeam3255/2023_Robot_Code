@@ -6,7 +6,6 @@ package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
 // import frc.robot.commands.IntakeCone;
@@ -29,7 +28,7 @@ public class CubeConeDock extends SequentialCommandGroup {
     this.subIntake = subIntake;
     this.subArm = subArm;
 
-    // subArm.scoringLevel = ScoringLevel.HIGH;
+    subArm.setDesiredNode(11);
 
     addCommands(
         // Prep to shoot cube
