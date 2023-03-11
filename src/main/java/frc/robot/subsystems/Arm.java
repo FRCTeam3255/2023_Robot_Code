@@ -113,16 +113,9 @@ public class Arm extends SubsystemBase {
   }
 
   public void resetJointEncodersToAbsolute() {
-    resetShoulderJointToAbsolute();
-    resetElbowJointToAbsolute();
-  }
-
-  private void resetShoulderJointToAbsolute() {
     shoulderJoint.setSelectedSensorPosition(
         SN_Math.degreesToFalcon(getShoulderAbsoluteEncoder().getDegrees(), constArm.SHOULDER_GEAR_RATIO));
-  }
 
-  private void resetElbowJointToAbsolute() {
     elbowJoint.setSelectedSensorPosition(
         SN_Math.degreesToFalcon(getElbowAbsoluteEncoder().getDegrees(), constArm.ELBOW_GEAR_RATIO));
   }
