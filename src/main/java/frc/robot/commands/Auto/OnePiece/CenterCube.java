@@ -7,7 +7,6 @@ package frc.robot.commands.Auto.OnePiece;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.constArm.ArmState;
-import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
