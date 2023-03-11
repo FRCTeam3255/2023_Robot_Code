@@ -9,7 +9,6 @@ import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constLEDs;
-import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -68,17 +67,18 @@ public class SetLEDs extends CommandBase {
       desiredPattern = constLEDs.HAS_GAME_PIECE_COLOR;
     } else {
 
-      if (subArm.scoringButton == ScoringButton.EIGHTH) {
+      if (subArm.isCubeNode()) {
         desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
-      } else if (subArm.scoringButton == ScoringButton.NINTH) {
+      } else if (subArm.isConeNode()) {
         desiredPattern = constLEDs.DESIRED_CONE_COLOR;
       } else {
         desiredPattern = constLEDs.DEFAULT_COLOR;
       }
-
     }
+  }
 
-    subLEDs.setLEDPattern(desiredPattern);
+  subLEDs.setLEDPattern(desiredPattern);
+
   }
 
   @Override
