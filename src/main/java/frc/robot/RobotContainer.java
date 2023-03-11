@@ -20,6 +20,7 @@ import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.MoveArm;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
@@ -61,6 +62,7 @@ public class RobotContainer {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X));
+    subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
     // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
@@ -125,6 +127,7 @@ public class RobotContainer {
         .whileTrue(new IntakeGamePiece(subIntake));
 
     // prep place (x)
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.setStateFromDesiredNode()));
 
     // Place Game piece (rt)
 
@@ -135,6 +138,28 @@ public class RobotContainer {
     // Spin the Intake in reverse (back)
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
+
+    // numpad
+
+    // mid cone
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(4);
+    }));
+
+    // mid cube
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(5);
+    }));
+
+    // high cube
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(2);
+    }));
+    // high cube
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
+    }));
+
   }
 
   public static boolean isPracticeBot() {
