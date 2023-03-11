@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -16,6 +17,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constLEDs;
 import frc.robot.Constants.constControllers.ScoringButton;
 import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.Constants.constVision.GamePiece;
@@ -111,7 +113,8 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
-    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
+    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain)
+        .alongWith(Commands.run(() -> subLEDs.setLEDPattern(constLEDs.DEFENSE_MODE_COLOR))));
 
     // Operator
 
