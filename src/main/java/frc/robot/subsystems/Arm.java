@@ -136,7 +136,7 @@ public class Arm extends SubsystemBase {
    * @param shoulderAngle Shoulder position
    * @param elbowAngle    Elbow position
    */
-  private void setJointPositions(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
+  public void setJointPositions(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
     double shoulderCounts = SN_Math.degreesToFalcon(shoulderAngle.getDegrees(), constArm.SHOULDER_GEAR_RATIO);
     shoulderJoint.set(ControlMode.Position, shoulderCounts);
 
@@ -202,7 +202,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Shoulder joint position
    */
-  private Rotation2d getShoulderPosition() {
+  public Rotation2d getShoulderPosition() {
     return Rotation2d
         .fromDegrees(SN_Math.falconToDegrees(shoulderJoint.getSelectedSensorPosition(), constArm.SHOULDER_GEAR_RATIO));
   }
@@ -212,7 +212,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Elbow joint position
    */
-  private Rotation2d getElbowPosition() {
+  public Rotation2d getElbowPosition() {
     return Rotation2d
         .fromDegrees(SN_Math.falconToDegrees(elbowJoint.getSelectedSensorPosition(), constArm.ELBOW_GEAR_RATIO));
   }
