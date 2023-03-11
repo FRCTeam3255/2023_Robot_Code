@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
@@ -82,7 +83,7 @@ public class Intake extends SubsystemBase {
   public void setInstantRumble() {
     conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
     conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    Timer.delay(prefControllers.rumbleDelay.getValue());
+    Commands.waitSeconds(prefControllers.rumbleDelay.getValue());
     conDriver.setRumble(RumbleType.kBothRumble, 0);
     conDriver.setRumble(RumbleType.kBothRumble, 0);
   }
