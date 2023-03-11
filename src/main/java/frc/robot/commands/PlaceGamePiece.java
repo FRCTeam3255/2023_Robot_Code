@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.constControllers.ScoringLevel;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
@@ -36,11 +35,9 @@ public class PlaceGamePiece extends SequentialCommandGroup {
                 subArm.getGoalShoulderAngle().getDegrees() - prefArm.armShoulderLoweringAngle.getValue()),
             Rotation2d.fromDegrees(
                 subArm.getGoalElbowAngle().getDegrees() - prefArm.armElbowLoweringAngle.getValue())))
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
-                || subArm.isCubeNode()),
+            .unless(() -> subArm.isHybridNode() || !subArm.isValidNode() || subArm.isCubeNode()),
         new WaitUntilCommand(() -> subArm.areJointsInTolerance())
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
-                || subArm.isCubeNode()),
+            .unless(() -> subArm.isHybridNode() || !subArm.isValidNode() || subArm.isCubeNode()),
 
         new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake)
             .until(() -> !subIntake.isGamePieceCollected()),

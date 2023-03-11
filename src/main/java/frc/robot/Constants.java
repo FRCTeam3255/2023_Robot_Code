@@ -38,18 +38,6 @@ public final class Constants {
     // public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
     // public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
     // public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
-
-    public enum ScoringLevel {
-      NONE, HYBRID, MID, HIGH;
-    }
-
-    public enum ScoringButton {
-      NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
-    }
-
-    public enum ScoringGrid {
-      NONE, GRID_1, GRID_2, GRID_3;
-    }
   }
 
   // Drivetrain (no subclass)
@@ -286,10 +274,6 @@ public final class Constants {
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
-
-    public enum GamePiece {
-      NONE, CUBE, CONE, HUH
-    }
   }
 
   public static final class constLEDs {
@@ -302,5 +286,9 @@ public final class Constants {
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;
+  }
+
+  public enum GamePiece {
+    NONE, CUBE, CONE, HUH
   }
 }

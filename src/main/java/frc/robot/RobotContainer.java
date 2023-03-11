@@ -16,14 +16,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constControllers.ScoringButton;
-import frc.robot.Constants.constControllers.ScoringLevel;
-import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.SetLEDs;
-import frc.robot.commands.Auto.CubeDockShoot;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
@@ -129,7 +125,7 @@ public class RobotContainer {
     conOperator.btn_A.onTrue(Commands
         .runOnce(
             () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setDesiredNode(7)));
 
     // Set mid Arm preset
     conOperator.btn_X.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
@@ -156,12 +152,6 @@ public class RobotContainer {
     // conOperator.btn_South
     // .onTrue(Commands.runOnce(() ->
     // subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
-
-    // Set the LEDs to "We want a cone"
-    conOperator.btn_West.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
-
-    // Set the LEDs to "We want a cube"
-    conOperator.btn_East.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
 
     // Spin the Intake forward
     conOperator.btn_Start
@@ -195,9 +185,9 @@ public class RobotContainer {
     // subArm.scoringButton = ScoringButton.THIRD;
     // }));
 
+    // mid cone
     conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.NINTH;
-      subArm.scoringLevel = ScoringLevel.MID;
+      subArm.setDesiredNode(4);
     }));
 
     // conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
@@ -205,14 +195,14 @@ public class RobotContainer {
     // subArm.scoringLevel = ScoringLevel.MID;
     // }));
 
+    // mid cube
     conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.EIGHTH;
-      subArm.scoringLevel = ScoringLevel.MID;
+      subArm.setDesiredNode(5);
     }));
 
+    // high cube
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.NINTH;
-      subArm.scoringLevel = ScoringLevel.HIGH;
+      subArm.setDesiredNode(1);
     }));
 
     // conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
@@ -220,9 +210,9 @@ public class RobotContainer {
     // subArm.scoringLevel = ScoringLevel.HIGH;
     // }));
 
+    // high cube
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.EIGHTH;
-      subArm.scoringLevel = ScoringLevel.HIGH;
+      subArm.setDesiredNode(2);
     }));
   }
 
