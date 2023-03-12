@@ -6,7 +6,7 @@ package frc.robot.commands.Auto.OnePiece;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.RobotPreferences.prefArm;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -35,15 +35,14 @@ public class CubeThenDock extends SequentialCommandGroup {
             .until(() -> subIntake.isGamePieceCollected()),
 
         Commands
-            .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
-            .until(() -> subArm.areJointsInTolerance()),
+            .run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_SHOOT))
+            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_SHOOT)),
         Commands.waitSeconds(0.5),
 
         Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
-        Commands
-            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
+        Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)),
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 

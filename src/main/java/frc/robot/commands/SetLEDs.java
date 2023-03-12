@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
