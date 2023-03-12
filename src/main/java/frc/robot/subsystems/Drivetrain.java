@@ -12,6 +12,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
@@ -433,6 +434,22 @@ public class Drivetrain extends SubsystemBase {
 
   public boolean isTiltedBackwards() {
     return navX.getRoll() < -prefDrivetrain.tiltedThreshold.getValue();
+  }
+
+  public PPSwerveControllerCommand getOnTheFlyTrajectory(PathPlannerTrajectory followedTrajectory) {
+    return new PPSwerveControllerCommand(
+        followedTrajectory,
+        this::getPose,
+        swerveKinematics,
+        new PIDController(prefDrivetrain.teleTransP.getValue(), prefDrivetrain.teleTransI.getValue(),
+            prefDrivetrain.teleTransD.getValue()),
+        new PIDController(prefDrivetrain.teleTransP.getValue(), prefDrivetrain.teleTransI.getValue(),
+            prefDrivetrain.teleTransD.getValue()),
+        new PIDController(prefDrivetrain.teleThetaP.getValue(), prefDrivetrain.teleThetaI.getValue(),
+            prefDrivetrain.teleThetaD.getValue()),
+        this::setModuleStates,
+        true,
+        this);
   }
 
   @Override
