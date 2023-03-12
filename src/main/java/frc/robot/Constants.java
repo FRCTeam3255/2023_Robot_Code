@@ -280,9 +280,6 @@ public final class Constants {
   public static final class constLEDs {
     public static final PatternType HAS_GAME_PIECE_COLOR = SN_Blinkin.PatternType.Green;
 
-    public static final PatternType DESIRED_CUBE_COLOR = SN_Blinkin.PatternType.StrobeBlue;
-    public static final PatternType DESIRED_CONE_COLOR = SN_Blinkin.PatternType.StrobeGold;
-
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;

@@ -66,15 +66,9 @@ public class SetLEDs extends CommandBase {
     if (subIntake.isGamePieceCollected()) {
       desiredPattern = constLEDs.HAS_GAME_PIECE_COLOR;
     } else {
-
-      if (subArm.isCubeNode()) {
-        desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
-      } else if (subArm.isConeNode()) {
-        desiredPattern = constLEDs.DESIRED_CONE_COLOR;
-      } else {
-        desiredPattern = constLEDs.DEFAULT_COLOR;
-      }
+      desiredPattern = constLEDs.DEFAULT_COLOR;
     }
+
     subLEDs.setLEDPattern(desiredPattern);
   }
 
