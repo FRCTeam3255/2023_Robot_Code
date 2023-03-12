@@ -98,7 +98,15 @@ public class Drivetrain extends SubsystemBase {
         swerveKinematics,
         navX.getRotation2d(),
         getModulePositions(),
-        new Pose2d());
+        new Pose2d(),
+        VecBuilder.fill(
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefDrivetrain.measurementStdDevsDegrees.getValue())),
+        VecBuilder.fill(
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefVision.measurementStdDevsDegrees.getValue())));
 
     isFieldRelative = true;
 
@@ -463,8 +471,8 @@ public class Drivetrain extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
 
-      SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
-      SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
+      SmartDashboard.putNumber("Drivetrain Pose X", Units.metersToInches(getPose().getX()));
+      SmartDashboard.putNumber("Drivetrain Pose Y", Units.metersToInches(getPose().getY()));
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());
