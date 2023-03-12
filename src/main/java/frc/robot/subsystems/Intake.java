@@ -94,10 +94,10 @@ public class Intake extends SubsystemBase {
       SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
     }
 
-    if (hasGamePiece == false && getLimitSwitch() == true) {
+    if (!hasGamePiece && getLimitSwitch()) {
       hasGamePiece = true;
     }
-    if (hasGamePiece == true && getLimitSwitch() == false) {
+    if (hasGamePiece && !getLimitSwitch()) {
       hasGamePiece = false;
       subRumble.setInstantRumble();
     }
