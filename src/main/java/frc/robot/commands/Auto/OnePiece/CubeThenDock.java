@@ -36,7 +36,7 @@ public class CubeThenDock extends SequentialCommandGroup {
 
         Commands
             .run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_SHOOT))
-            .until(() -> subArm.getCurrentState() == ArmState.HIGH_CUBE_SCORE_SHOOT),
+            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_SHOOT)),
         Commands.waitSeconds(0.5),
 
         Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)

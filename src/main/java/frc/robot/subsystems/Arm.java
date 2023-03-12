@@ -229,13 +229,22 @@ public class Arm extends SubsystemBase {
    * 
    * @return Current arm state.
    */
-  public ArmState getCurrentState() {
+  private ArmState getCurrentState() {
     for (ArmState state : ArmState.values()) {
       if (areJointsInToleranceToState(state)) {
         return state;
       }
     }
     return ArmState.NONE;
+  }
+
+  /**
+   * Check if the arm is currently at the given state.
+   * 
+   * @return True if the arm is currently at the given state
+   */
+  public boolean isCurrentState(ArmState state) {
+    return getCurrentState() == state;
   }
 
   /**
@@ -290,6 +299,10 @@ public class Arm extends SubsystemBase {
    */
   public void setGoalState(ArmState goalState) {
     this.goalState = goalState;
+  }
+
+  public boolean isGoalState(ArmState state) {
+    return goalState == state;
   }
 
   /**

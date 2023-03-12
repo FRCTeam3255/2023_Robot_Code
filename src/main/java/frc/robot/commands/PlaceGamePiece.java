@@ -22,16 +22,16 @@ public class PlaceGamePiece extends SequentialCommandGroup {
 
     addCommands(
         Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_CONE_SCORE_LOWERED))
-            .unless(() -> !(subArm.getCurrentState() == ArmState.HIGH_CONE_SCORE)),
+            .unless(() -> !subArm.isCurrentState(ArmState.HIGH_CONE_SCORE)),
 
-        Commands.waitUntil(() -> subArm.getCurrentState() == ArmState.HIGH_CONE_SCORE_LOWERED)
-            .unless(() -> !(subArm.getGoalState() == ArmState.HIGH_CONE_SCORE_LOWERED)),
+        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.HIGH_CONE_SCORE_LOWERED))
+            .unless(() -> !subArm.isGoalState(ArmState.HIGH_CONE_SCORE_LOWERED)),
 
         Commands.runOnce(() -> subArm.setGoalState(ArmState.MID_CONE_SCORE_LOWERED))
-            .unless(() -> !(subArm.getCurrentState() == ArmState.MID_CONE_SCORE)),
+            .unless(() -> !subArm.isCurrentState(ArmState.MID_CONE_SCORE)),
 
-        Commands.waitUntil(() -> subArm.getCurrentState() == ArmState.MID_CONE_SCORE_LOWERED)
-            .unless(() -> !(subArm.getGoalState() == ArmState.MID_CONE_SCORE_LOWERED)),
+        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.MID_CONE_SCORE_LOWERED))
+            .unless(() -> !subArm.isGoalState(ArmState.MID_CONE_SCORE_LOWERED)),
 
         subIntake.releaseCommand().withTimeout(prefIntake.intakeReleaseDelay.getValue()));
 

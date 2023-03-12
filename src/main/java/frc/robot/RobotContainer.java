@@ -159,7 +159,7 @@ public class RobotContainer {
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(2);
     }));
-    // high cube
+    // high cone
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(1);
     }));

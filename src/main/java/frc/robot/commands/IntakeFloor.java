@@ -21,7 +21,7 @@ public class IntakeFloor extends SequentialCommandGroup {
 
     addCommands(
         Commands.runOnce(() -> subArm.setGoalState(ArmState.FLOOR_INTAKE)),
-        Commands.waitUntil(() -> subArm.getCurrentState() == ArmState.FLOOR_INTAKE),
+        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.FLOOR_INTAKE)),
         new IntakeGamePiece(subIntake).until(() -> subIntake.isGamePieceCollected()),
         Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
   }
