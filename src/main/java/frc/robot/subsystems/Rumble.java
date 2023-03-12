@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.frcteam3255.joystick.SN_XboxController;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences.prefControllers;
@@ -22,7 +23,7 @@ public class Rumble extends SubsystemBase {
   public void setInstantRumble() {
     conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
     conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    // Commands.waitSeconds(prefControllers.rumbleDelay.getValue());
+    Timer.delay(prefControllers.rumbleDelay.getValue());
     conDriver.setRumble(RumbleType.kBothRumble, 0);
     conDriver.setRumble(RumbleType.kBothRumble, 0);
   }
