@@ -41,7 +41,7 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
 
-    if (!subArm.isCurrentState(ArmState.NONE)) {
+    if (!subArm.isGoalState(ArmState.NONE)) {
       shoulderAngle = subArm.getGoalState().shoulderAngle;
       elbowAngle = subArm.getGoalState().elbowAngle;
     }
