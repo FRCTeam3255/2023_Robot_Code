@@ -16,22 +16,19 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constControllers.ScoringButton;
-import frc.robot.Constants.constControllers.ScoringLevel;
-import frc.robot.Constants.constVision.GamePiece;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeCone;
+import frc.robot.commands.IntakeFloor;
+import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.MoveArm;
+import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
-import frc.robot.commands.Auto.CubeDockShoot;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
-import frc.robot.commands.MoveArm;
-import frc.robot.commands.PlaceGamePiece;
-import frc.robot.RobotPreferences.prefIntake;
-import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -71,8 +68,8 @@ public class RobotContainer {
     subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
-    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-    // subVision));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+        subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm));
 
     configureBindings();
@@ -119,111 +116,55 @@ public class RobotContainer {
     // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
     // subCollector));
 
-    conOperator.btn_RightBumper.whileTrue(new IntakeCone(subIntake, subArm));
+    // Intake Floor (rbump)
+    conOperator.btn_RightBumper.whileTrue(new IntakeFloor(subArm, subIntake));
 
-    // Set stow Arm preset
-    conOperator.btn_B.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)));
+    // Set stow Arm preset (b)
+    conOperator.btn_B.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
 
-    // Set low Arm preset
-    conOperator.btn_A.onTrue(Commands
-        .runOnce(
-            () -> subArm.setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle)));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.scoringLevel = ScoringLevel.HYBRID));
+    // Set low Arm preset (a)
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.HYBRID_SCORE)))
+        .onTrue(Commands.runOnce(() -> subArm.setDesiredNode(7)));
 
-    // Set mid Arm preset
-    conOperator.btn_X.whileTrue(Commands.run(() -> subArm.setGoalAnglesFromNumpad()).repeatedly());
+    // Set Shelf Arm preset (y)
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.SHELF_INTAKE)))
+        .whileTrue(new IntakeGamePiece(subIntake));
 
-    // Set Shelf Arm preset
-    conOperator.btn_Y.onTrue(Commands
-        .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetShoulderShelf, prefArm.armPresetElbowShelf)));
-    conOperator.btn_Y
-        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
+    // prep place (x)
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.setStateFromDesiredNode()));
 
-    // Prep Place; Will be rebound to Left Trigger
-    // conOperator.btn_LeftTrigger.whileTrue(Commands.run(() ->
-    // subArm.setGoalAnglesFromNumpad()).repeatedly());
-
-    // Place Game piece; Will be rebound to Right Trigger
+    // Place Game piece (rt)
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
-
-    // // Set Collector to starting config and stop the rollers
-    // conOperator.btn_North
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setGoalPosition(prefCollector.pivotAngleStartingConfig)));
-
-    // // Set Collector rollers to intake height and spin the rollers
-    // conOperator.btn_South
-    // .onTrue(Commands.runOnce(() ->
-    // subCollector.setGoalPosition(prefCollector.pivotAngleCubeCollecting)));
-
-    // Set the LEDs to "We want a cone"
-    conOperator.btn_West.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CONE));
-
-    // Set the LEDs to "We want a cube"
-    conOperator.btn_East.onTrue(Commands.runOnce(() -> subArm.desiredGamePiece = GamePiece.CUBE));
 
     // Spin the Intake forward
     conOperator.btn_Start
-        .whileTrue(Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake));
+        .whileTrue(new IntakeGamePiece(subIntake));
 
-    // Spin the Intake in reverse
+    // Spin the Intake in reverse (back)
     conOperator.btn_Back
-        .whileTrue(
-            Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake));
+        .whileTrue(subIntake.releaseCommand());
 
-    // Numpad
-    // conNumpad.btn_1.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
-    // ScoringGrid.GRID_1));
-    // conNumpad.btn_2.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
-    // ScoringGrid.GRID_2));
-    // conNumpad.btn_3.onTrue(Commands.runOnce(() -> subArm.scoringGrid =
-    // ScoringGrid.GRID_3));
+    // numpad
 
-    // conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-    // subArm.scoringLevel = ScoringLevel.HYBRID;
-    // subArm.scoringButton = ScoringButton.FIRST;
-    // }));
-
-    // conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
-    // subArm.scoringLevel = ScoringLevel.HYBRID;
-    // subArm.scoringButton = ScoringButton.SECOND;
-    // }));
-
-    // conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
-    // subArm.scoringLevel = ScoringLevel.HYBRID;
-    // subArm.scoringButton = ScoringButton.THIRD;
-    // }));
-
+    // mid cone
     conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.NINTH;
-      subArm.scoringLevel = ScoringLevel.MID;
+      subArm.setDesiredNode(4);
     }));
 
-    // conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
-    // subArm.scoringButton = ScoringButton.FIFTH;
-    // subArm.scoringLevel = ScoringLevel.MID;
-    // }));
-
+    // mid cube
     conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.EIGHTH;
-      subArm.scoringLevel = ScoringLevel.MID;
+      subArm.setDesiredNode(5);
     }));
 
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.NINTH;
-      subArm.scoringLevel = ScoringLevel.HIGH;
-    }));
-
-    // conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
-    // subArm.scoringButton = ScoringButton.EIGHTH;
-    // subArm.scoringLevel = ScoringLevel.HIGH;
-    // }));
-
+    // high cube
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.scoringButton = ScoringButton.EIGHTH;
-      subArm.scoringLevel = ScoringLevel.HIGH;
+      subArm.setDesiredNode(2);
     }));
+    // high cone
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
+    }));
+
   }
 
   public static boolean isPracticeBot() {

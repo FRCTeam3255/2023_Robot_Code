@@ -60,13 +60,6 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeThenDock;
   public PathPlannerTrajectory cubeThenMobilityBottom;
 
-  public PathPlannerTrajectory cubeThenStagingMark;
-  public PathPlannerTrajectory stagingMarkThenPrep;
-  public PathPlannerTrajectory prepThenBottomCone;
-  public PathPlannerTrajectory bottomConeThenDock;
-
-  public PathPlannerTrajectory stagingMarkThenDock;
-
   public boolean isDriveOpenLoop = true;
 
   public Drivetrain() {
@@ -98,7 +91,15 @@ public class Drivetrain extends SubsystemBase {
         swerveKinematics,
         navX.getRotation2d(),
         getModulePositions(),
-        new Pose2d());
+        new Pose2d(),
+        VecBuilder.fill(
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefDrivetrain.measurementStdDevsDegrees.getValue())),
+        VecBuilder.fill(
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefVision.measurementStdDevsDegrees.getValue())));
 
     isFieldRelative = true;
 
@@ -135,26 +136,6 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     cubeThenDock = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    cubeThenStagingMark = PathPlanner.loadPath("cubeThenStagingMark", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    stagingMarkThenPrep = PathPlanner.loadPath("stagingMarkThenPrep", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    prepThenBottomCone = PathPlanner.loadPath("prepThenBottomCone", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    bottomConeThenDock = PathPlanner.loadPath("bottomConeThenDock", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    stagingMarkThenDock = PathPlanner.loadPath("stagingMarkThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
@@ -463,8 +444,8 @@ public class Drivetrain extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
 
-      SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
-      SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
+      SmartDashboard.putNumber("Drivetrain Pose X", Units.metersToInches(getPose().getX()));
+      SmartDashboard.putNumber("Drivetrain Pose Y", Units.metersToInches(getPose().getY()));
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());

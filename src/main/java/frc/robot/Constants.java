@@ -38,18 +38,6 @@ public final class Constants {
     // public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
     // public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
     // public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
-
-    public enum ScoringLevel {
-      NONE, HYBRID, MID, HIGH;
-    }
-
-    public enum ScoringButton {
-      NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
-    }
-
-    public enum ScoringGrid {
-      NONE, GRID_1, GRID_2, GRID_3;
-    }
   }
 
   // Drivetrain (no subclass)
@@ -244,6 +232,29 @@ public final class Constants {
 
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
+
+    public enum ArmState {
+      NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
+      FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-15)),
+      SHELF_INTAKE(Rotation2d.fromDegrees(-20), Rotation2d.fromDegrees(10)),
+      HIGH_CONE_SCORE(Rotation2d.fromDegrees(-11), Rotation2d.fromDegrees(25)),
+      HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-11), Rotation2d.fromDegrees(5)),
+      MID_CONE_SCORE(Rotation2d.fromDegrees(-59), Rotation2d.fromDegrees(40)),
+      MID_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-59), Rotation2d.fromDegrees(20)),
+      HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(37.5), Rotation2d.fromDegrees(-30.5)),
+      HIGH_CUBE_SCORE_SHOOT(Rotation2d.fromDegrees(-99), Rotation2d.fromDegrees(32)),
+      MID_CUBE_SCORE(Rotation2d.fromDegrees(-95.5), Rotation2d.fromDegrees(22)),
+      HYBRID_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0));
+
+      public Rotation2d shoulderAngle;
+      public Rotation2d elbowAngle;
+
+      private ArmState(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
+        this.shoulderAngle = shoulderAngle;
+        this.elbowAngle = elbowAngle;
+      }
+    }
   }
 
   public static final class constIntake {
@@ -280,16 +291,12 @@ public final class Constants {
     public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
     public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
         new Rotation3d(0, 0, 0));
-    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
-
-    public enum GamePiece {
-      NONE, CUBE, CONE, HUH
-    }
   }
 
   public static final class constLEDs {
@@ -302,5 +309,9 @@ public final class Constants {
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;
+  }
+
+  public enum GamePiece {
+    NONE, CUBE, CONE, HUH
   }
 }
