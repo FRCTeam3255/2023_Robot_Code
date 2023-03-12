@@ -32,36 +32,6 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
-    // switch (subIntake.getGamePieceType()) {
-    // case CONE:
-    // desiredPattern = constLEDs.HAS_CONE_COLOR;
-    // break;
-    // case CUBE:
-    // desiredPattern = constLEDs.HAS_CUBE_COLOR;
-    // break;
-    // case HUH:
-    // desiredPattern = constLEDs.FAILURE_COLOR;
-    // break;
-    // case NONE:
-    // if (subIntake.isGamePieceCollected()) {
-    // desiredPattern = constLEDs.FAILURE_COLOR;
-    // break;
-    // }
-
-    // // We don't have a game piece and we WANT something
-    // if (desiredGamePiece == GamePiece.CONE) {
-    // desiredPattern = constLEDs.DESIRED_CONE_COLOR;
-    // break;
-    // } else if (desiredGamePiece == GamePiece.CUBE) {
-    // desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
-    // break;
-    // }
-
-    // // We dont have a game piece or want a game piece; default color
-    // desiredPattern = constLEDs.DEFAULT_COLOR;
-    // break;
-    // }
-
     if (subIntake.isGamePieceCollected()) {
       desiredPattern = constLEDs.HAS_GAME_PIECE_COLOR;
     } else {
