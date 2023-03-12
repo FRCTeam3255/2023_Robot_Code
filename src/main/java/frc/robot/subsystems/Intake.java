@@ -28,19 +28,17 @@ public class Intake extends SubsystemBase {
   SN_CANSparkMax rightMotor;
   DigitalInput limitSwitch;
 
-  SN_XboxController conDriver;
-  SN_XboxController conOperator;
+  Rumble subRumble;
 
   Boolean hasGamePiece;
 
-  public Intake(SN_XboxController conDriver, SN_XboxController conOperator) {
+  public Intake(Rumble subRumble) {
     leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
     rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
 
     limitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
 
-    this.conDriver = conDriver;
-    this.conOperator = conOperator;
+    this.subRumble = subRumble;
 
     hasGamePiece = false;
 
@@ -80,14 +78,6 @@ public class Intake extends SubsystemBase {
     rightMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void setInstantRumble() {
-    conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    Commands.waitSeconds(prefControllers.rumbleDelay.getValue());
-    conDriver.setRumble(RumbleType.kBothRumble, 0);
-    conDriver.setRumble(RumbleType.kBothRumble, 0);
-  }
-
   public Command releaseCommand() {
     return this.run(() -> setMotorSpeed(prefIntake.intakeReleaseSpeed));
   }
@@ -98,7 +88,6 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-
     SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
@@ -110,7 +99,7 @@ public class Intake extends SubsystemBase {
     }
     if (hasGamePiece == true && getLimitSwitch() == false) {
       hasGamePiece = false;
-      setInstantRumble();
+      subRumble.setInstantRumble();
     }
   }
 }
