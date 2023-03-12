@@ -77,6 +77,14 @@ public class Arm extends SubsystemBase {
     shoulderConfig.slot0.kI = prefArm.shoulderI.getValue();
     shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
 
+    shoulderConfig.motionCruiseVelocity = SN_Math.degreesToFalcon(
+        prefArm.shoulderMaxSpeed.getValue(),
+        constArm.SHOULDER_GEAR_RATIO);
+
+    shoulderConfig.motionAcceleration = SN_Math.degreesToFalcon(
+        prefArm.shoulderMaxAccel.getValue(),
+        constArm.SHOULDER_GEAR_RATIO);
+
     shoulderConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefArm.shoulderTolerance.getValue(),
         constArm.SHOULDER_GEAR_RATIO);
@@ -102,6 +110,14 @@ public class Arm extends SubsystemBase {
     elbowConfig.slot0.kP = prefArm.elbowP.getValue();
     elbowConfig.slot0.kI = prefArm.elbowI.getValue();
     elbowConfig.slot0.kD = prefArm.elbowD.getValue();
+
+    elbowConfig.motionCruiseVelocity = SN_Math.degreesToFalcon(
+        prefArm.elbowMaxSpeed.getValue(),
+        constArm.ELBOW_GEAR_RATIO);
+
+    elbowConfig.motionAcceleration = SN_Math.degreesToFalcon(
+        prefArm.elbowMaxAccel.getValue(),
+        constArm.ELBOW_GEAR_RATIO);
 
     elbowConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefArm.elbowTolerance.getValue(),
@@ -147,7 +163,7 @@ public class Arm extends SubsystemBase {
     shoulderJoint.set(ControlMode.Position, shoulderCounts);
 
     double elbowCounts = SN_Math.degreesToFalcon(elbowAngle.getDegrees(), constArm.ELBOW_GEAR_RATIO);
-    elbowJoint.set(ControlMode.Position, elbowCounts);
+    elbowJoint.set(ControlMode.MotionMagic, elbowCounts);
   }
 
   /**
