@@ -4,6 +4,8 @@ import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.preferences.SN_ZeroDoublePreference;
 
+import edu.wpi.first.math.util.Units;
+
 public class RobotPreferences {
 
   public static final boolean useNetworkTables = false;
@@ -96,6 +98,11 @@ public class RobotPreferences {
         "steerPeakCurrentLimit", 40);
     public static final SN_DoublePreference steerPeakCurrentTime = new SN_DoublePreference(
         "steerPeakCurrentTime", 0.1);
+
+    public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(
+        "measurementStdDevsFeet", Units.metersToFeet(0.1));
+    public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
+        "measurementStdDevsDegrees", Units.radiansToDegrees(0.1));
   }
 
   public static final class prefArm {
@@ -255,9 +262,10 @@ public class RobotPreferences {
   public static final class prefVision {
 
     public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(
-        "measurementStdDevsFeet", 1);
+        "measurementStdDevsFeet", Units.metersToFeet(0.9));
     public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
-        "measurementStdDevsDegrees", 10);
+        "measurementStdDevsDegrees", Units.radiansToDegrees(0.9));
+
   }
 
 }
