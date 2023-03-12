@@ -19,6 +19,7 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeFloor;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
@@ -114,7 +115,8 @@ public class RobotContainer {
     // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
     // subCollector));
 
-    // Intake Cone (rbump)
+    // Intake Floor (rbump)
+    conOperator.btn_RightBumper.whileTrue(new IntakeFloor(subArm, subIntake));
 
     // Set stow Arm preset (b)
     conOperator.btn_B.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
