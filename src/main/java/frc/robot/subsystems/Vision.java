@@ -43,27 +43,25 @@ public class Vision extends SubsystemBase {
     // Create an instance of this for every camera you want to do pose estimation
     // with, as well as a getPoseFrom__ method to reference in the
     // AddVisionMeasurement command
-    ARCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
+    ARCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
         ARCamera,
         robotToAR);
 
-    OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
+    OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
         OVCamera,
         robotToOV);
   }
 
-  public Optional<EstimatedRobotPose> getPoseFromARCamera(Pose2d referencePose) {
+  public Optional<EstimatedRobotPose> getPoseFromARCamera() {
     try {
-      ARCameraPoseEstimator.setReferencePose(referencePose);
       return ARCameraPoseEstimator.update();
     } catch (Exception e) {
       return null;
     }
   }
 
-  public Optional<EstimatedRobotPose> getPoseFromOVCamera(Pose2d referencePose) {
+  public Optional<EstimatedRobotPose> getPoseFromOVCamera() {
     try {
-      OVCameraPoseEstimator.setReferencePose(referencePose);
       return OVCameraPoseEstimator.update();
     } catch (Exception e) {
       return null;
