@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -15,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Rumble;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
@@ -43,10 +41,9 @@ public class RobotContainer {
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
-  private final Rumble subRumble = new Rumble(conDriver, conOperator);
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
-  private final Intake subIntake = new Intake(subRumble);
+  private final Intake subIntake = new Intake();
   // private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();

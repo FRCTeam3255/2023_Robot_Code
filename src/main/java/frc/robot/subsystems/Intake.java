@@ -6,20 +6,15 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
-import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
-import frc.robot.RobotPreferences.prefControllers;
 import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
@@ -28,19 +23,11 @@ public class Intake extends SubsystemBase {
   SN_CANSparkMax rightMotor;
   DigitalInput limitSwitch;
 
-  Rumble subRumble;
-
-  Boolean hasGamePiece;
-
-  public Intake(Rumble subRumble) {
+  public Intake() {
     leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
     rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
 
     limitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
-
-    this.subRumble = subRumble;
-
-    hasGamePiece = false;
 
     configure();
   }
@@ -92,14 +79,6 @@ public class Intake extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
-    }
-
-    if (!hasGamePiece && getLimitSwitch()) {
-      hasGamePiece = true;
-    }
-    if (hasGamePiece && !getLimitSwitch()) {
-      hasGamePiece = false;
-      subRumble.setInstantRumble();
     }
   }
 }
