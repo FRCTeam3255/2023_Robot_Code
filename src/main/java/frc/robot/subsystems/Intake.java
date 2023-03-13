@@ -75,6 +75,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
