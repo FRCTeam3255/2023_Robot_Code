@@ -19,7 +19,6 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
-import frc.robot.commands.AutoDriveToGrid;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFloor;
 import frc.robot.commands.IntakeGamePiece;
@@ -111,7 +110,7 @@ public class RobotContainer {
 
     conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
 
-    conDriver.btn_North.whileTrue(new AutoDriveToGrid(subDrivetrain));
+    conDriver.btn_North.whileTrue(subDrivetrain.getOnTheFlyTrajectory());
 
     // Operator
 

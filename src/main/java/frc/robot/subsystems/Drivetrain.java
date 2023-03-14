@@ -10,6 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -21,6 +22,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -436,9 +438,21 @@ public class Drivetrain extends SubsystemBase {
     return navX.getRoll() < -prefDrivetrain.tiltedThreshold.getValue();
   }
 
-  public PPSwerveControllerCommand getOnTheFlyTrajectory(PathPlannerTrajectory followedTrajectory) {
+  public PPSwerveControllerCommand getOnTheFlyTrajectory() {
+    PathPoint currentPosition;
+    // CURRENT POSE
+    currentPosition = new PathPoint(getPose().getTranslation(), new Rotation2d(0),
+        getPose().getRotation());
+
+    // TODO: GET NUMPAD INPUT TO DECIDE YOUR PATH
+
+    PathPlannerTrajectory cubeNode6 = PathPlanner.generatePath(
+        new PathConstraints(prefDrivetrain.autoMaxAccelFeet.getValue(), prefDrivetrain.autoMaxSpeedFeet.getValue()),
+        currentPosition,
+        new PathPoint(new Translation2d(2, 4.42), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180)));
+
     return new PPSwerveControllerCommand(
-        followedTrajectory,
+        cubeNode6,
         this::getPose,
         swerveKinematics,
         new PIDController(prefDrivetrain.teleTransP.getValue(), prefDrivetrain.teleTransI.getValue(),
