@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Rumble;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
@@ -28,6 +27,7 @@ import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
+import frc.robot.commands.SetRumble;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
@@ -43,10 +43,9 @@ public class RobotContainer {
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
-  private final Rumble subRumble = new Rumble(conDriver, conOperator);
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
-  private final Intake subIntake = new Intake(subRumble);
+  private final Intake subIntake = new Intake();
   // private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
@@ -112,8 +111,9 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
-    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
-    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subLEDs.setLEDPattern(constLEDs.DEFENSE_MODE_COLOR)));
+    conDriver.btn_RightBumper
+        .whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
+        .whileTrue(Commands.run(() -> subLEDs.setLEDPattern(constLEDs.DEFENSE_MODE_COLOR)));
 
     // Operator
 
@@ -169,6 +169,10 @@ public class RobotContainer {
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(1);
     }));
+
+    // Switchboard
+
+    conSwitchboard.btn_1.whileFalse(new SetRumble(conDriver, conOperator, subIntake));
 
   }
 
