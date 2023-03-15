@@ -9,6 +9,7 @@ import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,6 +36,7 @@ import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
@@ -52,6 +54,7 @@ public class RobotContainer {
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
+  private final Trigger teleopTrigger = new Trigger(() -> RobotState.isEnabled() && RobotState.isTeleop());
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
@@ -170,10 +173,7 @@ public class RobotContainer {
       subArm.setDesiredNode(1);
     }));
 
-    // Switchboard
-
-    conSwitchboard.btn_1.whileFalse(new SetRumble(conDriver, conOperator, subIntake));
-
+    teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }
 
   public static boolean isPracticeBot() {
