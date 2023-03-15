@@ -60,8 +60,6 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeThenDock;
   public PathPlannerTrajectory cubeThenMobilityBottom;
 
-  public boolean isDriveOpenLoop = true;
-
   public Drivetrain() {
 
     if (RobotContainer.isPracticeBot()) {
@@ -187,7 +185,7 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.autoThetaP.getValue(),
             prefDrivetrain.autoThetaI.getValue(),
             prefDrivetrain.autoThetaD.getValue()),
-        this::setModuleStates,
+        this::setModuleStatesAuto,
         new HashMap<>(),
         true,
         this);
@@ -213,7 +211,7 @@ public class Drivetrain extends SubsystemBase {
 
     // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
     // rotation and pass the translational values to drive().
-    driveAlignAngle(velocity);
+    driveAlignAngle(velocity, false);
   }
 
   /**
@@ -222,7 +220,7 @@ public class Drivetrain extends SubsystemBase {
    * @param velocity Desired translational velocity in meters per second, and
    *                 desired absolute rotational position
    */
-  public void driveAlignAngle(Pose2d velocity) {
+  public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
 
     // tell the theta PID controller the goal rotation.
     thetaPID.setSetpoint(velocity.getRotation().getRadians());
@@ -239,7 +237,7 @@ public class Drivetrain extends SubsystemBase {
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), Rotation2d.fromRadians(angleSetpoint));
 
     // pass the new velocity to the normal drive command
-    drive(newVelocity);
+    drive(newVelocity, isDriveOpenLoop);
   }
 
   /**
@@ -248,7 +246,7 @@ public class Drivetrain extends SubsystemBase {
    * @param velocity Desired translational and rotational velocity in meters per
    *                 second and radians per second
    */
-  public void drive(Pose2d velocity) {
+  public void drive(Pose2d velocity, boolean isDriveOpenLoop) {
 
     ChassisSpeeds chassisSpeeds;
 
@@ -267,7 +265,7 @@ public class Drivetrain extends SubsystemBase {
 
     SwerveModuleState[] desiredStates = swerveKinematics.toSwerveModuleStates(chassisSpeeds);
 
-    setModuleStates(desiredStates);
+    setModuleStates(desiredStates, isDriveOpenLoop);
 
   }
 
@@ -276,7 +274,7 @@ public class Drivetrain extends SubsystemBase {
    * 
    * @param desiredStates Array of desired states
    */
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
+  public void setModuleStates(SwerveModuleState[] desiredStates, boolean isDriveOpenLoop) {
 
     // desaturateWheelSpeeds() mutates the given array
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
@@ -284,6 +282,10 @@ public class Drivetrain extends SubsystemBase {
     for (SN_SwerveModule mod : modules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], isDriveOpenLoop, false);
     }
+  }
+
+  private void setModuleStatesAuto(SwerveModuleState[] desiredStates) {
+    setModuleStates(desiredStates, false);
   }
 
   /**
@@ -299,7 +301,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], isDriveOpenLoop, true);
+      mod.setDesiredState(desiredStates[mod.moduleNumber], true, true);
     }
   }
 
