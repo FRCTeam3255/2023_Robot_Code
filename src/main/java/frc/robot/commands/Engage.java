@@ -15,8 +15,12 @@ public class Engage extends CommandBase {
 
   Drivetrain subDrivetrain;
 
+  boolean isDriveOpenLoop;
+
   public Engage(Drivetrain subDrivetrain) {
     this.subDrivetrain = subDrivetrain;
+
+    isDriveOpenLoop = false;
 
     addRequirements(subDrivetrain);
   }
@@ -28,11 +32,13 @@ public class Engage extends CommandBase {
   @Override
   public void execute() {
     if (subDrivetrain.isTiltedForward()) {
-      subDrivetrain.drive(new Pose2d(0, Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), new Rotation2d()));
+      subDrivetrain.drive(new Pose2d(0, Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), new Rotation2d()),
+          isDriveOpenLoop);
     } else if (subDrivetrain.isTiltedBackwards()) {
-      subDrivetrain.drive(new Pose2d(0, -Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), new Rotation2d()));
+      subDrivetrain.drive(new Pose2d(0, -Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), new Rotation2d()),
+          isDriveOpenLoop);
     } else {
-      subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d()));
+      subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d()), isDriveOpenLoop);
       // defence mode here too would be nice
     }
   }

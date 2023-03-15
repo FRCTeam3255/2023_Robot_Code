@@ -180,16 +180,6 @@ public class RobotContainer {
     return !pracBotSwitch.get();
   }
 
-  public void setOpenLoop() {
-    subDrivetrain.isDriveOpenLoop = true;
-    subDrivetrain.configure();
-  }
-
-  public void setClosedLoop() {
-    subDrivetrain.isDriveOpenLoop = false;
-    subDrivetrain.configure();
-  }
-
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("null", null);
 
