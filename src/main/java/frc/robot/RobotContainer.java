@@ -144,6 +144,8 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
+    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subArm.configure()));
+
     // numpad
 
     // mid cone
