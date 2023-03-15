@@ -438,21 +438,38 @@ public class Drivetrain extends SubsystemBase {
     return navX.getRoll() < -prefDrivetrain.tiltedThreshold.getValue();
   }
 
-  public PPSwerveControllerCommand getOnTheFlyTrajectory() {
+  public PPSwerveControllerCommand getOnTheFlyTrajectory(int desiredColumn) {
     PathPoint currentPosition;
+    PathPoint desiredPosition;
+    double distanceFromGrid = 2;
+
     // CURRENT POSE
     currentPosition = new PathPoint(getPose().getTranslation(), new Rotation2d(0),
         getPose().getRotation());
 
-    // TODO: GET NUMPAD INPUT TO DECIDE YOUR PATH
+    switch (desiredColumn) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+        desiredPosition = new PathPoint(new Translation2d(distanceFromGrid, 4.42), Rotation2d.fromDegrees(0),
+            Rotation2d.fromDegrees(180));
+      case 9:
+      default:
+        desiredPosition = currentPosition;
+    }
 
-    PathPlannerTrajectory cubeNode6 = PathPlanner.generatePath(
+    PathPlannerTrajectory pathToPosition = PathPlanner.generatePath(
         new PathConstraints(prefDrivetrain.autoMaxAccelFeet.getValue(), prefDrivetrain.autoMaxSpeedFeet.getValue()),
         currentPosition,
-        new PathPoint(new Translation2d(2, 4.42), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180)));
+        desiredPosition);
 
     return new PPSwerveControllerCommand(
-        cubeNode6,
+        pathToPosition,
         this::getPose,
         swerveKinematics,
         new PIDController(prefDrivetrain.teleTransP.getValue(), prefDrivetrain.teleTransI.getValue(),

@@ -110,7 +110,7 @@ public class RobotContainer {
 
     conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
 
-    conDriver.btn_North.whileTrue(subDrivetrain.getOnTheFlyTrajectory());
+    conDriver.btn_North.whileTrue(subDrivetrain.getOnTheFlyTrajectory(subArm.getDesiredColumn()));
 
     // Operator
 
