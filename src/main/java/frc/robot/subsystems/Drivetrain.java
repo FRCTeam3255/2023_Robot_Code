@@ -441,27 +441,32 @@ public class Drivetrain extends SubsystemBase {
   public PPSwerveControllerCommand getOnTheFlyTrajectory(int desiredColumn) {
     PathPoint currentPosition;
     PathPoint desiredPosition;
-    double distanceFromGrid = 2;
+    double distanceFromGrid = 1.8;
 
     // CURRENT POSE
     currentPosition = new PathPoint(getPose().getTranslation(), new Rotation2d(0),
         getPose().getRotation());
 
-    switch (desiredColumn) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-        desiredPosition = new PathPoint(new Translation2d(distanceFromGrid, 4.42), Rotation2d.fromDegrees(0),
-            Rotation2d.fromDegrees(180));
-      case 9:
-      default:
-        desiredPosition = currentPosition;
-    }
+    // switch (desiredColumn) {
+    // case 1:
+    // case 2:
+    // case 3:
+    // case 4:
+    // case 5:
+    // case 6:
+    // case 7:
+    // case 8:
+    // desiredPosition = new PathPoint(new Translation2d(distanceFromGrid, 4.3),
+    // Rotation2d.fromDegrees(0),
+    // Rotation2d.fromDegrees(0));
+    // case 9:
+    // default:
+    // desiredPosition = currentPosition;
+    // }
+
+    // test code - uncomment above when this works
+    desiredPosition = new PathPoint(new Translation2d(2, 4), new Rotation2d(0),
+        getPose().getRotation());
 
     PathPlannerTrajectory pathToPosition = PathPlanner.generatePath(
         new PathConstraints(prefDrivetrain.autoMaxAccelFeet.getValue(), prefDrivetrain.autoMaxSpeedFeet.getValue()),
@@ -492,8 +497,9 @@ public class Drivetrain extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
 
-      SmartDashboard.putNumber("Drivetrain Pose X", Units.metersToInches(getPose().getX()));
-      SmartDashboard.putNumber("Drivetrain Pose Y", Units.metersToInches(getPose().getY()));
+      SmartDashboard.putNumber("Drivetrain Pose X", getPose().getX());
+      SmartDashboard.putNumber("Drivetrain Pose Y", getPose().getY());
+      SmartDashboard.putString("Drivetrain translation", getPose().getTranslation().toString());
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());
