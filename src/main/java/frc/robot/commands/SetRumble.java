@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.sql.Time;
+
 import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -20,6 +22,10 @@ public class SetRumble extends CommandBase {
 
   Boolean hadGamePiece;
 
+  Double rumbleOutput;
+
+  Double timeGamePieceLeft;
+
   public SetRumble(SN_XboxController conDriver, SN_XboxController conOperator, Intake subIntake) {
     this.conDriver = conDriver;
     this.conOperator = conOperator;
@@ -30,29 +36,30 @@ public class SetRumble extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public void setInstantRumble() {
-    conDriver.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    conOperator.setRumble(RumbleType.kBothRumble, prefControllers.rumbleOutput.getValue());
-    Timer.delay(prefControllers.rumbleDelay.getValue());
-    conDriver.setRumble(RumbleType.kBothRumble, 0);
-    conDriver.setRumble(RumbleType.kBothRumble, 0);
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    rumbleOutput = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     if (!hadGamePiece && subIntake.getLimitSwitch()) {
       hadGamePiece = true;
-    }
-    if (hadGamePiece && !subIntake.getLimitSwitch()) {
+    } else if (hadGamePiece && !subIntake.getLimitSwitch()) {
       hadGamePiece = false;
-      setInstantRumble();
+      timeGamePieceLeft = Timer.getFPGATimestamp();
+      rumbleOutput = prefControllers.rumbleOutput.getValue();
     }
+
+    if (Timer.getFPGATimestamp() > timeGamePieceLeft + prefControllers.rumbleDelay.getValue()) {
+      rumbleOutput = 0.0;
+    }
+
+    conDriver.setRumble(RumbleType.kBothRumble, rumbleOutput);
+    conOperator.setRumble(RumbleType.kBothRumble, rumbleOutput);
   }
 
   // Called once the command ends or is interrupted.
