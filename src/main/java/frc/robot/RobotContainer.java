@@ -20,6 +20,7 @@ import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.IntakeFloor;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
@@ -110,7 +111,7 @@ public class RobotContainer {
 
     conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
 
-    conDriver.btn_North.whileTrue(subDrivetrain.getOnTheFlyTrajectory(subArm.getDesiredColumn()));
+    conDriver.btn_LeftTrigger.whileTrue(new DriveToPosition(subDrivetrain, subArm.getDesiredColumn()));
 
     // Operator
 
@@ -147,24 +148,32 @@ public class RobotContainer {
         .whileTrue(subIntake.releaseCommand());
 
     // numpad
-
-    // mid cone
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4);
-    }));
-
-    // mid cube
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5);
-    }));
-
-    // high cube
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
+    }));
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(2);
     }));
-    // high cone
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1);
+      subArm.setDesiredNode(3);
+    }));
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(4);
+    }));
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(5);
+    }));
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(6);
+    }));
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(7);
+    }));
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(8);
+    }));
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(9);
     }));
 
   }

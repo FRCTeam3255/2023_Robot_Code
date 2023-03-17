@@ -10,10 +10,8 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
@@ -22,7 +20,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -231,7 +228,7 @@ public class Drivetrain extends SubsystemBase {
     thetaPID.setSetpoint(velocity.getRotation().getRadians());
 
     // calculate the angle setpoint based off where we are now.
-    double angleSetpoint = thetaPID.calculate(getRotation().getRadians());
+    double angleSetpoint = thetaPID.calculate(getPose().getRotation().getRadians());
 
     // limit the PID output to a maximum rotational speed
     angleSetpoint = MathUtil.clamp(angleSetpoint, -Units.degreesToRadians(prefDrivetrain.teleThetaMaxSpeed.getValue()),
@@ -436,56 +433,6 @@ public class Drivetrain extends SubsystemBase {
 
   public boolean isTiltedBackwards() {
     return navX.getRoll() < -prefDrivetrain.tiltedThreshold.getValue();
-  }
-
-  public PPSwerveControllerCommand getOnTheFlyTrajectory(int desiredColumn) {
-    PathPoint currentPosition;
-    PathPoint desiredPosition;
-    double distanceFromGrid = 1.8;
-
-    // CURRENT POSE
-    currentPosition = new PathPoint(getPose().getTranslation(), new Rotation2d(0),
-        getPose().getRotation());
-
-    // switch (desiredColumn) {
-    // case 1:
-    // case 2:
-    // case 3:
-    // case 4:
-    // case 5:
-    // case 6:
-    // case 7:
-    // case 8:
-    // desiredPosition = new PathPoint(new Translation2d(distanceFromGrid, 4.3),
-    // Rotation2d.fromDegrees(0),
-    // Rotation2d.fromDegrees(0));
-    // case 9:
-    // default:
-    // desiredPosition = currentPosition;
-    // }
-
-    // test code - uncomment above when this works
-    desiredPosition = new PathPoint(new Translation2d(2, 4), new Rotation2d(0),
-        getPose().getRotation());
-
-    PathPlannerTrajectory pathToPosition = PathPlanner.generatePath(
-        new PathConstraints(prefDrivetrain.autoMaxAccelFeet.getValue(), prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        currentPosition,
-        desiredPosition);
-
-    return new PPSwerveControllerCommand(
-        pathToPosition,
-        this::getPose,
-        swerveKinematics,
-        new PIDController(prefDrivetrain.teleTransP.getValue(), prefDrivetrain.teleTransI.getValue(),
-            prefDrivetrain.teleTransD.getValue()),
-        new PIDController(prefDrivetrain.teleTransP.getValue(), prefDrivetrain.teleTransI.getValue(),
-            prefDrivetrain.teleTransD.getValue()),
-        new PIDController(prefDrivetrain.teleThetaP.getValue(), prefDrivetrain.teleThetaI.getValue(),
-            prefDrivetrain.teleThetaD.getValue()),
-        this::setModuleStates,
-        true,
-        this);
   }
 
   @Override

@@ -355,7 +355,7 @@ public class Arm extends SubsystemBase {
     int gridlessNode = desiredNode % 9;
     return gridlessNode == 7 ||
         gridlessNode == 8 ||
-        gridlessNode == 9;
+        gridlessNode == 9 || gridlessNode == 0;
   }
 
   public boolean isValidNode() {
@@ -474,6 +474,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putString("Arm Goal State", getGoalState().toString());
 
       SmartDashboard.putNumber("Arm Desired Node", desiredNode);
+      SmartDashboard.putNumber("Arm Desired Column", getDesiredColumn());
       SmartDashboard.putBoolean("Arm Is High Node", isHighNode());
       SmartDashboard.putBoolean("Arm Is Mid Node", isMidNode());
       SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());

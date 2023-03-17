@@ -56,7 +56,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
         "autoMaxAccelFeet", 1.0);
 
-    public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 0);
+    public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 1);
     public static final SN_DoublePreference teleTransI = new SN_DoublePreference("teleTransI", 0);
     public static final SN_DoublePreference teleTransD = new SN_DoublePreference("teleTransD", 0);
     // feet per second
@@ -103,6 +103,9 @@ public class RobotPreferences {
         "measurementStdDevsFeet", Units.metersToFeet(0.1));
     public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
         "measurementStdDevsDegrees", Units.radiansToDegrees(0.1));
+
+    public static final SN_DoublePreference poseGridDistanceInches = new SN_DoublePreference("poseGridDistanceInches",
+        Units.metersToInches(2.18));
   }
 
   public static final class prefArm {
