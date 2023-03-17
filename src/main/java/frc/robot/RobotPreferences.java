@@ -78,7 +78,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference tiltedThreshold = new SN_DoublePreference("tiltedThreshold", 14);
 
     // feet per second
-    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 5);
+    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 0.1);
 
     // current limiting (values taken from BaseFalconSwerve)
     public static final SN_BooleanPreference driveEnableCurrentLimit = new SN_BooleanPreference(
