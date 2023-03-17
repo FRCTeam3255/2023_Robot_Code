@@ -8,7 +8,7 @@ import edu.wpi.first.math.util.Units;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = false;
+  public static final boolean useNetworkTables = true;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger (if it exists),
@@ -83,7 +83,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference tiltedThreshold = new SN_DoublePreference("tiltedThreshold", 14);
 
     // feet per second
-    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 5);
+    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 0.1);
 
     // current limiting (values taken from BaseFalconSwerve)
     public static final SN_BooleanPreference driveEnableCurrentLimit = new SN_BooleanPreference(
@@ -114,12 +114,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderP = new SN_DoublePreference("shoulderP", 0.1);
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 1.5);
-    // degrees per second
-    // public static final SN_DoublePreference shoulderMaxSpeed = new
-    // SN_DoublePreference("shoulderMaxSpeed", 180);
-    // degrees per second per second
-    // public static final SN_DoublePreference shoulderMaxAccel = new
-    // SN_DoublePreference("shoulderMaxAccel", 235);
+    // falcon encoder counts per second
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 18000);
+    // falcon encoder counts per second per second
+    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 10000);
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
     public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
@@ -128,12 +126,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 1.5);
-    // degrees per second
-    // public static final SN_DoublePreference elbowMaxSpeed = new
-    // SN_DoublePreference("elbowMaxSpeed", 180);
-    // degrees per second per second
-    // public static final SN_DoublePreference elbowMaxAccel = new
-    // SN_DoublePreference("elbowMaxAccel", 235);
+    // falcon encoder counts per second
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 18000);
+    // falcon encoder counts per second per second
+    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 10000);
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
