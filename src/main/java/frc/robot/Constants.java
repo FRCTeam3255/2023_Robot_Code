@@ -307,7 +307,7 @@ public final class Constants {
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;
 
-    public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowOceanPalette;
+    public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
   }
 
   public enum GamePiece {
