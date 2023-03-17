@@ -9,6 +9,8 @@ import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,6 +36,8 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
+
+  ShuffleboardTab tab = Shuffleboard.getTab("SuperShuffle");
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
@@ -193,6 +197,11 @@ public class RobotContainer {
     // subIntake, subArm));
 
     SmartDashboard.putData(autoChooser);
+
+    tab
+        .add("Auto Chooser", autoChooser)
+        .withSize(2, 1)
+        .withPosition(7, 2);
   }
 
   public Command getAutonomousCommand() {

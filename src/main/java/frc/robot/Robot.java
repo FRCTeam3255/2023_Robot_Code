@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -31,6 +32,13 @@ public class Robot extends TimedRobot {
     CameraServer.startAutomaticCapture();
 
     m_robotContainer = new RobotContainer();
+
+    // Shuffleboard
+    ShuffleboardTab tab = Shuffleboard.getTab("SuperShuffle");
+    Shuffleboard.selectTab("SuperShuffle");
+    tab.add("Test_Cell_0", 0);
+    tab.add("Test_Cell_1", 1);
+    tab.add("Test_Cell_2", 2);
   }
 
   @Override
