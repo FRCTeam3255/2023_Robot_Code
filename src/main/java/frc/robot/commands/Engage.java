@@ -28,9 +28,9 @@ public class Engage extends CommandBase {
   @Override
   public void execute() {
     if (subDrivetrain.isTiltedForward()) {
-      subDrivetrain.drive(new Pose2d(0, Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), new Rotation2d()));
+      subDrivetrain.drive(new Pose2d(Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), 0, new Rotation2d()));
     } else if (subDrivetrain.isTiltedBackwards()) {
-      subDrivetrain.drive(new Pose2d(0, -Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), new Rotation2d()));
+      subDrivetrain.drive(new Pose2d(-Units.metersToFeet(prefDrivetrain.dockingSpeed.getValue()), 0, new Rotation2d()));
     } else {
       subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d()));
       // defence mode here too would be nice
