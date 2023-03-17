@@ -40,6 +40,7 @@ public class SetRumble extends CommandBase {
   @Override
   public void initialize() {
     rumbleOutput = 0.0;
+    timeGamePieceLeft = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
