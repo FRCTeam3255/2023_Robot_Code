@@ -77,6 +77,9 @@ public class Arm extends SubsystemBase {
     shoulderConfig.slot0.kI = prefArm.shoulderI.getValue();
     shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
 
+    shoulderConfig.motionCruiseVelocity = prefArm.shoulderMaxSpeed.getValue();
+    shoulderConfig.motionAcceleration = prefArm.shoulderMaxAccel.getValue();
+
     shoulderConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefArm.shoulderTolerance.getValue(),
         constArm.SHOULDER_GEAR_RATIO);
@@ -102,6 +105,9 @@ public class Arm extends SubsystemBase {
     elbowConfig.slot0.kP = prefArm.elbowP.getValue();
     elbowConfig.slot0.kI = prefArm.elbowI.getValue();
     elbowConfig.slot0.kD = prefArm.elbowD.getValue();
+
+    elbowConfig.motionCruiseVelocity = prefArm.elbowMaxSpeed.getValue();
+    elbowConfig.motionAcceleration = prefArm.elbowMaxAccel.getValue();
 
     elbowConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefArm.elbowTolerance.getValue(),
@@ -144,10 +150,10 @@ public class Arm extends SubsystemBase {
    */
   public void setJointPositions(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
     double shoulderCounts = SN_Math.degreesToFalcon(shoulderAngle.getDegrees(), constArm.SHOULDER_GEAR_RATIO);
-    shoulderJoint.set(ControlMode.Position, shoulderCounts);
+    shoulderJoint.set(ControlMode.MotionMagic, shoulderCounts);
 
     double elbowCounts = SN_Math.degreesToFalcon(elbowAngle.getDegrees(), constArm.ELBOW_GEAR_RATIO);
-    elbowJoint.set(ControlMode.Position, elbowCounts);
+    elbowJoint.set(ControlMode.MotionMagic, elbowCounts);
   }
 
   /**
@@ -421,11 +427,13 @@ public class Arm extends SubsystemBase {
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Arm Shoulder Motor Encoder Velocity Raw", shoulderJoint.getSelectedSensorVelocity());
       SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Arm Elbow Motor Encoder Velocity Raw", elbowJoint.getSelectedSensorVelocity());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
 

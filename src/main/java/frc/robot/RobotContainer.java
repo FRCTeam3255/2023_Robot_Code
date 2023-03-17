@@ -144,6 +144,8 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
+    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subArm.configure()));
+
     // numpad
 
     // mid cone
@@ -169,16 +171,6 @@ public class RobotContainer {
 
   public static boolean isPracticeBot() {
     return !pracBotSwitch.get();
-  }
-
-  public void setOpenLoop() {
-    subDrivetrain.isDriveOpenLoop = true;
-    subDrivetrain.configure();
-  }
-
-  public void setClosedLoop() {
-    subDrivetrain.isDriveOpenLoop = false;
-    subDrivetrain.configure();
   }
 
   private void configureAutoSelector() {

@@ -55,6 +55,8 @@ public class Drive extends CommandBase {
   Rotation2d rotationPosition;
   Rotation2d lastRotationPosition;
 
+  boolean isDriveOpenLoop;
+
   public Drive(
       Drivetrain subDrivetrain,
       Arm subArm,
@@ -82,6 +84,8 @@ public class Drive extends CommandBase {
     isRotationPositional = false;
     rotationPosition = new Rotation2d();
     lastRotationPosition = new Rotation2d();
+
+    isDriveOpenLoop = true;
 
     addRequirements(this.subDrivetrain);
   }
@@ -141,7 +145,7 @@ public class Drive extends CommandBase {
       velocity = new Pose2d(
           translationVelocity,
           rotationPosition);
-      subDrivetrain.driveAlignAngle(velocity);
+      subDrivetrain.driveAlignAngle(velocity, isDriveOpenLoop);
     }
     // if the driver didn't press any rotation buttons or used the rotation
     // joystick, just drive normally with the rotation joystick controlling the rate
@@ -150,7 +154,7 @@ public class Drive extends CommandBase {
       velocity = new Pose2d(
           translationVelocity,
           Rotation2d.fromRadians(rVelocity));
-      subDrivetrain.drive(velocity);
+      subDrivetrain.drive(velocity, isDriveOpenLoop);
     }
 
   }
