@@ -14,6 +14,11 @@ public class RobotPreferences {
   // controllers, drivetrain, arm, intake, collector, charger (if it exists),
   // vision, leds
 
+  public static final class prefControllers {
+    public static final SN_DoublePreference rumbleOutput = new SN_DoublePreference("rumbleOutput", 0.2);
+    public static final SN_DoublePreference rumbleDelay = new SN_DoublePreference("rumbleDelay", 0.5);
+  }
+
   public static final class prefDrivetrain {
 
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);

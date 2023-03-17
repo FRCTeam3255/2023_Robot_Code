@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -300,15 +301,13 @@ public final class Constants {
   }
 
   public static final class constLEDs {
-    public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
-    public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
-
-    public static final PatternType DESIRED_CONE_COLOR = PatternType.StrobeGold;
-    public static final PatternType DESIRED_CUBE_COLOR = PatternType.StrobeBlue;
+    public static final PatternType HAS_GAME_PIECE_COLOR = SN_Blinkin.PatternType.Green;
 
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;
+
+    public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
   }
 
   public enum GamePiece {
