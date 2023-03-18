@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefLEDs;
 import frc.robot.RobotPreferences.prefVision;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -19,6 +20,7 @@ public class SetLEDs extends CommandBase {
   LEDs subLEDs;
   Intake subIntake;
   Drivetrain subDrivetrain;
+  Arm subArm;
 
   PatternType desiredPattern;
 
@@ -27,12 +29,11 @@ public class SetLEDs extends CommandBase {
 
   int desiredColumn;
 
-  public SetLEDs(LEDs subLEDs, Intake subIntake, Drivetrain subDrivetrain, int desiredColumn) {
+  public SetLEDs(LEDs subLEDs, Intake subIntake, Drivetrain subDrivetrain, Arm subArm) {
     this.subLEDs = subLEDs;
     this.subIntake = subIntake;
     this.subDrivetrain = subDrivetrain;
-
-    this.desiredColumn = desiredColumn;
+    this.subArm = subArm;
 
     chargeStationCenterX = prefVision.chargeStationCenterX.getValue();
     chargeStationCenterTolerance = prefVision.chargeStationCenterTolerance.getValue();
@@ -46,6 +47,8 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
+    desiredColumn = subArm.getDesiredColumn();
+
     if (subIntake.isGamePieceCollected()) {
       desiredPattern = constLEDs.HAS_GAME_PIECE_COLOR;
     } else {
