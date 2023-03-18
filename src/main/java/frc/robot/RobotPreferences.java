@@ -115,25 +115,27 @@ public class RobotPreferences {
     public static final SN_DoublePreference shoulderI = new SN_DoublePreference("shoulderI", 0);
     public static final SN_DoublePreference shoulderD = new SN_DoublePreference("shoulderD", 1.5);
     // falcon encoder counts per second
-    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 18000);
+    public static final SN_DoublePreference shoulderMaxSpeed = new SN_DoublePreference("shoulderMaxSpeed", 1000000);
     // falcon encoder counts per second per second
-    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 10000);
+    // this value will never be reached, as we're intentionally acceleration limited
+    public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 35000);
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
     public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
-        "shoulderClosedLoopPeakOutput", 0.6);
+        "shoulderClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
     public static final SN_DoublePreference elbowD = new SN_DoublePreference("elbowD", 1.5);
     // falcon encoder counts per second
-    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 18000);
+    // this value will never be reached, as we're intentionally acceleration limited
+    public static final SN_DoublePreference elbowMaxSpeed = new SN_DoublePreference("elbowMaxSpeed", 1000000);
     // falcon encoder counts per second per second
-    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 10000);
+    public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 60000);
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
-        "elbowClosedLoopPeakOutput", 0.6);
+        "elbowClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 0);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 0);
