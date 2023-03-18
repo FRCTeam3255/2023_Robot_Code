@@ -70,8 +70,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleTransMaxAccel = new SN_DoublePreference("teleTransMaxAccel", 5);
     // inches
     public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
-    public static final SN_DoublePreference teleTransKS = new SN_DoublePreference("teleTransKS", 0.24);
-    public static final SN_DoublePreference teleTransKV = new SN_DoublePreference("teleTransKV", 0.016);
+    public static final SN_DoublePreference teleTransKS = new SN_DoublePreference("teleTransKS", 0.080000);
+    public static final SN_DoublePreference teleTransKV = new SN_DoublePreference("teleTransKV", 0.180000);
 
     public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 8.0);
     public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);
