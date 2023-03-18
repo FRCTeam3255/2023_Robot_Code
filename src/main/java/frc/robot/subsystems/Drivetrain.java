@@ -28,6 +28,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -69,11 +70,8 @@ public class Drivetrain extends SubsystemBase {
 
   public boolean isDriveOpenLoop = true;
 
-  SimpleWidget fieldRelativeTab = Shuffleboard.getTab("SuperShuffle")
-      .add("Field Relative", isFieldRelative)
-      .withWidget("Boolean Box");
-
-  GenericEntry fieldRelativeEntry = fieldRelativeTab.getEntry();
+  private ShuffleboardTab test = Shuffleboard.getTab("SuperShuffle");
+  private GenericEntry fieldRelative = test.add("Field Relative", true).getEntry();
 
   public Drivetrain() {
 
@@ -453,7 +451,7 @@ public class Drivetrain extends SubsystemBase {
 
     updatePoseEstimator();
 
-    fieldRelativeEntry = fieldRelativeTab.getEntry();
+    fieldRelative.setBoolean(isFieldRelative);
 
     SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
 
