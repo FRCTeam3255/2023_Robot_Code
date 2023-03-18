@@ -85,7 +85,7 @@ public class Drive extends CommandBase {
     rotationPosition = new Rotation2d();
     lastRotationPosition = new Rotation2d();
 
-    isDriveOpenLoop = true;
+    isDriveOpenLoop = false;
 
     addRequirements(this.subDrivetrain);
   }
