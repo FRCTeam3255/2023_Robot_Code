@@ -33,12 +33,7 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
 
-    // Shuffleboard
-    ShuffleboardTab tab = Shuffleboard.getTab("SuperShuffle");
     Shuffleboard.selectTab("SuperShuffle");
-    tab.add("Test_Cell_0", 0);
-    tab.add("Test_Cell_1", 1);
-    tab.add("Test_Cell_2", 2);
   }
 
   @Override

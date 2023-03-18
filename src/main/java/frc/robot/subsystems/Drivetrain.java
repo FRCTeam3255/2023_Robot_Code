@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
@@ -28,11 +27,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -70,8 +67,10 @@ public class Drivetrain extends SubsystemBase {
 
   public boolean isDriveOpenLoop = true;
 
-  private ShuffleboardTab test = Shuffleboard.getTab("SuperShuffle");
-  private GenericEntry fieldRelative = test.add("Field Relative", true).getEntry();
+  // private ShuffleboardTab drivetrainTab = Shuffleboard.getTab("SuperShuffle");
+
+  // private GenericEntry shuffleFieldRelative = drivetrainTab.add("Field
+  // Relative", true).getEntry();
 
   public Drivetrain() {
 
@@ -451,7 +450,7 @@ public class Drivetrain extends SubsystemBase {
 
     updatePoseEstimator();
 
-    fieldRelative.setBoolean(isFieldRelative);
+    // shuffleFieldRelative.setBoolean(isFieldRelative);
 
     SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
 

@@ -7,6 +7,7 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.SuperShuffle;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constArm.ArmState;
@@ -37,13 +39,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
 
-  ShuffleboardTab tab = Shuffleboard.getTab("SuperShuffle");
+  ShuffleboardTab autoTab = Shuffleboard.getTab("SuperShuffle");
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
+  private final SuperShuffle subSuperShuffle = new SuperShuffle();
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
   private final Intake subIntake = new Intake();
@@ -81,6 +84,10 @@ public class RobotContainer {
 
     Timer.delay(2.5);
     resetToAbsolutePositions();
+  }
+
+  public void configureShuffleboard() {
+    // Shuffleboard configure function for optimization
   }
 
   public void configureNeutralModes() {
@@ -198,10 +205,10 @@ public class RobotContainer {
 
     SmartDashboard.putData(autoChooser);
 
-    tab
+    autoTab
         .add("Auto Chooser", autoChooser)
-        .withSize(2, 1)
-        .withPosition(7, 2);
+        .withSize(1, 1)
+        .withPosition(7, 3);
   }
 
   public Command getAutonomousCommand() {

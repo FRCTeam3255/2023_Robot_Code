@@ -13,7 +13,10 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,6 +27,12 @@ import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
 
 public class Arm extends SubsystemBase {
+
+  // private ShuffleboardTab armTab = Shuffleboard.getTab("SuperShuffle");
+
+  // private GenericEntry shuffleDesiredNode = armTab
+  // .add("Desired Node", false)
+  // .getEntry();
 
   TalonFX shoulderJoint;
   TalonFX elbowJoint;
@@ -415,8 +424,18 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public boolean getNodeTwoValue() {
+    if (desiredNode == 2) {
+      return true;
+    }
+
+    return false;
+  }
+
   @Override
   public void periodic() {
+
+    // shuffleDesiredNode.setBoolean(getNodeTwoValue());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());

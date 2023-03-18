@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +28,17 @@ public class Intake extends SubsystemBase {
   SN_CANSparkMax rightMotor;
   DigitalInput limitSwitch;
 
+  private ShuffleboardTab intakeTab = Shuffleboard.getTab("SuperShuffle");
+  private GenericEntry shuffleGamePieceCollected = intakeTab
+      .add("Piece Collected", false)
+      .withWidget("Boolean Box")
+      .withSize(1, 1)
+      .withPosition(8, 3)
+      .withProperties(Map.of("colorWhenTrue", "#4d74ff", "colorWhenFalse", "#000000"))
+      .getEntry();
+
   public Intake() {
+
     leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
     rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
 
@@ -75,6 +90,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    shuffleGamePieceCollected.setBoolean(isGamePieceCollected());
 
     SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
 
