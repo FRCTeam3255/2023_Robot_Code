@@ -266,7 +266,7 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference chargeStationCenterX = new SN_DoublePreference("chargeStationCenterX", 3.9);
     public static final SN_DoublePreference chargeStationCenterToleranceX = new SN_DoublePreference(
-        "chargeStationCenterToleranceX", 0.2);
+        "chargeStationCenterToleranceX", 0.1);
     public static final SN_DoublePreference chargeStationCenterY = new SN_DoublePreference("chargeStationCenterY",
         2.75);
     public static final SN_DoublePreference chargeStationCenterToleranceY = new SN_DoublePreference(
