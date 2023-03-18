@@ -310,7 +310,7 @@ public final class Constants {
     public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
 
     public static final PatternType CHARGE_STATION_ALIGNED_COLOR = PatternType.HotPink;
-    public static final PatternType GRID_ALIGNED_COLOR = PatternType.ColorWavesLavaPalette;
+    public static final PatternType GRID_ALIGNED_COLOR = PatternType.Aqua;
   }
 
   public enum GamePiece {
