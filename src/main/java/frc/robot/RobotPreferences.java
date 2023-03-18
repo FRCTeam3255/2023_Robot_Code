@@ -262,6 +262,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
         "measurementStdDevsDegrees", Units.radiansToDegrees(0.9));
 
+    public static final SN_DoublePreference chargeStationCenterX = new SN_DoublePreference("chargeStationCenter", 3.9);
+    public static final SN_DoublePreference chargeStationCenterTolerance = new SN_DoublePreference(
+        "chargeStationCenter", 0.2);
+  }
+
+  public static final class prefLEDs {
+    public static final SN_DoublePreference timeChargeStationLEDsOn = new SN_DoublePreference("timeChargeStationLEDsOn",
+        30);
   }
 
 }
