@@ -119,22 +119,22 @@ public class Drive extends CommandBase {
 
       if (northTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(0);
+        rotationPosition = Rotation2d.fromDegrees(180);
       }
 
       if (eastTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(-90);
+        rotationPosition = Rotation2d.fromDegrees(90);
       }
 
       if (southTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(180);
+        rotationPosition = Rotation2d.fromDegrees(0);
       }
 
       if (westTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(90);
+        rotationPosition = Rotation2d.fromDegrees(-90);
       }
 
     }

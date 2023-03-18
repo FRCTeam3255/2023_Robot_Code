@@ -14,6 +14,11 @@ public class RobotPreferences {
   // controllers, drivetrain, arm, intake, collector, charger (if it exists),
   // vision, leds
 
+  public static final class prefControllers {
+    public static final SN_DoublePreference rumbleOutput = new SN_DoublePreference("rumbleOutput", 0.2);
+    public static final SN_DoublePreference rumbleDelay = new SN_DoublePreference("rumbleDelay", 0.5);
+  }
+
   public static final class prefDrivetrain {
 
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);
@@ -257,6 +262,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
         "measurementStdDevsDegrees", Units.radiansToDegrees(0.9));
 
+    public static final SN_DoublePreference chargeStationCenterX = new SN_DoublePreference("chargeStationCenter", 3.9);
+    public static final SN_DoublePreference chargeStationCenterTolerance = new SN_DoublePreference(
+        "chargeStationCenter", 0.2);
+  }
+
+  public static final class prefLEDs {
+    public static final SN_DoublePreference timeChargeStationLEDsOn = new SN_DoublePreference("timeChargeStationLEDsOn",
+        30);
   }
 
 }

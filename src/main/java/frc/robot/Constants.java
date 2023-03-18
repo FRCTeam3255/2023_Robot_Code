@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -204,7 +205,7 @@ public final class Constants {
     public static final double ELBOW_GEAR_RATIO = 200.0;
 
     public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = false;
-    public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
+    public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
@@ -221,8 +222,8 @@ public final class Constants {
     public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.470116);
     public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.823558);
 
-    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.346228);
-    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.127852);
+    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.745331);
+    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.614716);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
@@ -236,15 +237,15 @@ public final class Constants {
     public enum ArmState {
       NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
-      FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-15)),
-      SHELF_INTAKE(Rotation2d.fromDegrees(-20), Rotation2d.fromDegrees(10)),
-      HIGH_CONE_SCORE(Rotation2d.fromDegrees(-11), Rotation2d.fromDegrees(25)),
-      HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-11), Rotation2d.fromDegrees(5)),
-      MID_CONE_SCORE(Rotation2d.fromDegrees(-59), Rotation2d.fromDegrees(40)),
-      MID_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-59), Rotation2d.fromDegrees(20)),
-      HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(37.5), Rotation2d.fromDegrees(-30.5)),
+      FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-18)),
+      SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
+      HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
+      MID_CONE_SCORE(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(55)),
+      MID_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(45)),
+      HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(-55), Rotation2d.fromDegrees(50)),
       HIGH_CUBE_SCORE_SHOOT(Rotation2d.fromDegrees(-99), Rotation2d.fromDegrees(32)),
-      MID_CUBE_SCORE(Rotation2d.fromDegrees(-95.5), Rotation2d.fromDegrees(22)),
+      MID_CUBE_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(40)),
       HYBRID_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0));
 
       public Rotation2d shoulderAngle;
@@ -300,15 +301,15 @@ public final class Constants {
   }
 
   public static final class constLEDs {
-    public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
-    public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
-
-    public static final PatternType DESIRED_CONE_COLOR = PatternType.StrobeGold;
-    public static final PatternType DESIRED_CUBE_COLOR = PatternType.StrobeBlue;
+    public static final PatternType HAS_GAME_PIECE_COLOR = SN_Blinkin.PatternType.Green;
 
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;
+
+    public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
+
+    public static final PatternType CHARGE_STATION_ALIGNED_COLOR = PatternType.HotPink;
   }
 
   public enum GamePiece {
