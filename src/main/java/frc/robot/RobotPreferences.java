@@ -274,6 +274,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference chargeStationCenterX = new SN_DoublePreference("chargeStationCenter", 3.9);
     public static final SN_DoublePreference chargeStationCenterTolerance = new SN_DoublePreference(
         "chargeStationCenter", 0.2);
+
+    public static final SN_DoublePreference gridAlignmentTolerance = new SN_DoublePreference("gridAlignmentTolerance",
+        0.1);
+    public static final SN_DoublePreference gridLEDsXPosMax = new SN_DoublePreference("gridLEDsMaxXPos", 3.35);
   }
 
   public static final class prefLEDs {

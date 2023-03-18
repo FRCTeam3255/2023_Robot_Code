@@ -25,10 +25,14 @@ public class SetLEDs extends CommandBase {
   Double chargeStationCenterX;
   Double chargeStationCenterTolerance;
 
-  public SetLEDs(LEDs subLEDs, Intake subIntake, Drivetrain subDrivetrain) {
+  int desiredColumn;
+
+  public SetLEDs(LEDs subLEDs, Intake subIntake, Drivetrain subDrivetrain, int desiredColumn) {
     this.subLEDs = subLEDs;
     this.subIntake = subIntake;
     this.subDrivetrain = subDrivetrain;
+
+    this.desiredColumn = desiredColumn;
 
     chargeStationCenterX = prefVision.chargeStationCenterX.getValue();
     chargeStationCenterTolerance = prefVision.chargeStationCenterTolerance.getValue();
@@ -53,6 +57,71 @@ public class SetLEDs extends CommandBase {
         desiredPattern = constLEDs.CHARGE_STATION_ALIGNED_COLOR;
       }
     }
+
+    if (desiredColumn > 0) {
+      if (Math.abs(subDrivetrain.getPose().getY()
+          - subDrivetrain.columnCoordinatesY[desiredColumn - 1]) < prefVision.gridAlignmentTolerance.getValue()
+          && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMax.getValue()) {
+        desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+      }
+    }
+
+    // switch (desiredColumn) {
+    // case 1:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 0.5) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 2:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 1.05) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 3:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 1.63) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 4:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 2.19) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 5:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 2.7) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 6:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 3.28) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 7:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 3.86) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 8:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 4.44) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // case 9:
+    // if (Math.abs(subDrivetrain.getPose().getY() - 4.97) <
+    // prefVision.gridAlignmentTolerance.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // break;
+    // }
 
     subLEDs.setLEDPattern(desiredPattern);
   }
