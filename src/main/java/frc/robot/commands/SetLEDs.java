@@ -23,7 +23,9 @@ public class SetLEDs extends CommandBase {
   PatternType desiredPattern;
 
   Double chargeStationCenterX;
-  Double chargeStationCenterTolerance;
+  Double chargeStationCenterToleranceX;
+  Double chargeStationCenterY;
+  Double chargeStationCenterToleranceY;
 
   public SetLEDs(LEDs subLEDs, Intake subIntake, Drivetrain subDrivetrain) {
     this.subLEDs = subLEDs;
@@ -31,7 +33,9 @@ public class SetLEDs extends CommandBase {
     this.subDrivetrain = subDrivetrain;
 
     chargeStationCenterX = prefVision.chargeStationCenterX.getValue();
-    chargeStationCenterTolerance = prefVision.chargeStationCenterTolerance.getValue();
+    chargeStationCenterToleranceX = prefVision.chargeStationCenterToleranceX.getValue();
+    chargeStationCenterY = prefVision.chargeStationCenterY.getValue();
+    chargeStationCenterToleranceY = prefVision.chargeStationCenterToleranceY.getValue();
 
     addRequirements(subLEDs);
   }
@@ -49,7 +53,8 @@ public class SetLEDs extends CommandBase {
     }
 
     if (Timer.getMatchTime() < prefLEDs.timeChargeStationLEDsOn.getValue()) {
-      if (Math.abs(subDrivetrain.getPose().getX() - chargeStationCenterX) < chargeStationCenterTolerance) {
+      if (Math.abs(subDrivetrain.getPose().getX() - chargeStationCenterX) < chargeStationCenterToleranceX
+          && Math.abs(subDrivetrain.getPose().getY() - chargeStationCenterY) < chargeStationCenterToleranceY) {
         desiredPattern = constLEDs.CHARGE_STATION_ALIGNED_COLOR;
       }
     }
