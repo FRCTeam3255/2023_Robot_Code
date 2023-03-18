@@ -39,59 +39,70 @@ public class DriveToPosition extends CommandBase {
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 0.5),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 2:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 1.05),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 3:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 1.63),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 4:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 2.19),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 5:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 2.7),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 6:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 3.28),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 7:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 3.86),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 8:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 4.44),
     // Rotation2d.fromDegrees(180));
+    // break;
     // case 9:
     // desiredPosition = new Pose2d(
     // new
     // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
     // 4.97),
     // Rotation2d.fromDegrees(180));
+    // break;
     // }
 
-    desiredPosition = new Pose2d(
-        new Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()), 2),
-        Rotation2d.fromDegrees(180));
+    // desiredPosition = new Pose2d(
+    // new
+    // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
+    // 2.7),
+    // Rotation2d.fromDegrees(180));
     subDrivetrain.driveToPosition(desiredPosition);
   }
 
