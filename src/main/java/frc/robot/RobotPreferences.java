@@ -21,10 +21,10 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
 
-    public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.0);
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.0);
+    public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.1);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
-    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
+    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 1.0);
 
     public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 0.3);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
@@ -70,8 +70,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleTransMaxAccel = new SN_DoublePreference("teleTransMaxAccel", 5);
     // inches
     public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
-    public static final SN_DoublePreference teleTransKS = new SN_DoublePreference("teleTransKS", 0.080000);
-    public static final SN_DoublePreference teleTransKV = new SN_DoublePreference("teleTransKV", 0.180000);
+    public static final SN_DoublePreference teleTransKS = new SN_DoublePreference("teleTransKS", 0.24);
+    public static final SN_DoublePreference teleTransKV = new SN_DoublePreference("teleTransKV", 0.016);
 
     public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 8.0);
     public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);

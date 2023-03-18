@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -13,7 +12,6 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.frcteam3255.utils.CTREModuleState;
 import com.frcteam3255.utils.SN_Math;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -42,8 +40,6 @@ public class SN_SwerveModule {
   private SupplyCurrentLimitConfiguration steerCurrentLimit;
 
   private double lastAngle;
-
-  private SimpleMotorFeedforward transFeedForward;
 
   /**
    * Create a new SN_SwerveModule.
@@ -117,12 +113,6 @@ public class SN_SwerveModule {
     // absoluteEncoder
 
     absoluteEncoder.configFactoryDefault();
-
-    // feed forward
-
-    transFeedForward = new SimpleMotorFeedforward(prefDrivetrain.teleTransKS.getValue(),
-        prefDrivetrain.teleTransKV.getValue());
-
   }
 
   /**
@@ -154,8 +144,7 @@ public class SN_SwerveModule {
           Constants.WHEEL_CIRCUMFERENCE,
           Constants.DRIVE_GEAR_RATIO);
 
-      driveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
-          transFeedForward.calculate(velocity));
+      driveMotor.set(ControlMode.Velocity, velocity);
     }
 
     // convert angle to Falcon encoder counts

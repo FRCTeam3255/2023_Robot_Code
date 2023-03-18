@@ -54,6 +54,7 @@ public class Drivetrain extends SubsystemBase {
   private ProfiledPIDController xPID;
   private ProfiledPIDController yPID;
   private PIDController thetaPID;
+  private SimpleMotorFeedforward transFeedforward;
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
@@ -174,6 +175,9 @@ public class Drivetrain extends SubsystemBase {
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
     thetaPID.reset();
 
+    transFeedforward = new SimpleMotorFeedforward(prefDrivetrain.teleTransKS.getValue(),
+        prefDrivetrain.teleTransKV.getValue());
+
     swerveAutoBuilder = new SwerveAutoBuilder(
         this::getPose,
         this::resetPose,
@@ -209,6 +213,9 @@ public class Drivetrain extends SubsystemBase {
         xPID.calculate(getPose().getX()),
         yPID.calculate(getPose().getY()),
         position.getRotation());
+
+    velocity = new Pose2d(transFeedforward.calculate(
+        velocity.getX()), transFeedforward.calculate(velocity.getY()), position.getRotation());
 
     // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
     // rotation and pass the translational values to drive().
