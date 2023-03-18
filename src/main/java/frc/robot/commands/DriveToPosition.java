@@ -98,11 +98,10 @@ public class DriveToPosition extends CommandBase {
     // break;
     // }
 
-    // desiredPosition = new Pose2d(
-    // new
-    // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
-    // 2.7),
-    // Rotation2d.fromDegrees(180));
+    desiredPosition = new Pose2d(
+        new Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
+            2.7),
+        Rotation2d.fromDegrees(180));
     subDrivetrain.driveToPosition(desiredPosition);
   }
 

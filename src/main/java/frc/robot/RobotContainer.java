@@ -121,6 +121,8 @@ public class RobotContainer {
 
     conDriver.btn_LeftTrigger.whileTrue(new DriveToPosition(subDrivetrain, subArm.getDesiredColumn()));
 
+    conDriver.btn_Start.onTrue(Commands.runOnce(() -> subDrivetrain.configure()));
+
     // Operator
 
     // Run IntakeCube command

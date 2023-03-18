@@ -70,9 +70,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleTransMaxAccel = new SN_DoublePreference("teleTransMaxAccel", 5);
     // inches
     public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
-    // volts
     public static final SN_DoublePreference teleTransKS = new SN_DoublePreference("teleTransKS", 0.24);
-    // volts * seconds/distance
     public static final SN_DoublePreference teleTransKV = new SN_DoublePreference("teleTransKV", 0.016);
 
     public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 8.0);

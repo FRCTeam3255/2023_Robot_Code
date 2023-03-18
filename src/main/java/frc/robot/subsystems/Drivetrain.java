@@ -126,9 +126,6 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
 
-    transFeedforward = new SimpleMotorFeedforward(prefDrivetrain.teleTransKS.getValue(),
-        prefDrivetrain.teleTransKV.getValue());
-
     cubeThenMobilityBottom = PathPlanner.loadPath("cubeThenMobilityBottom",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
@@ -178,6 +175,9 @@ public class Drivetrain extends SubsystemBase {
     thetaPID.enableContinuousInput(-Math.PI, Math.PI);
     thetaPID.reset();
 
+    transFeedforward = new SimpleMotorFeedforward(prefDrivetrain.teleTransKS.getValue(),
+        prefDrivetrain.teleTransKV.getValue());
+
     swerveAutoBuilder = new SwerveAutoBuilder(
         this::getPose,
         this::resetPose,
@@ -210,15 +210,12 @@ public class Drivetrain extends SubsystemBase {
     // create a velocity Pose2d with the calculated x and y positions, and the
     // positional rotation.
     Pose2d velocity = new Pose2d(
-        // xPID.calculate(getPose().getX()) +
-        // transFeedforward.calculate(getPose().getX()),
-        // yPID.calculate(getPose().getY()) +
-        // transFeedforward.calculate(getPose().getY()),
-        transFeedforward.calculate(getPose().getX()),
-        transFeedforward.calculate(getPose().getY()),
+        xPID.calculate(getPose().getX()),
+        yPID.calculate(getPose().getY()),
         position.getRotation());
 
-    SmartDashboard.putNumber("Desired Velocity", velocity.getX());
+    velocity = new Pose2d(transFeedforward.calculate(
+        velocity.getX()), transFeedforward.calculate(velocity.getY()), position.getRotation());
 
     // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
     // rotation and pass the translational values to drive().
