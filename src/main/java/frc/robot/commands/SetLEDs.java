@@ -69,63 +69,6 @@ public class SetLEDs extends CommandBase {
       }
     }
 
-    // switch (desiredColumn) {
-    // case 1:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 0.5) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 2:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 1.05) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 3:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 1.63) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 4:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 2.19) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 5:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 2.7) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 6:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 3.28) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 7:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 3.86) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 8:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 4.44) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // case 9:
-    // if (Math.abs(subDrivetrain.getPose().getY() - 4.97) <
-    // prefVision.gridAlignmentTolerance.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // break;
-    // }
-
     subLEDs.setLEDPattern(desiredPattern);
   }
 
