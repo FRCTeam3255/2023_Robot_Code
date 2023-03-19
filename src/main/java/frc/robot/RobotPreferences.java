@@ -61,15 +61,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
         "autoMaxAccelFeet", 1.0);
 
-    public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 2);
+    public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 5);
     public static final SN_DoublePreference teleTransI = new SN_DoublePreference("teleTransI", 0);
     public static final SN_DoublePreference teleTransD = new SN_DoublePreference("teleTransD", 0);
     // feet per second
     public static final SN_DoublePreference teleTransMaxSpeed = new SN_DoublePreference("teleTransMaxSpeed", 16.3);
     // feet per second per second
-    public static final SN_DoublePreference teleTransMaxAccel = new SN_DoublePreference("teleTransMaxAccel", 5);
+    public static final SN_DoublePreference teleTransMaxAccel = new SN_DoublePreference("teleTransMaxAccel", 2);
     // inches
-    public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1);
+    public static final SN_DoublePreference teleTransTolerance = new SN_DoublePreference("teleTransTolerance", 1.9685);
     public static final SN_DoublePreference teleTransKS = new SN_DoublePreference("teleTransKS", 0.080000);
     public static final SN_DoublePreference teleTransKV = new SN_DoublePreference("teleTransKV", 0.180000);
 
