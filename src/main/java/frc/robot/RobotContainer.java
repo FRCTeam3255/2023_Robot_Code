@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
-import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -23,7 +22,6 @@ import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeFloor;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
@@ -125,21 +123,23 @@ public class RobotContainer {
     // subCollector));
 
     // Intake Floor (rbump)
-    conOperator.btn_RightBumper.whileTrue(new IntakeFloor(subArm, subIntake));
+    conOperator.btn_RightBumper
+        .onTrue(subArm.intakeFloorDeployCommand())
+        .whileFalse(subArm.intakeFloorStowCommand())
+        .whileTrue(new IntakeGamePiece(subIntake));
 
     // Set stow Arm preset (b)
-    conOperator.btn_B.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
+    conOperator.btn_B.onTrue(subArm.stowCommand());
 
-    // Set low Arm preset (a)
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.HYBRID_SCORE)))
-        .onTrue(Commands.runOnce(() -> subArm.setDesiredNode(7)));
+    conOperator.btn_A.onTrue(
+        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE));
 
     // Set Shelf Arm preset (y)
-    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.SHELF_INTAKE)))
+    conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
         .whileTrue(new IntakeGamePiece(subIntake));
 
     // prep place (x)
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.setStateFromDesiredNode()));
+    conOperator.btn_X.onTrue(subArm.prepPlaceCommand());
 
     // Place Game piece (rt)
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));

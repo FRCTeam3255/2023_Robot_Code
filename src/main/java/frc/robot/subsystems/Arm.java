@@ -15,6 +15,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -42,6 +44,7 @@ public class Arm extends SubsystemBase {
   Rotation2d goalElbowAngle;
 
   int desiredNode;
+  ArmState armStateFromDesiredNode;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -62,6 +65,7 @@ public class Arm extends SubsystemBase {
     }
 
     goalState = ArmState.NONE;
+    armStateFromDesiredNode = ArmState.NONE;
 
     desiredNode = 0;
 
@@ -384,45 +388,99 @@ public class Arm extends SubsystemBase {
     this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
   }
 
-  public void setStateFromDesiredNode() {
+  private void setArmStateFromDesiredNode() {
     switch (desiredNode % 9) {
       case 0:
-        setGoalState(ArmState.NONE);
+        armStateFromDesiredNode = ArmState.NONE;
         break;
       case 1:
-        setGoalState(ArmState.HIGH_CONE_SCORE);
+        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
         break;
       case 2:
-        setGoalState(ArmState.HIGH_CUBE_SCORE_PLACE);
+        armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
         break;
       case 3:
-        setGoalState(ArmState.HIGH_CONE_SCORE);
+        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
         break;
       case 4:
-        setGoalState(ArmState.MID_CONE_SCORE);
+        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
         break;
       case 5:
-        setGoalState(ArmState.MID_CUBE_SCORE);
+        armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
         break;
       case 6:
-        setGoalState(ArmState.MID_CONE_SCORE);
+        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
         break;
       case 7:
-        setGoalState(ArmState.HYBRID_SCORE);
+        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
         break;
       case 8:
-        setGoalState(ArmState.HYBRID_SCORE);
+        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
         break;
       case 9:
-        setGoalState(ArmState.HYBRID_SCORE);
+        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
       default:
-        setGoalState(ArmState.NONE);
+        armStateFromDesiredNode = ArmState.NONE;
         break;
     }
+
+  }
+
+  public Command prepPlaceCommand() {
+    return prepStateFromStowCommand();
+  }
+
+  public Command stowCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED))
+
+    ).unless(() -> isGoalState(ArmState.LOW_STOWED));
+  }
+
+  public Command intakeFloorDeployCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE)))
+        .unless(() -> isGoalState(ArmState.FLOOR_INTAKE));
+  }
+
+  public Command intakeFloorStowCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+        .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE));
+  }
+
+  public Command stateFromStowCommand(ArmState state) {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(state)))
+        .unless(() -> isGoalState(state));
+  }
+
+  public Command prepStateFromStowCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
+        .unless(() -> isGoalState(armStateFromDesiredNode));
   }
 
   @Override
   public void periodic() {
+
+    setArmStateFromDesiredNode();
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());

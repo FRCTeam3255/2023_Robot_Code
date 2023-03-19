@@ -42,7 +42,7 @@ public class CubeThenDock extends SequentialCommandGroup {
         Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
-        Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)),
+        Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_STOWED)),
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
