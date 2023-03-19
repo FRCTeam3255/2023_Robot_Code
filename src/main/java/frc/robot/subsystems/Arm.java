@@ -65,6 +65,7 @@ public class Arm extends SubsystemBase {
     }
 
     goalState = ArmState.NONE;
+    armStateFromDesiredNode = ArmState.NONE;
 
     desiredNode = 0;
 
@@ -391,32 +392,43 @@ public class Arm extends SubsystemBase {
     switch (desiredNode % 9) {
       case 0:
         armStateFromDesiredNode = ArmState.NONE;
+        break;
       case 1:
         armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+        break;
       case 2:
         armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+        break;
       case 3:
         armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+        break;
       case 4:
         armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+        break;
       case 5:
         armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+        break;
       case 6:
         armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+        break;
       case 7:
         armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
       case 8:
         armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
       case 9:
         armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
       default:
         armStateFromDesiredNode = ArmState.NONE;
+        break;
     }
 
   }
 
   public Command prepPlaceCommand() {
-    return stateFromStowCommand(armStateFromDesiredNode);
+    return prepStateFromStowCommand();
   }
 
   public Command stowCommand() {
@@ -453,9 +465,16 @@ public class Arm extends SubsystemBase {
     return Commands.sequence(
         Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
         Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
-        Commands.runOnce(() -> setGoalState(state))
+        Commands.runOnce(() -> setGoalState(state)))
+        .unless(() -> isGoalState(state));
+  }
 
-    ).unless(() -> isGoalState(state));
+  public Command prepStateFromStowCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
+        .unless(() -> isGoalState(armStateFromDesiredNode));
   }
 
   @Override
