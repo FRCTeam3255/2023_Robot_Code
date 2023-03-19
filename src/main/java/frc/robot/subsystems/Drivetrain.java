@@ -65,8 +65,6 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeThenDock;
   public PathPlannerTrajectory cubeThenMobilityBottom;
 
-  public boolean isDriveOpenLoop = true;
-
   public Drivetrain() {
 
     if (RobotContainer.isPracticeBot()) {
@@ -448,8 +446,6 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
 
     updatePoseEstimator();
-
-    // shuffleFieldRelative.setBoolean(isFieldRelative);
 
     SmartDashboard.putBoolean("Drivetrain Field Relative", isFieldRelative);
 

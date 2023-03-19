@@ -611,8 +611,6 @@ public class Arm extends SubsystemBase {
 
     setArmStateFromDesiredNode();
 
-    // shuffleDesiredNode.setBoolean(getNodeTwoValue());
-
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());

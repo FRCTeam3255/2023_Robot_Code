@@ -122,7 +122,7 @@ public class SuperShuffle extends SubsystemBase {
     gridChoiceLayout
         .addBoolean(gridName, supplier)
         .withWidget("Boolean Box")
-        .withProperties(Map.of("colorWhenTrue", gridColor, "colorWhenFalse", "black"))
+        .withProperties(Map.of("colorWhenTrue", gridColor, "colorWhenFalse", offColor))
         .withSize(2, 1)
         .withPosition(column, 0);
   }

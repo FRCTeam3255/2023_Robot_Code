@@ -90,10 +90,6 @@ public class RobotContainer {
     resetToAbsolutePositions();
   }
 
-  public void configureShuffleboard() {
-    // Shuffleboard configure function for optimization
-  }
-
   public void configureNeutralModes() {
     subArm.setJointsNeutralMode();
   }
