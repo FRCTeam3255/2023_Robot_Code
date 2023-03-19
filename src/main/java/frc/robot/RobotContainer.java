@@ -157,6 +157,21 @@ public class RobotContainer {
 
     // numpad
 
+    // Left Grid
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredGrid(1);
+    }));
+
+    // Co-op Grid
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredGrid(2);
+    }));
+
+    // Right Grid
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredGrid(3);
+    }));
+
     // Cone HL
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(7);

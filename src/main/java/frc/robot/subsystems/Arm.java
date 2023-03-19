@@ -45,6 +45,7 @@ public class Arm extends SubsystemBase {
   Rotation2d goalElbowAngle;
 
   int desiredNode;
+  int desiredGrid = 0;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -381,6 +382,10 @@ public class Arm extends SubsystemBase {
     this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
   }
 
+  public void setDesiredGrid(int desiredGrid) {
+    this.desiredGrid = MathUtil.clamp(desiredGrid, 1, 3);
+  }
+
   public void setStateFromDesiredNode() {
     switch (desiredNode % 9) {
       case 0:
@@ -418,190 +423,215 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public int getDesiredGrid() {
+    return desiredGrid;
+  }
+
+  public boolean getGridOneValue() {
+    if (desiredGrid == 1) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getGridTwoValue() {
+    if (desiredGrid == 2) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getGridThreeValue() {
+    if (desiredGrid == 3) {
+      return true;
+    }
+    return false;
+  }
+
   public boolean getNodeOneValue() {
-    if (desiredNode == 1) {
+    if (desiredNode == 1 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwoValue() {
-    if (desiredNode == 2) {
+    if (desiredNode == 2 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeThreeValue() {
-    if (desiredNode == 3) {
+    if (desiredNode == 3 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeFourValue() {
-    if (desiredNode == 4) {
+    if (desiredNode == 4 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeFiveValue() {
-    if (desiredNode == 5) {
+    if (desiredNode == 5 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeSixValue() {
-    if (desiredNode == 6) {
+    if (desiredNode == 6 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeSevenValue() {
-    if (desiredNode == 7) {
+    if (desiredNode == 7 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeEightValue() {
-    if (desiredNode == 8) {
+    if (desiredNode == 8 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeNineValue() {
-    if (desiredNode == 9) {
+    if (desiredNode == 9 && desiredGrid == 1) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTenValue() {
-    if (desiredNode == 10) {
+    if (desiredNode == 1 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeElevenValue() {
-    if (desiredNode == 11) {
+    if (desiredNode == 2 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwelveValue() {
-    if (desiredNode == 12) {
+    if (desiredNode == 3 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeThirteenValue() {
-    if (desiredNode == 13) {
+    if (desiredNode == 4 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeFourteenValue() {
-    if (desiredNode == 14) {
+    if (desiredNode == 5 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeFifteenValue() {
-    if (desiredNode == 15) {
+    if (desiredNode == 6 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeSixteenValue() {
-    if (desiredNode == 16) {
+    if (desiredNode == 7 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeSeventeenValue() {
-    if (desiredNode == 17) {
+    if (desiredNode == 8 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeEighteenValue() {
-    if (desiredNode == 18) {
+    if (desiredNode == 9 && desiredGrid == 2) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeNineteenValue() {
-    if (desiredNode == 19) {
+    if (desiredNode == 1 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentyValue() {
-    if (desiredNode == 20) {
+    if (desiredNode == 2 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentyOneValue() {
-    if (desiredNode == 21) {
+    if (desiredNode == 3 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentyTwoValue() {
-    if (desiredNode == 22) {
+    if (desiredNode == 4 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentyThreeValue() {
-    if (desiredNode == 23) {
+    if (desiredNode == 5 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentyFourValue() {
-    if (desiredNode == 24) {
+    if (desiredNode == 6 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentyFiveValue() {
-    if (desiredNode == 25) {
+    if (desiredNode == 7 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentySixValue() {
-    if (desiredNode == 26) {
+    if (desiredNode == 8 && desiredGrid == 3) {
       return true;
     }
     return false;
   }
 
   public boolean getNodeTwentySevenValue() {
-    if (desiredNode == 27) {
+    if (desiredNode == 9 && desiredGrid == 3) {
       return true;
     }
     return false;
