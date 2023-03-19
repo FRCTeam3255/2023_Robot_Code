@@ -393,7 +393,7 @@ public class Arm extends SubsystemBase {
     this.desiredGrid = MathUtil.clamp(desiredGrid, 1, 3);
   }
 
-  public void setStateFromDesiredNode() {
+  public void setArmStateFromDesiredNode() {
     switch (desiredNode % 9) {
       case 0:
         armStateFromDesiredNode = ArmState.NONE;
