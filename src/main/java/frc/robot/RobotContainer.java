@@ -46,9 +46,9 @@ public class RobotContainer {
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
   private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
-  private final SuperShuffle subSuperShuffle = new SuperShuffle();
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
+  private final SuperShuffle subSuperShuffle = new SuperShuffle(subArm);
   private final Intake subIntake = new Intake();
   // private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
@@ -157,23 +157,49 @@ public class RobotContainer {
 
     // numpad
 
-    // mid cone
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+    // Cone HL
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(7);
+    }));
+
+    // Cube HM
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(8);
+    }));
+
+    // Cone HR
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(9);
+    }));
+
+    // Cone ML
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(4);
     }));
 
-    // mid cube
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+    // Cube MM
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(5);
     }));
 
-    // high cube
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+    // Cone HR
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(6);
+    }));
+
+    // Hybrid L
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
+    }));
+
+    // Hybrid M
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(2);
     }));
-    // high cone
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1);
+
+    // Hybrid R
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(3);
     }));
 
   }
@@ -208,7 +234,7 @@ public class RobotContainer {
     autoTab
         .add("Auto Chooser", autoChooser)
         .withSize(1, 1)
-        .withPosition(7, 3);
+        .withPosition(8, 3);
   }
 
   public Command getAutonomousCommand() {

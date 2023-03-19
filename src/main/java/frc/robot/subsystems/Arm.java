@@ -28,12 +28,6 @@ import frc.robot.RobotPreferences.prefArm;
 
 public class Arm extends SubsystemBase {
 
-  // private ShuffleboardTab armTab = Shuffleboard.getTab("SuperShuffle");
-
-  // private GenericEntry shuffleDesiredNode = armTab
-  // .add("Desired Node", false)
-  // .getEntry();
-
   TalonFX shoulderJoint;
   TalonFX elbowJoint;
 
@@ -424,11 +418,192 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public boolean getNodeOneValue() {
+    if (desiredNode == 1) {
+      return true;
+    }
+    return false;
+  }
+
   public boolean getNodeTwoValue() {
     if (desiredNode == 2) {
       return true;
     }
+    return false;
+  }
 
+  public boolean getNodeThreeValue() {
+    if (desiredNode == 3) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeFourValue() {
+    if (desiredNode == 4) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeFiveValue() {
+    if (desiredNode == 5) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeSixValue() {
+    if (desiredNode == 6) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeSevenValue() {
+    if (desiredNode == 7) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeEightValue() {
+    if (desiredNode == 8) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeNineValue() {
+    if (desiredNode == 9) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTenValue() {
+    if (desiredNode == 10) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeElevenValue() {
+    if (desiredNode == 11) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwelveValue() {
+    if (desiredNode == 12) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeThirteenValue() {
+    if (desiredNode == 13) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeFourteenValue() {
+    if (desiredNode == 14) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeFifteenValue() {
+    if (desiredNode == 15) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeSixteenValue() {
+    if (desiredNode == 16) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeSeventeenValue() {
+    if (desiredNode == 17) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeEighteenValue() {
+    if (desiredNode == 18) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeNineteenValue() {
+    if (desiredNode == 19) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentyValue() {
+    if (desiredNode == 20) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentyOneValue() {
+    if (desiredNode == 21) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentyTwoValue() {
+    if (desiredNode == 22) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentyThreeValue() {
+    if (desiredNode == 23) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentyFourValue() {
+    if (desiredNode == 24) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentyFiveValue() {
+    if (desiredNode == 25) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentySixValue() {
+    if (desiredNode == 26) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean getNodeTwentySevenValue() {
+    if (desiredNode == 27) {
+      return true;
+    }
     return false;
   }
 

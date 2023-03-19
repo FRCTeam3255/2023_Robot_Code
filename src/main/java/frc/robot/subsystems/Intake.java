@@ -32,8 +32,8 @@ public class Intake extends SubsystemBase {
   private GenericEntry shuffleGamePieceCollected = intakeTab
       .add("Piece Collected", false)
       .withWidget("Boolean Box")
-      .withSize(1, 1)
-      .withPosition(8, 3)
+      .withSize(2, 2)
+      .withPosition(7, 0)
       .withProperties(Map.of("colorWhenTrue", "#4d74ff", "colorWhenFalse", "#000000"))
       .getEntry();
 
