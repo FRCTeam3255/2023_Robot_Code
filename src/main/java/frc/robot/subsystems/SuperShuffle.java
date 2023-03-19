@@ -41,19 +41,19 @@ public class SuperShuffle extends SubsystemBase {
       .getLayout("Left Grid", BuiltInLayouts.kGrid)
       .withPosition(gridOneColumn, gridRow)
       .withSize(gridSize, gridSize)
-      .withProperties(Map.of("Label position", "HIDDEN"));
+      .withProperties(Map.of("Label position", "hidden"));
 
   ShuffleboardLayout gridCoopLayout = Shuffleboard.getTab("SuperShuffle")
       .getLayout("Co-op Grid", BuiltInLayouts.kGrid)
       .withPosition(gridTwoColumn, gridRow)
       .withSize(gridSize, gridSize)
-      .withProperties(Map.of("Label position", "HIDDEN"));
+      .withProperties(Map.of("Label position", "hidden"));
 
   ShuffleboardLayout gridRightLayout = Shuffleboard.getTab("SuperShuffle")
       .getLayout("Right Grid", BuiltInLayouts.kGrid)
       .withPosition(gridThreeColumn, gridRow)
       .withSize(gridSize, gridSize)
-      .withProperties(Map.of("Label position", "HIDDEN"));
+      .withProperties(Map.of("Label position", "hidden"));
 
   ShuffleboardLayout gridChoiceLayout = Shuffleboard.getTab("SuperShuffle")
       .getLayout("Grid Choice", BuiltInLayouts.kGrid)
@@ -65,10 +65,10 @@ public class SuperShuffle extends SubsystemBase {
 
     this.subArm = subArm;
 
-    createGridLayout();
+    createLayout();
   }
 
-  public void createGridLayout() {
+  public void createLayout() {
 
     createGrid(gridLeftLayout,
         subArm::getNodeOneValue, subArm::getNodeTwoValue, subArm::getNodeThreeValue,
