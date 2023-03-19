@@ -236,8 +236,11 @@ public final class Constants {
 
     public enum ArmState {
       NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
-      STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
+      HIGH_STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
+      LOW_STOWED(Rotation2d.fromDegrees(-124), Rotation2d.fromDegrees(-20)),
+      MID_STOWED(Rotation2d.fromDegrees(-124), Rotation2d.fromDegrees(0)),
       FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-18)),
+      FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
       HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
