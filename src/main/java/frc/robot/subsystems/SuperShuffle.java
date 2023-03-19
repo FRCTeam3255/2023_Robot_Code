@@ -10,14 +10,11 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SuperShuffle extends SubsystemBase {
 
   Arm subArm;
-
-  ShuffleboardTab test = Shuffleboard.getTab("SuperShuffle");
 
   int gridSize = 2;
   int gridRow = 0;

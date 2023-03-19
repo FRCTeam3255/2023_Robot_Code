@@ -248,8 +248,8 @@ public class RobotContainer {
 
     autoTab
         .add("Auto Chooser", autoChooser)
-        .withSize(1, 1)
-        .withPosition(8, 3);
+        .withSize(2, 1)
+        .withPosition(7, 2);
   }
 
   public Command getAutonomousCommand() {
