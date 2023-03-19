@@ -132,7 +132,7 @@ public class RobotContainer {
     conOperator.btn_B.onTrue(subArm.stowCommand());
 
     conOperator.btn_A.onTrue(
-        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE).alongWith(Commands.runOnce(() -> subArm.setDesiredNode(7))));
+        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE));
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
