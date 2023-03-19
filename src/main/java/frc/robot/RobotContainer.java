@@ -8,6 +8,8 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
@@ -122,6 +124,9 @@ public class RobotContainer {
     conDriver.btn_LeftTrigger.whileTrue(new DriveToPosition(subDrivetrain, subArm.getDesiredColumn()));
 
     conDriver.btn_Start.onTrue(Commands.runOnce(() -> subDrivetrain.configure()));
+
+    conDriver.btn_North
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPose(new Pose2d(3.6, 5.6, new Rotation2d(0)))));
 
     // Operator
 

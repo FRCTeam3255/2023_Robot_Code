@@ -8,7 +8,7 @@ import edu.wpi.first.math.util.Units;
 
 public class RobotPreferences {
 
-  public static final boolean useNetworkTables = true;
+  public static final boolean useNetworkTables = false;
 
   // order of subsystems (and adjacent classes) shall be:
   // controllers, drivetrain, arm, intake, collector, charger (if it exists),

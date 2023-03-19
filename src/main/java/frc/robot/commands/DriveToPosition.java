@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
@@ -98,10 +99,17 @@ public class DriveToPosition extends CommandBase {
     // break;
     // }
 
-    desiredPosition = new Pose2d(
-        new Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
-            1.63),
-        Rotation2d.fromDegrees(180));
+    // desiredPosition = new Pose2d(
+    // new
+    // Translation2d(Units.inchesToMeters(prefDrivetrain.poseGridDistanceInches.getValue()),
+    // 1.63),
+    // Rotation2d.fromDegrees(180));
+
+    desiredPosition = new Pose2d(3.6, 5.6,
+        Rotation2d.fromDegrees(0));
+
+    SmartDashboard.putNumber("Desired position X", desiredPosition.getX());
+    SmartDashboard.putNumber("Desired position Y", desiredPosition.getY());
 
     subDrivetrain.driveToPosition(desiredPosition);
   }

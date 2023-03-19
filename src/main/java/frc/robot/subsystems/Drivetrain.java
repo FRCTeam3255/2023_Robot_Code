@@ -221,6 +221,8 @@ public class Drivetrain extends SubsystemBase {
           yPID.calculate(getPose().getY()) +
               transFeedforward.calculate(velocity.getY()),
           position.getRotation());
+    } else {
+      velocity = new Pose2d(0, 0, position.getRotation());
     }
 
     // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
