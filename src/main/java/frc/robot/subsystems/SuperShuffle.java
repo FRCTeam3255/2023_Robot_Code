@@ -70,13 +70,18 @@ public class SuperShuffle extends SubsystemBase {
 
   public void createGridLayout() {
 
-    createGrid(gridLeftLayout, subArm::getNodeOneValue, subArm::getNodeTwoValue, subArm::getNodeThreeValue,
-        subArm::getNodeFourValue, subArm::getNodeFiveValue, subArm::getNodeSixValue, subArm::getNodeSevenValue,
-        subArm::getNodeEightValue, subArm::getNodeNineValue);
-    createGrid(gridCoopLayout, subArm::getNodeTenValue, subArm::getNodeElevenValue, subArm::getNodeTwelveValue,
+    createGrid(gridLeftLayout,
+        subArm::getNodeOneValue, subArm::getNodeTwoValue, subArm::getNodeThreeValue,
+        subArm::getNodeFourValue, subArm::getNodeFiveValue, subArm::getNodeSixValue,
+        subArm::getNodeSevenValue, subArm::getNodeEightValue, subArm::getNodeNineValue);
+
+    createGrid(gridCoopLayout,
+        subArm::getNodeTenValue, subArm::getNodeElevenValue, subArm::getNodeTwelveValue,
         subArm::getNodeThirteenValue, subArm::getNodeFourteenValue, subArm::getNodeFifteenValue,
         subArm::getNodeSixteenValue, subArm::getNodeSeventeenValue, subArm::getNodeEighteenValue);
-    createGrid(gridRightLayout, subArm::getNodeNineteenValue, subArm::getNodeTwentyValue, subArm::getNodeTwentyOneValue,
+
+    createGrid(gridRightLayout,
+        subArm::getNodeNineteenValue, subArm::getNodeTwentyValue, subArm::getNodeTwentyOneValue,
         subArm::getNodeTwentyTwoValue, subArm::getNodeTwentyThreeValue, subArm::getNodeTwentyFourValue,
         subArm::getNodeTwentyFiveValue, subArm::getNodeTwentySixValue, subArm::getNodeTwentySevenValue);
 
@@ -85,33 +90,25 @@ public class SuperShuffle extends SubsystemBase {
     createGridChoice("Right Grid Choice", subArm::getGridThreeValue, 2);
   }
 
-  public void createGrid(ShuffleboardLayout gridLayout, BooleanSupplier nodeOne, BooleanSupplier nodeTwo,
+  public void createGrid(
+      ShuffleboardLayout gridLayout, BooleanSupplier nodeOne, BooleanSupplier nodeTwo,
       BooleanSupplier nodeThree, BooleanSupplier nodeFour, BooleanSupplier nodeFive, BooleanSupplier nodeSix,
       BooleanSupplier nodeSeven, BooleanSupplier nodeEight, BooleanSupplier nodeNine) {
 
-    createCell(gridLayout, "Hybrid L", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, 0,
-        hybridRow);
-    createCell(gridLayout, "Hybrid M", nodeTwo, defaultBoolean, hybridColor, offColor, cellSize, 1,
-        hybridRow);
-    createCell(gridLayout, "Hybrid R", nodeThree, defaultBoolean, hybridColor, offColor, cellSize, 2,
-        hybridRow);
-    createCell(gridLayout, "Cone ML", nodeFour, defaultBoolean, coneColor, offColor, cellSize, 0,
-        midRow);
-    createCell(gridLayout, "Cube MM", nodeFive, defaultBoolean, cubeColor, offColor, cellSize, 1,
-        midRow);
-    createCell(gridLayout, "Cone MR", nodeSix, defaultBoolean, coneColor, offColor, cellSize, 2,
-        midRow);
-    createCell(gridLayout, "Cone HL", nodeSeven, defaultBoolean, coneColor, offColor, cellSize, 0,
-        highRow);
-    createCell(gridLayout, "Cube HM", nodeEight, defaultBoolean, cubeColor, offColor, cellSize, 1,
-        highRow);
-    createCell(gridLayout, "Cone HR", nodeNine, defaultBoolean, coneColor, offColor, cellSize, 2,
-        highRow);
+    createCell(gridLayout, "Hybrid L", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, 0, hybridRow);
+    createCell(gridLayout, "Hybrid M", nodeTwo, defaultBoolean, hybridColor, offColor, cellSize, 1, hybridRow);
+    createCell(gridLayout, "Hybrid R", nodeThree, defaultBoolean, hybridColor, offColor, cellSize, 2, hybridRow);
+    createCell(gridLayout, "Cone ML", nodeFour, defaultBoolean, coneColor, offColor, cellSize, 0, midRow);
+    createCell(gridLayout, "Cube MM", nodeFive, defaultBoolean, cubeColor, offColor, cellSize, 1, midRow);
+    createCell(gridLayout, "Cone MR", nodeSix, defaultBoolean, coneColor, offColor, cellSize, 2, midRow);
+    createCell(gridLayout, "Cone HL", nodeSeven, defaultBoolean, coneColor, offColor, cellSize, 0, highRow);
+    createCell(gridLayout, "Cube HM", nodeEight, defaultBoolean, cubeColor, offColor, cellSize, 1, highRow);
+    createCell(gridLayout, "Cone HR", nodeNine, defaultBoolean, coneColor, offColor, cellSize, 2, highRow);
   }
 
-  public void createCell(ShuffleboardLayout layoutName, String cellName, BooleanSupplier supplier, Boolean defaultState,
-      String trueColor,
-      String falseColor, int cellSize, int cellColumn, int cellRow) {
+  public void createCell(
+      ShuffleboardLayout layoutName, String cellName, BooleanSupplier supplier, Boolean defaultState,
+      String trueColor, String falseColor, int cellSize, int cellColumn, int cellRow) {
 
     layoutName
         .addBoolean(cellName, supplier)
