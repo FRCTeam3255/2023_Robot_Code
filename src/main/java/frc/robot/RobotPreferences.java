@@ -241,20 +241,19 @@ public class RobotPreferences {
     // allowable closed loop error in degrees
     public static final SN_DoublePreference pivotTolerance = new SN_DoublePreference(
         "pivotTolerance", .5);
-    public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
-        "pivotMaxSpeed", 1);
 
-    public static final SN_DoublePreference pivotAngleStartingConfig = new SN_DoublePreference(
-        "pivotAngleStartingConfig", 195);
-    public static final SN_DoublePreference pivotAngleCubeCollecting = new SN_DoublePreference(
-        "pivotAngleCubeCollecting", 32);
-    public static final SN_DoublePreference pivotAngleClimb = new SN_DoublePreference(
-        "pivotAngleClimb", 0);
+    // max speed and accel are in native encoder counts
+    public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
+        "pivotMaxSpeed", 1000000);
+    public static final SN_DoublePreference pivotMaxAccel = new SN_DoublePreference(
+        "pivotMaxAccel", 1000000);
+
+    public static final SN_DoublePreference pivotAngleStowed = new SN_DoublePreference(
+        "pivotAngleStowed", 0);
+    public static final SN_DoublePreference pivotAngleCollecting = new SN_DoublePreference(
+        "pivotAngleCollecting", 0);
 
     public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", .5);
-
-    public static final SN_DoublePreference rollerToleranceMultiplier = new SN_DoublePreference(
-        "rollerToleranceMultiplier", 10);
   }
 
   public static final class prefVision {

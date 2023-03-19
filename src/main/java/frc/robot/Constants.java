@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -271,23 +272,20 @@ public final class Constants {
   }
 
   public static final class constCollector {
-    public static final double GEAR_RATIO = 100;
-
-    public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
-    public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
+    public static final double GEAR_RATIO = 40;
 
     public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(195);
     public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
 
     public static final boolean PIVOT_MOTOR_INVERT = false;
     public static final boolean ROLLER_MOTOR_INVERT = true;
-    public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
+    public static final boolean ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
-    public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
+    public static final IdleMode ROLLER_MOTOR_NEUTRAL_MODE = IdleMode.kCoast;
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.981843);
-    public static final double PRAC_PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
+    public static final double ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.981843);
+    public static final double PRAC_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
   }
 
   public static final class constVision {
