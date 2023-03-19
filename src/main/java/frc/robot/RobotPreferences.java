@@ -264,9 +264,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference measurementStdDevsDegrees = new SN_DoublePreference(
         "measurementStdDevsDegrees", Units.radiansToDegrees(0.9));
 
-    public static final SN_DoublePreference chargeStationCenterX = new SN_DoublePreference("chargeStationCenter", 3.9);
-    public static final SN_DoublePreference chargeStationCenterTolerance = new SN_DoublePreference(
-        "chargeStationCenter", 0.2);
+    public static final SN_DoublePreference chargeStationCenterX = new SN_DoublePreference("chargeStationCenterX", 3.9);
+    public static final SN_DoublePreference chargeStationCenterToleranceX = new SN_DoublePreference(
+        "chargeStationCenterToleranceX", 0.1);
+    public static final SN_DoublePreference chargeStationCenterY = new SN_DoublePreference("chargeStationCenterY",
+        2.75);
+    public static final SN_DoublePreference chargeStationCenterToleranceY = new SN_DoublePreference(
+        "chargeStationCenterToleranceY", 1.18);
   }
 
   public static final class prefLEDs {
