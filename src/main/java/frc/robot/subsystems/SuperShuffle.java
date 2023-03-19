@@ -37,24 +37,6 @@ public class SuperShuffle extends SubsystemBase {
 
   boolean defaultBoolean = false;
 
-  ShuffleboardLayout gridLeftLayout = Shuffleboard.getTab("SuperShuffle")
-      .getLayout("Left Grid", BuiltInLayouts.kGrid)
-      .withPosition(gridOneColumn, gridRow)
-      .withSize(gridSize, gridSize)
-      .withProperties(Map.of("Label position", "hidden"));
-
-  ShuffleboardLayout gridCoopLayout = Shuffleboard.getTab("SuperShuffle")
-      .getLayout("Co-op Grid", BuiltInLayouts.kGrid)
-      .withPosition(gridTwoColumn, gridRow)
-      .withSize(gridSize, gridSize)
-      .withProperties(Map.of("Label position", "hidden"));
-
-  ShuffleboardLayout gridRightLayout = Shuffleboard.getTab("SuperShuffle")
-      .getLayout("Right Grid", BuiltInLayouts.kGrid)
-      .withPosition(gridThreeColumn, gridRow)
-      .withSize(gridSize, gridSize)
-      .withProperties(Map.of("Label position", "hidden"));
-
   ShuffleboardLayout gridChoiceLayout = Shuffleboard.getTab("SuperShuffle")
       .getLayout("Grid Choice", BuiltInLayouts.kGrid)
       .withPosition(0, 2)
@@ -69,6 +51,9 @@ public class SuperShuffle extends SubsystemBase {
   }
 
   public void createLayout() {
+    ShuffleboardLayout gridLeftLayout = createGridLayout("Left Grid", gridOneColumn);
+    ShuffleboardLayout gridCoopLayout = createGridLayout("Co-op Grid", gridTwoColumn);
+    ShuffleboardLayout gridRightLayout = createGridLayout("Right Grid", gridThreeColumn);
 
     createGrid(gridLeftLayout,
         subArm::getNodeOneValue, subArm::getNodeTwoValue, subArm::getNodeThreeValue,
@@ -88,6 +73,14 @@ public class SuperShuffle extends SubsystemBase {
     createGridChoice("Left Grid Choice", subArm::getGridOneValue, 0);
     createGridChoice("Co-op Grid Choice", subArm::getGridTwoValue, 1);
     createGridChoice("Right Grid Choice", subArm::getGridThreeValue, 2);
+  }
+
+  public ShuffleboardLayout createGridLayout(String gridName, int gridColumn) {
+    return Shuffleboard.getTab("SuperShuffle")
+        .getLayout(gridName, BuiltInLayouts.kGrid)
+        .withPosition(gridColumn, gridRow)
+        .withSize(gridSize, gridSize)
+        .withProperties(Map.of("Label position", "hidden"));
   }
 
   public void createGrid(
