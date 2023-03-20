@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
@@ -40,6 +39,8 @@ public class Collector extends SubsystemBase {
     rollerMotor = new CANSparkMax(mapCollector.ROLLER_MOTOR_CAN, MotorType.kBrushless);
 
     absoluteEncoder = new DutyCycleEncoder(mapCollector.PIVOT_ABSOLUTE_ENCODER_DIO);
+
+    pivotConfig = new TalonFXConfiguration();
 
     configure();
   }
