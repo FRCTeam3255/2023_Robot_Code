@@ -41,7 +41,7 @@ public class SuperShuffle extends SubsystemBase {
       .getLayout("Grid Choice", BuiltInLayouts.kGrid)
       .withPosition(0, 2)
       .withSize(6, 1)
-      .withProperties(Map.of("Label position", "HIDDEN"));
+      .withProperties(Map.of("Label position", "hidden"));
 
   public SuperShuffle(Arm subArm) {
 
