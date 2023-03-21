@@ -84,10 +84,10 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
-  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.369141;
-  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 67.675781;
-  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.605469;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 333.984375;
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.193359;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 101.513672;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 86.835938;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 331.962891;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
@@ -219,8 +219,8 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.470116);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.823558);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.40896);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.721009);
 
     public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.745331);
     public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.614716);
