@@ -234,7 +234,7 @@ public class RobotPreferences {
 
   public static final class prefCollector {
 
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.09);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.04);
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
@@ -249,9 +249,9 @@ public class RobotPreferences {
         "pivotMaxAccel", 1000000);
 
     public static final SN_DoublePreference pivotAngleStowed = new SN_DoublePreference(
-        "pivotAngleStowed", 0);
+        "pivotAngleStowed", 10);
     public static final SN_DoublePreference pivotAngleCollecting = new SN_DoublePreference(
-        "pivotAngleCollecting", 0);
+        "pivotAngleCollecting", 120);
 
     public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", .5);
   }
