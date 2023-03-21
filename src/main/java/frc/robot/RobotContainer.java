@@ -8,6 +8,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,15 +17,16 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constLEDs;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeFloor;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
+import frc.robot.commands.SetRumble;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
@@ -32,6 +34,7 @@ import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
@@ -49,6 +52,7 @@ public class RobotContainer {
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
+  private final Trigger teleopTrigger = new Trigger(() -> RobotState.isEnabled() && RobotState.isTeleop());
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
@@ -70,7 +74,7 @@ public class RobotContainer {
     // subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
-    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subArm));
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain));
 
     configureBindings();
     configureAutoSelector();
@@ -108,7 +112,9 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
-    conDriver.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain));
+    conDriver.btn_RightBumper
+        .whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
+        .whileTrue(Commands.run(() -> subLEDs.setLEDPattern(constLEDs.DEFENSE_MODE_COLOR)));
 
     // Operator
 
@@ -117,21 +123,23 @@ public class RobotContainer {
     // subCollector));
 
     // Intake Floor (rbump)
-    conOperator.btn_RightBumper.whileTrue(new IntakeFloor(subArm, subIntake));
+    conOperator.btn_RightBumper
+        .onTrue(subArm.intakeFloorDeployCommand())
+        .whileFalse(subArm.intakeFloorStowCommand())
+        .whileTrue(new IntakeGamePiece(subIntake));
 
     // Set stow Arm preset (b)
-    conOperator.btn_B.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.STOWED)));
+    conOperator.btn_B.onTrue(subArm.stowCommand());
 
-    // Set low Arm preset (a)
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.HYBRID_SCORE)))
-        .onTrue(Commands.runOnce(() -> subArm.setDesiredNode(7)));
+    conOperator.btn_A.onTrue(
+        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE));
 
     // Set Shelf Arm preset (y)
-    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subArm.setGoalState(ArmState.SHELF_INTAKE)))
+    conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
         .whileTrue(new IntakeGamePiece(subIntake));
 
     // prep place (x)
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subArm.setStateFromDesiredNode()));
+    conOperator.btn_X.onTrue(subArm.prepPlaceCommand());
 
     // Place Game piece (rt)
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
@@ -167,6 +175,7 @@ public class RobotContainer {
       subArm.setDesiredNode(1);
     }));
 
+    teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }
 
   public static boolean isPracticeBot() {
