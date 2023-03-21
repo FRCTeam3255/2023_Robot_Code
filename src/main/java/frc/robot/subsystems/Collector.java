@@ -65,8 +65,10 @@ public class Collector extends SubsystemBase {
 
     pivotMotor.configForwardSoftLimitEnable(true);
     pivotMotor.configReverseSoftLimitEnable(true);
-    pivotMotor.configForwardSoftLimitThreshold(constCollector.PIVOT_FORWARD_LIMIT_VALUE);
-    pivotMotor.configReverseSoftLimitThreshold(constCollector.PIVOT_REVERSE_LIMIT_VALUE);
+    pivotMotor.configForwardSoftLimitThreshold(
+        SN_Math.degreesToFalcon(constCollector.PIVOT_FORWARD_LIMIT_VALUE.getDegrees(), constCollector.GEAR_RATIO));
+    pivotMotor.configReverseSoftLimitThreshold(
+        SN_Math.degreesToFalcon(constCollector.PIVOT_REVERSE_LIMIT_VALUE.getDegrees(), constCollector.GEAR_RATIO));
 
     pivotMotor.setNeutralMode(constCollector.PIVOT_MOTOR_NEUTRAL_MODE);
 
