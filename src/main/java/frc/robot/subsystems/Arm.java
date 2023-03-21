@@ -44,7 +44,7 @@ public class Arm extends SubsystemBase {
   Rotation2d goalElbowAngle;
 
   int desiredNode;
-  int desiredGrid = 0;
+  int desiredGrid;
   ArmState armStateFromDesiredNode;
 
   public Arm() {
@@ -390,7 +390,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setDesiredGrid(int desiredGrid) {
-    this.desiredGrid = MathUtil.clamp(desiredGrid, 1, 3);
+    this.desiredGrid = MathUtil.clamp(desiredGrid, 0, 3);
   }
 
   public void setArmStateFromDesiredNode() {
