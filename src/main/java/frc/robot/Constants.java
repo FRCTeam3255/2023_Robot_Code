@@ -274,8 +274,8 @@ public final class Constants {
   public static final class constCollector {
     public static final double GEAR_RATIO = 40;
 
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(195);
-    public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
+    public static final Rotation2d PIVOT_FORWARD_LIMIT_VALUE = Rotation2d.fromDegrees(135);
+    public static final Rotation2d PIVOT_REVERSE_LIMIT_VALUE = Rotation2d.fromDegrees(0);
 
     public static final boolean PIVOT_MOTOR_INVERT = false;
     public static final boolean ROLLER_MOTOR_INVERT = true;
