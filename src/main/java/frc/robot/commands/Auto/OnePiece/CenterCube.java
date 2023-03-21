@@ -29,7 +29,7 @@ public class CenterCube extends SequentialCommandGroup {
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetRotation()),
         Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
-            subDrivetrain.cubeThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
+            subDrivetrain.scoreThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),

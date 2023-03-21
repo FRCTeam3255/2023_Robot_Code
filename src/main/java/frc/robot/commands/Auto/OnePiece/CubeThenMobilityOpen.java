@@ -28,7 +28,7 @@ public class CubeThenMobilityOpen extends SequentialCommandGroup {
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetRotation()),
         Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
-            subDrivetrain.cubeThenMobilityTop.getInitialHolonomicPose().getRotation().getDegrees())),
+            subDrivetrain.scoreToCubeOpen.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
@@ -44,7 +44,7 @@ public class CubeThenMobilityOpen extends SequentialCommandGroup {
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenMobilityTop)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreToCubeOpen)
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
   }
 }

@@ -56,9 +56,9 @@ public class Drivetrain extends SubsystemBase {
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
-  public PathPlannerTrajectory cubeThenMobilityTop;
-  public PathPlannerTrajectory cubeThenDock;
-  public PathPlannerTrajectory cubeThenMobilityBottom;
+  public PathPlannerTrajectory scoreToCubeOpen;
+  public PathPlannerTrajectory scoreThenDock;
+  public PathPlannerTrajectory scoreToCubeCable;
 
   public Drivetrain() {
 
@@ -124,16 +124,16 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
 
-    cubeThenMobilityBottom = PathPlanner.loadPath("cubeThenMobilityBottom",
+    scoreToCubeCable = PathPlanner.loadPath("scoreToCubeCable",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    cubeThenMobilityTop = PathPlanner.loadPath("cubeThenMobilityTop", new PathConstraints(
+    scoreToCubeOpen = PathPlanner.loadPath("scoreToCubeOpen", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    cubeThenDock = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
+    scoreThenDock = PathPlanner.loadPath("scoreThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 

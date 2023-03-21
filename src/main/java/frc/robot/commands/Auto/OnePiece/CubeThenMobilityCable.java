@@ -29,7 +29,7 @@ public class CubeThenMobilityCable extends SequentialCommandGroup {
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetRotation()),
         Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
-            subDrivetrain.cubeThenMobilityBottom.getInitialHolonomicPose().getRotation().getDegrees())),
+            subDrivetrain.scoreToCubeCable.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
@@ -45,7 +45,7 @@ public class CubeThenMobilityCable extends SequentialCommandGroup {
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenMobilityBottom)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreToCubeCable)
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
 
   }

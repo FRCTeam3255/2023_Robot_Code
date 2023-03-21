@@ -29,7 +29,7 @@ public class CubeThenDock extends SequentialCommandGroup {
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetRotation()),
         Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
-            subDrivetrain.cubeThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
+            subDrivetrain.scoreThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
@@ -46,7 +46,7 @@ public class CubeThenDock extends SequentialCommandGroup {
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeThenDock)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreThenDock)
             .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
 
   }
