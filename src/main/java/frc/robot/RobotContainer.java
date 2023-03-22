@@ -155,24 +155,32 @@ public class RobotContainer {
     conOperator.btn_North.whileTrue(Commands.runOnce(() -> subArm.configure()));
 
     // numpad
-
-    // mid cone
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4);
-    }));
-
-    // mid cube
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5);
-    }));
-
-    // high cube
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
+    }));
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
       subArm.setDesiredNode(2);
     }));
-    // high cone
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1);
+      subArm.setDesiredNode(3);
+    }));
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(4);
+    }));
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(5);
+    }));
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(6);
+    }));
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(7);
+    }));
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(8);
+    }));
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(9);
     }));
 
     teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
