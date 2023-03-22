@@ -56,7 +56,7 @@ public class Collector extends SubsystemBase {
     pivotConfig.slot0.kI = prefCollector.pivotI.getValue();
     pivotConfig.slot0.kD = prefCollector.pivotD.getValue();
 
-    SN_Math.degreesToFalcon(
+    pivotConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefCollector.pivotTolerance.getValue(),
         constCollector.GEAR_RATIO);
 
