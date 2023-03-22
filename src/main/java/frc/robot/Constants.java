@@ -243,6 +243,9 @@ public final class Constants {
       FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-18)),
       FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      COLLECTOR_MOVING(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
+      COLLECTOR_COLLECTING_TRANSITION(Rotation2d.fromDegrees(-94), Rotation2d.fromDegrees(0)),
+      COLLECTOR_COLLECTING(Rotation2d.fromDegrees(-94), Rotation2d.fromDegrees(-10)),
       HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
       HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
       MID_CONE_SCORE(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(55)),
@@ -279,13 +282,15 @@ public final class Constants {
 
     public static final boolean PIVOT_MOTOR_INVERT = false;
     public static final boolean ROLLER_MOTOR_INVERT = true;
-    public static final boolean ABSOLUTE_ENCODER_INVERT = true;
+    // public static final boolean ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
     public static final IdleMode ROLLER_MOTOR_NEUTRAL_MODE = IdleMode.kCoast;
 
-    public static final double ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.981843);
-    public static final double PRAC_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
+    // public static final double ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.981843);
+    // public static final double PRAC_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.481616);
   }
 
   public static final class constVision {
