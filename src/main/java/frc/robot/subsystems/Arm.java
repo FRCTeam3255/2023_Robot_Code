@@ -234,27 +234,15 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Get the current state of the arm. If the arm is not currently at a valid
-   * state, this will return ArmState.NONE.
-   * 
-   * @return Current arm state.
-   */
-  private ArmState getCurrentState() {
-    for (ArmState state : ArmState.values()) {
-      if (areJointsInToleranceToState(state)) {
-        return state;
-      }
-    }
-    return ArmState.NONE;
-  }
-
-  /**
    * Check if the arm is currently at the given state.
    * 
    * @return True if the arm is currently at the given state
    */
   public boolean isCurrentState(ArmState state) {
-    return getCurrentState() == state;
+    for (int i = 0; i < ArmState.values().length - 1; i++) {
+      return areJointsInToleranceToState(state);
+    }
+    return false;
   }
 
   /**
@@ -510,7 +498,9 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm PID Elbow Error",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopError(), constArm.ELBOW_GEAR_RATIO));
 
-      SmartDashboard.putString("Arm State", getCurrentState().toString());
+      for (ArmState state : ArmState.values()) {
+        SmartDashboard.putBoolean("Arm at state " + state.toString(), isCurrentState(state));
+      }
       SmartDashboard.putString("Arm Goal State", getGoalState().toString());
 
       SmartDashboard.putNumber("Arm Desired Node", desiredNode);
