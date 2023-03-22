@@ -185,13 +185,15 @@ public class RobotContainer {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("null", null);
 
-    autoChooser.addOption("Cube Then Mobility Cable", new CubeThenMobilityCable(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Cube Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Center Cube (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Mobility Cable",
+        new CubeThenMobilityCable(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Center Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Center (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
 
-    // autoChooser.addOption("Cube, Dock, Shoot", new CubeDockShoot(subDrivetrain,
-    // subIntake, subArm));
+    // TEST AUTO
+    autoChooser.addOption("2 Meter Line Path (TEST AUTO)",
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.linePath));
 
     SmartDashboard.putData(autoChooser);
   }

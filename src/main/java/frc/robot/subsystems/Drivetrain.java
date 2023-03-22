@@ -60,6 +60,9 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory scoreThenDock;
   public PathPlannerTrajectory scoreToCubeCable;
 
+  // TEST AUTO
+  public PathPlannerTrajectory linePath;
+
   public Drivetrain() {
 
     if (RobotContainer.isPracticeBot()) {
@@ -136,6 +139,11 @@ public class Drivetrain extends SubsystemBase {
     scoreThenDock = PathPlanner.loadPath("scoreThenDock", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+
+    // TEST AUTO
+    linePath = PathPlanner.loadPath("linePath",
+        new PathConstraints(Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     configure();
   }
