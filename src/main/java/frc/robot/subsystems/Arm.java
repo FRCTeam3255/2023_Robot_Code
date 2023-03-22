@@ -482,6 +482,10 @@ public class Arm extends SubsystemBase {
         .unless(() -> isGoalState(armStateFromDesiredNode));
   }
 
+  public int getDesiredNode() {
+    return desiredNode;
+  }
+
   public int getDesiredGrid() {
     return desiredGrid;
   }
@@ -499,111 +503,111 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean getNodeOneValue() {
-    return desiredNode == 1 && desiredGrid == 1;
+    return desiredNode == 1;
   }
 
   public boolean getNodeTwoValue() {
-    return desiredNode == 2 && desiredGrid == 1;
+    return desiredNode == 2;
   }
 
   public boolean getNodeThreeValue() {
-    return desiredNode == 3 && desiredGrid == 1;
+    return desiredNode == 3;
   }
 
   public boolean getNodeFourValue() {
-    return desiredNode == 4 && desiredGrid == 1;
+    return desiredNode == 4;
   }
 
   public boolean getNodeFiveValue() {
-    return desiredNode == 5 && desiredGrid == 1;
+    return desiredNode == 5;
   }
 
   public boolean getNodeSixValue() {
-    return desiredNode == 6 && desiredGrid == 1;
+    return desiredNode == 6;
   }
 
   public boolean getNodeSevenValue() {
-    return desiredNode == 7 && desiredGrid == 1;
+    return desiredNode == 7;
   }
 
   public boolean getNodeEightValue() {
-    return desiredNode == 8 && desiredGrid == 1;
+    return desiredNode == 8;
   }
 
   public boolean getNodeNineValue() {
-    return desiredNode == 9 && desiredGrid == 1;
+    return desiredNode == 9;
   }
 
   public boolean getNodeTenValue() {
-    return desiredNode == 1 && desiredGrid == 2;
+    return desiredNode == 10;
   }
 
   public boolean getNodeElevenValue() {
-    return desiredNode == 2 && desiredGrid == 2;
+    return desiredNode == 11;
   }
 
   public boolean getNodeTwelveValue() {
-    return desiredNode == 3 && desiredGrid == 2;
+    return desiredNode == 12;
   }
 
   public boolean getNodeThirteenValue() {
-    return desiredNode == 4 && desiredGrid == 2;
+    return desiredNode == 13;
   }
 
   public boolean getNodeFourteenValue() {
-    return desiredNode == 5 && desiredGrid == 2;
+    return desiredNode == 14;
   }
 
   public boolean getNodeFifteenValue() {
-    return desiredNode == 6 && desiredGrid == 2;
+    return desiredNode == 15;
   }
 
   public boolean getNodeSixteenValue() {
-    return desiredNode == 7 && desiredGrid == 2;
+    return desiredNode == 16;
   }
 
   public boolean getNodeSeventeenValue() {
-    return desiredNode == 8 && desiredGrid == 2;
+    return desiredNode == 17;
   }
 
   public boolean getNodeEighteenValue() {
-    return desiredNode == 9 && desiredGrid == 2;
+    return desiredNode == 18;
   }
 
   public boolean getNodeNineteenValue() {
-    return desiredNode == 1 && desiredGrid == 3;
+    return desiredNode == 19;
   }
 
   public boolean getNodeTwentyValue() {
-    return desiredNode == 2 && desiredGrid == 3;
+    return desiredNode == 20;
   }
 
   public boolean getNodeTwentyOneValue() {
-    return desiredNode == 3 && desiredGrid == 3;
+    return desiredNode == 21;
   }
 
   public boolean getNodeTwentyTwoValue() {
-    return desiredNode == 4 && desiredGrid == 3;
+    return desiredNode == 22;
   }
 
   public boolean getNodeTwentyThreeValue() {
-    return desiredNode == 5 && desiredGrid == 3;
+    return desiredNode == 23;
   }
 
   public boolean getNodeTwentyFourValue() {
-    return desiredNode == 6 && desiredGrid == 3;
+    return desiredNode == 24;
   }
 
   public boolean getNodeTwentyFiveValue() {
-    return desiredNode == 7 && desiredGrid == 3;
+    return desiredNode == 25;
   }
 
   public boolean getNodeTwentySixValue() {
-    return desiredNode == 8 && desiredGrid == 3;
+    return desiredNode == 26;
   }
 
   public boolean getNodeTwentySevenValue() {
-    return desiredNode == 9 && desiredGrid == 3;
+    return desiredNode == 27;
   }
 
   @Override
