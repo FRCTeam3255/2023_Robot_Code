@@ -122,7 +122,7 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
     public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
-        "shoulderClosedLoopPeakOutput", 1);
+        "shoulderClosedLoopPeakOutput", 0.3);
 
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
@@ -135,7 +135,7 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
-        "elbowClosedLoopPeakOutput", 1);
+        "elbowClosedLoopPeakOutput", 0.3);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 0);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 0);
@@ -234,7 +234,7 @@ public class RobotPreferences {
 
   public static final class prefCollector {
 
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 0.04);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 1);
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
@@ -246,14 +246,17 @@ public class RobotPreferences {
     public static final SN_DoublePreference pivotMaxSpeed = new SN_DoublePreference(
         "pivotMaxSpeed", 1000000);
     public static final SN_DoublePreference pivotMaxAccel = new SN_DoublePreference(
-        "pivotMaxAccel", 1000000);
+        "pivotMaxAccel", 25000);
 
     public static final SN_DoublePreference pivotAngleStowed = new SN_DoublePreference(
-        "pivotAngleStowed", 10);
+        "pivotAngleStowed", 0);
     public static final SN_DoublePreference pivotAngleCollecting = new SN_DoublePreference(
-        "pivotAngleCollecting", 120);
+        "pivotAngleCollecting", 128);
+
+    public static final SN_DoublePreference pivotFudge = new SN_DoublePreference("pivotFudge", 5);
 
     public static final SN_DoublePreference rollerSpeed = new SN_DoublePreference("rollerSpeed", .5);
+    public static final SN_DoublePreference rollerThreshold = new SN_DoublePreference("rollerThreshold", 90);
   }
 
   public static final class prefVision {
