@@ -7,6 +7,7 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,8 +24,10 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCube;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.SetRumble;
@@ -71,7 +74,7 @@ public class RobotContainer {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X));
-    subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
@@ -95,7 +98,7 @@ public class RobotContainer {
   public void resetToAbsolutePositions() {
     subDrivetrain.resetSteerMotorEncodersToAbsolute();
     subArm.resetJointEncodersToAbsolute();
-    subCollector.resetPivotMotorToAbsolute();
+    // subCollector.resetPivotMotorToAbsolute();
   }
 
   private void configureBindings() {
@@ -119,9 +122,10 @@ public class RobotContainer {
 
     // Operator
 
-    conOperator.btn_LeftBumper
-        .onTrue(Commands.runOnce(() -> subCollector.setRollerSpeed(prefCollector.rollerSpeed.getValue())))
-        .onFalse(Commands.runOnce(() -> subCollector.setRollerSpeed(0)));
+    // Intake Cube (lbump)
+    // conOperator.btn_LeftBumper.onTrue(subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING));
+    conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subCollector,
+        subIntake));
 
     // Intake Floor (rbump)
     conOperator.btn_RightBumper
@@ -153,10 +157,10 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subArm.configure()));
-
-    conOperator.btn_East.onTrue(Commands.runOnce(() -> subCollector.setPivotAngle(prefCollector.pivotAngleCollecting)));
-    conOperator.btn_West.onTrue(Commands.runOnce(() -> subCollector.setPivotAngle(prefCollector.pivotAngleStowed)));
+    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subCollector.configure()));
+    conOperator.btn_East.onTrue(new PivotCollector(subCollector, subArm, prefCollector.pivotAngleCollecting));
+    conOperator.btn_West.onTrue(new PivotCollector(subCollector, subArm, prefCollector.pivotAngleStowed));
+    conOperator.btn_South.onTrue(Commands.runOnce(() -> subCollector.resetPivotAngle(new Rotation2d())));
 
     // numpad
 
