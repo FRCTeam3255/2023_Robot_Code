@@ -44,6 +44,7 @@ public class Arm extends SubsystemBase {
   Rotation2d goalElbowAngle;
 
   int desiredNode;
+  int gridChoice;
   ArmState armStateFromDesiredNode;
 
   public Arm() {
@@ -376,7 +377,7 @@ public class Arm extends SubsystemBase {
     this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
   }
 
-  public int getDesiredGrid() {
+  public int getgridChoice() {
     if (desiredNode <= 9) {
       return 1;
     } else if (desiredNode <= 18) {
@@ -392,17 +393,21 @@ public class Arm extends SubsystemBase {
     }
 
     if (isHybridNode()) {
-      return desiredNode - (6 * getDesiredGrid());
+      return desiredNode - (6 * getgridChoice());
     } else if (isMidNode()) {
-      return (desiredNode + 3) - (6 * getDesiredGrid());
+      return (desiredNode + 3) - (6 * getgridChoice());
     } else if (isHighNode()) {
-      return (desiredNode + 6) - (6 * getDesiredGrid());
+      return (desiredNode + 6) - (6 * getgridChoice());
     }
 
     return 0;
   }
 
-  private void setArmStateFromDesiredNode() {
+  public void setGridChoice(int gridChoice) {
+    this.gridChoice = MathUtil.clamp(gridChoice, 0, 3);
+  }
+
+  public void setArmStateFromDesiredNode() {
     switch (desiredNode % 9) {
       case 0:
         armStateFromDesiredNode = ArmState.NONE;
@@ -489,6 +494,134 @@ public class Arm extends SubsystemBase {
         Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
         Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
         .unless(() -> isGoalState(armStateFromDesiredNode));
+  }
+
+  public int getDesiredNode() {
+    return desiredNode;
+  }
+
+  public int getGridChoice() {
+    return gridChoice;
+  }
+
+  public boolean getGridOneValue() {
+    return gridChoice == 1;
+  }
+
+  public boolean getGridTwoValue() {
+    return gridChoice == 2;
+  }
+
+  public boolean getGridThreeValue() {
+    return gridChoice == 3;
+  }
+
+  public boolean getNodeOneValue() {
+    return desiredNode == 1;
+  }
+
+  public boolean getNodeTwoValue() {
+    return desiredNode == 2;
+  }
+
+  public boolean getNodeThreeValue() {
+    return desiredNode == 3;
+  }
+
+  public boolean getNodeFourValue() {
+    return desiredNode == 4;
+  }
+
+  public boolean getNodeFiveValue() {
+    return desiredNode == 5;
+  }
+
+  public boolean getNodeSixValue() {
+    return desiredNode == 6;
+  }
+
+  public boolean getNodeSevenValue() {
+    return desiredNode == 7;
+  }
+
+  public boolean getNodeEightValue() {
+    return desiredNode == 8;
+  }
+
+  public boolean getNodeNineValue() {
+    return desiredNode == 9;
+  }
+
+  public boolean getNodeTenValue() {
+    return desiredNode == 10;
+  }
+
+  public boolean getNodeElevenValue() {
+    return desiredNode == 11;
+  }
+
+  public boolean getNodeTwelveValue() {
+    return desiredNode == 12;
+  }
+
+  public boolean getNodeThirteenValue() {
+    return desiredNode == 13;
+  }
+
+  public boolean getNodeFourteenValue() {
+    return desiredNode == 14;
+  }
+
+  public boolean getNodeFifteenValue() {
+    return desiredNode == 15;
+  }
+
+  public boolean getNodeSixteenValue() {
+    return desiredNode == 16;
+  }
+
+  public boolean getNodeSeventeenValue() {
+    return desiredNode == 17;
+  }
+
+  public boolean getNodeEighteenValue() {
+    return desiredNode == 18;
+  }
+
+  public boolean getNodeNineteenValue() {
+    return desiredNode == 19;
+  }
+
+  public boolean getNodeTwentyValue() {
+    return desiredNode == 20;
+  }
+
+  public boolean getNodeTwentyOneValue() {
+    return desiredNode == 21;
+  }
+
+  public boolean getNodeTwentyTwoValue() {
+    return desiredNode == 22;
+  }
+
+  public boolean getNodeTwentyThreeValue() {
+    return desiredNode == 23;
+  }
+
+  public boolean getNodeTwentyFourValue() {
+    return desiredNode == 24;
+  }
+
+  public boolean getNodeTwentyFiveValue() {
+    return desiredNode == 25;
+  }
+
+  public boolean getNodeTwentySixValue() {
+    return desiredNode == 26;
+  }
+
+  public boolean getNodeTwentySevenValue() {
+    return desiredNode == 27;
   }
 
   @Override

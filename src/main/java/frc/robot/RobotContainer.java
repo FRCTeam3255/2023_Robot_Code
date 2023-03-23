@@ -7,15 +7,19 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.SuperShuffle;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
@@ -44,6 +48,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
+  ShuffleboardTab autoTab = Shuffleboard.getTab("SuperShuffle");
+
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
   private final SN_SwitchboardStick conSwitchboard = new SN_SwitchboardStick(mapControllers.SWITCHBOARD_USB);
@@ -51,6 +57,7 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
+  private final SuperShuffle subSuperShuffle = new SuperShuffle(subArm);
   private final Intake subIntake = new Intake();
   private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
@@ -166,26 +173,82 @@ public class RobotContainer {
 
     // numpad
 
-    // mid cone
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4);
+    // Left Grid
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
+      saveNodeState(3, 10, 18, 9, 1, 9, 18);
     }));
 
-    // mid cube
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5);
+    // Co-op Grid
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
+      saveNodeState(2, 1, 9, 9, 19, 27, -9);
     }));
 
-    // high cube
+    // Right Grid
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> {
+      saveNodeState(1, 10, 18, -9, 19, 27, -18);
+    }));
+
+    // Cone HL
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(2);
+      subArm.setDesiredNode(3 + (9 * (subArm.getGridChoice() - 1)));
     }));
-    // high cone
+
+    // Cube HM
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(2 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cone HR
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1);
+      subArm.setDesiredNode(1 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cone ML
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(6 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cube MM
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(5 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cone HR
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(4 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Hybrid L
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(9 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Hybrid M
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(8 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Hybrid R
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(7 + (9 * (subArm.getGridChoice() - 1)));
     }));
 
     teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
+  }
+
+  public void saveNodeState(int chosenGrid,
+      int betweenStart_1, int betweenEnd_1, int addAmount_1,
+      int betweenStart_2, int betweenEnd_2, int addAmount_2) {
+
+    subArm.setGridChoice(chosenGrid);
+
+    if (subArm.getDesiredNode() >= betweenStart_1 && subArm.getDesiredNode() <= betweenEnd_1) {
+      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_1);
+    }
+
+    if (subArm.getDesiredNode() >= betweenStart_2 && subArm.getDesiredNode() <= betweenEnd_2) {
+      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_2);
+    }
   }
 
   public static boolean isPracticeBot() {
@@ -204,6 +267,11 @@ public class RobotContainer {
     // subIntake, subArm));
 
     SmartDashboard.putData(autoChooser);
+
+    autoTab
+        .add("Auto Chooser", autoChooser)
+        .withSize(2, 1)
+        .withPosition(7, 2);
   }
 
   public Command getAutonomousCommand() {
