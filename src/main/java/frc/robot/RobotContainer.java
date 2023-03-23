@@ -230,7 +230,7 @@ public class RobotContainer {
       subArm.setDesiredNode(7 + (9 * (subArm.getGridChoice() - 1)));
     }));
 
-    teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
+    // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }
 
   public void saveNodeState(int chosenGrid,
