@@ -365,7 +365,7 @@ public class Arm extends SubsystemBase {
     int gridlessNode = desiredNode % 9;
     return gridlessNode == 7 ||
         gridlessNode == 8 ||
-        gridlessNode == 9;
+        gridlessNode == 9 || gridlessNode == 0;
   }
 
   public boolean isValidNode() {
@@ -386,6 +386,32 @@ public class Arm extends SubsystemBase {
    */
   public void setDesiredNode(int desiredNode) {
     this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
+  }
+
+  public int getDesiredGrid() {
+    if (desiredNode <= 9) {
+      return 1;
+    } else if (desiredNode <= 18) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  public int getDesiredColumn() {
+    if (!isValidNode()) {
+      return 0;
+    }
+
+    if (isHybridNode()) {
+      return desiredNode - (6 * getDesiredGrid());
+    } else if (isMidNode()) {
+      return (desiredNode + 3) - (6 * getDesiredGrid());
+    } else if (isHighNode()) {
+      return (desiredNode + 6) - (6 * getDesiredGrid());
+    }
+
+    return 0;
   }
 
   private void setArmStateFromDesiredNode() {
@@ -425,32 +451,6 @@ public class Arm extends SubsystemBase {
         break;
     }
 
-  }
-
-  public int getDesiredGrid() {
-    if (desiredNode <= 9) {
-      return 1;
-    } else if (desiredNode <= 18) {
-      return 2;
-    } else {
-      return 3;
-    }
-  }
-
-  public int getDesiredColumn() {
-    if (!isValidNode()) {
-      return 0;
-    }
-
-    if (isHybridNode()) {
-      return desiredNode - (6 * getDesiredGrid());
-    } else if (isMidNode()) {
-      return (desiredNode + 3) - (6 * getDesiredGrid());
-    } else if (isHighNode()) {
-      return (desiredNode + 6) - (6 * getDesiredGrid());
-    }
-
-    return 0;
   }
 
   public Command prepPlaceCommand() {
