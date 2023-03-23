@@ -132,7 +132,7 @@ public class RobotContainer {
 
     // Intake Cube (lbump)
     // conOperator.btn_LeftBumper.onTrue(subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING));
-    conOperator.btn_LeftBumper
+    conOperator.btn_A
         .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
@@ -144,9 +144,6 @@ public class RobotContainer {
 
     // Set stow Arm preset (b)
     conOperator.btn_B.onTrue(subArm.stowCommand());
-
-    conOperator.btn_A.onTrue(
-        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE));
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
