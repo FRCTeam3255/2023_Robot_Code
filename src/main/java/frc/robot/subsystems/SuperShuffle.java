@@ -56,23 +56,23 @@ public class SuperShuffle extends SubsystemBase {
     ShuffleboardLayout gridRightLayout = createGridLayout("Right Grid", gridThreeColumn);
 
     createGrid(gridLeftLayout,
-        subArm::getNodeOneValue, subArm::getNodeTwoValue, subArm::getNodeThreeValue,
-        subArm::getNodeFourValue, subArm::getNodeFiveValue, subArm::getNodeSixValue,
-        subArm::getNodeSevenValue, subArm::getNodeEightValue, subArm::getNodeNineValue);
+        subArm::getNodeTwentySevenValue, subArm::getNodeTwentySixValue, subArm::getNodeTwentyFiveValue,
+        subArm::getNodeTwentyFourValue, subArm::getNodeTwentyThreeValue, subArm::getNodeTwentyTwoValue,
+        subArm::getNodeTwentyOneValue, subArm::getNodeTwentyValue, subArm::getNodeNineteenValue);
 
     createGrid(gridCoopLayout,
-        subArm::getNodeTenValue, subArm::getNodeElevenValue, subArm::getNodeTwelveValue,
-        subArm::getNodeThirteenValue, subArm::getNodeFourteenValue, subArm::getNodeFifteenValue,
-        subArm::getNodeSixteenValue, subArm::getNodeSeventeenValue, subArm::getNodeEighteenValue);
+        subArm::getNodeEighteenValue, subArm::getNodeSeventeenValue, subArm::getNodeSixteenValue,
+        subArm::getNodeFifteenValue, subArm::getNodeFourteenValue, subArm::getNodeThirteenValue,
+        subArm::getNodeTwelveValue, subArm::getNodeElevenValue, subArm::getNodeTenValue);
 
     createGrid(gridRightLayout,
-        subArm::getNodeNineteenValue, subArm::getNodeTwentyValue, subArm::getNodeTwentyOneValue,
-        subArm::getNodeTwentyTwoValue, subArm::getNodeTwentyThreeValue, subArm::getNodeTwentyFourValue,
-        subArm::getNodeTwentyFiveValue, subArm::getNodeTwentySixValue, subArm::getNodeTwentySevenValue);
+        subArm::getNodeNineValue, subArm::getNodeEightValue, subArm::getNodeSevenValue,
+        subArm::getNodeSixValue, subArm::getNodeFiveValue, subArm::getNodeFourValue,
+        subArm::getNodeThreeValue, subArm::getNodeTwoValue, subArm::getNodeOneValue);
 
-    createGridChoice("Left Grid Choice", subArm::getGridOneValue, 0);
+    createGridChoice("Left Grid Choice", subArm::getGridThreeValue, 0);
     createGridChoice("Co-op Grid Choice", subArm::getGridTwoValue, 1);
-    createGridChoice("Right Grid Choice", subArm::getGridThreeValue, 2);
+    createGridChoice("Right Grid Choice", subArm::getGridOneValue, 2);
   }
 
   public ShuffleboardLayout createGridLayout(String gridName, int gridColumn) {
@@ -84,8 +84,8 @@ public class SuperShuffle extends SubsystemBase {
   }
 
   public void createGrid(
-      ShuffleboardLayout gridLayout, BooleanSupplier nodeOne, BooleanSupplier nodeTwo,
-      BooleanSupplier nodeThree, BooleanSupplier nodeFour, BooleanSupplier nodeFive, BooleanSupplier nodeSix,
+      ShuffleboardLayout gridLayout, BooleanSupplier nodeOne, BooleanSupplier nodeTwo, BooleanSupplier nodeThree,
+      BooleanSupplier nodeFour, BooleanSupplier nodeFive, BooleanSupplier nodeSix,
       BooleanSupplier nodeSeven, BooleanSupplier nodeEight, BooleanSupplier nodeNine) {
 
     createCell(gridLayout, "Hybrid L", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, 0, hybridRow);

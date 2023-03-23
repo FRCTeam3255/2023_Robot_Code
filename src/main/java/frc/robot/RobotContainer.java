@@ -165,64 +165,37 @@ public class RobotContainer {
 
     // Left Grid
     conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredGrid(1);
-
-      if (subArm.getDesiredNode() >= 10 && subArm.getDesiredNode() <= 18) {
-        subArm.setDesiredNode(subArm.getDesiredNode() - 9);
-      }
-
-      if (subArm.getDesiredNode() >= 19 && subArm.getDesiredNode() <= 27) {
-        subArm.setDesiredNode(subArm.getDesiredNode() - 18);
-      }
-
+      saveNodeState(3, 10, 18, 9, 1, 9, 18);
     }));
 
     // Co-op Grid
     conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredGrid(2);
-
-      if (subArm.getDesiredNode() >= 1 && subArm.getDesiredNode() <= 9) {
-        subArm.setDesiredNode(subArm.getDesiredNode() + 9);
-      }
-
-      if (subArm.getDesiredNode() >= 19 && subArm.getDesiredNode() <= 27) {
-        subArm.setDesiredNode(subArm.getDesiredNode() - 9);
-      }
-
+      saveNodeState(2, 1, 9, 9, 19, 27, -9);
     }));
 
     // Right Grid
     conNumpad.btn_3.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredGrid(3);
-
-      if (subArm.getDesiredNode() >= 10 && subArm.getDesiredNode() <= 18) {
-        subArm.setDesiredNode(subArm.getDesiredNode() + 9);
-      }
-
-      if (subArm.getDesiredNode() >= 1 && subArm.getDesiredNode() <= 9) {
-        subArm.setDesiredNode(subArm.getDesiredNode() + 18);
-      }
-
+      saveNodeState(1, 10, 18, -9, 19, 27, -18);
     }));
 
     // Cone HL
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(7 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(3 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Cube HM
     conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(8 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(2 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Cone HR
     conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(9 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(1 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Cone ML
     conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(6 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Cube MM
@@ -232,25 +205,40 @@ public class RobotContainer {
 
     // Cone HR
     conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(6 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(4 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Hybrid L
     conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(9 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Hybrid M
     conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(2 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(8 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     // Hybrid R
     conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(3 + (9 * (subArm.getDesiredGrid() - 1)));
+      subArm.setDesiredNode(7 + (9 * (subArm.getDesiredGrid() - 1)));
     }));
 
     teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
+  }
+
+  public void saveNodeState(int desGrid,
+      int betweenStart_1, int betweenEnd_1, int addAmount_1,
+      int betweenStart_2, int betweenEnd_2, int addAmount_2) {
+
+    subArm.setDesiredGrid(desGrid);
+
+    if (subArm.getDesiredNode() >= betweenStart_1 && subArm.getDesiredNode() <= betweenEnd_1) {
+      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_1);
+    }
+
+    if (subArm.getDesiredNode() >= betweenStart_2 && subArm.getDesiredNode() <= betweenEnd_2) {
+      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_2);
+    }
   }
 
   public static boolean isPracticeBot() {
