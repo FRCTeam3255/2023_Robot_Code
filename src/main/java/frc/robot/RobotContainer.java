@@ -7,6 +7,7 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
@@ -20,10 +21,14 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCubeDeploy;
+import frc.robot.commands.IntakeCubeRetract;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.SetRumble;
@@ -32,6 +37,7 @@ import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -46,7 +52,7 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
   private final Intake subIntake = new Intake();
-  // private final Collector subCollector = new Collector();
+  private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
@@ -69,9 +75,8 @@ public class RobotContainer {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X));
-    subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
-    // subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain, subArm));
@@ -118,9 +123,11 @@ public class RobotContainer {
 
     // Operator
 
-    // Run IntakeCube command
-    // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
-    // subCollector));
+    // Intake Cube (lbump)
+    // conOperator.btn_LeftBumper.onTrue(subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING));
+    conOperator.btn_LeftBumper
+        .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
+        .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
     // Intake Floor (rbump)
     conOperator.btn_RightBumper
@@ -152,7 +159,10 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subArm.configure()));
+    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subCollector.configure()));
+    conOperator.btn_East.onTrue(new PivotCollector(subCollector, subArm, prefCollector.pivotAngleCollecting));
+    conOperator.btn_West.onTrue(new PivotCollector(subCollector, subArm, prefCollector.pivotAngleStowed));
+    conOperator.btn_South.onTrue(Commands.runOnce(() -> subCollector.resetPivotAngle(new Rotation2d())));
 
     // numpad
 
