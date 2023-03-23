@@ -26,7 +26,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,6 +40,8 @@ import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefVision;
 
 public class Drivetrain extends SubsystemBase {
+
+  ShuffleboardTab tab = Shuffleboard.getTab("SuperShuffle");
 
   private SN_SwerveModule[] modules;
 
@@ -59,6 +64,8 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeThenMobilityTop;
   public PathPlannerTrajectory cubeThenDock;
   public PathPlannerTrajectory cubeThenMobilityBottom;
+
+  public Double[] columnCoordinatesY = { 0.5, 1.05, 1.63, 2.19, 2.7, 3.28, 3.86, 4.44, 4.97 };
 
   public Drivetrain() {
 

@@ -48,6 +48,7 @@ public class Arm extends SubsystemBase {
   Rotation2d goalElbowAngle;
 
   int desiredNode;
+  int gridChoice;
   ArmState armStateFromDesiredNode;
 
   public Arm() {
@@ -238,27 +239,12 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Get the current state of the arm. If the arm is not currently at a valid
-   * state, this will return ArmState.NONE.
-   * 
-   * @return Current arm state.
-   */
-  private ArmState getCurrentState() {
-    for (ArmState state : ArmState.values()) {
-      if (areJointsInToleranceToState(state)) {
-        return state;
-      }
-    }
-    return ArmState.NONE;
-  }
-
-  /**
    * Check if the arm is currently at the given state.
    * 
    * @return True if the arm is currently at the given state
    */
   public boolean isCurrentState(ArmState state) {
-    for (int i = 0; i < ArmState.values().length - 1;) {
+    for (int i = 0; i < ArmState.values().length - 1; i++) {
       return areJointsInToleranceToState(state);
     }
     return false;
@@ -372,7 +358,7 @@ public class Arm extends SubsystemBase {
     int gridlessNode = desiredNode % 9;
     return gridlessNode == 7 ||
         gridlessNode == 8 ||
-        gridlessNode == 9;
+        gridlessNode == 9 || gridlessNode == 0;
   }
 
   public boolean isValidNode() {
@@ -395,7 +381,37 @@ public class Arm extends SubsystemBase {
     this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
   }
 
-  private void setArmStateFromDesiredNode() {
+  public int getgridChoice() {
+    if (desiredNode <= 9) {
+      return 1;
+    } else if (desiredNode <= 18) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  public int getDesiredColumn() {
+    if (!isValidNode()) {
+      return 0;
+    }
+
+    if (isHybridNode()) {
+      return desiredNode - (6 * getgridChoice());
+    } else if (isMidNode()) {
+      return (desiredNode + 3) - (6 * getgridChoice());
+    } else if (isHighNode()) {
+      return (desiredNode + 6) - (6 * getgridChoice());
+    }
+
+    return 0;
+  }
+
+  public void setGridChoice(int gridChoice) {
+    this.gridChoice = MathUtil.clamp(gridChoice, 0, 3);
+  }
+
+  public void setArmStateFromDesiredNode() {
     switch (desiredNode % 9) {
       case 0:
         armStateFromDesiredNode = ArmState.NONE;
@@ -509,6 +525,134 @@ public class Arm extends SubsystemBase {
         .unless(() -> isGoalState(armStateFromDesiredNode));
   }
 
+  public int getDesiredNode() {
+    return desiredNode;
+  }
+
+  public int getGridChoice() {
+    return gridChoice;
+  }
+
+  public boolean getGridOneValue() {
+    return gridChoice == 1;
+  }
+
+  public boolean getGridTwoValue() {
+    return gridChoice == 2;
+  }
+
+  public boolean getGridThreeValue() {
+    return gridChoice == 3;
+  }
+
+  public boolean getNodeOneValue() {
+    return desiredNode == 1;
+  }
+
+  public boolean getNodeTwoValue() {
+    return desiredNode == 2;
+  }
+
+  public boolean getNodeThreeValue() {
+    return desiredNode == 3;
+  }
+
+  public boolean getNodeFourValue() {
+    return desiredNode == 4;
+  }
+
+  public boolean getNodeFiveValue() {
+    return desiredNode == 5;
+  }
+
+  public boolean getNodeSixValue() {
+    return desiredNode == 6;
+  }
+
+  public boolean getNodeSevenValue() {
+    return desiredNode == 7;
+  }
+
+  public boolean getNodeEightValue() {
+    return desiredNode == 8;
+  }
+
+  public boolean getNodeNineValue() {
+    return desiredNode == 9;
+  }
+
+  public boolean getNodeTenValue() {
+    return desiredNode == 10;
+  }
+
+  public boolean getNodeElevenValue() {
+    return desiredNode == 11;
+  }
+
+  public boolean getNodeTwelveValue() {
+    return desiredNode == 12;
+  }
+
+  public boolean getNodeThirteenValue() {
+    return desiredNode == 13;
+  }
+
+  public boolean getNodeFourteenValue() {
+    return desiredNode == 14;
+  }
+
+  public boolean getNodeFifteenValue() {
+    return desiredNode == 15;
+  }
+
+  public boolean getNodeSixteenValue() {
+    return desiredNode == 16;
+  }
+
+  public boolean getNodeSeventeenValue() {
+    return desiredNode == 17;
+  }
+
+  public boolean getNodeEighteenValue() {
+    return desiredNode == 18;
+  }
+
+  public boolean getNodeNineteenValue() {
+    return desiredNode == 19;
+  }
+
+  public boolean getNodeTwentyValue() {
+    return desiredNode == 20;
+  }
+
+  public boolean getNodeTwentyOneValue() {
+    return desiredNode == 21;
+  }
+
+  public boolean getNodeTwentyTwoValue() {
+    return desiredNode == 22;
+  }
+
+  public boolean getNodeTwentyThreeValue() {
+    return desiredNode == 23;
+  }
+
+  public boolean getNodeTwentyFourValue() {
+    return desiredNode == 24;
+  }
+
+  public boolean getNodeTwentyFiveValue() {
+    return desiredNode == 25;
+  }
+
+  public boolean getNodeTwentySixValue() {
+    return desiredNode == 26;
+  }
+
+  public boolean getNodeTwentySevenValue() {
+    return desiredNode == 27;
+  }
+
   @Override
   public void periodic() {
 
@@ -542,7 +686,9 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm PID Elbow Error",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopError(), constArm.ELBOW_GEAR_RATIO));
 
-      SmartDashboard.putString("Arm State", getCurrentState().toString());
+      for (ArmState state : ArmState.values()) {
+        SmartDashboard.putBoolean("Arm at state " + state.toString(), isCurrentState(state));
+      }
       SmartDashboard.putString("Arm Goal State", getGoalState().toString());
 
       SmartDashboard.putNumber("Arm Desired Node", desiredNode);
