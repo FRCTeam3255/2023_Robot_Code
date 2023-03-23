@@ -66,13 +66,14 @@ public class SetLEDs extends CommandBase {
       }
     }
 
-    if (desiredColumn > 0) {
-      if (Math.abs(subDrivetrain.getPose().getY()
-          - subDrivetrain.columnCoordinatesY[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
-          && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMax.getValue()) {
-        desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-      }
-    }
+    // if (desiredColumn > 0) {
+    // if (Math.abs(subDrivetrain.getPose().getY()
+    // - subDrivetrain.columnCoordinatesY[desiredColumn - 1]) <
+    // prefVision.gridAlignmentToleranceY.getValue()
+    // && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMax.getValue()) {
+    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+    // }
+    // }
 
     subLEDs.setLEDPattern(desiredPattern);
   }
