@@ -24,7 +24,8 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeCube;
+import frc.robot.commands.IntakeCubeDeploy;
+import frc.robot.commands.IntakeCubeRetract;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.PivotCollector;
@@ -124,8 +125,9 @@ public class RobotContainer {
 
     // Intake Cube (lbump)
     // conOperator.btn_LeftBumper.onTrue(subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING));
-    conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subCollector,
-        subIntake));
+    conOperator.btn_LeftBumper
+        .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
+        .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
     // Intake Floor (rbump)
     conOperator.btn_RightBumper

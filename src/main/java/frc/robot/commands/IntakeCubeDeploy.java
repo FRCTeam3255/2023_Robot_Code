@@ -12,13 +12,13 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCube extends SequentialCommandGroup {
+public class IntakeCubeDeploy extends SequentialCommandGroup {
 
   Arm subArm;
   Collector subCollector;
   Intake subIntake;
 
-  public IntakeCube(Arm subArm, Collector subCollector, Intake subIntake) {
+  public IntakeCubeDeploy(Arm subArm, Collector subCollector, Intake subIntake) {
 
     this.subArm = subArm;
     this.subCollector = subCollector;
@@ -38,17 +38,6 @@ public class IntakeCube extends SequentialCommandGroup {
         Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_COLLECTING)),
         Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING)),
 
-        new IntakeGamePiece(subIntake).until(() -> subIntake.isGamePieceCollected()),
-
-        Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_COLLECTING_TRANSITION)),
-        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING_TRANSITION)),
-
-        subArm.stateFromStowCommand(ArmState.COLLECTOR_MOVING),
-        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_MOVING)),
-
-        new PivotCollector(subCollector, subArm, prefCollector.pivotAngleStowed),
-        Commands.waitUntil(() -> subCollector.isStowed())
-
-    );
+        new IntakeGamePiece(subIntake).until(() -> subIntake.isGamePieceCollected()));
   }
 }

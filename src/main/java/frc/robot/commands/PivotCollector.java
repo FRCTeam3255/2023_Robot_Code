@@ -39,4 +39,9 @@ public class PivotCollector extends CommandBase {
 
     subCollector.setPivotAngle(pivotAngle);
   }
+
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
 }
