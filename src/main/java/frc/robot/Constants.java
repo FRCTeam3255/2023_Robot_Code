@@ -245,7 +245,7 @@ public final class Constants {
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       COLLECTOR_MOVING(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(45)),
       COLLECTOR_COLLECTING_TRANSITION(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(0)),
-      COLLECTOR_COLLECTING(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(-10)),
+      COLLECTOR_COLLECTING(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(-14)),
       HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
       HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
       MID_CONE_SCORE(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(55)),
