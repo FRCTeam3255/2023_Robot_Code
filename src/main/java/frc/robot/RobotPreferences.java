@@ -120,7 +120,7 @@ public class RobotPreferences {
     // this value will never be reached, as we're intentionally acceleration limited
     public static final SN_DoublePreference shoulderMaxAccel = new SN_DoublePreference("shoulderMaxAccel", 35000);
     // degrees
-    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.5);
+    public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.3);
     public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
         "shoulderClosedLoopPeakOutput", 1);
 
@@ -133,7 +133,7 @@ public class RobotPreferences {
     // falcon encoder counts per second per second
     public static final SN_DoublePreference elbowMaxAccel = new SN_DoublePreference("elbowMaxAccel", 60000);
     // degrees
-    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.5);
+    public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.3);
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
         "elbowClosedLoopPeakOutput", 1);
 
