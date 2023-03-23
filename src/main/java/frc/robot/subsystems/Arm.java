@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
+import javax.swing.text.html.HTMLDocument.BlockElement;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -254,7 +258,10 @@ public class Arm extends SubsystemBase {
    * @return True if the arm is currently at the given state
    */
   public boolean isCurrentState(ArmState state) {
-    return getCurrentState() == state;
+    for (int i = 0; i < ArmState.values().length - 1;) {
+      return areJointsInToleranceToState(state);
+    }
+    return false;
   }
 
   /**
@@ -432,12 +439,37 @@ public class Arm extends SubsystemBase {
   }
 
   public Command stowCommand() {
-    return Commands.sequence(
-        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
-        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
-        Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED))
+    BooleanSupplier didArmScore = () -> isCurrentState(ArmState.HIGH_CONE_SCORE_LOWERED)
+        || isCurrentState(ArmState.MID_CONE_SCORE_LOWERED) || isCurrentState(ArmState.MID_CUBE_SCORE)
+        || isCurrentState(ArmState.HIGH_CUBE_SCORE_PLACE);
 
-    ).unless(() -> isGoalState(ArmState.LOW_STOWED));
+    BooleanSupplier wasHighCone = () -> isCurrentState(ArmState.HIGH_CONE_SCORE_LOWERED);
+    return Commands.either(
+        Commands.either(Commands.sequence(
+            Commands.runOnce(() -> setGoalState(ArmState.HIGH_CONE_SCORE_TRANSITION)),
+            Commands.waitUntil(() -> isCurrentState(ArmState.HIGH_CONE_SCORE_TRANSITION)),
+            Commands.runOnce(() -> setGoalState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+            Commands.waitUntil(() -> isCurrentState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+            Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+            Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+            Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+            .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+            Commands.sequence(
+                Commands.runOnce(() -> setGoalState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+                Commands.waitUntil(() -> isCurrentState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+                Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+                Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+                Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+                .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+            wasHighCone),
+
+        Commands.sequence(
+            Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+            Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+            Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+            .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+
+        didArmScore);
   }
 
   public Command intakeFloorDeployCommand() {
