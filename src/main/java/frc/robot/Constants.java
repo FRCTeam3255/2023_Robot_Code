@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -219,11 +220,11 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.40896);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.721009);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.41896);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.716009);
 
-    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.745331);
-    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.614716);
+    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.75);
+    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.59875);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
@@ -242,6 +243,8 @@ public final class Constants {
       FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-18)),
       FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      COLLECTOR_MOVING(Rotation2d.fromDegrees(-97), Rotation2d.fromDegrees(35)),
+      COLLECTOR_COLLECTING(Rotation2d.fromDegrees(-97), Rotation2d.fromDegrees(-14)),
       HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
       HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
       MID_CONE_SCORE(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(55)),
@@ -271,23 +274,22 @@ public final class Constants {
   }
 
   public static final class constCollector {
-    public static final double GEAR_RATIO = 100;
+    public static final double GEAR_RATIO = 40;
 
-    public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
-    public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
-
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(195);
-    public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
+    public static final Rotation2d PIVOT_FORWARD_LIMIT_VALUE = Rotation2d.fromDegrees(135);
+    public static final Rotation2d PIVOT_REVERSE_LIMIT_VALUE = Rotation2d.fromDegrees(0);
 
     public static final boolean PIVOT_MOTOR_INVERT = false;
     public static final boolean ROLLER_MOTOR_INVERT = true;
-    public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
+    // public static final boolean ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
-    public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
+    public static final IdleMode ROLLER_MOTOR_NEUTRAL_MODE = IdleMode.kCoast;
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.981843);
-    public static final double PRAC_PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
+    // public static final double ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.981843);
+    // public static final double PRAC_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.481616);
   }
 
   public static final class constVision {
@@ -313,6 +315,7 @@ public final class Constants {
     public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
 
     public static final PatternType CHARGE_STATION_ALIGNED_COLOR = PatternType.BPMLavaPalette;
+    public static final PatternType GRID_ALIGNED_COLOR = PatternType.StrobeWhite;
   }
 
   public enum GamePiece {

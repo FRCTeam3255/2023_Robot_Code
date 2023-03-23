@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Collector;
 
 public class MoveArm extends CommandBase {
 
   Arm subArm;
+  Collector subCollector;
 
   DoubleSupplier shoulderAdjuster;
   DoubleSupplier elbowAdjuseter;
@@ -22,8 +24,10 @@ public class MoveArm extends CommandBase {
   Rotation2d shoulderAngle;
   Rotation2d elbowAngle;
 
-  public MoveArm(Arm subArm, DoubleSupplier shoulderAdjuster, DoubleSupplier elbowAdjuster) {
+  public MoveArm(Arm subArm, Collector subCollector, DoubleSupplier shoulderAdjuster, DoubleSupplier elbowAdjuster) {
     this.subArm = subArm;
+    this.subCollector = subCollector;
+
     this.shoulderAdjuster = shoulderAdjuster;
     this.elbowAdjuseter = elbowAdjuster;
 
@@ -50,6 +54,11 @@ public class MoveArm extends CommandBase {
         .plus(Rotation2d.fromDegrees(shoulderAdjuster.getAsDouble() * prefArm.shoulderAdjustRange.getValue()));
     elbowAngle = elbowAngle
         .plus(Rotation2d.fromDegrees(elbowAdjuseter.getAsDouble() * prefArm.elbowAdjustRange.getValue()));
+
+    if (!subCollector.isStowed() && !subCollector.isAngleCollecting()) {
+      shoulderAngle = subArm.getShoulderPosition();
+      elbowAngle = subArm.getElbowPosition();
+    }
 
     subArm.setJointPositions(shoulderAngle, elbowAngle);
   }
