@@ -79,7 +79,7 @@ public class RobotContainer {
     subIntake.setDefaultCommand(subIntake.holdCommand());
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
-    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain));
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain, subArm));
 
     configureBindings();
     configureAutoSelector();
