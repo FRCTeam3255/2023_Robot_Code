@@ -130,9 +130,8 @@ public class RobotContainer {
 
     // Operator
 
-    // Intake Cube (lbump)
-    // conOperator.btn_LeftBumper.onTrue(subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING));
-    conOperator.btn_LeftBumper
+    // Intake Cube (a)
+    conOperator.btn_A
         .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
@@ -144,9 +143,6 @@ public class RobotContainer {
 
     // Set stow Arm preset (b)
     conOperator.btn_B.onTrue(subArm.stowCommand());
-
-    conOperator.btn_A.onTrue(
-        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE));
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
@@ -233,7 +229,7 @@ public class RobotContainer {
       subArm.setDesiredNode(7 + (9 * (subArm.getGridChoice() - 1)));
     }));
 
-    teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
+    // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }
 
   public void saveNodeState(int chosenGrid,
