@@ -26,15 +26,10 @@ public class IntakeCubeRetract extends SequentialCommandGroup {
 
     addCommands(
 
-        Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_COLLECTING_TRANSITION)),
-        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING_TRANSITION)),
-
-        subArm.stateFromStowCommand(ArmState.COLLECTOR_MOVING),
+        Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_MOVING)),
         Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_MOVING)),
 
         new PivotCollector(subCollector, subArm, prefCollector.pivotAngleStowed),
-        Commands.print(
-            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
         Commands.waitUntil(() -> subCollector.isStowed()),
 
         subArm.stowCommand()

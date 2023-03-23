@@ -32,9 +32,6 @@ public class IntakeCubeDeploy extends SequentialCommandGroup {
         new PivotCollector(subCollector, subArm, prefCollector.pivotAngleCollecting)
             .until(() -> subCollector.isAngleCollecting()),
 
-        subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING_TRANSITION),
-        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING_TRANSITION)),
-
         Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_COLLECTING)),
         Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING)),
 

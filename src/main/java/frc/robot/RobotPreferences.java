@@ -122,7 +122,7 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference shoulderTolerance = new SN_DoublePreference("shoulderTolerance", 0.3);
     public static final SN_DoublePreference shoulderClosedLoopPeakOutput = new SN_DoublePreference(
-        "shoulderClosedLoopPeakOutput", 0.3);
+        "shoulderClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference elbowP = new SN_DoublePreference("elbowP", 0.1);
     public static final SN_DoublePreference elbowI = new SN_DoublePreference("elbowI", 0);
@@ -135,7 +135,7 @@ public class RobotPreferences {
     // degrees
     public static final SN_DoublePreference elbowTolerance = new SN_DoublePreference("elbowTolerance", 0.3);
     public static final SN_DoublePreference elbowClosedLoopPeakOutput = new SN_DoublePreference(
-        "elbowClosedLoopPeakOutput", 0.3);
+        "elbowClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 0);
     public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 0);
