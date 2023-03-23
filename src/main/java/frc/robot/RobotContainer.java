@@ -162,11 +162,6 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subCollector.configure()));
-    conOperator.btn_East.onTrue(new PivotCollector(subCollector, subArm, prefCollector.pivotAngleCollecting));
-    conOperator.btn_West.onTrue(new PivotCollector(subCollector, subArm, prefCollector.pivotAngleStowed));
-    conOperator.btn_South.onTrue(Commands.runOnce(() -> subCollector.resetPivotAngle(new Rotation2d())));
-
     // numpad
 
     // Left Grid
