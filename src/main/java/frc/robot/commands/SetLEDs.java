@@ -51,6 +51,8 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
+    desiredColumn = subArm.getDesiredColumn();
+
     if (subIntake.isGamePieceCollected()) {
       desiredPattern = constLEDs.HAS_GAME_PIECE_COLOR;
     } else {
