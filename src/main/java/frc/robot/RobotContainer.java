@@ -130,8 +130,7 @@ public class RobotContainer {
 
     // Operator
 
-    // Intake Cube (lbump)
-    // conOperator.btn_LeftBumper.onTrue(subArm.stateFromStowCommand(ArmState.COLLECTOR_COLLECTING));
+    // Intake Cube (a)
     conOperator.btn_A
         .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
