@@ -33,18 +33,17 @@ public class CubeThenMobilityOpen extends SequentialCommandGroup {
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
 
-        Commands.run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_SHOOT))
-            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_SHOOT)),
+        Commands.run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_PLACE))
+            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_PLACE)),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeReleaseSpeed.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
         Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_STOWED)),
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreToCubeOpen)
-            .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreToCubeOpen));
   }
 }

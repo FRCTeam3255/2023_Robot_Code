@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefIntake;
+import frc.robot.commands.Engage;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -35,19 +36,21 @@ public class CubeThenDock extends SequentialCommandGroup {
             .until(() -> subIntake.isGamePieceCollected()),
 
         Commands
-            .run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_SHOOT))
-            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_SHOOT)),
+            .run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_PLACE))
+            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_PLACE)),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeReleaseSpeed.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
         Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_STOWED)),
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
 
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreThenDock)
-            .andThen(Commands.runOnce(() -> subDrivetrain.setDefenseMode(), subDrivetrain)));
+        subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.scoreThenDock)
+            .withTimeout(subDrivetrain.scoreThenDock.getTotalTimeSeconds()),
+
+        new Engage(subDrivetrain));
 
   }
 }
