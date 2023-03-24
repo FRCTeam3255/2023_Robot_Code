@@ -7,8 +7,6 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
@@ -25,17 +23,15 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeCubeDeploy;
 import frc.robot.commands.IntakeCubeRetract;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
-import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
+import frc.robot.commands.RunRoller;
 import frc.robot.commands.SetLEDs;
-import frc.robot.commands.SetRumble;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
 import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
@@ -84,8 +80,14 @@ public class RobotContainer {
             conDriver.btn_X));
     subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-        subVision));
+    subCollector.setDefaultCommand(new RunRoller(subCollector, subArm));
+
+    if (subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING)) {
+      ;
+    } else {
+      ;
+    }
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
     subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain, subArm));
 
     configureBindings();
@@ -118,6 +120,10 @@ public class RobotContainer {
     conDriver.btn_Back
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetRotation()));
+
+    // I really hope this never gets used (reset arm arm motor encoders)
+    conDriver.btn_Start
+        .onTrue(Commands.runOnce(() -> subArm.configure()));
 
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper

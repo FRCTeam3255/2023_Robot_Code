@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -17,6 +19,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constCollector;
@@ -148,13 +152,6 @@ public class Collector extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    if (getPivotAngle().getDegrees() > prefCollector.rollerThreshold.getValue()) {
-      setRollerSpeed(prefCollector.rollerSpeed);
-    } else {
-      setRollerSpeed(0);
-    }
-
     if (Constants.OUTPUT_DEBUG_VALUES) {
 
       SmartDashboard.putNumber("Collector Pivot Angle", getPivotAngle().getDegrees());

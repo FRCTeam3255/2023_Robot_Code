@@ -9,6 +9,7 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constArm.ArmState;
+import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 
