@@ -7,23 +7,32 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.SuperShuffle;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefCollector;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeCubeDeploy;
+import frc.robot.commands.IntakeCubeRetract;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.PivotCollector;
 import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.SetRumble;
@@ -32,11 +41,14 @@ import frc.robot.commands.Auto.OnePiece.CubeThenDock;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
+
+  ShuffleboardTab autoTab = Shuffleboard.getTab("SuperShuffle");
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
@@ -45,8 +57,9 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Arm subArm = new Arm();
+  private final SuperShuffle subSuperShuffle = new SuperShuffle(subArm);
   private final Intake subIntake = new Intake();
-  // private final Collector subCollector = new Collector();
+  private final Collector subCollector = new Collector();
   private final Vision subVision = new Vision();
   private final LEDs subLEDs = new LEDs();
 
@@ -69,12 +82,11 @@ public class RobotContainer {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X));
-    subArm.setDefaultCommand(new MoveArm(subArm, conOperator.axis_LeftY, conOperator.axis_RightY));
+    subArm.setDefaultCommand(new MoveArm(subArm, subCollector, conOperator.axis_LeftY, conOperator.axis_RightY));
     subIntake.setDefaultCommand(subIntake.holdCommand());
-    // subCollector.setDefaultCommand(new PivotCollector(subCollector));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
-    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain));
+    subLEDs.setDefaultCommand(new SetLEDs(subLEDs, subIntake, subDrivetrain, subArm));
 
     configureBindings();
     configureAutoSelector();
@@ -107,6 +119,10 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetRotation()));
 
+    // I really hope this never gets used (reset arm arm motor encoders)
+    conDriver.btn_Start
+        .onTrue(Commands.runOnce(() -> subArm.resetJointEncodersToAbsolute()));
+
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
@@ -118,9 +134,10 @@ public class RobotContainer {
 
     // Operator
 
-    // Run IntakeCube command
-    // conOperator.btn_LeftBumper.whileTrue(new IntakeCube(subArm, subIntake,
-    // subCollector));
+    // Intake Cube (a)
+    conOperator.btn_A
+        .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
+        .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
     // Intake Floor (rbump)
     conOperator.btn_RightBumper
@@ -130,9 +147,6 @@ public class RobotContainer {
 
     // Set stow Arm preset (b)
     conOperator.btn_B.onTrue(subArm.stowCommand());
-
-    conOperator.btn_A.onTrue(
-        subArm.stateFromStowCommand(ArmState.HYBRID_SCORE));
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
@@ -152,30 +166,84 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_North.whileTrue(Commands.runOnce(() -> subArm.configure()));
-
     // numpad
 
-    // mid cone
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4);
+    // Left Grid
+    conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
+      saveNodeState(3, 10, 18, 9, 1, 9, 18);
     }));
 
-    // mid cube
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5);
+    // Co-op Grid
+    conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
+      saveNodeState(2, 1, 9, 9, 19, 27, -9);
     }));
 
-    // high cube
+    // Right Grid
+    conNumpad.btn_3.onTrue(Commands.runOnce(() -> {
+      saveNodeState(1, 10, 18, -9, 19, 27, -18);
+    }));
+
+    // Cone HL
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(2);
-    }));
-    // high cone
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1);
+      subArm.setDesiredNode(3 + (9 * (subArm.getGridChoice() - 1)));
     }));
 
-    teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
+    // Cube HM
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(2 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cone HR
+    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cone ML
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(6 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cube MM
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(5 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Cone HR
+    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(4 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Hybrid L
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(9 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Hybrid M
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(8 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // Hybrid R
+    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(7 + (9 * (subArm.getGridChoice() - 1)));
+    }));
+
+    // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
+  }
+
+  public void saveNodeState(int chosenGrid,
+      int betweenStart_1, int betweenEnd_1, int addAmount_1,
+      int betweenStart_2, int betweenEnd_2, int addAmount_2) {
+
+    subArm.setGridChoice(chosenGrid);
+
+    if (subArm.getDesiredNode() >= betweenStart_1 && subArm.getDesiredNode() <= betweenEnd_1) {
+      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_1);
+    }
+
+    if (subArm.getDesiredNode() >= betweenStart_2 && subArm.getDesiredNode() <= betweenEnd_2) {
+      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_2);
+    }
   }
 
   public static boolean isPracticeBot() {
@@ -196,6 +264,11 @@ public class RobotContainer {
         subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.linePath));
 
     SmartDashboard.putData(autoChooser);
+
+    autoTab
+        .add("Auto Chooser", autoChooser)
+        .withSize(2, 1)
+        .withPosition(7, 2);
   }
 
   public Command getAutonomousCommand() {

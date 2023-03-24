@@ -33,7 +33,7 @@ public class PlaceGamePiece extends SequentialCommandGroup {
         Commands.waitUntil(() -> subArm.isCurrentState(ArmState.MID_CONE_SCORE_LOWERED))
             .unless(() -> !subArm.isGoalState(ArmState.MID_CONE_SCORE_LOWERED)),
 
-        subIntake.releaseCommand().withTimeout(prefIntake.intakeReleaseDelay.getValue()));
+        subIntake.releaseCommand());
 
   }
 }

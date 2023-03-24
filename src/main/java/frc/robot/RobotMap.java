@@ -54,7 +54,7 @@ public class RobotMap {
     public static final int PIVOT_MOTOR_CAN = 30;
     public static final int ROLLER_MOTOR_CAN = 31;
 
-    public static final int PIVOT_ABSOLUTE_ENCODER_DIO = 1;
+    // public static final int PIVOT_ABSOLUTE_ENCODER_DIO = 1;
   }
 
   public static final class mapLEDs {
