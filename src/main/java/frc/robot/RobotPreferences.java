@@ -251,7 +251,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference pivotAngleStowed = new SN_DoublePreference(
         "pivotAngleStowed", 0);
     public static final SN_DoublePreference pivotAngleCollecting = new SN_DoublePreference(
-        "pivotAngleCollecting", 128);
+        "pivotAngleCollecting", 126);
 
     public static final SN_DoublePreference pivotFudge = new SN_DoublePreference("pivotFudge", 5);
 
