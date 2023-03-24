@@ -220,7 +220,7 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.41896);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.36);
     public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.716009);
 
     public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.75);
@@ -240,7 +240,7 @@ public final class Constants {
       HIGH_STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
       LOW_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(-22)),
       MID_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
-      FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-18)),
+      FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-21)),
       FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       CUBE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(50)),
@@ -255,7 +255,7 @@ public final class Constants {
       HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(-55), Rotation2d.fromDegrees(50)),
       HIGH_CUBE_SCORE_SHOOT(Rotation2d.fromDegrees(-99), Rotation2d.fromDegrees(32)),
       MID_CUBE_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(40)),
-      HYBRID_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0));
+      HYBRID_SCORE(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0));
 
       public Rotation2d shoulderAngle;
       public Rotation2d elbowAngle;
@@ -300,10 +300,11 @@ public final class Constants {
     public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
     public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(
+        new Translation3d(Units.inchesToMeters(-3), Units.inchesToMeters(6.5), 0.46355),
         new Rotation3d(0, 0, 0));
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(-5.8125), Units.inchesToMeters(6.5), 0.46355),
+        new Translation3d(Units.inchesToMeters(-3.6875), Units.inchesToMeters(6.5), 0.46355),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
@@ -319,7 +320,7 @@ public final class Constants {
     public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
 
     public static final PatternType CHARGE_STATION_ALIGNED_COLOR = PatternType.BPMLavaPalette;
-    public static final PatternType GRID_ALIGNED_COLOR = PatternType.StrobeWhite;
+    public static final PatternType GRID_ALIGNED_COLOR = PatternType.StrobeGold;
   }
 
   public enum GamePiece {
