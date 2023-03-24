@@ -32,7 +32,8 @@ public class CubeThenDock extends SequentialCommandGroup {
         Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
             subDrivetrain.scoreThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
 
-        Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed),
+            subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
 
         Commands
@@ -40,14 +41,16 @@ public class CubeThenDock extends SequentialCommandGroup {
             .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_PLACE)),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeReleaseSpeed.getValue()), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeReleaseSpeed.getValue()),
+            subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
         Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_STOWED)),
 
-        Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
+        Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed),
+            subIntake),
 
-        subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.scoreThenDock)
+        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreThenDock)
             .withTimeout(subDrivetrain.scoreThenDock.getTotalTimeSeconds()),
 
         new Engage(subDrivetrain));

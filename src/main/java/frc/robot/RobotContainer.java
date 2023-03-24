@@ -259,10 +259,6 @@ public class RobotContainer {
     autoChooser.addOption("Score Cube Center (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
     autoChooser.addOption("Score Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
 
-    // TEST AUTO
-    autoChooser.addOption("2 Meter Line Path (TEST AUTO)",
-        subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.linePath));
-
     SmartDashboard.putData(autoChooser);
 
     autoTab
