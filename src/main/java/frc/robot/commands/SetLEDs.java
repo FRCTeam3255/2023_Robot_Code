@@ -72,13 +72,18 @@ public class SetLEDs extends CommandBase {
     if (desiredColumn > 0) {
       if (DriverStation.getAlliance() == Alliance.Blue) {
         coordinates = subDrivetrain.columnYCoordinatesBlue;
+        if (Math.abs(subDrivetrain.getPose().getY()
+            - coordinates[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
+            && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMaxBlue.getValue()) {
+          desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+        }
       } else if (DriverStation.getAlliance() == Alliance.Red) {
         coordinates = subDrivetrain.columnYCoordinatesRed;
-      }
-      if (Math.abs(subDrivetrain.getPose().getY()
-          - coordinates[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
-          && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMax.getValue()) {
-        desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+        if (Math.abs(subDrivetrain.getPose().getY()
+            - coordinates[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
+            && subDrivetrain.getPose().getX() > prefVision.gridLEDsXPosMaxRed.getValue()) {
+          desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+        }
       }
     }
 
