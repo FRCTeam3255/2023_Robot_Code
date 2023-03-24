@@ -149,12 +149,6 @@ public class Collector extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    if (getPivotAngle().getDegrees() > prefCollector.rollerThreshold.getValue()) {
-      setRollerSpeed(prefCollector.rollerSpeed);
-    } else {
-      setRollerSpeed(0);
-    }
-
     if (Constants.OUTPUT_DEBUG_VALUES) {
 
       SmartDashboard.putNumber("Collector Pivot Angle", getPivotAngle().getDegrees());
