@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefLEDs;
@@ -51,6 +53,7 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
+    Double[] coordinates = {};
     desiredColumn = subArm.getDesiredColumn();
 
     if (subIntake.isGamePieceCollected()) {
@@ -66,14 +69,18 @@ public class SetLEDs extends CommandBase {
       }
     }
 
-    // if (desiredColumn > 0) {
-    // if (Math.abs(subDrivetrain.getPose().getY()
-    // - subDrivetrain.columnCoordinatesY[desiredColumn - 1]) <
-    // prefVision.gridAlignmentToleranceY.getValue()
-    // && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMax.getValue()) {
-    // desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
-    // }
-    // }
+    if (desiredColumn > 0) {
+      if (DriverStation.getAlliance() == Alliance.Blue) {
+        coordinates = subDrivetrain.columnYCoordinatesBlue;
+      } else if (DriverStation.getAlliance() == Alliance.Red) {
+        coordinates = subDrivetrain.columnYCoordinatesRed;
+      }
+      if (Math.abs(subDrivetrain.getPose().getY()
+          - coordinates[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
+          && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMax.getValue()) {
+        desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+      }
+    }
 
     subLEDs.setLEDPattern(desiredPattern);
   }

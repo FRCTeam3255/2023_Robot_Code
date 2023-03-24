@@ -65,7 +65,8 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeThenDock;
   public PathPlannerTrajectory cubeThenMobilityBottom;
 
-  public Double[] columnCoordinatesY = { 0.5, 1.05, 1.63, 2.19, 2.7, 3.28, 3.86, 4.44, 4.97 };
+  public Double[] columnYCoordinatesBlue = { 0.5, 1.05, 1.63, 2.19, 2.7, 3.28, 3.86, 4.44, 4.97 };
+  public Double[] columnYCoordinatesRed = { 0.5, 1.05, 1.63, 2.19, 2.7, 3.28, 3.86, 4.44, 4.97 };
 
   public Drivetrain() {
 
