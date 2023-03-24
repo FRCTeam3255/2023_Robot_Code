@@ -276,7 +276,9 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference gridAlignmentToleranceY = new SN_DoublePreference("gridAlignmentToleranceY",
         0.05);
-    public static final SN_DoublePreference gridLEDsXPosMax = new SN_DoublePreference("gridLEDsXPosMax", 3.35);
+    public static final SN_DoublePreference gridLEDsXPosMaxBlue = new SN_DoublePreference("gridLEDsXPosMaxBlue", 2.5);
+    public static final SN_DoublePreference gridLEDsXPosMaxRed = new SN_DoublePreference("gridLEDsXPosMaxRed", 13.5);
+
   }
 
   public static final class prefLEDs {
