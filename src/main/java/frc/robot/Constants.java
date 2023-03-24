@@ -238,17 +238,20 @@ public final class Constants {
     public enum ArmState {
       NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       HIGH_STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
-      LOW_STOWED(Rotation2d.fromDegrees(-124), Rotation2d.fromDegrees(-20)),
-      MID_STOWED(Rotation2d.fromDegrees(-124), Rotation2d.fromDegrees(0)),
+      LOW_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(-22)),
+      MID_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
       FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-18)),
       FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      CUBE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(50)),
+      CONE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-61), Rotation2d.fromDegrees(69)),
+      HIGH_CONE_SCORE_TRANSITION(Rotation2d.fromDegrees(-10), Rotation2d.fromDegrees(69)),
       COLLECTOR_MOVING(Rotation2d.fromDegrees(-97), Rotation2d.fromDegrees(35)),
       COLLECTOR_COLLECTING(Rotation2d.fromDegrees(-97), Rotation2d.fromDegrees(-14)),
       HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
       HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
       MID_CONE_SCORE(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(55)),
-      MID_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(45)),
+      MID_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(35)),
       HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(-55), Rotation2d.fromDegrees(50)),
       HIGH_CUBE_SCORE_SHOOT(Rotation2d.fromDegrees(-99), Rotation2d.fromDegrees(32)),
       MID_CUBE_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(40)),
@@ -299,7 +302,8 @@ public final class Constants {
 
     public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
         new Rotation3d(0, 0, 0));
-    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(
+        new Translation3d(Units.inchesToMeters(-5.8125), Units.inchesToMeters(6.5), 0.46355),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
