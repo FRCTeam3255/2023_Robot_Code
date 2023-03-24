@@ -26,6 +26,8 @@ public class IntakeCubeRetract extends SequentialCommandGroup {
 
     addCommands(
 
+        Commands.runOnce(() -> subCollector.setRollerSpeed(0)),
+
         Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_MOVING)),
         Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_MOVING)),
 

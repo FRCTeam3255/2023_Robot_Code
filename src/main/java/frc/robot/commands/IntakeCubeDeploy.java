@@ -35,6 +35,10 @@ public class IntakeCubeDeploy extends SequentialCommandGroup {
         Commands.runOnce(() -> subArm.setGoalState(ArmState.COLLECTOR_COLLECTING)),
         Commands.waitUntil(() -> subArm.isCurrentState(ArmState.COLLECTOR_COLLECTING)),
 
-        new IntakeGamePiece(subIntake).until(() -> subIntake.isGamePieceCollected()));
+        Commands.parallel(
+            new IntakeGamePiece(subIntake),
+            Commands.run(() -> subCollector.setRollerSpeed(prefCollector.rollerSpeed)))
+
+            .until(() -> subIntake.isGamePieceCollected()));
   }
 }

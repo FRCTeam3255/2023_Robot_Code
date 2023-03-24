@@ -121,7 +121,7 @@ public class RobotContainer {
 
     // I really hope this never gets used (reset arm arm motor encoders)
     conDriver.btn_Start
-        .onTrue(Commands.runOnce(() -> subArm.configure()));
+        .onTrue(Commands.runOnce(() -> subArm.resetJointEncodersToAbsolute()));
 
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
