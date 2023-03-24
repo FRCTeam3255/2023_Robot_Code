@@ -119,6 +119,10 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(
             () -> subDrivetrain.resetRotation()));
 
+    // I really hope this never gets used (reset arm arm motor encoders)
+    conDriver.btn_Start
+        .onTrue(Commands.runOnce(() -> subArm.configure()));
+
     // while true do robot oriented, default to field oriented
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
