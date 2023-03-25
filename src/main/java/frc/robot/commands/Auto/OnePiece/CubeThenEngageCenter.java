@@ -16,13 +16,13 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeThenDock extends SequentialCommandGroup {
+public class CubeThenEngageCenter extends SequentialCommandGroup {
 
   Drivetrain subDrivetrain;
   Intake subIntake;
   Arm subArm;
 
-  public CubeThenDock(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
+  public CubeThenEngageCenter(Drivetrain subDrivetrain, Intake subIntake, Arm subArm) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subArm = subArm;
@@ -35,6 +35,10 @@ public class CubeThenDock extends SequentialCommandGroup {
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed),
             subIntake)
             .until(() -> subIntake.isGamePieceCollected()),
+
+        Commands
+            .run(() -> subArm.setGoalState(ArmState.MID_STOWED))
+            .until(() -> subArm.isCurrentState(ArmState.MID_STOWED)),
 
         Commands
             .run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_PLACE))

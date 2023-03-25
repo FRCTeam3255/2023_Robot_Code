@@ -68,6 +68,8 @@ public class Drivetrain extends SubsystemBase {
   public PathPlannerTrajectory cubeToScoreOpen;
   public PathPlannerTrajectory scoreToDockOpen;
 
+  public PathPlannerTrajectory cubeToDockOutsideOpen;
+
   // TEST AUTO
   public PathPlannerTrajectory linePath;
 
@@ -156,8 +158,12 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     scoreToDockOpen = PathPlanner.loadPath("scoreToDockOpen", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxAccelFeet.getValue())));
+
+    cubeToDockOutsideOpen = PathPlanner.loadPath("cubeToDockOutsideOpen", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxAccelFeet.getValue())));
 
     configure();
   }

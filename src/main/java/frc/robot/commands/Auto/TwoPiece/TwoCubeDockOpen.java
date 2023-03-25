@@ -56,13 +56,14 @@ public class TwoCubeDockOpen extends SequentialCommandGroup {
 
         // Drive to collect a cube
         Commands.race(
-            subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.scoreToCubeOpen)
+            subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.scoreToCubeOpen)
                 .withTimeout(subDrivetrain.scoreToCubeOpen.getTotalTimeSeconds()),
             new IntakeCubeDeploy(subArm, subCollector, subIntake)),
 
         // Drive to score
         Commands.race(
-            subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.cubeToScoreOpen),
+            subDrivetrain.swerveAutoBuilder.fullAuto(subDrivetrain.cubeToDockOutsideOpen)
+                .withTimeout(subDrivetrain.cubeToDockOutsideOpen.getTotalTimeSeconds()),
             new IntakeCubeRetract(subArm, subCollector, subIntake)),
 
         // Shoot Current Game Piece
@@ -70,16 +71,12 @@ public class TwoCubeDockOpen extends SequentialCommandGroup {
             .until(() -> subArm.isCurrentState(ArmState.MID_CUBE_SCORE)),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeReleaseSpeed.getValue()), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedChargeStation.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
         // Stow
         Commands.runOnce(() -> subArm.stowCommand()),
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake),
-
-        // Drive to dock
-        subDrivetrain.swerveAutoBuilder.followPath(subDrivetrain.scoreToDockOpen)
-            .withTimeout(subDrivetrain.scoreToDockOpen.getTotalTimeSeconds()),
 
         // Engage
         new Engage(subDrivetrain));

@@ -37,9 +37,11 @@ import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.SetRumble;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
-import frc.robot.commands.Auto.OnePiece.CubeThenDock;
+import frc.robot.commands.Auto.OnePiece.CubeThenEngageCenter;
+import frc.robot.commands.Auto.OnePiece.CubeThenEngageOpen;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
+import frc.robot.commands.Auto.TwoPiece.TwoCubeDockOpen;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
@@ -255,9 +257,13 @@ public class RobotContainer {
 
     autoChooser.addOption("Score Cube Then Mobility Cable",
         new CubeThenMobilityCable(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Score Cube Center Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Engage Center", new CubeThenEngageCenter(subDrivetrain, subIntake, subArm));
     autoChooser.addOption("Score Cube Center (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
     autoChooser.addOption("Score Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Engage Open", new CubeThenEngageOpen(subDrivetrain, subIntake, subArm));
+
+    // autoChooser.addOption("Score TWO Cubes Then Engage Open - DO NOT USE",
+    // new TwoCubeDockOpen(subDrivetrain, subIntake, subArm));
 
     SmartDashboard.putData(autoChooser);
 
