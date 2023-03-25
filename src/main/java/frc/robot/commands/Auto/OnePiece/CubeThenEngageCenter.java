@@ -34,7 +34,7 @@ public class CubeThenEngageCenter extends SequentialCommandGroup {
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed),
             subIntake)
-            .until(() -> subIntake.isGamePieceCollected()),
+            .until(() -> subIntake.isGamePieceCollected()).withTimeout(5),
 
         Commands
             .run(() -> subArm.setGoalState(ArmState.MID_STOWED))

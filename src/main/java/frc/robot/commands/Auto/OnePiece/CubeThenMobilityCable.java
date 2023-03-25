@@ -32,7 +32,7 @@ public class CubeThenMobilityCable extends SequentialCommandGroup {
             subDrivetrain.scoreToCubeCable.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
-            .until(() -> subIntake.isGamePieceCollected()),
+            .until(() -> subIntake.isGamePieceCollected()).withTimeout(5),
 
         Commands
             .run(() -> subArm.setGoalState(ArmState.MID_STOWED))

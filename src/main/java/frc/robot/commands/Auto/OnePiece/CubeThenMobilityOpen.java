@@ -31,7 +31,7 @@ public class CubeThenMobilityOpen extends SequentialCommandGroup {
             subDrivetrain.scoreToCubeOpen.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
-            .until(() -> subIntake.isGamePieceCollected()),
+            .until(() -> subIntake.isGamePieceCollected()).withTimeout(5),
 
         Commands
             .run(() -> subArm.setGoalState(ArmState.MID_STOWED))
