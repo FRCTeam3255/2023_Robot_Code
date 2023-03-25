@@ -68,6 +68,7 @@ public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
   private final Trigger teleopTrigger = new Trigger(() -> RobotState.isEnabled() && RobotState.isTeleop());
+  private final Trigger hasGamePieceTrigger = new Trigger(() -> subIntake.isGamePieceCollected());
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_X_DEADBAND);

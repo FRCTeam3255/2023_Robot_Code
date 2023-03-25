@@ -241,7 +241,7 @@ public final class Constants {
       LOW_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(-22)),
       MID_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
       FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-21)),
-      FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
+      FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(20)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       CUBE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(50)),
       CONE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-61), Rotation2d.fromDegrees(69)),

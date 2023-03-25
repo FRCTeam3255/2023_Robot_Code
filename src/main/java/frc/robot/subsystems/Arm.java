@@ -530,22 +530,36 @@ public class Arm extends SubsystemBase {
   }
 
   public Command intakeFloorDeployCommand() {
+    // return Commands.sequence(
+    // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+    // Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE)))
+    // .unless(() -> isGoalState(ArmState.FLOOR_INTAKE));
+
     return Commands.sequence(
-        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
-        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
         Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
         Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
         Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)),
         Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE)))
         .unless(() -> isGoalState(ArmState.FLOOR_INTAKE));
+
   }
 
   public Command intakeFloorStowCommand() {
+    // return Commands.sequence(
+    // Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+    // Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+    // .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE));
+
     return Commands.sequence(
         Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
         Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
-        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
-        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
         Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
         .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE));
   }
