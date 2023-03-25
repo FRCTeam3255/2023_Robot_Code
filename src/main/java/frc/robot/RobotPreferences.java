@@ -62,10 +62,10 @@ public class RobotPreferences {
         "autoMaxAccelFeet", 1);
 
     public static final SN_DoublePreference fasterAutoMaxSpeedFeet = new SN_DoublePreference(
-        "autoMaxSpeedFeet", 6.56168);
+        "autoMaxSpeedFeet", 5);
 
     public static final SN_DoublePreference fasterAutoMaxAccelFeet = new SN_DoublePreference(
-        "autoMaxAccelFeet", 3.28084);
+        "autoMaxAccelFeet", 4);
 
     public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 0);
     public static final SN_DoublePreference teleTransI = new SN_DoublePreference("teleTransI", 0);
@@ -144,7 +144,7 @@ public class RobotPreferences {
         "elbowClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 0);
-    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 0);
+    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
 
     // preset to intake cube from collector
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(

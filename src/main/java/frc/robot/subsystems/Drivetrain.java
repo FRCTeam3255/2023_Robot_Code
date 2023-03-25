@@ -150,8 +150,8 @@ public class Drivetrain extends SubsystemBase {
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
     scoreThenDock = PathPlanner.loadPath("scoreThenDock", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxAccelFeet.getValue())));
 
     cubeToScoreOpen = PathPlanner.loadPath("cubeToScoreOpen", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),

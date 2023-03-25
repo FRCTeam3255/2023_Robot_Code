@@ -169,6 +169,8 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
+    conOperator.btn_South.whileTrue(subArm.stateFromStowCommand(ArmState.CHARGE_STATION));
+
     // numpad
 
     // Left Grid
@@ -261,7 +263,8 @@ public class RobotContainer {
     autoChooser.addOption("Score Cube Then Engage Center", new CubeThenEngageCenter(subDrivetrain, subIntake, subArm));
     autoChooser.addOption("Score Cube Center (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
     autoChooser.addOption("Score Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Score Cube Then Engage Open", new CubeThenEngageOpen(subDrivetrain, subIntake, subArm));
+    // autoChooser.addOption("Score Cube Then Engage Open", new
+    // CubeThenEngageOpen(subDrivetrain, subIntake, subArm));
 
     // autoChooser.addOption("Score TWO Cubes Then Engage Open - DO NOT USE",
     // new TwoCubeDockOpen(subDrivetrain, subIntake, subArm));

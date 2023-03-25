@@ -31,21 +31,22 @@ public class Vision extends SubsystemBase {
       System.out.println("Could not load AprilTagFieldLayout! Must be on WPILIB 2023.2.1+" + e);
     }
 
-    PhotonCamera ARCamera = new PhotonCamera(constVision.AR_PHOTON_NAME);
-    Transform3d robotToAR = constVision.ROBOT_TO_AR;
+    // PhotonCamera ARCamera = new PhotonCamera(constVision.AR_PHOTON_NAME);
+    // Transform3d robotToAR = constVision.ROBOT_TO_AR;
 
     PhotonCamera OVCamera = new PhotonCamera(constVision.OV_PHOTON_NAME);
     Transform3d robotToOV = constVision.ROBOT_TO_OV;
 
-    PhotonCamera lifecam = new PhotonCamera(constVision.LIFECAM_PHOTON_NAME);
-    Transform3d robotToLifecam = constVision.ROBOT_TO_LIFECAM;
+    // PhotonCamera lifecam = new PhotonCamera(constVision.LIFECAM_PHOTON_NAME);
+    // Transform3d robotToLifecam = constVision.ROBOT_TO_LIFECAM;
 
     // Create an instance of this for every camera you want to do pose estimation
     // with, as well as a getPoseFrom__ method to reference in the
     // AddVisionMeasurement command
-    ARCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
-        ARCamera,
-        robotToAR);
+    // ARCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
+    // PoseStrategy.LOWEST_AMBIGUITY,
+    // ARCamera,
+    // robotToAR);
 
     OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
         OVCamera,
