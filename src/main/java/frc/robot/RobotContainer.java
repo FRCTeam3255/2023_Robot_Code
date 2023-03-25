@@ -66,6 +66,8 @@ public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
   private final Trigger teleopTrigger = new Trigger(() -> RobotState.isEnabled() && RobotState.isTeleop());
+  private final Trigger doneIntakingCone = new Trigger(
+      () -> !conOperator.btn_RightBumper.getAsBoolean() || subIntake.isGamePieceCollected());
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
@@ -142,8 +144,10 @@ public class RobotContainer {
     // Intake Floor (rbump)
     conOperator.btn_RightBumper
         .onTrue(subArm.intakeFloorDeployCommand())
-        .whileFalse(subArm.intakeFloorStowCommand())
+        // .whileFalse(subArm.intakeFloorStowCommand())
         .whileTrue(new IntakeGamePiece(subIntake));
+
+    doneIntakingCone.whileFalse(subArm.intakeFloorStowCommand());
 
     // Set stow Arm preset (b)
     conOperator.btn_B.onTrue(subArm.stowCommand());
