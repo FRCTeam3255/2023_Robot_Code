@@ -542,9 +542,8 @@ public class Arm extends SubsystemBase {
     return Commands.sequence(
         Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
         Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
-        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)),
-        Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE)))
-        .unless(() -> isGoalState(ArmState.FLOOR_INTAKE));
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)))
+        .unless(() -> isGoalState(ArmState.FLOOR_INTAKE)).withTimeout(2);
 
   }
 
@@ -561,7 +560,7 @@ public class Arm extends SubsystemBase {
         Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
         Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
         Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
-        .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE));
+        .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE)).withTimeout(2);
   }
 
   public Command stateFromStowCommand(ArmState state) {
