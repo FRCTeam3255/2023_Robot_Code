@@ -1,49 +1,47 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-// package frc.robot.commands;
+package frc.robot.commands;
 
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.wpilibj2.command.CommandBase;
-// import frc.robot.RobotPreferences.prefCollector;
-// import frc.robot.subsystems.Collector;
+import com.frcteam3255.preferences.SN_DoublePreference;
 
-// public class PivotCollector extends CommandBase {
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.constArm.ArmState;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Collector;
 
-// Collector subCollector;
+public class PivotCollector extends CommandBase {
 
-// public PivotCollector(Collector subCollector) {
-// this.subCollector = subCollector;
+  Collector subCollector;
+  Arm subArm;
 
-// addRequirements(this.subCollector);
-// }
+  SN_DoublePreference desiredPivotAngleDegrees;
+  Rotation2d pivotAngle;
 
-// @Override
-// public void initialize() {
-// subCollector.setGoalPosition(Rotation2d.fromRadians(subCollector.getPivotMotorPosition()));
-// }
+  public PivotCollector(Collector subCollector, Arm subArm, SN_DoublePreference desiredPivotAngleDegrees) {
+    this.subCollector = subCollector;
+    this.subArm = subArm;
 
-// @Override
-// public void execute() {
-// subCollector.setPivotMotorAngle(subCollector.getGoalPosition().getDegrees());
+    this.desiredPivotAngleDegrees = desiredPivotAngleDegrees;
 
-// if (subCollector.isPivotMotorInToleranceForRoller()
-// && subCollector.getGoalPosition().getDegrees() ==
-// prefCollector.pivotAngleCubeCollecting.getValue()) {
-// subCollector.setRollerMotorSpeed(prefCollector.rollerSpeed.getValue());
-// } else {
-// subCollector.setRollerMotorSpeed(0);
-// }
-// }
+    addRequirements(this.subCollector);
+  }
 
-// @Override
-// public void end(boolean interrupted) {
-// subCollector.setPivotMotorSpeed(0);
-// }
+  @Override
+  public void initialize() {
+    pivotAngle = subCollector.getPivotAngle();
 
-// @Override
-// public boolean isFinished() {
-// return false;
-// }
-// }
+    if (subArm.isCurrentState(ArmState.COLLECTOR_MOVING)) {
+      pivotAngle = Rotation2d.fromDegrees(desiredPivotAngleDegrees.getValue());
+    }
+
+    subCollector.setPivotAngle(pivotAngle);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
+}

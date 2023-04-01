@@ -4,13 +4,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.constControllers.ScoringLevel;
-import frc.robot.RobotPreferences.prefArm;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
@@ -21,30 +17,23 @@ public class PlaceGamePiece extends SequentialCommandGroup {
   Intake subIntake;
 
   public PlaceGamePiece(Arm subArm, Intake subIntake) {
-
     this.subArm = subArm;
     this.subIntake = subIntake;
 
     addCommands(
-        new InstantCommand(() -> subArm.setGoalAnglesFromNumpad()),
-        new WaitUntilCommand(() -> subArm.areJointsInTolerance()),
+        Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_CONE_SCORE_LOWERED))
+            .unless(() -> !subArm.isCurrentState(ArmState.HIGH_CONE_SCORE)),
 
-        // Lower the arm UNLESS
-        // Its a hybrid node, we provided no scoring level, or its a cube node
-        new InstantCommand(() -> subArm.setGoalAngles(
-            Rotation2d.fromDegrees(
-                subArm.getGoalShoulderAngle().getDegrees() - prefArm.armShoulderLoweringAngle.getValue()),
-            Rotation2d.fromDegrees(
-                subArm.getGoalElbowAngle().getDegrees() - prefArm.armElbowLoweringAngle.getValue())))
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
-                || subArm.isCubeNode()),
-        new WaitUntilCommand(() -> subArm.areJointsInTolerance())
-            .unless(() -> subArm.scoringLevel == ScoringLevel.HYBRID || subArm.scoringLevel == ScoringLevel.NONE
-                || subArm.isCubeNode()),
+        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.HIGH_CONE_SCORE_LOWERED))
+            .unless(() -> !subArm.isGoalState(ArmState.HIGH_CONE_SCORE_LOWERED)),
 
-        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeReleaseSpeed), subIntake)
-            .until(() -> !subIntake.isGamePieceCollected()),
-        new WaitCommand(prefIntake.intakeReleaseDelay.getValue()),
-        new InstantCommand(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake));
+        Commands.runOnce(() -> subArm.setGoalState(ArmState.MID_CONE_SCORE_LOWERED))
+            .unless(() -> !subArm.isCurrentState(ArmState.MID_CONE_SCORE)),
+
+        Commands.waitUntil(() -> subArm.isCurrentState(ArmState.MID_CONE_SCORE_LOWERED))
+            .unless(() -> !subArm.isGoalState(ArmState.MID_CONE_SCORE_LOWERED)),
+
+        subIntake.releaseCommand());
+
   }
 }

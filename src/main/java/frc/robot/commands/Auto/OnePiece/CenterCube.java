@@ -6,7 +6,7 @@ package frc.robot.commands.Auto.OnePiece;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.RobotPreferences.prefArm;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -29,21 +29,23 @@ public class CenterCube extends SequentialCommandGroup {
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetRotation()),
         Commands.runOnce(() -> subDrivetrain.setNavXAngleAdjustment(
-            subDrivetrain.cubeThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
+            subDrivetrain.scoreThenDock.getInitialHolonomicPose().getRotation().getDegrees())),
 
         Commands.run(() -> subIntake.setMotorSpeed(prefIntake.intakeIntakeSpeed), subIntake)
-            .until(() -> subIntake.isGamePieceCollected()),
+            .until(() -> subIntake.isGamePieceCollected()).withTimeout(5),
 
         Commands
-            .run(() -> subArm.setGoalAngles(prefArm.armShootCubeHighShoulderAngle, prefArm.armShootCubeHighElbowAngle))
-            .until(() -> subArm.areJointsInTolerance()),
+            .run(() -> subArm.setGoalState(ArmState.MID_STOWED))
+            .until(() -> subArm.isCurrentState(ArmState.MID_STOWED)),
+
+        Commands.run(() -> subArm.setGoalState(ArmState.HIGH_CUBE_SCORE_PLACE))
+            .until(() -> subArm.isCurrentState(ArmState.HIGH_CUBE_SCORE_PLACE)),
         Commands.waitSeconds(0.5),
 
-        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeShootSpeedHigh.getValue()), subIntake)
+        Commands.run(() -> subIntake.setMotorSpeedShoot(prefIntake.intakeReleaseSpeed.getValue()), subIntake)
             .withTimeout(prefIntake.intakeReleaseDelay.getValue()),
 
-        Commands
-            .runOnce(() -> subArm.setGoalAngles(prefArm.armPresetStowShoulderAngle, prefArm.armPresetStowElbowAngle)),
+        Commands.runOnce(() -> subArm.setGoalState(ArmState.HIGH_STOWED)),
 
         Commands.runOnce(() -> subIntake.setMotorSpeed(prefIntake.intakeHoldSpeed), subIntake));
   }

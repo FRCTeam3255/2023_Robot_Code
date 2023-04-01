@@ -8,46 +8,59 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotPreferences.prefArm;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Collector;
 
 public class MoveArm extends CommandBase {
 
   Arm subArm;
+  Collector subCollector;
 
   DoubleSupplier shoulderAdjuster;
-  DoubleSupplier elbowAdjuster;
+  DoubleSupplier elbowAdjuseter;
 
-  Rotation2d goalShoulderAngle;
-  Rotation2d goalElbowAngle;
+  Rotation2d shoulderAngle;
+  Rotation2d elbowAngle;
 
-  public MoveArm(Arm subArm, DoubleSupplier shoulderAdjuster, DoubleSupplier elbowAdjuster) {
+  public MoveArm(Arm subArm, Collector subCollector, DoubleSupplier shoulderAdjuster, DoubleSupplier elbowAdjuster) {
     this.subArm = subArm;
+    this.subCollector = subCollector;
 
     this.shoulderAdjuster = shoulderAdjuster;
-    this.elbowAdjuster = elbowAdjuster;
+    this.elbowAdjuseter = elbowAdjuster;
 
-    addRequirements(subArm);
+    addRequirements(this.subArm);
   }
 
   @Override
   public void initialize() {
-    subArm.setGoalAngles(subArm.getShoulderPosition(), subArm.getElbowPosition());
+    shoulderAngle = subArm.getShoulderPosition();
+    elbowAngle = subArm.getElbowPosition();
+
+    subArm.setGoalState(ArmState.NONE);
   }
 
   @Override
   public void execute() {
 
-    goalShoulderAngle = Rotation2d.fromDegrees(
-        subArm.getGoalShoulderAngle().getDegrees()
-            + (shoulderAdjuster.getAsDouble() * prefArm.shoulderAdjustRange.getValue()));
+    if (!subArm.isGoalState(ArmState.NONE)) {
+      shoulderAngle = subArm.getGoalState().shoulderAngle;
+      elbowAngle = subArm.getGoalState().elbowAngle;
+    }
 
-    goalElbowAngle = Rotation2d.fromDegrees(
-        subArm.getGoalElbowAngle().getDegrees()
-            + (elbowAdjuster.getAsDouble() * prefArm.elbowAdjustRange.getValue()));
+    shoulderAngle = shoulderAngle
+        .plus(Rotation2d.fromDegrees(shoulderAdjuster.getAsDouble() * prefArm.shoulderAdjustRange.getValue()));
+    elbowAngle = elbowAngle
+        .plus(Rotation2d.fromDegrees(elbowAdjuseter.getAsDouble() * prefArm.elbowAdjustRange.getValue()));
 
-    subArm.setJointPositions(goalShoulderAngle, goalElbowAngle);
+    if (!subCollector.isStowed() && !subCollector.isAngleCollecting()) {
+      shoulderAngle = subArm.getShoulderPosition();
+      elbowAngle = subArm.getElbowPosition();
+    }
 
+    subArm.setJointPositions(shoulderAngle, elbowAngle);
   }
 
   @Override

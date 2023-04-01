@@ -4,21 +4,21 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.frcteam3255.components.motors.SN_CANSparkMax;
 import com.frcteam3255.preferences.SN_DoublePreference;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constIntake;
-import frc.robot.Constants.constVision.GamePiece;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
@@ -26,24 +26,21 @@ public class Intake extends SubsystemBase {
 
   SN_CANSparkMax leftMotor;
   SN_CANSparkMax rightMotor;
-  // ColorSensorV3 colorSensor;
-  ColorMatch colorMatcher;
-  Color coneColor;
-  Color cubeColor;
   DigitalInput limitSwitch;
 
+  private ShuffleboardTab intakeTab = Shuffleboard.getTab("SuperShuffle");
+  private GenericEntry shuffleGamePieceCollected = intakeTab
+      .add("Piece Collected", false)
+      .withWidget("Boolean Box")
+      .withSize(2, 2)
+      .withPosition(7, 0)
+      .withProperties(Map.of("colorWhenTrue", "#4d74ff", "colorWhenFalse", "#000000"))
+      .getEntry();
+
   public Intake() {
+
     leftMotor = new SN_CANSparkMax(mapIntake.INTAKE_LEFT_MOTOR_CAN);
     rightMotor = new SN_CANSparkMax(mapIntake.INTAKE_RIGHT_MOTOR_CAN);
-
-    // colorSensor = new ColorSensorV3(mapIntake.COLOR_SENSOR_I2C);
-    colorMatcher = new ColorMatch();
-
-    coneColor = new Color(constIntake.CONE_COLOR_R, constIntake.CONE_COLOR_G, constIntake.CONE_COLOR_B);
-    cubeColor = new Color(constIntake.CUBE_COLOR_R, constIntake.CUBE_COLOR_G, constIntake.CUBE_COLOR_B);
-
-    colorMatcher.addColorMatch(coneColor);
-    colorMatcher.addColorMatch(cubeColor);
 
     limitSwitch = new DigitalInput(mapIntake.INTAKE_LIMIT_SWITCH_DIO);
 
@@ -59,44 +56,14 @@ public class Intake extends SubsystemBase {
 
     leftMotor.setNeutralMode(constIntake.NEUTRAL_MODE);
     rightMotor.setNeutralMode(constIntake.NEUTRAL_MODE);
-
-    colorMatcher.setConfidenceThreshold(prefIntake.colorMatcherConfidence.getValue());
   }
-
-  // public GamePiece getGamePieceType() {
-  // ColorMatchResult currentColor =
-  // colorMatcher.matchColor(colorSensor.getColor());
-
-  // if (currentColor == null) {
-  // return GamePiece.NONE;
-  // } else if (currentColor.color == coneColor) {
-  // return GamePiece.CONE;
-  // } else if (currentColor.color == cubeColor) {
-  // return GamePiece.CUBE;
-  // }
-
-  // return GamePiece.HUH;
-  // }
 
   public boolean getLimitSwitch() {
     return constIntake.LIMIT_SWITCH_INVERTED ? !limitSwitch.get() : limitSwitch.get();
   }
 
   public boolean isGamePieceCollected() {
-    if (getLimitSwitch()) {
-      return true;
-    }
-
-    // else if (colorSensor.getProximity() != 0
-    // && colorSensor.getProximity() <= prefIntake.gamePieceProximity.getValue()) {
-    // return true;
-    // }
-
-    // else if (getGamePieceType() == GamePiece.CONE || getGamePieceType() ==
-    // GamePiece.CUBE) {
-    // return true;
-    // }
-    return false;
+    return getLimitSwitch();
   }
 
   public void setMotorSpeed(SN_DoublePreference speed) {
@@ -124,20 +91,12 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
 
-    // SmartDashboard.putString("Current Game Piece",
-    // getGamePieceType().toString());
+    shuffleGamePieceCollected.setBoolean(isGamePieceCollected());
+
     SmartDashboard.putBoolean("Intake Is Game Piece Collected", isGamePieceCollected());
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putBoolean("Intake Limit Switch", getLimitSwitch());
-      // SmartDashboard.putString("Intake Color Sensor Color",
-      // colorSensor.getColor().toHexString());
-      // SmartDashboard.putNumber("Intake Color Sensor Red", colorSensor.getRed());
-      // SmartDashboard.putNumber("Intake Color Sensor Green",
-      // colorSensor.getGreen());
-      // SmartDashboard.putNumber("Intake Color Sensor Blue", colorSensor.getBlue());
-      // SmartDashboard.putNumber("Intake Color Sensor Proximity",
-      // colorSensor.getProximity());
     }
   }
 }

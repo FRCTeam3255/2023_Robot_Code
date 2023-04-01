@@ -5,7 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -38,18 +40,6 @@ public final class Constants {
     // public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
     // public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
     // public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
-
-    public enum ScoringLevel {
-      NONE, HYBRID, MID, HIGH;
-    }
-
-    public enum ScoringButton {
-      NONE, FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH;
-    }
-
-    public enum ScoringGrid {
-      NONE, GRID_1, GRID_2, GRID_3;
-    }
   }
 
   // Drivetrain (no subclass)
@@ -95,10 +85,10 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
-  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.544922;
-  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 69.433594;
-  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 85.517578;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 330.908203;
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.193359;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 126.210938;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 86.572266;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 332.226562;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
@@ -148,10 +138,10 @@ public final class Constants {
       MODULE_2.position,
       MODULE_3.position);
 
-  public static final double PRAC_FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 250.927734;
-  public static final double PRAC_FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 204.433594;
-  public static final double PRAC_BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 151.787109;
-  public static final double PRAC_BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 246.005859;
+  public static final double PRAC_FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 114.345703;
+  public static final double PRAC_FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 339.873047;
+  public static final double PRAC_BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 152.490234;
+  public static final double PRAC_BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 246.09375;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
@@ -216,7 +206,7 @@ public final class Constants {
     public static final double ELBOW_GEAR_RATIO = 200.0;
 
     public static final boolean SHOULDER_ABSOLUTE_ENCODER_INVERT = false;
-    public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = false;
+    public static final boolean ELBOW_ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode SHOULDER_MOTOR_BREAK = NeutralMode.Brake;
     public static final NeutralMode ELBOW_MOTOR_BREAK = NeutralMode.Brake;
@@ -230,11 +220,11 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.470116);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.823558);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.417364);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.716671);
 
-    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.346228);
-    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.127852);
+    public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.75);
+    public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.59875);
 
     public static final double SHOULDER_LENGTH = Units.inchesToMeters(30.0);
     public static final double ELBOW_LENGTH = Units.inchesToMeters(34.0);
@@ -244,6 +234,38 @@ public final class Constants {
 
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
+
+    public enum ArmState {
+      NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      HIGH_STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
+      LOW_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(-22)),
+      MID_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
+      FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-21)),
+      FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(20)),
+      SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
+      CUBE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(50)),
+      CONE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-61), Rotation2d.fromDegrees(69)),
+      HIGH_CONE_SCORE_TRANSITION(Rotation2d.fromDegrees(-10), Rotation2d.fromDegrees(69)),
+      COLLECTOR_MOVING(Rotation2d.fromDegrees(-97), Rotation2d.fromDegrees(35)),
+      COLLECTOR_COLLECTING(Rotation2d.fromDegrees(-97), Rotation2d.fromDegrees(-14)),
+      HIGH_CONE_SCORE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(30)),
+      HIGH_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(1)),
+      MID_CONE_SCORE(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(55)),
+      MID_CONE_SCORE_LOWERED(Rotation2d.fromDegrees(-51), Rotation2d.fromDegrees(35)),
+      HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(-55), Rotation2d.fromDegrees(50)),
+      HIGH_CUBE_SCORE_SHOOT(Rotation2d.fromDegrees(-99), Rotation2d.fromDegrees(32)),
+      MID_CUBE_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(40)),
+      HYBRID_SCORE(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
+      CHARGE_STATION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0));
+
+      public Rotation2d shoulderAngle;
+      public Rotation2d elbowAngle;
+
+      private ArmState(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
+        this.shoulderAngle = shoulderAngle;
+        this.elbowAngle = elbowAngle;
+      }
+    }
   }
 
   public static final class constIntake {
@@ -253,35 +275,25 @@ public final class Constants {
     public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
 
     public static final boolean LIMIT_SWITCH_INVERTED = true;
-
-    // RGB game piece colors
-    public static final double CONE_COLOR_R = 0.34509;
-    public static final double CONE_COLOR_G = 0.51764;
-    public static final double CONE_COLOR_B = 0.13333;
-
-    public static final double CUBE_COLOR_R = 0.22745;
-    public static final double CUBE_COLOR_G = 0.39607;
-    public static final double CUBE_COLOR_B = 0.37254;
   }
 
   public static final class constCollector {
-    public static final double GEAR_RATIO = 100;
+    public static final double GEAR_RATIO = 40;
 
-    public static final boolean PIVOT_FORWARD_LIMIT_ENABLE = true;
-    public static final boolean PIVOT_REVERSE_LIMIT_ENABLE = true;
-
-    public static final double PIVOT_FORWARD_LIMIT_VALUE = Units.degreesToRadians(195);
-    public static final double PIVOT_REVERSE_LIMIT_VALUE = Units.degreesToRadians(0);
+    public static final Rotation2d PIVOT_FORWARD_LIMIT_VALUE = Rotation2d.fromDegrees(135);
+    public static final Rotation2d PIVOT_REVERSE_LIMIT_VALUE = Rotation2d.fromDegrees(0);
 
     public static final boolean PIVOT_MOTOR_INVERT = false;
     public static final boolean ROLLER_MOTOR_INVERT = true;
-    public static final boolean PIVOT_ABSOLUTE_ENCODER_INVERT = true;
+    // public static final boolean ABSOLUTE_ENCODER_INVERT = true;
 
     public static final NeutralMode PIVOT_MOTOR_NEUTRAL_MODE = NeutralMode.Brake;
-    public static final NeutralMode ROLLER_MOTOR_NEUTRAL_MODE = NeutralMode.Coast;
+    public static final IdleMode ROLLER_MOTOR_NEUTRAL_MODE = IdleMode.kCoast;
 
-    public static final double PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.981843);
-    public static final double PRAC_PIVOT_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.838061);
+    // public static final double ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.981843);
+    // public static final double PRAC_ABSOLUTE_ENCODER_OFFSET =
+    // Units.rotationsToRadians(0.481616);
   }
 
   public static final class constVision {
@@ -289,27 +301,30 @@ public final class Constants {
     public static final String AR_PHOTON_NAME = "Global_Shutter_Camera";
     public static final String OV_PHOTON_NAME = "Arducam_OV9281_USB_Camera";
 
-    public static final Transform3d ROBOT_TO_AR = new Transform3d(new Translation3d(-0.149225, -0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(
+        new Translation3d(Units.inchesToMeters(-3), Units.inchesToMeters(6.5), 0.46355),
         new Rotation3d(0, 0, 0));
-    public static final Transform3d ROBOT_TO_OV = new Transform3d(new Translation3d(-0.219075, 0.1666875, 0.46355),
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(
+        new Translation3d(Units.inchesToMeters(-3.6875), Units.inchesToMeters(6.5), 0.46355),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
     public static final Transform3d ROBOT_TO_LIFECAM = new Transform3d(new Translation3d(0.4191, -0.1905, 0.6604),
         new Rotation3d(0, 0, 0));
-
-    public enum GamePiece {
-      NONE, CUBE, CONE, HUH
-    }
   }
 
   public static final class constLEDs {
-    public static final PatternType HAS_CONE_COLOR = PatternType.Yellow;
-    public static final PatternType HAS_CUBE_COLOR = PatternType.Violet;
-
-    public static final PatternType DESIRED_CONE_COLOR = PatternType.StrobeGold;
-    public static final PatternType DESIRED_CUBE_COLOR = PatternType.StrobeBlue;
+    public static final PatternType HAS_GAME_PIECE_COLOR = SN_Blinkin.PatternType.Green;
 
     public static final PatternType FAILURE_COLOR = PatternType.Red;
 
     public static final PatternType DEFAULT_COLOR = PatternType.Black;
+
+    public static final PatternType DEFENSE_MODE_COLOR = PatternType.RainbowRainbowPalette;
+
+    public static final PatternType CHARGE_STATION_ALIGNED_COLOR = PatternType.BPMLavaPalette;
+    public static final PatternType GRID_ALIGNED_COLOR = PatternType.StrobeGold;
+  }
+
+  public enum GamePiece {
+    NONE, CUBE, CONE, HUH
   }
 }

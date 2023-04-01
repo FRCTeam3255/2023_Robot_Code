@@ -26,7 +26,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,6 +40,8 @@ import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefVision;
 
 public class Drivetrain extends SubsystemBase {
+
+  ShuffleboardTab tab = Shuffleboard.getTab("SuperShuffle");
 
   private SN_SwerveModule[] modules;
 
@@ -56,18 +61,20 @@ public class Drivetrain extends SubsystemBase {
 
   public SwerveAutoBuilder swerveAutoBuilder;
 
-  public PathPlannerTrajectory cubeThenMobilityTop;
-  public PathPlannerTrajectory cubeThenDock;
-  public PathPlannerTrajectory cubeThenMobilityBottom;
+  public PathPlannerTrajectory scoreToCubeOpen;
+  public PathPlannerTrajectory scoreThenDock;
+  public PathPlannerTrajectory scoreToCubeCable;
 
-  public PathPlannerTrajectory cubeThenStagingMark;
-  public PathPlannerTrajectory stagingMarkThenPrep;
-  public PathPlannerTrajectory prepThenBottomCone;
-  public PathPlannerTrajectory bottomConeThenDock;
+  public PathPlannerTrajectory cubeToScoreOpen;
+  public PathPlannerTrajectory scoreToDockOpen;
 
-  public PathPlannerTrajectory stagingMarkThenDock;
+  public PathPlannerTrajectory cubeToDockOutsideOpen;
 
-  public boolean isDriveOpenLoop = true;
+  // TEST AUTO
+  public PathPlannerTrajectory linePath;
+
+  public Double[] columnYCoordinatesBlue = { 0.5, 1.05, 1.63, 2.19, 2.75, 3.31, 3.86, 4.43, 4.98 };
+  public Double[] columnYCoordinatesRed = { 4.98, 4.43, 3.86, 3.31, 2.75, 2.19, 1.63, 1.05, 0.5 };
 
   public Drivetrain() {
 
@@ -98,7 +105,15 @@ public class Drivetrain extends SubsystemBase {
         swerveKinematics,
         navX.getRotation2d(),
         getModulePositions(),
-        new Pose2d());
+        new Pose2d(),
+        VecBuilder.fill(
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefDrivetrain.measurementStdDevsDegrees.getValue())),
+        VecBuilder.fill(
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
+            Units.degreesToRadians(prefVision.measurementStdDevsDegrees.getValue())));
 
     isFieldRelative = true;
 
@@ -125,38 +140,30 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.teleThetaI.getValue(),
         prefDrivetrain.teleThetaD.getValue());
 
-    cubeThenMobilityBottom = PathPlanner.loadPath("cubeThenMobilityBottom",
+    scoreToCubeCable = PathPlanner.loadPath("scoreToCubeCable",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    cubeThenMobilityTop = PathPlanner.loadPath("cubeThenMobilityTop", new PathConstraints(
+    scoreToCubeOpen = PathPlanner.loadPath("scoreToCubeOpen", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    cubeThenDock = PathPlanner.loadPath("cubeThenDock", new PathConstraints(
+    scoreThenDock = PathPlanner.loadPath("scoreThenDock", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxAccelFeet.getValue())));
+
+    cubeToScoreOpen = PathPlanner.loadPath("cubeToScoreOpen", new PathConstraints(
         Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
         Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    cubeThenStagingMark = PathPlanner.loadPath("cubeThenStagingMark", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+    scoreToDockOpen = PathPlanner.loadPath("scoreToDockOpen", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxAccelFeet.getValue())));
 
-    stagingMarkThenPrep = PathPlanner.loadPath("stagingMarkThenPrep", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    prepThenBottomCone = PathPlanner.loadPath("prepThenBottomCone", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    bottomConeThenDock = PathPlanner.loadPath("bottomConeThenDock", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-
-    stagingMarkThenDock = PathPlanner.loadPath("stagingMarkThenDock", new PathConstraints(
-        Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-        Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
+    cubeToDockOutsideOpen = PathPlanner.loadPath("cubeToDockOutsideOpen", new PathConstraints(
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.fasterAutoMaxAccelFeet.getValue())));
 
     configure();
   }
@@ -206,7 +213,7 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.autoThetaP.getValue(),
             prefDrivetrain.autoThetaI.getValue(),
             prefDrivetrain.autoThetaD.getValue()),
-        this::setModuleStates,
+        this::setModuleStatesAuto,
         new HashMap<>(),
         true,
         this);
@@ -232,7 +239,7 @@ public class Drivetrain extends SubsystemBase {
 
     // pass the velocity Pose2d to driveAlignAngle(), which will close the loop for
     // rotation and pass the translational values to drive().
-    driveAlignAngle(velocity);
+    driveAlignAngle(velocity, false);
   }
 
   /**
@@ -241,7 +248,7 @@ public class Drivetrain extends SubsystemBase {
    * @param velocity Desired translational velocity in meters per second, and
    *                 desired absolute rotational position
    */
-  public void driveAlignAngle(Pose2d velocity) {
+  public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
 
     // tell the theta PID controller the goal rotation.
     thetaPID.setSetpoint(velocity.getRotation().getRadians());
@@ -258,7 +265,7 @@ public class Drivetrain extends SubsystemBase {
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), Rotation2d.fromRadians(angleSetpoint));
 
     // pass the new velocity to the normal drive command
-    drive(newVelocity);
+    drive(newVelocity, isDriveOpenLoop);
   }
 
   /**
@@ -267,7 +274,7 @@ public class Drivetrain extends SubsystemBase {
    * @param velocity Desired translational and rotational velocity in meters per
    *                 second and radians per second
    */
-  public void drive(Pose2d velocity) {
+  public void drive(Pose2d velocity, boolean isDriveOpenLoop) {
 
     ChassisSpeeds chassisSpeeds;
 
@@ -286,7 +293,7 @@ public class Drivetrain extends SubsystemBase {
 
     SwerveModuleState[] desiredStates = swerveKinematics.toSwerveModuleStates(chassisSpeeds);
 
-    setModuleStates(desiredStates);
+    setModuleStates(desiredStates, isDriveOpenLoop);
 
   }
 
@@ -295,7 +302,7 @@ public class Drivetrain extends SubsystemBase {
    * 
    * @param desiredStates Array of desired states
    */
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
+  public void setModuleStates(SwerveModuleState[] desiredStates, boolean isDriveOpenLoop) {
 
     // desaturateWheelSpeeds() mutates the given array
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
@@ -303,6 +310,10 @@ public class Drivetrain extends SubsystemBase {
     for (SN_SwerveModule mod : modules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], isDriveOpenLoop, false);
     }
+  }
+
+  private void setModuleStatesAuto(SwerveModuleState[] desiredStates) {
+    setModuleStates(desiredStates, false);
   }
 
   /**
@@ -318,7 +329,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_MODULE_SPEED);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], isDriveOpenLoop, true);
+      mod.setDesiredState(desiredStates[mod.moduleNumber], true, true);
     }
   }
 
@@ -463,8 +474,8 @@ public class Drivetrain extends SubsystemBase {
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
 
-      SmartDashboard.putNumber("Drivetrain Pose X", Units.feetToMeters(getPose().getX()));
-      SmartDashboard.putNumber("Drivetrain Pose Y", Units.feetToMeters(getPose().getY()));
+      SmartDashboard.putNumber("Drivetrain Pose X", Units.metersToInches(getPose().getX()));
+      SmartDashboard.putNumber("Drivetrain Pose Y", Units.metersToInches(getPose().getY()));
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putBoolean("is Tilted Fowards", isTiltedForward());

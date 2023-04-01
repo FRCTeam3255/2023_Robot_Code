@@ -4,10 +4,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
@@ -16,14 +17,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
-import frc.robot.Constants.constControllers.ScoringButton;
-import frc.robot.Constants.constControllers.ScoringGrid;
-import frc.robot.Constants.constControllers.ScoringLevel;
-import frc.robot.Constants.constVision.GamePiece;
+import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
 
@@ -41,13 +41,13 @@ public class Arm extends SubsystemBase {
   double shoulderOffset;
   double elbowOffset;
 
+  ArmState goalState;
   Rotation2d goalShoulderAngle;
   Rotation2d goalElbowAngle;
 
-  public GamePiece desiredGamePiece = GamePiece.NONE;
-  public ScoringLevel scoringLevel = ScoringLevel.NONE;
-  public ScoringButton scoringButton = ScoringButton.NONE;
-  public ScoringGrid scoringGrid = ScoringGrid.NONE;
+  int desiredNode;
+  int gridChoice;
+  ArmState armStateFromDesiredNode;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -67,8 +67,10 @@ public class Arm extends SubsystemBase {
       elbowOffset = constArm.ELBOW_ABSOLUTE_ENCODER_OFFSET;
     }
 
-    goalShoulderAngle = new Rotation2d();
-    goalElbowAngle = new Rotation2d();
+    goalState = ArmState.NONE;
+    armStateFromDesiredNode = ArmState.NONE;
+
+    desiredNode = 0;
 
     configure();
   }
@@ -81,6 +83,9 @@ public class Arm extends SubsystemBase {
     shoulderConfig.slot0.kP = prefArm.shoulderP.getValue();
     shoulderConfig.slot0.kI = prefArm.shoulderI.getValue();
     shoulderConfig.slot0.kD = prefArm.shoulderD.getValue();
+
+    shoulderConfig.motionCruiseVelocity = prefArm.shoulderMaxSpeed.getValue();
+    shoulderConfig.motionAcceleration = prefArm.shoulderMaxAccel.getValue();
 
     shoulderConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefArm.shoulderTolerance.getValue(),
@@ -108,6 +113,9 @@ public class Arm extends SubsystemBase {
     elbowConfig.slot0.kI = prefArm.elbowI.getValue();
     elbowConfig.slot0.kD = prefArm.elbowD.getValue();
 
+    elbowConfig.motionCruiseVelocity = prefArm.elbowMaxSpeed.getValue();
+    elbowConfig.motionAcceleration = prefArm.elbowMaxAccel.getValue();
+
     elbowConfig.slot0.allowableClosedloopError = SN_Math.degreesToFalcon(
         prefArm.elbowTolerance.getValue(),
         constArm.ELBOW_GEAR_RATIO);
@@ -129,16 +137,9 @@ public class Arm extends SubsystemBase {
   }
 
   public void resetJointEncodersToAbsolute() {
-    resetShoulderJointToAbsolute();
-    resetElbowJointToAbsolute();
-  }
-
-  private void resetShoulderJointToAbsolute() {
     shoulderJoint.setSelectedSensorPosition(
         SN_Math.degreesToFalcon(getShoulderAbsoluteEncoder().getDegrees(), constArm.SHOULDER_GEAR_RATIO));
-  }
 
-  private void resetElbowJointToAbsolute() {
     elbowJoint.setSelectedSensorPosition(
         SN_Math.degreesToFalcon(getElbowAbsoluteEncoder().getDegrees(), constArm.ELBOW_GEAR_RATIO));
   }
@@ -155,30 +156,11 @@ public class Arm extends SubsystemBase {
    * @param elbowAngle    Elbow position
    */
   public void setJointPositions(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
-    setShoulderPosition(shoulderAngle);
-    setElbowPosition(elbowAngle);
-  }
+    double shoulderCounts = SN_Math.degreesToFalcon(shoulderAngle.getDegrees(), constArm.SHOULDER_GEAR_RATIO);
+    shoulderJoint.set(ControlMode.MotionMagic, shoulderCounts);
 
-  /**
-   * Set the rotational position of the shoulder joint.
-   * 
-   * @param position Rotational position to set shoulder
-   */
-  private void setShoulderPosition(Rotation2d position) {
-    double counts = SN_Math.degreesToFalcon(position.getDegrees(), constArm.SHOULDER_GEAR_RATIO);
-
-    shoulderJoint.set(ControlMode.Position, counts);
-  }
-
-  /**
-   * Set the rotational position of the elbow joint.
-   * 
-   * @param degrees Rotational position to set elbow
-   */
-  private void setElbowPosition(Rotation2d position) {
-    double counts = SN_Math.degreesToFalcon(position.getDegrees(), constArm.ELBOW_GEAR_RATIO);
-
-    elbowJoint.set(ControlMode.Position, counts);
+    double elbowCounts = SN_Math.degreesToFalcon(elbowAngle.getDegrees(), constArm.ELBOW_GEAR_RATIO);
+    elbowJoint.set(ControlMode.MotionMagic, elbowCounts);
   }
 
   /**
@@ -187,27 +169,9 @@ public class Arm extends SubsystemBase {
    * @param shoulderPercent Shoulder percent output
    * @param elbowPercent    Elbow percent output
    */
-  public void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
-    setShoulderPercentOutput(shoulderPercent);
-    setElbowPercentOutput(elbowPercent);
-  }
-
-  /**
-   * Set the percent output of the shoulder joint motor.
-   * 
-   * @param percent Percent output to set
-   */
-  public void setShoulderPercentOutput(double percent) {
-    shoulderJoint.set(ControlMode.PercentOutput, percent);
-  }
-
-  /**
-   * Set the percent output of the elbow joint motor.
-   * 
-   * @param percent Percent output to set
-   */
-  public void setElbowPercentOutput(double percent) {
-    elbowJoint.set(ControlMode.PercentOutput, percent);
+  private void setJointPercentOutputs(double shoulderPercent, double elbowPercent) {
+    shoulderJoint.set(ControlMode.PercentOutput, shoulderPercent);
+    elbowJoint.set(ControlMode.PercentOutput, elbowPercent);
   }
 
   /**
@@ -223,7 +187,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Shoulder absolute encoder reading
    */
-  public Rotation2d getShoulderAbsoluteEncoder() {
+  private Rotation2d getShoulderAbsoluteEncoder() {
     double rotations = shoulderEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(shoulderOffset);
     rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
@@ -240,7 +204,7 @@ public class Arm extends SubsystemBase {
    * 
    * @return Elbow absolute encoder reading
    */
-  public Rotation2d getElbowAbsoluteEncoder() {
+  private Rotation2d getElbowAbsoluteEncoder() {
     double rotations = elbowEncoder.getAbsolutePosition();
     rotations -= Units.radiansToRotations(elbowOffset);
     rotations = MathUtil.inputModulus(rotations, -0.5, 0.5);
@@ -273,6 +237,76 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Check if the arm is currently at the given state.
+   * 
+   * @return True if the arm is currently at the given state
+   */
+  public boolean isCurrentState(ArmState state) {
+    for (int i = 0; i < ArmState.values().length - 1; i++) {
+      return areJointsInToleranceToState(state);
+    }
+    return false;
+  }
+
+  /**
+   * Check if a given joint rotation is within a given tolerance to a given goal
+   * rotation.
+   * 
+   * @param jointRotation Current rotation of joint
+   * @param goalRotation  Goal rotation of joint
+   * @param tolerance     Tolerance of joint rotation
+   * @return If the joint within tolerance of the goal
+   */
+  private boolean isJointInToleranceToAngle(Rotation2d jointRotation, Rotation2d goalRotation, Rotation2d tolerance) {
+    double jointToGoal = Math.abs(jointRotation.getRadians() - goalRotation.getRadians());
+    double fudgedTolerance = tolerance.getRadians() * prefArm.armToleranceFudgeFactor.getValue();
+
+    return jointToGoal < fudgedTolerance;
+  }
+
+  /**
+   * Check if the shoulder and elbow joints are within tolerance of a given state.
+   * 
+   * @param state State to check if joints are in tolerance to
+   * @return If joints are in tolerance of a given state
+   */
+  private boolean areJointsInToleranceToState(ArmState state) {
+    boolean isShoulderInTolerance = isJointInToleranceToAngle(
+        getShoulderPosition(),
+        state.shoulderAngle,
+        Rotation2d.fromDegrees(prefArm.shoulderTolerance.getValue()));
+
+    boolean isElbowInTolerance = isJointInToleranceToAngle(
+        getElbowPosition(),
+        state.elbowAngle,
+        Rotation2d.fromDegrees(prefArm.elbowTolerance.getValue()));
+
+    return isShoulderInTolerance && isElbowInTolerance;
+  }
+
+  /**
+   * Get the goal arm state.
+   * 
+   * @return Goal arm state
+   */
+  public ArmState getGoalState() {
+    return goalState;
+  }
+
+  /**
+   * Set the goal arm state.
+   * 
+   * @param goalState Goal arm state
+   */
+  public void setGoalState(ArmState goalState) {
+    this.goalState = goalState;
+  }
+
+  public boolean isGoalState(ArmState state) {
+    return goalState == state;
+  }
+
+  /**
    * Get the position of the arm tip in 2D space relative to the robot in meters.
    * 
    * @return Position of of arm tip in meters
@@ -290,119 +324,404 @@ public class Arm extends SubsystemBase {
     return new Translation2d(x, y);
   }
 
-  /**
-   * Set the goal angles for the shoulder and elbow.
-   * 
-   * @param shoulderAngle Goal shoulder angle
-   * @param elbowAngle    Goal elbow angle
-   */
-  public void setGoalAngles(Rotation2d shoulderAngle, Rotation2d elbowAngle) {
-    goalShoulderAngle = shoulderAngle;
-    goalElbowAngle = elbowAngle;
-  }
-
-  /**
-   * Get the goal shoulder angle.
-   * 
-   * @return Goal shoulder angle
-   */
-  public Rotation2d getGoalShoulderAngle() {
-    return goalShoulderAngle;
-  }
-
-  /**
-   * Get the goal elbow angle.
-   * 
-   * @return Goal elbow angle.
-   */
-  public Rotation2d getGoalElbowAngle() {
-    return goalElbowAngle;
-  }
-
-  /**
-   * Set the goal angles for the shoulder and elbow using SN_DoublePreferences.
-   * 
-   * @param shoulderDegrees Shoulder goal angle in degrees
-   * @param elbowDegrees    Elbow goal angle in degrees
-   */
-  public void setGoalAngles(SN_DoublePreference shoulderDegrees, SN_DoublePreference elbowDegrees) {
-    setGoalAngles(Rotation2d.fromDegrees(shoulderDegrees.getValue()), Rotation2d.fromDegrees(elbowDegrees.getValue()));
-  }
-
-  public boolean isShoulderInTolerance() {
-    return Math.abs(getShoulderPosition().getRadians() - getGoalShoulderAngle().getRadians()) < (Units
-        .degreesToRadians(prefArm.shoulderTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue()));
-  }
-
-  public boolean isElbowInTolerance() {
-    return Math.abs(getElbowPosition().getRadians() - getGoalElbowAngle().getRadians()) < Units
-        .degreesToRadians(prefArm.elbowTolerance.getValue() * prefArm.armToleranceFudgeFactor.getValue());
-  }
-
-  public boolean areJointsInTolerance() {
-    return isShoulderInTolerance() && isElbowInTolerance();
-  }
-
   public boolean isCubeNode() {
-    if (scoringButton == ScoringButton.FIFTH || scoringButton == ScoringButton.EIGHTH) {
-      return true;
-    } else {
-      return false;
-    }
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 2 ||
+        gridlessNode == 5;
   }
 
   public boolean isConeNode() {
-    if (scoringButton == ScoringButton.FOURTH || scoringButton == ScoringButton.SIXTH
-        || scoringButton == ScoringButton.SEVENTH || scoringButton == ScoringButton.NINTH) {
-      return true;
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 1 ||
+        gridlessNode == 3 ||
+        gridlessNode == 4 ||
+        gridlessNode == 6;
+  }
+
+  public boolean isHighNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 1 ||
+        gridlessNode == 2 ||
+        gridlessNode == 3;
+  }
+
+  public boolean isMidNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 4 ||
+        gridlessNode == 5 ||
+        gridlessNode == 6;
+  }
+
+  public boolean isHybridNode() {
+    int gridlessNode = desiredNode % 9;
+    return gridlessNode == 7 ||
+        gridlessNode == 8 ||
+        gridlessNode == 9 ||
+        gridlessNode == 0;
+  }
+
+  public boolean isValidNode() {
+    return desiredNode > 0 && desiredNode <= 27;
+  }
+
+  /**
+   * Set the desired node. 0 represents no desired node, and there are a total of
+   * 27 nodes.
+   * 
+   * <pre>
+   *1, 2, 3, 10, 11, 12, 19, 20, 21
+   *4, 5, 6, 13, 14, 15, 22, 23, 24
+   *7, 8, 9, 16, 17, 18, 25, 26, 27
+   * </pre>
+   * 
+   * @param desiredNode Node to desire
+   */
+  public void setDesiredNode(int desiredNode) {
+    this.desiredNode = MathUtil.clamp(desiredNode, 0, 27);
+  }
+
+  public int getDesiredGrid() {
+    if (desiredNode <= 9) {
+      return 1;
+    } else if (desiredNode <= 18) {
+      return 2;
     } else {
-      return false;
+      return 3;
     }
   }
 
-  public void setGoalAnglesFromNumpad() {
-    if (isCubeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetCubeMidShoulderAngle, prefArm.armPresetCubeMidElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetCubeHighShoulderAngle, prefArm.armPresetCubeHighElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
-      }
-
-    } else if (isConeNode()) {
-      if (scoringLevel == ScoringLevel.MID) {
-        setGoalAngles(prefArm.armPresetConeMidShoulderAngle, prefArm.armPresetConeMidElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HIGH) {
-        setGoalAngles(prefArm.armPresetConeHighShoulderAngle, prefArm.armPresetConeHighElbowAngle);
-      } else if (scoringLevel == ScoringLevel.HYBRID) {
-        setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
-      } else if (scoringLevel == ScoringLevel.NONE) {
-        // do nothing in this case
-      }
-
-    } else {
-      setGoalAngles(prefArm.armPresetLowShoulderAngle, prefArm.armPresetLowElbowAngle);
+  public int getDesiredColumn() {
+    if (!isValidNode()) {
+      return 0;
     }
+
+    if (isHybridNode()) {
+      return desiredNode - (6 * getDesiredGrid());
+    } else if (isMidNode()) {
+      return (desiredNode + 3) - (6 * getDesiredGrid());
+    } else if (isHighNode()) {
+      return (desiredNode + 6) - (6 * getDesiredGrid());
+    }
+
+    return 0;
+  }
+
+  public void setGridChoice(int gridChoice) {
+    this.gridChoice = MathUtil.clamp(gridChoice, 0, 3);
+  }
+
+  public void setArmStateFromDesiredNode() {
+    switch (desiredNode % 9) {
+      case 0:
+        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
+      case 1:
+        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+        break;
+      case 2:
+        armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+        break;
+      case 3:
+        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+        break;
+      case 4:
+        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+        break;
+      case 5:
+        armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+        break;
+      case 6:
+        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+        break;
+      case 7:
+        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
+      case 8:
+        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+        break;
+      default:
+        armStateFromDesiredNode = ArmState.NONE;
+        break;
+    }
+
+    if (desiredNode == 0) {
+      armStateFromDesiredNode = ArmState.NONE;
+    }
+
+  }
+
+  public Command prepPlaceCommand() {
+    return prepStateFromStowCommand();
+  }
+
+  public Command stowCommand() {
+
+    BooleanSupplier didArmScore = () -> (isGoalState(ArmState.HIGH_CONE_SCORE_LOWERED)
+        || isGoalState(ArmState.MID_CONE_SCORE_LOWERED)
+        || isCurrentState(ArmState.HIGH_CONE_SCORE)
+        || isCurrentState(ArmState.MID_CONE_SCORE)
+        || isCurrentState(ArmState.MID_CUBE_SCORE)
+        || isCurrentState(ArmState.HIGH_CUBE_SCORE_PLACE));
+
+    BooleanSupplier wasShelf = () -> isGoalState(ArmState.SHELF_INTAKE);
+
+    BooleanSupplier wasHighCone = () -> isGoalState(ArmState.HIGH_CONE_SCORE_LOWERED);
+
+    BooleanSupplier wasHighCube = () -> isGoalState(ArmState.HIGH_CUBE_SCORE_PLACE);
+    BooleanSupplier wasMidCube = () -> isGoalState(ArmState.MID_CUBE_SCORE);
+
+    return Commands.either(
+
+        Commands.sequence(
+            Commands.runOnce(() -> setGoalState(ArmState.HIGH_STOWED)),
+            Commands.waitUntil(() -> isCurrentState(ArmState.HIGH_STOWED)),
+            stateFromStowCommand(ArmState.LOW_STOWED)),
+
+        Commands.either(
+
+            Commands.either(
+
+                Commands.sequence(
+                    Commands.runOnce(() -> setGoalState(ArmState.CUBE_SCORE_LOW_TRANSITION)),
+                    Commands.waitUntil(() -> isCurrentState(ArmState.CUBE_SCORE_LOW_TRANSITION)),
+                    Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+                    Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+                    Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+                    .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+
+                Commands.either(
+
+                    Commands.sequence(
+                        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+                        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+                        Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+                        .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+
+                    Commands.either(Commands.sequence(
+                        Commands.runOnce(() -> setGoalState(ArmState.HIGH_CONE_SCORE_TRANSITION)),
+                        Commands.waitUntil(() -> isCurrentState(ArmState.HIGH_CONE_SCORE_TRANSITION)),
+                        Commands.runOnce(() -> setGoalState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+                        Commands.waitUntil(() -> isCurrentState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+                        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+                        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+                        Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+                        .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+                        Commands.sequence(
+                            Commands.runOnce(() -> setGoalState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+                            Commands.waitUntil(() -> isCurrentState(ArmState.CONE_SCORE_LOW_TRANSITION)),
+                            Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+                            Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+                            Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+                            .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+                        wasHighCone),
+
+                    wasMidCube),
+
+                wasHighCube),
+
+            Commands.sequence(
+                Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+                Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+                Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+                .unless(() -> isGoalState(ArmState.LOW_STOWED)),
+
+            didArmScore),
+        wasShelf);
+  }
+
+  public Command intakeFloorDeployCommand() {
+    // return Commands.sequence(
+    // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+    // Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE)))
+    // .unless(() -> isGoalState(ArmState.FLOOR_INTAKE));
+
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE)))
+        .unless(() -> isGoalState(ArmState.FLOOR_INTAKE)).withTimeout(2);
+
+  }
+
+  public Command intakeFloorStowCommand() {
+    // return Commands.sequence(
+    // Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+    // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+    // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+    // Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+    // .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE));
+
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.FLOOR_INTAKE_TRANSITION)),
+        Commands.runOnce(() -> setGoalState(ArmState.LOW_STOWED)))
+        .unless(() -> !isGoalState(ArmState.FLOOR_INTAKE)).withTimeout(2);
+  }
+
+  public Command stateFromStowCommand(ArmState state) {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(state)))
+        .unless(() -> isGoalState(state));
+  }
+
+  public Command prepStateFromStowCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+        Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+        Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
+        .unless(() -> isGoalState(armStateFromDesiredNode));
+  }
+
+  public int getDesiredNode() {
+    return desiredNode;
+  }
+
+  public int getGridChoice() {
+    return gridChoice;
+  }
+
+  public boolean getGridOneValue() {
+    return gridChoice == 1;
+  }
+
+  public boolean getGridTwoValue() {
+    return gridChoice == 2;
+  }
+
+  public boolean getGridThreeValue() {
+    return gridChoice == 3;
+  }
+
+  public boolean getNodeOneValue() {
+    return desiredNode == 1;
+  }
+
+  public boolean getNodeTwoValue() {
+    return desiredNode == 2;
+  }
+
+  public boolean getNodeThreeValue() {
+    return desiredNode == 3;
+  }
+
+  public boolean getNodeFourValue() {
+    return desiredNode == 4;
+  }
+
+  public boolean getNodeFiveValue() {
+    return desiredNode == 5;
+  }
+
+  public boolean getNodeSixValue() {
+    return desiredNode == 6;
+  }
+
+  public boolean getNodeSevenValue() {
+    return desiredNode == 7;
+  }
+
+  public boolean getNodeEightValue() {
+    return desiredNode == 8;
+  }
+
+  public boolean getNodeNineValue() {
+    return desiredNode == 9;
+  }
+
+  public boolean getNodeTenValue() {
+    return desiredNode == 10;
+  }
+
+  public boolean getNodeElevenValue() {
+    return desiredNode == 11;
+  }
+
+  public boolean getNodeTwelveValue() {
+    return desiredNode == 12;
+  }
+
+  public boolean getNodeThirteenValue() {
+    return desiredNode == 13;
+  }
+
+  public boolean getNodeFourteenValue() {
+    return desiredNode == 14;
+  }
+
+  public boolean getNodeFifteenValue() {
+    return desiredNode == 15;
+  }
+
+  public boolean getNodeSixteenValue() {
+    return desiredNode == 16;
+  }
+
+  public boolean getNodeSeventeenValue() {
+    return desiredNode == 17;
+  }
+
+  public boolean getNodeEighteenValue() {
+    return desiredNode == 18;
+  }
+
+  public boolean getNodeNineteenValue() {
+    return desiredNode == 19;
+  }
+
+  public boolean getNodeTwentyValue() {
+    return desiredNode == 20;
+  }
+
+  public boolean getNodeTwentyOneValue() {
+    return desiredNode == 21;
+  }
+
+  public boolean getNodeTwentyTwoValue() {
+    return desiredNode == 22;
+  }
+
+  public boolean getNodeTwentyThreeValue() {
+    return desiredNode == 23;
+  }
+
+  public boolean getNodeTwentyFourValue() {
+    return desiredNode == 24;
+  }
+
+  public boolean getNodeTwentyFiveValue() {
+    return desiredNode == 25;
+  }
+
+  public boolean getNodeTwentySixValue() {
+    return desiredNode == 26;
+  }
+
+  public boolean getNodeTwentySevenValue() {
+    return desiredNode == 27;
   }
 
   @Override
   public void periodic() {
 
-    SmartDashboard.putString("desiredGamePiece", desiredGamePiece.toString());
-    SmartDashboard.putString("scoringLevel", scoringLevel.toString());
-    SmartDashboard.putString("scoringColumn", scoringButton.toString());
+    setArmStateFromDesiredNode();
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Shoulder Motor Encoder Raw", shoulderJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Arm Shoulder Motor Encoder Velocity Raw", shoulderJoint.getSelectedSensorVelocity());
       SmartDashboard.putNumber("Arm Shoulder Position", getShoulderPosition().getDegrees());
       SmartDashboard.putNumber("Arm Shoulder Motor Output", shoulderJoint.getMotorOutputPercent());
 
       SmartDashboard.putNumber("Arm Elbow Absolute Encoder Raw", elbowEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("Arm Elbow Motor Encoder Raw", elbowJoint.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Arm Elbow Motor Encoder Velocity Raw", elbowJoint.getSelectedSensorVelocity());
       SmartDashboard.putNumber("Arm Elbow Position", getElbowPosition().getDegrees());
       SmartDashboard.putNumber("Arm Elbow Motor Output", elbowJoint.getMotorOutputPercent());
 
@@ -411,23 +730,27 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putNumber("Arm Tip Distance",
           Units.metersToInches(getArmTipPosition().getDistance(new Translation2d())));
 
-      SmartDashboard.putNumber("Arm Goal Angle Shoulder", goalShoulderAngle.getDegrees());
-      SmartDashboard.putNumber("Arm Goal Angle Elbow", goalElbowAngle.getDegrees());
-
       SmartDashboard.putNumber("Arm PID Shoulder Goal",
           SN_Math.falconToDegrees(shoulderJoint.getClosedLoopTarget(), constArm.SHOULDER_GEAR_RATIO));
       SmartDashboard.putNumber("Arm PID Shoudler Error",
           SN_Math.falconToDegrees(shoulderJoint.getClosedLoopError(), constArm.SHOULDER_GEAR_RATIO));
-      SmartDashboard.putBoolean("Arm PID Shoulder Is Within Tolerance", isShoulderInTolerance());
 
       SmartDashboard.putNumber("Arm PID Elbow Goal",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopTarget(), constArm.ELBOW_GEAR_RATIO));
       SmartDashboard.putNumber("Arm PID Elbow Error",
           SN_Math.falconToDegrees(elbowJoint.getClosedLoopError(), constArm.ELBOW_GEAR_RATIO));
-      SmartDashboard.putBoolean("Arm PID Elbow Is Within Tolerance", isElbowInTolerance());
 
-      SmartDashboard.putBoolean("Arm PID Joints Are Within Tolerance", areJointsInTolerance());
+      for (ArmState state : ArmState.values()) {
+        SmartDashboard.putBoolean("Arm at state " + state.toString(), isCurrentState(state));
+      }
+      SmartDashboard.putString("Arm Goal State", getGoalState().toString());
 
+      SmartDashboard.putNumber("Arm Desired Node", desiredNode);
+      SmartDashboard.putBoolean("Arm Is High Node", isHighNode());
+      SmartDashboard.putBoolean("Arm Is Mid Node", isMidNode());
+      SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
+      SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
+      SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
     }
   }
 }

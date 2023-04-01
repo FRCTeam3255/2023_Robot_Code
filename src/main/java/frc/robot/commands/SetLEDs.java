@@ -4,25 +4,45 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.components.SN_Blinkin;
 import com.frcteam3255.components.SN_Blinkin.PatternType;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.constControllers.ScoringButton;
+import frc.robot.Constants.constLEDs;
+import frc.robot.RobotPreferences.prefLEDs;
+import frc.robot.RobotPreferences.prefVision;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 
 public class SetLEDs extends CommandBase {
   LEDs subLEDs;
   Intake subIntake;
-  PatternType desiredPattern;
+  Drivetrain subDrivetrain;
   Arm subArm;
 
-  public SetLEDs(LEDs subLEDs, Intake subIntake, Arm subArm) {
+  PatternType desiredPattern;
+
+  Double chargeStationCenterX;
+  Double chargeStationCenterToleranceX;
+  Double chargeStationCenterY;
+  Double chargeStationCenterToleranceY;
+
+  int desiredColumn;
+
+  public SetLEDs(LEDs subLEDs, Intake subIntake, Drivetrain subDrivetrain, Arm subArm) {
     this.subLEDs = subLEDs;
     this.subIntake = subIntake;
+    this.subDrivetrain = subDrivetrain;
     this.subArm = subArm;
+
+    chargeStationCenterX = prefVision.chargeStationCenterX.getValue();
+    chargeStationCenterToleranceX = prefVision.chargeStationCenterToleranceX.getValue();
+    chargeStationCenterY = prefVision.chargeStationCenterY.getValue();
+    chargeStationCenterToleranceY = prefVision.chargeStationCenterToleranceY.getValue();
 
     addRequirements(subLEDs);
   }
@@ -33,48 +53,38 @@ public class SetLEDs extends CommandBase {
 
   @Override
   public void execute() {
-    // switch (subIntake.getGamePieceType()) {
-    // case CONE:
-    // desiredPattern = constLEDs.HAS_CONE_COLOR;
-    // break;
-    // case CUBE:
-    // desiredPattern = constLEDs.HAS_CUBE_COLOR;
-    // break;
-    // case HUH:
-    // desiredPattern = constLEDs.FAILURE_COLOR;
-    // break;
-    // case NONE:
-    // if (subIntake.isGamePieceCollected()) {
-    // desiredPattern = constLEDs.FAILURE_COLOR;
-    // break;
-    // }
-
-    // // We don't have a game piece and we WANT something
-    // if (desiredGamePiece == GamePiece.CONE) {
-    // desiredPattern = constLEDs.DESIRED_CONE_COLOR;
-    // break;
-    // } else if (desiredGamePiece == GamePiece.CUBE) {
-    // desiredPattern = constLEDs.DESIRED_CUBE_COLOR;
-    // break;
-    // }
-
-    // // We dont have a game piece or want a game piece; default color
-    // desiredPattern = constLEDs.DEFAULT_COLOR;
-    // break;
-    // }
+    Double[] coordinates = {};
+    desiredColumn = subArm.getDesiredColumn();
 
     if (subIntake.isGamePieceCollected()) {
-      desiredPattern = SN_Blinkin.PatternType.Green;
+      desiredPattern = constLEDs.HAS_GAME_PIECE_COLOR;
     } else {
+      desiredPattern = constLEDs.DEFAULT_COLOR;
+    }
 
-      if (subArm.scoringButton == ScoringButton.EIGHTH) {
-        desiredPattern = SN_Blinkin.PatternType.BlueViolet;
-      } else if (subArm.scoringButton == ScoringButton.NINTH) {
-        desiredPattern = SN_Blinkin.PatternType.Yellow;
-      } else {
-        desiredPattern = SN_Blinkin.PatternType.Black;
+    if (Timer.getMatchTime() < prefLEDs.timeChargeStationLEDsOn.getValue()) {
+      if (Math.abs(subDrivetrain.getPose().getX() - chargeStationCenterX) < chargeStationCenterToleranceX
+          && Math.abs(subDrivetrain.getPose().getY() - chargeStationCenterY) < chargeStationCenterToleranceY) {
+        desiredPattern = constLEDs.CHARGE_STATION_ALIGNED_COLOR;
       }
+    }
 
+    if (desiredColumn > 0) {
+      if (DriverStation.getAlliance() == Alliance.Blue) {
+        coordinates = subDrivetrain.columnYCoordinatesBlue;
+        if (Math.abs(subDrivetrain.getPose().getY()
+            - coordinates[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
+            && subDrivetrain.getPose().getX() < prefVision.gridLEDsXPosMaxBlue.getValue()) {
+          desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+        }
+      } else if (DriverStation.getAlliance() == Alliance.Red) {
+        coordinates = subDrivetrain.columnYCoordinatesRed;
+        if (Math.abs(subDrivetrain.getPose().getY()
+            - coordinates[desiredColumn - 1]) < prefVision.gridAlignmentToleranceY.getValue()
+            && subDrivetrain.getPose().getX() > prefVision.gridLEDsXPosMaxRed.getValue()) {
+          desiredPattern = constLEDs.GRID_ALIGNED_COLOR;
+        }
+      }
     }
 
     subLEDs.setLEDPattern(desiredPattern);

@@ -55,6 +55,8 @@ public class Drive extends CommandBase {
   Rotation2d rotationPosition;
   Rotation2d lastRotationPosition;
 
+  boolean isDriveOpenLoop;
+
   public Drive(
       Drivetrain subDrivetrain,
       Arm subArm,
@@ -82,6 +84,8 @@ public class Drive extends CommandBase {
     isRotationPositional = false;
     rotationPosition = new Rotation2d();
     lastRotationPosition = new Rotation2d();
+
+    isDriveOpenLoop = true;
 
     addRequirements(this.subDrivetrain);
   }
@@ -115,34 +119,24 @@ public class Drive extends CommandBase {
 
       if (northTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(0);
+        rotationPosition = Rotation2d.fromDegrees(180);
       }
 
       if (eastTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(-90);
+        rotationPosition = Rotation2d.fromDegrees(90);
       }
 
       if (southTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(180);
+        rotationPosition = Rotation2d.fromDegrees(0);
       }
 
       if (westTrigger.getAsBoolean()) {
         isRotationPositional = true;
-        rotationPosition = Rotation2d.fromDegrees(90);
+        rotationPosition = Rotation2d.fromDegrees(-90);
       }
 
-    }
-
-    // if the shoulder is at -90 just remember the current rotation position
-    if (subArm.getGoalShoulderAngle().getDegrees() == -90 && subArm.isShoulderInTolerance()) {
-      lastRotationPosition = rotationPosition;
-    }
-    // if the shoulder isn't at -90 override the button press and just go to the
-    // last valid rotation position
-    else {
-      rotationPosition = lastRotationPosition;
     }
 
     // if the driver isn't using the rotation joystick and also pressed a rotation
@@ -151,7 +145,7 @@ public class Drive extends CommandBase {
       velocity = new Pose2d(
           translationVelocity,
           rotationPosition);
-      subDrivetrain.driveAlignAngle(velocity);
+      subDrivetrain.driveAlignAngle(velocity, isDriveOpenLoop);
     }
     // if the driver didn't press any rotation buttons or used the rotation
     // joystick, just drive normally with the rotation joystick controlling the rate
@@ -160,7 +154,7 @@ public class Drive extends CommandBase {
       velocity = new Pose2d(
           translationVelocity,
           Rotation2d.fromRadians(rVelocity));
-      subDrivetrain.drive(velocity);
+      subDrivetrain.drive(velocity, isDriveOpenLoop);
     }
 
   }
