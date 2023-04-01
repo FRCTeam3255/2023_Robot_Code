@@ -47,7 +47,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference triggerValue = new SN_DoublePreference("triggerValue", .2);
 
     // TODO: Create PID values and other values
-    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 0.7);
+    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 0.5);
     public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0.0);
     public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0.0);
 
@@ -56,10 +56,16 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
 
     public static final SN_DoublePreference autoMaxSpeedFeet = new SN_DoublePreference(
-        "autoMaxSpeedFeet", 2.0);
+        "autoMaxSpeedFeet", 2);
 
     public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
-        "autoMaxAccelFeet", 1.0);
+        "autoMaxAccelFeet", 1);
+
+    public static final SN_DoublePreference fasterAutoMaxSpeedFeet = new SN_DoublePreference(
+        "autoMaxSpeedFeet", 5);
+
+    public static final SN_DoublePreference fasterAutoMaxAccelFeet = new SN_DoublePreference(
+        "autoMaxAccelFeet", 4);
 
     public static final SN_DoublePreference teleTransP = new SN_DoublePreference("teleTransP", 0);
     public static final SN_DoublePreference teleTransI = new SN_DoublePreference("teleTransI", 0);
@@ -80,10 +86,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference teleThetaTolerance = new SN_DoublePreference("teleThetaTolerance", 2);
 
     // degrees
-    public static final SN_DoublePreference tiltedThreshold = new SN_DoublePreference("tiltedThreshold", 14);
+    public static final SN_DoublePreference tiltedThreshold = new SN_DoublePreference("tiltedThreshold", 5);
 
     // feet per second
-    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 0.1);
+    public static final SN_DoublePreference dockingSpeed = new SN_DoublePreference("dockingSpeed", 0.05);
 
     // current limiting (values taken from BaseFalconSwerve)
     public static final SN_BooleanPreference driveEnableCurrentLimit = new SN_BooleanPreference(
@@ -138,7 +144,7 @@ public class RobotPreferences {
         "elbowClosedLoopPeakOutput", 1);
 
     public static final SN_DoublePreference shoulderAdjustRange = new SN_DoublePreference("shoulderAdjustRange", 0);
-    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 0);
+    public static final SN_DoublePreference elbowAdjustRange = new SN_DoublePreference("elbowAdjustRange", 15);
 
     // preset to intake cube from collector
     public static final SN_DoublePreference armPresetCollectorShoulderAngle = new SN_DoublePreference(

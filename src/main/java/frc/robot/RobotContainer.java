@@ -37,9 +37,11 @@ import frc.robot.commands.PlaceGamePiece;
 import frc.robot.commands.SetLEDs;
 import frc.robot.commands.SetRumble;
 import frc.robot.commands.Auto.OnePiece.CenterCube;
-import frc.robot.commands.Auto.OnePiece.CubeThenDock;
+import frc.robot.commands.Auto.OnePiece.CubeThenEngageCenter;
+import frc.robot.commands.Auto.OnePiece.CubeThenEngageOpen;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityCable;
 import frc.robot.commands.Auto.OnePiece.CubeThenMobilityOpen;
+import frc.robot.commands.Auto.TwoPiece.TwoCubeDockOpen;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
@@ -66,6 +68,7 @@ public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   private static DigitalInput pracBotSwitch = new DigitalInput(9);
   private final Trigger teleopTrigger = new Trigger(() -> RobotState.isEnabled() && RobotState.isTeleop());
+  private final Trigger hasGamePieceTrigger = new Trigger(() -> subIntake.isGamePieceCollected());
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_X_DEADBAND);
@@ -166,6 +169,8 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
+    conOperator.btn_South.whileTrue(subArm.stateFromStowCommand(ArmState.CHARGE_STATION));
+
     // numpad
 
     // Left Grid
@@ -253,13 +258,16 @@ public class RobotContainer {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("null", null);
 
-    autoChooser.addOption("Cube Then Mobility Cable", new CubeThenMobilityCable(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Cube Then Dock", new CubeThenDock(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Center Cube (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
-    autoChooser.addOption("Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Mobility Cable",
+        new CubeThenMobilityCable(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Engage Center", new CubeThenEngageCenter(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Center (NO DOCK)", new CenterCube(subDrivetrain, subIntake, subArm));
+    autoChooser.addOption("Score Cube Then Mobility Open", new CubeThenMobilityOpen(subDrivetrain, subIntake, subArm));
+    // autoChooser.addOption("Score Cube Then Engage Open", new
+    // CubeThenEngageOpen(subDrivetrain, subIntake, subArm));
 
-    // autoChooser.addOption("Cube, Dock, Shoot", new CubeDockShoot(subDrivetrain,
-    // subIntake, subArm));
+    // autoChooser.addOption("Score TWO Cubes Then Engage Open - DO NOT USE",
+    // new TwoCubeDockOpen(subDrivetrain, subIntake, subArm));
 
     SmartDashboard.putData(autoChooser);
 

@@ -86,9 +86,9 @@ public final class Constants {
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
   public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.193359;
-  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 101.513672;
-  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 86.835938;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 331.962891;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 126.210938;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 86.572266;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 332.226562;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
@@ -220,8 +220,8 @@ public final class Constants {
     // public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET =
     // Units.rotationsToRadians(0.142530);
 
-    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.36);
-    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.716009);
+    public static final double SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.417364);
+    public static final double ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.716671);
 
     public static final double PRAC_SHOULDER_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.75);
     public static final double PRAC_ELBOW_ABSOLUTE_ENCODER_OFFSET = Units.rotationsToRadians(0.59875);
@@ -241,7 +241,7 @@ public final class Constants {
       LOW_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(-22)),
       MID_STOWED(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
       FLOOR_INTAKE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(-21)),
-      FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0)),
+      FLOOR_INTAKE_TRANSITION(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(20)),
       SHELF_INTAKE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       CUBE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-100), Rotation2d.fromDegrees(50)),
       CONE_SCORE_LOW_TRANSITION(Rotation2d.fromDegrees(-61), Rotation2d.fromDegrees(69)),
@@ -255,7 +255,8 @@ public final class Constants {
       HIGH_CUBE_SCORE_PLACE(Rotation2d.fromDegrees(-55), Rotation2d.fromDegrees(50)),
       HIGH_CUBE_SCORE_SHOOT(Rotation2d.fromDegrees(-99), Rotation2d.fromDegrees(32)),
       MID_CUBE_SCORE(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(40)),
-      HYBRID_SCORE(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0));
+      HYBRID_SCORE(Rotation2d.fromDegrees(-128), Rotation2d.fromDegrees(0)),
+      CHARGE_STATION(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(0));
 
       public Rotation2d shoulderAngle;
       public Rotation2d elbowAngle;
