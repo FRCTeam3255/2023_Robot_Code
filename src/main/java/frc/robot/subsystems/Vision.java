@@ -48,9 +48,9 @@ public class Vision extends SubsystemBase {
     // ARCamera,
     // robotToAR);
 
-    OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
-        OVCamera,
-        robotToOV);
+    // OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
+    //     OVCamera,
+    //     robotToOV);
   }
 
   public Optional<EstimatedRobotPose> getPoseFromARCamera() {

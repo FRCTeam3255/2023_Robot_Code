@@ -34,7 +34,7 @@ public class AddVisionMeasurement extends CommandBase {
   @Override
   public void execute() {
     // Optional<EstimatedRobotPose> ARresult = subVision.getPoseFromARCamera();
-    Optional<EstimatedRobotPose> OVresult = subVision.getPoseFromOVCamera();
+    // Optional<EstimatedRobotPose> OVresult = subVision.getPoseFromOVCamera();
 
     // if (ARresult.isPresent() && !RobotState.isAutonomous()) {
     // estimatedPose = ARresult.get().estimatedPose.toPose2d();
@@ -42,11 +42,11 @@ public class AddVisionMeasurement extends CommandBase {
     // subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
     // }
 
-    if (OVresult.isPresent() && !RobotState.isAutonomous()) {
-      estimatedPose = OVresult.get().estimatedPose.toPose2d();
-      timestamp = OVresult.get().timestampSeconds;
-      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
-    }
+    // if (OVresult.isPresent() && !RobotState.isAutonomous()) {
+    // estimatedPose = OVresult.get().estimatedPose.toPose2d();
+    // timestamp = OVresult.get().timestampSeconds;
+    // subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+    // }
   }
 
   @Override
