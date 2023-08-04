@@ -137,19 +137,31 @@ public class RobotContainer {
 
     // Operator
 
-    // Intake Cube (a)
-    conOperator.btn_A
+    // Order of buttons: set height, prep, place
+
+    // Intake Cube (LB)
+    conOperator.btn_LeftBumper
         .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
-    // Intake Floor (rbump)
+    // Prep Cube (X)
+
+    // Place Cube (LT)
+    conOperator.btn_LeftTrigger.whileTrue(subIntake.releaseCommand());
+
+    // Intake Cone (RB)
     conOperator.btn_RightBumper
         .onTrue(subArm.intakeFloorDeployCommand())
         .whileFalse(subArm.intakeFloorStowCommand())
         .whileTrue(new IntakeGamePiece(subIntake));
 
-    // Set stow Arm preset (b)
-    conOperator.btn_B.onTrue(subArm.stowCommand());
+    // Prep Cone (B)
+
+    // Place Cone (RT)
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
+
+    // Set stow Arm preset (a)
+    conOperator.btn_A.onTrue(subArm.stowCommand());
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
