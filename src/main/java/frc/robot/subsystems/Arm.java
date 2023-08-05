@@ -72,6 +72,7 @@ public class Arm extends SubsystemBase {
 
     goalState = ArmState.NONE;
     armStateFromDesiredNode = ArmState.NONE;
+    desiredArmHeight = ArmHeight.NONE;
 
     desiredNode = 0;
 
@@ -579,6 +580,7 @@ public class Arm extends SubsystemBase {
   }
 
   public Command prepStateFromStowCommand(GamePiece gamePiece) {
+
     if (gamePiece == GamePiece.CONE) {
       switch (desiredArmHeight) {
         case LOW:
@@ -589,6 +591,9 @@ public class Arm extends SubsystemBase {
           break;
         case HIGH:
           armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+          break;
+        case NONE:
+          armStateFromDesiredNode = ArmState.NONE;
           break;
       }
     } else if (gamePiece == GamePiece.CUBE) {
@@ -601,6 +606,9 @@ public class Arm extends SubsystemBase {
           break;
         case HIGH:
           armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+          break;
+        case NONE:
+          armStateFromDesiredNode = ArmState.NONE;
           break;
       }
     }

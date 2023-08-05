@@ -236,7 +236,7 @@ public final class Constants {
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
 
     public enum ArmHeight {
-      LOW, MID, HIGH
+      NONE, LOW, MID, HIGH
     }
 
     public enum ArmState {
