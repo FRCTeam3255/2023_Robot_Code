@@ -85,10 +85,10 @@ public final class Constants {
   public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
   public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 
-  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 18.193359;
-  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 126.210938;
-  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 86.572266;
-  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 332.226562;
+  public static final double FRONT_LEFT_ABSOLUTE_ENCODER_OFFSET = 16.171875;
+  public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 232.119140625;
+  public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 87.36328125;
+  public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 332.9296875;
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
