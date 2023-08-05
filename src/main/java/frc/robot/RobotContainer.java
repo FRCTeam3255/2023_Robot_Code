@@ -23,6 +23,7 @@ import frc.robot.subsystems.SuperShuffle;
 import frc.robot.subsystems.Vision;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
+import frc.robot.Constants.constArm.ArmHeight;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefCollector;
@@ -171,7 +172,8 @@ public class RobotContainer {
     conOperator.btn_X.onTrue(subArm.prepPlaceCommand());
 
     // Place Game piece (rt)
-    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
+    // conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm,
+    // subIntake));
 
     // Spin the Intake forward
     conOperator.btn_Start
@@ -181,7 +183,10 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_South.whileTrue(subArm.stateFromStowCommand(ArmState.CHARGE_STATION));
+    conOperator.btn_North.onTrue(subArm.setDesiredArmHeight(ArmHeight.LOW));
+    conOperator.btn_East.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
+    conOperator.btn_West.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
+    conOperator.btn_South.onTrue(subArm.setDesiredArmHeight(ArmHeight.HIGH));
 
     // numpad
 

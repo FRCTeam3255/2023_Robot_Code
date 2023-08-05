@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constArm;
+import frc.robot.Constants.constArm.ArmHeight;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
@@ -48,6 +49,7 @@ public class Arm extends SubsystemBase {
   int desiredNode;
   int gridChoice;
   ArmState armStateFromDesiredNode;
+  ArmHeight desiredArmHeight;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -410,6 +412,10 @@ public class Arm extends SubsystemBase {
     this.gridChoice = MathUtil.clamp(gridChoice, 0, 3);
   }
 
+  public Command setDesiredArmHeight(ArmHeight height) {
+    return Commands.runOnce(() -> desiredArmHeight = height);
+  }
+
   public void setArmStateFromDesiredNode() {
     switch (desiredNode % 9) {
       case 0:
@@ -751,6 +757,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
       SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
       SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
+      SmartDashboard.putString("Desired Arm Height", desiredArmHeight.name());
     }
   }
 }

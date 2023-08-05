@@ -235,6 +235,10 @@ public final class Constants {
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
 
+    public enum ArmHeight {
+      LOW, MID, HIGH
+    }
+
     public enum ArmState {
       NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
       HIGH_STOWED(Rotation2d.fromDegrees(-90), Rotation2d.fromDegrees(66)),
