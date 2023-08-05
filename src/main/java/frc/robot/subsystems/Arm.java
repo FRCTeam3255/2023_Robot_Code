@@ -51,6 +51,7 @@ public class Arm extends SubsystemBase {
   int gridChoice;
   ArmState armStateFromDesiredNode;
   ArmHeight desiredArmHeight;
+  GamePiece gamePiece;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -73,6 +74,7 @@ public class Arm extends SubsystemBase {
     goalState = ArmState.NONE;
     armStateFromDesiredNode = ArmState.NONE;
     desiredArmHeight = ArmHeight.NONE;
+    gamePiece = GamePiece.NONE;
 
     desiredNode = 0;
 
@@ -418,6 +420,42 @@ public class Arm extends SubsystemBase {
     return Commands.runOnce(() -> desiredArmHeight = height);
   }
 
+  public void setArmStateFromDesiredNode(GamePiece desiredGamePiece) {
+    gamePiece = desiredGamePiece;
+    if (desiredGamePiece == GamePiece.CONE) {
+      switch (desiredArmHeight) {
+        case LOW:
+          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+          break;
+        case MID:
+          armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+          System.out.println("set to Mid Score");
+          break;
+        case HIGH:
+          armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+          break;
+        case NONE:
+          armStateFromDesiredNode = ArmState.NONE;
+          break;
+      }
+    } else if (desiredGamePiece == GamePiece.CUBE) {
+      switch (desiredArmHeight) {
+        case LOW:
+          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+          break;
+        case MID:
+          armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+          break;
+        case HIGH:
+          armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+          break;
+        case NONE:
+          armStateFromDesiredNode = ArmState.NONE;
+          break;
+      }
+    }
+  }
+
   // public void setArmStateFromDesiredNode() {
   // switch (desiredNode % 9) {
   // case 0:
@@ -458,9 +496,9 @@ public class Arm extends SubsystemBase {
 
   // }
 
-  public Command prepPlaceCommand(GamePiece gamePiece) {
-    return prepStateFromStowCommand(gamePiece);
-  }
+  // public Command prepPlaceCommand(GamePiece gamePiece) {
+  // return prepStateFromStowCommand(gamePiece);
+  // }
 
   public Command stowCommand() {
 
@@ -579,45 +617,59 @@ public class Arm extends SubsystemBase {
         .unless(() -> isGoalState(state));
   }
 
-  public Command prepStateFromStowCommand(GamePiece gamePiece) {
-
-    if (gamePiece == GamePiece.CONE) {
-      switch (desiredArmHeight) {
-        case LOW:
-          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-          break;
-        case MID:
-          armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-          break;
-        case HIGH:
-          armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-          break;
-        case NONE:
-          armStateFromDesiredNode = ArmState.NONE;
-          break;
-      }
-    } else if (gamePiece == GamePiece.CUBE) {
-      switch (desiredArmHeight) {
-        case LOW:
-          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-          break;
-        case MID:
-          armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
-          break;
-        case HIGH:
-          armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
-          break;
-        case NONE:
-          armStateFromDesiredNode = ArmState.NONE;
-          break;
-      }
-    }
+  public Command prepStateFromStowCommand() {
     return Commands.sequence(
         Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
         Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
         Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
         .unless(() -> isGoalState(armStateFromDesiredNode));
   }
+
+  // public Command prepConeStateFromStowCommand() {
+  // switch (desiredArmHeight) {
+  // case LOW:
+  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+  // break;
+  // case MID:
+  // armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+  // System.out.println("set to Mid Score");
+  // break;
+  // case HIGH:
+  // armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+  // break;
+  // case NONE:
+  // armStateFromDesiredNode = ArmState.NONE;
+  // break;
+  // }
+  // return Commands.sequence(
+  // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+  // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+  // Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
+  // .unless(() -> isGoalState(armStateFromDesiredNode));
+  // }
+
+  // public Command prepCubeStateFromStowCommand() {
+  // switch (desiredArmHeight) {
+  // case LOW:
+  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+  // break;
+  // case MID:
+  // armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+  // System.out.println("set to Mid Score");
+  // break;
+  // case HIGH:
+  // armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+  // break;
+  // case NONE:
+  // armStateFromDesiredNode = ArmState.NONE;
+  // break;
+  // }
+  // return Commands.sequence(
+  // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
+  // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
+  // Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
+  // .unless(() -> isGoalState(armStateFromDesiredNode));
+  // }
 
   public int getDesiredNode() {
     return desiredNode;
@@ -750,7 +802,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
 
-    // setArmStateFromDesiredNode();
+    setArmStateFromDesiredNode(gamePiece);
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
@@ -792,6 +844,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
       SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
       SmartDashboard.putString("Desired Arm Height", desiredArmHeight.name());
+      SmartDashboard.putString("desired game piece", gamePiece.name());
     }
   }
 }

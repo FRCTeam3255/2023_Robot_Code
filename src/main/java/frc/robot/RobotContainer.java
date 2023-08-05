@@ -147,7 +147,7 @@ public class RobotContainer {
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
     // Prep Cube (X)
-    conOperator.btn_X.onTrue(subArm.prepPlaceCommand(GamePiece.CUBE));
+    conOperator.btn_X.onTrue(subArm.prepStateFromStowCommand());
 
     // Place Cube (LT)
     conOperator.btn_LeftTrigger.whileTrue(subIntake.releaseCommand());
@@ -159,7 +159,7 @@ public class RobotContainer {
         .whileTrue(new IntakeGamePiece(subIntake));
 
     // Prep Cone (B)
-    conOperator.btn_B.onTrue(subArm.prepPlaceCommand(GamePiece.CONE));
+    conOperator.btn_B.onTrue(subArm.prepStateFromStowCommand());
 
     // Place Cone (RT)
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
