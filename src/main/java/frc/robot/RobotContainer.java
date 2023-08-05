@@ -21,6 +21,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.SuperShuffle;
 import frc.robot.subsystems.Vision;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
 import frc.robot.Constants.constArm.ArmHeight;
@@ -146,6 +147,7 @@ public class RobotContainer {
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
     // Prep Cube (X)
+    conOperator.btn_X.onTrue(subArm.prepPlaceCommand(GamePiece.CUBE));
 
     // Place Cube (LT)
     conOperator.btn_LeftTrigger.whileTrue(subIntake.releaseCommand());
@@ -157,6 +159,7 @@ public class RobotContainer {
         .whileTrue(new IntakeGamePiece(subIntake));
 
     // Prep Cone (B)
+    conOperator.btn_B.onTrue(subArm.prepPlaceCommand(GamePiece.CONE));
 
     // Place Cone (RT)
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
@@ -167,13 +170,6 @@ public class RobotContainer {
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
         .whileTrue(new IntakeGamePiece(subIntake));
-
-    // prep place (x)
-    conOperator.btn_X.onTrue(subArm.prepPlaceCommand());
-
-    // Place Game piece (rt)
-    // conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm,
-    // subIntake));
 
     // Spin the Intake forward
     conOperator.btn_Start

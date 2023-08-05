@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.constArm;
 import frc.robot.Constants.constArm.ArmHeight;
 import frc.robot.Constants.constArm.ArmState;
@@ -416,48 +417,48 @@ public class Arm extends SubsystemBase {
     return Commands.runOnce(() -> desiredArmHeight = height);
   }
 
-  public void setArmStateFromDesiredNode() {
-    switch (desiredNode % 9) {
-      case 0:
-        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-        break;
-      case 1:
-        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-        break;
-      case 2:
-        armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
-        break;
-      case 3:
-        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-        break;
-      case 4:
-        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-        break;
-      case 5:
-        armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
-        break;
-      case 6:
-        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-        break;
-      case 7:
-        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-        break;
-      case 8:
-        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-        break;
-      default:
-        armStateFromDesiredNode = ArmState.NONE;
-        break;
-    }
+  // public void setArmStateFromDesiredNode() {
+  // switch (desiredNode % 9) {
+  // case 0:
+  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+  // break;
+  // case 1:
+  // armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+  // break;
+  // case 2:
+  // armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+  // break;
+  // case 3:
+  // armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+  // break;
+  // case 4:
+  // armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+  // break;
+  // case 5:
+  // armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+  // break;
+  // case 6:
+  // armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+  // break;
+  // case 7:
+  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+  // break;
+  // case 8:
+  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+  // break;
+  // default:
+  // armStateFromDesiredNode = ArmState.NONE;
+  // break;
+  // }
 
-    if (desiredNode == 0) {
-      armStateFromDesiredNode = ArmState.NONE;
-    }
+  // if (desiredNode == 0) {
+  // armStateFromDesiredNode = ArmState.NONE;
+  // }
 
-  }
+  // }
 
-  public Command prepPlaceCommand() {
-    return prepStateFromStowCommand();
+  public Command prepPlaceCommand(GamePiece gamePiece) {
+    return prepStateFromStowCommand(gamePiece);
   }
 
   public Command stowCommand() {
@@ -577,7 +578,32 @@ public class Arm extends SubsystemBase {
         .unless(() -> isGoalState(state));
   }
 
-  public Command prepStateFromStowCommand() {
+  public Command prepStateFromStowCommand(GamePiece gamePiece) {
+    if (gamePiece == GamePiece.CONE) {
+      switch (desiredArmHeight) {
+        case LOW:
+          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+          break;
+        case MID:
+          armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+          break;
+        case HIGH:
+          armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+          break;
+      }
+    } else if (gamePiece == GamePiece.CUBE) {
+      switch (desiredArmHeight) {
+        case LOW:
+          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+          break;
+        case MID:
+          armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+          break;
+        case HIGH:
+          armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+          break;
+      }
+    }
     return Commands.sequence(
         Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
         Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
@@ -716,7 +742,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
 
-    setArmStateFromDesiredNode();
+    // setArmStateFromDesiredNode();
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
