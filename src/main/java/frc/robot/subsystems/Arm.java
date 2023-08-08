@@ -51,7 +51,7 @@ public class Arm extends SubsystemBase {
   int gridChoice;
   ArmState armStateFromDesiredNode;
   ArmHeight desiredArmHeight;
-  GamePiece gamePiece;
+  GamePiece desiredGamePiece;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -74,7 +74,7 @@ public class Arm extends SubsystemBase {
     goalState = ArmState.NONE;
     armStateFromDesiredNode = ArmState.NONE;
     desiredArmHeight = ArmHeight.NONE;
-    gamePiece = GamePiece.NONE;
+    desiredGamePiece = GamePiece.NONE;
 
     desiredNode = 0;
 
@@ -420,8 +420,11 @@ public class Arm extends SubsystemBase {
     return Commands.runOnce(() -> desiredArmHeight = height);
   }
 
-  public void setArmStateFromDesiredNode(GamePiece desiredGamePiece) {
-    gamePiece = desiredGamePiece;
+  public Command setDesiredGamePiece(GamePiece gamePiece) {
+    return Commands.runOnce(() -> desiredGamePiece = gamePiece);
+  }
+
+  public void setArmStateFromDesiredNode() {
     if (desiredGamePiece == GamePiece.CONE) {
       switch (desiredArmHeight) {
         case LOW:
@@ -429,7 +432,6 @@ public class Arm extends SubsystemBase {
           break;
         case MID:
           armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-          System.out.println("set to Mid Score");
           break;
         case HIGH:
           armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
@@ -496,9 +498,9 @@ public class Arm extends SubsystemBase {
 
   // }
 
-  // public Command prepPlaceCommand(GamePiece gamePiece) {
-  // return prepStateFromStowCommand(gamePiece);
-  // }
+  public Command prepPlaceCommand() {
+    return prepStateFromStowCommand();
+  }
 
   public Command stowCommand() {
 
@@ -802,7 +804,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
 
-    setArmStateFromDesiredNode(gamePiece);
+    setArmStateFromDesiredNode();
 
     if (Constants.OUTPUT_DEBUG_VALUES) {
       SmartDashboard.putNumber("Arm Shoulder Absolute Encoder Raw", shoulderEncoder.getAbsolutePosition());
@@ -844,7 +846,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
       SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
       SmartDashboard.putString("Desired Arm Height", desiredArmHeight.name());
-      SmartDashboard.putString("desired game piece", gamePiece.name());
+      SmartDashboard.putString("Desired Game Piece", desiredGamePiece.name());
     }
   }
 }
