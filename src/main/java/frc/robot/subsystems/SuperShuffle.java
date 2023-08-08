@@ -16,18 +16,19 @@ public class SuperShuffle extends SubsystemBase {
 
   Arm subArm;
 
-  int gridSize = 2;
+  int gridWidth = 2;
+  int gridHeight = 3;
   int gridRow = 0;
 
   int hybridRow = 0;
   int midRow = 1;
   int highRow = 2;
 
-  int gridOneColumn = 0;
-  int gridTwoColumn = gridOneColumn + gridSize;
-  int gridThreeColumn = gridOneColumn + gridSize * 2;
+  int gridOneColumn = 5;
 
   int cellSize = 1;
+  int cellColumnOneOffset = 1;
+  int cellColumnTwoOffset = 2;
 
   String coneColor = "#fffb00";
   String cubeColor = "#a300c4";
@@ -39,8 +40,8 @@ public class SuperShuffle extends SubsystemBase {
 
   ShuffleboardLayout gridChoiceLayout = Shuffleboard.getTab("SuperShuffle")
       .getLayout("Grid Choice", BuiltInLayouts.kGrid)
-      .withPosition(0, 2)
-      .withSize(6, 1)
+      .withPosition(1, 1)
+      .withSize(2, 1)
       .withProperties(Map.of("Label position", "hidden"));
 
   public SuperShuffle(Arm subArm) {
@@ -54,9 +55,8 @@ public class SuperShuffle extends SubsystemBase {
     ShuffleboardLayout gridLeftLayout = createGridLayout("Left Grid", gridOneColumn);
 
     createGrid(gridLeftLayout,
-        subArm::getNodeNineValue, subArm::getNodeEightValue, subArm::getNodeSevenValue, subArm::getNodeSixValue,
-        subArm::getNodeFiveValue, subArm::getNodeFourValue, subArm::getNodeThreeValue, subArm::getNodeTwelveValue,
-        subArm::getNodeOneValue);
+        subArm::getNodeSixValue, subArm::getNodeFiveValue, subArm::getNodeFourValue, subArm::getNodeThreeValue,
+        subArm::getNodeTwelveValue, subArm::getNodeOneValue);
 
     createGridChoice("Left Grid Choice", subArm::getGridOneValue, 0);
   }
@@ -65,24 +65,26 @@ public class SuperShuffle extends SubsystemBase {
     return Shuffleboard.getTab("SuperShuffle")
         .getLayout(gridName, BuiltInLayouts.kGrid)
         .withPosition(gridColumn, gridRow)
-        .withSize(gridSize, gridSize)
+        .withSize(gridWidth, gridHeight)
         .withProperties(Map.of("Label position", "hidden"));
   }
 
   public void createGrid(
       ShuffleboardLayout gridLayout, BooleanSupplier nodeOne, BooleanSupplier nodeTwo, BooleanSupplier nodeThree,
-      BooleanSupplier nodeFour, BooleanSupplier nodeFive, BooleanSupplier nodeSix,
-      BooleanSupplier nodeSeven, BooleanSupplier nodeEight, BooleanSupplier nodeNine) {
+      BooleanSupplier nodeFour, BooleanSupplier nodeFive, BooleanSupplier nodeSix) {
 
-    createCell(gridLayout, "Hybrid L", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, 0, hybridRow);
-    createCell(gridLayout, "Hybrid M", nodeTwo, defaultBoolean, hybridColor, offColor, cellSize, 1, hybridRow);
-    createCell(gridLayout, "Hybrid R", nodeThree, defaultBoolean, hybridColor, offColor, cellSize, 2, hybridRow);
-    createCell(gridLayout, "Cone ML", nodeFour, defaultBoolean, coneColor, offColor, cellSize, 0, midRow);
-    createCell(gridLayout, "Cube MM", nodeFive, defaultBoolean, cubeColor, offColor, cellSize, 1, midRow);
-    createCell(gridLayout, "Cone MR", nodeSix, defaultBoolean, coneColor, offColor, cellSize, 2, midRow);
-    createCell(gridLayout, "Cone HL", nodeSeven, defaultBoolean, coneColor, offColor, cellSize, 0, highRow);
-    createCell(gridLayout, "Cube HM", nodeEight, defaultBoolean, cubeColor, offColor, cellSize, 1, highRow);
-    createCell(gridLayout, "Cone HR", nodeNine, defaultBoolean, coneColor, offColor, cellSize, 2, highRow);
+    createCell(gridLayout, "Hybrid L", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, cellColumnOneOffset,
+        hybridRow);
+    createCell(gridLayout, "Hybrid M", nodeTwo, defaultBoolean, hybridColor, offColor, cellSize, cellColumnTwoOffset,
+        hybridRow);
+    createCell(gridLayout, "Hybrid R", nodeThree, defaultBoolean, hybridColor, offColor, cellSize, cellColumnOneOffset,
+        midRow);
+    createCell(gridLayout, "Cone ML", nodeFour, defaultBoolean, coneColor, offColor, cellSize, cellColumnTwoOffset,
+        midRow);
+    createCell(gridLayout, "Cube MM", nodeFive, defaultBoolean, cubeColor, offColor, cellSize, cellColumnOneOffset,
+        highRow);
+    createCell(gridLayout, "Cone MR", nodeSix, defaultBoolean, coneColor, offColor, cellSize, cellColumnTwoOffset,
+        highRow);
   }
 
   public void createCell(
@@ -102,7 +104,7 @@ public class SuperShuffle extends SubsystemBase {
         .addBoolean(gridName, supplier)
         .withWidget("Boolean Box")
         .withProperties(Map.of("colorWhenTrue", gridColor, "colorWhenFalse", offColor))
-        .withSize(2, 1)
+        .withSize(1, 1)
         .withPosition(column, 0);
   }
 
