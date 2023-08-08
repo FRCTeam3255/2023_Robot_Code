@@ -38,12 +38,6 @@ public class SuperShuffle extends SubsystemBase {
 
   boolean defaultBoolean = false;
 
-  ShuffleboardLayout gridChoiceLayout = Shuffleboard.getTab("SuperShuffle")
-      .getLayout("Grid Choice", BuiltInLayouts.kGrid)
-      .withPosition(1, 1)
-      .withSize(2, 1)
-      .withProperties(Map.of("Label position", "hidden"));
-
   public SuperShuffle(Arm subArm) {
 
     this.subArm = subArm;
@@ -52,13 +46,11 @@ public class SuperShuffle extends SubsystemBase {
   }
 
   public void createLayout() {
-    ShuffleboardLayout gridLeftLayout = createGridLayout("Left Grid", gridOneColumn);
+    ShuffleboardLayout gridLeftLayout = createGridLayout("Node Selection", gridOneColumn);
 
     createGrid(gridLeftLayout,
         subArm::getNodeSixValue, subArm::getNodeFiveValue, subArm::getNodeFourValue, subArm::getNodeThreeValue,
         subArm::getNodeTwelveValue, subArm::getNodeOneValue);
-
-    createGridChoice("Left Grid Choice", subArm::getGridOneValue, 0);
   }
 
   public ShuffleboardLayout createGridLayout(String gridName, int gridColumn) {
@@ -97,15 +89,6 @@ public class SuperShuffle extends SubsystemBase {
         .withProperties(Map.of("colorWhenTrue", trueColor, "colorWhenFalse", falseColor))
         .withSize(cellSize, cellSize)
         .withPosition(cellColumn, cellRow);
-  }
-
-  public void createGridChoice(String gridName, BooleanSupplier supplier, int column) {
-    gridChoiceLayout
-        .addBoolean(gridName, supplier)
-        .withWidget("Boolean Box")
-        .withProperties(Map.of("colorWhenTrue", gridColor, "colorWhenFalse", offColor))
-        .withSize(1, 1)
-        .withPosition(column, 0);
   }
 
   @Override
