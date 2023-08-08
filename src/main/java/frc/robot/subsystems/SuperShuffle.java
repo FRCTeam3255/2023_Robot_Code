@@ -52,27 +52,13 @@ public class SuperShuffle extends SubsystemBase {
 
   public void createLayout() {
     ShuffleboardLayout gridLeftLayout = createGridLayout("Left Grid", gridOneColumn);
-    ShuffleboardLayout gridCoopLayout = createGridLayout("Co-op Grid", gridTwoColumn);
-    ShuffleboardLayout gridRightLayout = createGridLayout("Right Grid", gridThreeColumn);
 
     createGrid(gridLeftLayout,
-        subArm::getNodeTwentySevenValue, subArm::getNodeTwentySixValue, subArm::getNodeTwentyFiveValue,
-        subArm::getNodeTwentyFourValue, subArm::getNodeTwentyThreeValue, subArm::getNodeTwentyTwoValue,
-        subArm::getNodeTwentyOneValue, subArm::getNodeTwentyValue, subArm::getNodeNineteenValue);
+        subArm::getNodeNineValue, subArm::getNodeEightValue, subArm::getNodeSevenValue, subArm::getNodeSixValue,
+        subArm::getNodeFiveValue, subArm::getNodeFourValue, subArm::getNodeThreeValue, subArm::getNodeTwelveValue,
+        subArm::getNodeOneValue);
 
-    createGrid(gridCoopLayout,
-        subArm::getNodeEighteenValue, subArm::getNodeSeventeenValue, subArm::getNodeSixteenValue,
-        subArm::getNodeFifteenValue, subArm::getNodeFourteenValue, subArm::getNodeThirteenValue,
-        subArm::getNodeTwelveValue, subArm::getNodeElevenValue, subArm::getNodeTenValue);
-
-    createGrid(gridRightLayout,
-        subArm::getNodeNineValue, subArm::getNodeEightValue, subArm::getNodeSevenValue,
-        subArm::getNodeSixValue, subArm::getNodeFiveValue, subArm::getNodeFourValue,
-        subArm::getNodeThreeValue, subArm::getNodeTwoValue, subArm::getNodeOneValue);
-
-    createGridChoice("Left Grid Choice", subArm::getGridThreeValue, 0);
-    createGridChoice("Co-op Grid Choice", subArm::getGridTwoValue, 1);
-    createGridChoice("Right Grid Choice", subArm::getGridOneValue, 2);
+    createGridChoice("Left Grid Choice", subArm::getGridOneValue, 0);
   }
 
   public ShuffleboardLayout createGridLayout(String gridName, int gridColumn) {
