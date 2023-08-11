@@ -173,37 +173,37 @@ public class RobotContainer {
 
     // numpad
 
-    // Grid Temp
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-      saveNodeState(1, 10, 18, 9, 1, 9, 18);
-    }));
-
     // Cone H
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5 + (9 * (subArm.getGridChoice() - 1)));
+    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(5);
     }));
 
     // Cube H
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(6 + (9 * (subArm.getGridChoice() - 1)));
+    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(6);
+    }));
+
+    // Cone M
+    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(3);
+    }));
+
+    // Cube M
+    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(4);
+    }));
+
+    // Hybrid
+    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
+    }));
+
+    // Hybrid
+    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
+      subArm.setDesiredNode(1);
     }));
 
     // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
-  }
-
-  public void saveNodeState(int chosenGrid,
-      int betweenStart_1, int betweenEnd_1, int addAmount_1,
-      int betweenStart_2, int betweenEnd_2, int addAmount_2) {
-
-    subArm.setGridChoice(chosenGrid);
-
-    if (subArm.getDesiredNode() >= betweenStart_1 && subArm.getDesiredNode() <= betweenEnd_1) {
-      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_1);
-    }
-
-    if (subArm.getDesiredNode() >= betweenStart_2 && subArm.getDesiredNode() <= betweenEnd_2) {
-      subArm.setDesiredNode(subArm.getDesiredNode() + addAmount_2);
-    }
   }
 
   public static boolean isPracticeBot() {
