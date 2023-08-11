@@ -21,8 +21,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.SuperShuffle;
 import frc.robot.subsystems.Vision;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constLEDs;
+import frc.robot.Constants.constArm.ArmHeight;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefCollector;
@@ -137,29 +139,41 @@ public class RobotContainer {
 
     // Operator
 
-    // Intake Cube (a)
-    conOperator.btn_A
+    // Order of buttons: set height, prep, place
+
+    // Intake Cube (LB)
+    conOperator.btn_LeftBumper
         .onTrue(new IntakeCubeDeploy(subArm, subCollector, subIntake))
         .onFalse(new IntakeCubeRetract(subArm, subCollector, subIntake));
 
-    // Intake Floor (rbump)
+    // Prep Cube (X)
+    conOperator.btn_X
+        .onTrue(subArm.setDesiredGamePiece(GamePiece.CUBE))
+        .onTrue(subArm.prepPlaceCommand());
+
+    // Place Cube (LT)
+    conOperator.btn_LeftTrigger.whileTrue(subIntake.releaseCommand());
+
+    // Intake Cone (RB)
     conOperator.btn_RightBumper
         .onTrue(subArm.intakeFloorDeployCommand())
         .whileFalse(subArm.intakeFloorStowCommand())
         .whileTrue(new IntakeGamePiece(subIntake));
 
-    // Set stow Arm preset (b)
-    conOperator.btn_B.onTrue(subArm.stowCommand());
+    // Prep Cone (B)
+    conOperator.btn_B
+        .onTrue(subArm.setDesiredGamePiece(GamePiece.CONE))
+        .onTrue(subArm.prepPlaceCommand());
+
+    // Place Cone (RT)
+    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
+
+    // Set stow Arm preset (a)
+    conOperator.btn_A.onTrue(subArm.stowCommand());
 
     // Set Shelf Arm preset (y)
     conOperator.btn_Y.onTrue(subArm.stateFromStowCommand(ArmState.SHELF_INTAKE))
         .whileTrue(new IntakeGamePiece(subIntake));
-
-    // prep place (x)
-    conOperator.btn_X.onTrue(subArm.prepPlaceCommand());
-
-    // Place Game piece (rt)
-    conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
 
     // Spin the Intake forward
     conOperator.btn_Start
@@ -169,69 +183,10 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_South.whileTrue(subArm.stateFromStowCommand(ArmState.CHARGE_STATION));
-
-    // numpad
-
-    // Left Grid
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
-      saveNodeState(3, 10, 18, 9, 1, 9, 18);
-    }));
-
-    // Co-op Grid
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
-      saveNodeState(2, 1, 9, 9, 19, 27, -9);
-    }));
-
-    // Right Grid
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> {
-      saveNodeState(1, 10, 18, -9, 19, 27, -18);
-    }));
-
-    // Cone HL
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(3 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cube HM
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(2 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cone HR
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cone ML
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(6 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cube MM
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cone HR
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Hybrid L
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(9 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Hybrid M
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(8 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Hybrid R
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(7 + (9 * (subArm.getGridChoice() - 1)));
-    }));
+    conOperator.btn_North.onTrue(subArm.setDesiredArmHeight(ArmHeight.LOW));
+    conOperator.btn_East.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
+    conOperator.btn_West.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
+    conOperator.btn_South.onTrue(subArm.setDesiredArmHeight(ArmHeight.HIGH));
 
     // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }

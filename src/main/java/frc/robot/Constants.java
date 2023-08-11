@@ -90,6 +90,7 @@ public final class Constants {
   public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 87.36328125;
   public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 332.9296875;
 
+
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
   public static final SN_SwerveModuleConstants MODULE_0 = new SN_SwerveModuleConstants(
@@ -234,6 +235,10 @@ public final class Constants {
 
     public static final double ELBOW_FORWARD_LIMIT = Units.degreesToRadians(70);
     public static final double ELBOW_REVERSE_LIMIT = Units.degreesToRadians(-100);
+
+    public enum ArmHeight {
+      NONE, LOW, MID, HIGH
+    }
 
     public enum ArmState {
       NONE(Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
