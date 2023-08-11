@@ -627,52 +627,6 @@ public class Arm extends SubsystemBase {
         .unless(() -> isGoalState(armStateFromDesiredNode));
   }
 
-  // public Command prepConeStateFromStowCommand() {
-  // switch (desiredArmHeight) {
-  // case LOW:
-  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-  // break;
-  // case MID:
-  // armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-  // System.out.println("set to Mid Score");
-  // break;
-  // case HIGH:
-  // armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-  // break;
-  // case NONE:
-  // armStateFromDesiredNode = ArmState.NONE;
-  // break;
-  // }
-  // return Commands.sequence(
-  // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
-  // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
-  // Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
-  // .unless(() -> isGoalState(armStateFromDesiredNode));
-  // }
-
-  // public Command prepCubeStateFromStowCommand() {
-  // switch (desiredArmHeight) {
-  // case LOW:
-  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-  // break;
-  // case MID:
-  // armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
-  // System.out.println("set to Mid Score");
-  // break;
-  // case HIGH:
-  // armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
-  // break;
-  // case NONE:
-  // armStateFromDesiredNode = ArmState.NONE;
-  // break;
-  // }
-  // return Commands.sequence(
-  // Commands.runOnce(() -> setGoalState(ArmState.MID_STOWED)),
-  // Commands.waitUntil(() -> isCurrentState(ArmState.MID_STOWED)),
-  // Commands.runOnce(() -> setGoalState(armStateFromDesiredNode)))
-  // .unless(() -> isGoalState(armStateFromDesiredNode));
-  // }
-
   public int getDesiredNode() {
     return desiredNode;
   }
@@ -845,6 +799,7 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
       SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
       SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
+
       SmartDashboard.putString("Desired Arm Height", desiredArmHeight.name());
       SmartDashboard.putString("Desired Game Piece", desiredGamePiece.name());
     }

@@ -163,7 +163,7 @@ public class RobotContainer {
     // Prep Cone (B)
     conOperator.btn_B
         .onTrue(subArm.setDesiredGamePiece(GamePiece.CONE))
-        .onTrue(subArm.prepStateFromStowCommand());
+        .onTrue(subArm.prepPlaceCommand());
 
     // Place Cone (RT)
     conOperator.btn_RightTrigger.whileTrue(new PlaceGamePiece(subArm, subIntake));
