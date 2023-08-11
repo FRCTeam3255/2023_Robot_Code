@@ -175,22 +175,22 @@ public class RobotContainer {
 
     // Cone H
     conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5);
+      subArm.setDesiredNode(4);
     }));
 
     // Cube H
     conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(6);
+      subArm.setDesiredNode(5);
     }));
 
     // Cone M
     conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(3);
+      subArm.setDesiredNode(2);
     }));
 
     // Cube M
     conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4);
+      subArm.setDesiredNode(3);
     }));
 
     // Hybrid

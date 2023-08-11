@@ -50,7 +50,7 @@ public class SuperShuffle extends SubsystemBase {
 
     createGrid(gridLayout,
         subArm::getNodeOneValue, subArm::getNodeTwoValue, subArm::getNodeThreeValue,
-        subArm::getNodeFourValue, subArm::getNodeFiveValue, subArm::getNodeSixValue);
+        subArm::getNodeFourValue, subArm::getNodeFiveValue);
   }
 
   public ShuffleboardLayout createGridLayout(String gridName, int gridColumn) {
@@ -63,19 +63,19 @@ public class SuperShuffle extends SubsystemBase {
 
   public void createGrid(
       ShuffleboardLayout gridLayout, BooleanSupplier nodeOne, BooleanSupplier nodeTwo, BooleanSupplier nodeThree,
-      BooleanSupplier nodeFour, BooleanSupplier nodeFive, BooleanSupplier nodeSix) {
+      BooleanSupplier nodeFour, BooleanSupplier nodeFive) {
 
-    createCell(gridLayout, "[1]", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, cellColumnOneOffset,
+    createCell(gridLayout, "Hybrid L", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, cellColumnOneOffset,
         hybridRow);
-    createCell(gridLayout, "[2]", nodeTwo, defaultBoolean, hybridColor, offColor, cellSize, cellColumnTwoOffset,
+    createCell(gridLayout, "Hybrid R", nodeOne, defaultBoolean, hybridColor, offColor, cellSize, cellColumnTwoOffset,
         hybridRow);
-    createCell(gridLayout, "[3]", nodeThree, defaultBoolean, coneColor, offColor, cellSize, cellColumnOneOffset,
+    createCell(gridLayout, "Cone M", nodeTwo, defaultBoolean, coneColor, offColor, cellSize, cellColumnOneOffset,
         midRow);
-    createCell(gridLayout, "[4]", nodeFour, defaultBoolean, cubeColor, offColor, cellSize, cellColumnTwoOffset,
+    createCell(gridLayout, "Cube M", nodeThree, defaultBoolean, cubeColor, offColor, cellSize, cellColumnTwoOffset,
         midRow);
-    createCell(gridLayout, "[5]", nodeFive, defaultBoolean, coneColor, offColor, cellSize, cellColumnOneOffset,
+    createCell(gridLayout, "Cone H", nodeFour, defaultBoolean, coneColor, offColor, cellSize, cellColumnOneOffset,
         highRow);
-    createCell(gridLayout, "[6]", nodeSix, defaultBoolean, cubeColor, offColor, cellSize, cellColumnTwoOffset,
+    createCell(gridLayout, "Cube H", nodeFive, defaultBoolean, cubeColor, offColor, cellSize, cellColumnTwoOffset,
         highRow);
   }
 
