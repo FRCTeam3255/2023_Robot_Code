@@ -458,46 +458,6 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  // public void setArmStateFromDesiredNode() {
-  // switch (desiredNode % 9) {
-  // case 0:
-  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-  // break;
-  // case 1:
-  // armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-  // break;
-  // case 2:
-  // armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
-  // break;
-  // case 3:
-  // armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-  // break;
-  // case 4:
-  // armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-  // break;
-  // case 5:
-  // armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
-  // break;
-  // case 6:
-  // armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-  // break;
-  // case 7:
-  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-  // break;
-  // case 8:
-  // armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-  // break;
-  // default:
-  // armStateFromDesiredNode = ArmState.NONE;
-  // break;
-  // }
-
-  // if (desiredNode == 0) {
-  // armStateFromDesiredNode = ArmState.NONE;
-  // }
-
-  // }
-
   public Command prepPlaceCommand() {
     return prepStateFromStowCommand();
   }

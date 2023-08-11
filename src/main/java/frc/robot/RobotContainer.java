@@ -188,68 +188,6 @@ public class RobotContainer {
     conOperator.btn_West.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
     conOperator.btn_South.onTrue(subArm.setDesiredArmHeight(ArmHeight.HIGH));
 
-    // numpad
-
-    // Left Grid
-    conNumpad.btn_1.onTrue(Commands.runOnce(() -> {
-      saveNodeState(3, 10, 18, 9, 1, 9, 18);
-    }));
-
-    // Co-op Grid
-    conNumpad.btn_2.onTrue(Commands.runOnce(() -> {
-      saveNodeState(2, 1, 9, 9, 19, 27, -9);
-    }));
-
-    // Right Grid
-    conNumpad.btn_3.onTrue(Commands.runOnce(() -> {
-      saveNodeState(1, 10, 18, -9, 19, 27, -18);
-    }));
-
-    // Cone HL
-    conNumpad.btn_4.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(3 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cube HM
-    conNumpad.btn_5.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(2 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cone HR
-    conNumpad.btn_6.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(1 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cone ML
-    conNumpad.btn_7.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(6 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cube MM
-    conNumpad.btn_8.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(5 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Cone HR
-    conNumpad.btn_9.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(4 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Hybrid L
-    conNumpad.btn_10.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(9 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Hybrid M
-    conNumpad.btn_11.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(8 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
-    // Hybrid R
-    conNumpad.btn_12.onTrue(Commands.runOnce(() -> {
-      subArm.setDesiredNode(7 + (9 * (subArm.getGridChoice() - 1)));
-    }));
-
     // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }
 
