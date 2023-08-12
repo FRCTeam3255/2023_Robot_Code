@@ -29,6 +29,7 @@ public class Wrist extends SubsystemBase {
     wristMotor.configFactoryDefault();
     wristMotor.configAllSettings(config);
 
+    config.slot0.kF = prefWrist.wristF.getValue();
     config.slot0.kP = prefWrist.wristP.getValue();
     config.slot0.kI = prefWrist.wristI.getValue();
     config.slot0.kD = prefWrist.wristD.getValue();
@@ -38,11 +39,11 @@ public class Wrist extends SubsystemBase {
     wristMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void setWristPosition(double position) {
-    position = MathUtil.clamp(position, prefWrist.WristMinPos.getValue(),
+  public void setWristAngle(double angle) {
+    angle = MathUtil.clamp(angle, prefWrist.WristMinPos.getValue(),
         prefWrist.WristMaxPos.getValue());
 
-    wristMotor.set(ControlMode.Position, position);
+    wristMotor.set(ControlMode.Position, angle);
   }
 
   @Override

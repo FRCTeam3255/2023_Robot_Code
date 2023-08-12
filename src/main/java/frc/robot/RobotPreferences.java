@@ -266,15 +266,22 @@ public class RobotPreferences {
   }
 
   public static final class prefElevator {
+    public static final SN_DoublePreference elevatorF = new SN_DoublePreference("elevatorF", 0);
     public static final SN_DoublePreference elevatorP = new SN_DoublePreference("elevatorP", 0);
     public static final SN_DoublePreference elevatorI = new SN_DoublePreference("elevatorI", 0);
     public static final SN_DoublePreference elevatorD = new SN_DoublePreference("elevatorD", 0);
 
     public static final SN_DoublePreference elevatorMaxPos = new SN_DoublePreference("elevatorMaxPos", 10);
     public static final SN_DoublePreference elevatorMinPos = new SN_DoublePreference("elevatorMinPos", 0);
+
+    // stole this value from 2022 drivetrain preferences, will need to change after
+    // we get more information on the new design
+    public static final SN_DoublePreference elevatorEncoderCountsPerFoot = new SN_DoublePreference(
+        "elevatorEncoderCountsPerFoot", 11734);
   }
 
   public static final class prefWrist {
+    public static final SN_DoublePreference wristF = new SN_DoublePreference("wristF", 0);
     public static final SN_DoublePreference wristP = new SN_DoublePreference("wristP", 0);
     public static final SN_DoublePreference wristI = new SN_DoublePreference("wristI", 0);
     public static final SN_DoublePreference wristD = new SN_DoublePreference("wristD", 0);

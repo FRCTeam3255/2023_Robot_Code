@@ -58,12 +58,12 @@ public class RobotMap {
   }
 
   public static final class mapElevator {
-    public static final int LEFT_MOTOR_CAN = 32;
-    public static final int RIGHT_MOTOR_CAN = 33;
+    public static final int ELEVATOR_LEFT_MOTOR_CAN = 40;
+    public static final int ELEVATOR_RIGHT_MOTOR_CAN = 41;
   }
 
   public static final class mapWrist {
-    public static final int WRIST_MOTOR_CAN = 34;
+    public static final int WRIST_MOTOR_CAN = 50;
   }
 
   public static final class mapLEDs {

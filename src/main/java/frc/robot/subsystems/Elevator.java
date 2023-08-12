@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
@@ -22,8 +23,8 @@ public class Elevator extends SubsystemBase {
   TalonFXConfiguration config;
 
   public Elevator() {
-    leftMotor = new TalonFX(mapElevator.LEFT_MOTOR_CAN);
-    rightMotor = new TalonFX(mapElevator.RIGHT_MOTOR_CAN);
+    leftMotor = new TalonFX(mapElevator.ELEVATOR_LEFT_MOTOR_CAN);
+    rightMotor = new TalonFX(mapElevator.ELEVATOR_RIGHT_MOTOR_CAN);
 
     configure();
   }
@@ -36,6 +37,7 @@ public class Elevator extends SubsystemBase {
     leftMotor.configAllSettings(config);
     rightMotor.configAllSettings(config);
 
+    config.slot0.kF = prefElevator.elevatorF.getValue();
     config.slot0.kP = prefElevator.elevatorP.getValue();
     config.slot0.kI = prefElevator.elevatorI.getValue();
     config.slot0.kD = prefElevator.elevatorD.getValue();
@@ -48,12 +50,12 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorSpeed(double speed) {
     // don't go past the max position
-    if (getElevatorEncoderCounts() > prefElevator.elevatorMaxPos.getValue() && speed > 0) {
+    if (getElevatorDistanceFeet() > prefElevator.elevatorMaxPos.getValue() && speed > 0) {
       speed = 0;
     }
 
     // don't go past the min position
-    if (getElevatorEncoderCounts() < prefElevator.elevatorMinPos.getValue() && speed > 0) {
+    if (getElevatorDistanceFeet() < prefElevator.elevatorMinPos.getValue() && speed > 0) {
       speed = 0;
     }
 
@@ -73,9 +75,14 @@ public class Elevator extends SubsystemBase {
     return rightMotor.getSelectedSensorPosition();
   }
 
+  public double getElevatorDistanceFeet() {
+    return getElevatorEncoderCounts() / prefElevator.elevatorEncoderCountsPerFoot.getValue();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Elevator Encoder Counts", getElevatorEncoderCounts());
+    SmartDashboard.putNumber("Elevator Distance Feet", getElevatorDistanceFeet());
   }
 }
