@@ -265,6 +265,24 @@ public class RobotPreferences {
     public static final SN_DoublePreference rollerThreshold = new SN_DoublePreference("rollerThreshold", 90);
   }
 
+  public static final class prefElevator {
+    public static final SN_DoublePreference elevatorP = new SN_DoublePreference("elevatorP", 0);
+    public static final SN_DoublePreference elevatorI = new SN_DoublePreference("elevatorI", 0);
+    public static final SN_DoublePreference elevatorD = new SN_DoublePreference("elevatorD", 0);
+
+    public static final SN_DoublePreference elevatorMaxPos = new SN_DoublePreference("elevatorMaxPos", 10);
+    public static final SN_DoublePreference elevatorMinPos = new SN_DoublePreference("elevatorMinPos", 0);
+  }
+
+  public static final class prefWrist {
+    public static final SN_DoublePreference wristP = new SN_DoublePreference("wristP", 0);
+    public static final SN_DoublePreference wristI = new SN_DoublePreference("wristI", 0);
+    public static final SN_DoublePreference wristD = new SN_DoublePreference("wristD", 0);
+
+    public static final SN_DoublePreference WristMaxPos = new SN_DoublePreference("WristMaxPos", 10);
+    public static final SN_DoublePreference WristMinPos = new SN_DoublePreference("WristMinPos", 0);
+  }
+
   public static final class prefVision {
 
     public static final SN_DoublePreference measurementStdDevsFeet = new SN_DoublePreference(

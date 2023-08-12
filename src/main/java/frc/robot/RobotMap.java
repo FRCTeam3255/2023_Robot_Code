@@ -57,6 +57,15 @@ public class RobotMap {
     // public static final int PIVOT_ABSOLUTE_ENCODER_DIO = 1;
   }
 
+  public static final class mapElevator {
+    public static final int LEFT_MOTOR_CAN = 32;
+    public static final int RIGHT_MOTOR_CAN = 33;
+  }
+
+  public static final class mapWrist {
+    public static final int WRIST_MOTOR_CAN = 34;
+  }
+
   public static final class mapLEDs {
     public static final int BLINKIN_PWM = 9;
   }
