@@ -15,7 +15,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotPreferences.prefDrivetrain;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -30,7 +29,6 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive extends CommandBase {
 
   Drivetrain subDrivetrain;
-  Arm subArm;
 
   double xVelocity;
   double yVelocity;
@@ -59,7 +57,6 @@ public class Drive extends CommandBase {
 
   public Drive(
       Drivetrain subDrivetrain,
-      Arm subArm,
       DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis,
@@ -70,7 +67,6 @@ public class Drive extends CommandBase {
       Trigger westTrigger) {
 
     this.subDrivetrain = subDrivetrain;
-    this.subArm = subArm;
 
     this.xAxis = xAxis;
     this.yAxis = yAxis;

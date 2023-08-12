@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SuperShuffle extends SubsystemBase {
 
-  Arm subArm;
-
   int gridSize = 2;
   int gridRow = 0;
 
@@ -43,9 +41,7 @@ public class SuperShuffle extends SubsystemBase {
       .withSize(6, 1)
       .withProperties(Map.of("Label position", "hidden"));
 
-  public SuperShuffle(Arm subArm) {
-
-    this.subArm = subArm;
+  public SuperShuffle() {
 
     createLayout();
   }
@@ -55,24 +51,6 @@ public class SuperShuffle extends SubsystemBase {
     ShuffleboardLayout gridCoopLayout = createGridLayout("Co-op Grid", gridTwoColumn);
     ShuffleboardLayout gridRightLayout = createGridLayout("Right Grid", gridThreeColumn);
 
-    createGrid(gridLeftLayout,
-        subArm::getNodeTwentySevenValue, subArm::getNodeTwentySixValue, subArm::getNodeTwentyFiveValue,
-        subArm::getNodeTwentyFourValue, subArm::getNodeTwentyThreeValue, subArm::getNodeTwentyTwoValue,
-        subArm::getNodeTwentyOneValue, subArm::getNodeTwentyValue, subArm::getNodeNineteenValue);
-
-    createGrid(gridCoopLayout,
-        subArm::getNodeEighteenValue, subArm::getNodeSeventeenValue, subArm::getNodeSixteenValue,
-        subArm::getNodeFifteenValue, subArm::getNodeFourteenValue, subArm::getNodeThirteenValue,
-        subArm::getNodeTwelveValue, subArm::getNodeElevenValue, subArm::getNodeTenValue);
-
-    createGrid(gridRightLayout,
-        subArm::getNodeNineValue, subArm::getNodeEightValue, subArm::getNodeSevenValue,
-        subArm::getNodeSixValue, subArm::getNodeFiveValue, subArm::getNodeFourValue,
-        subArm::getNodeThreeValue, subArm::getNodeTwoValue, subArm::getNodeOneValue);
-
-    createGridChoice("Left Grid Choice", subArm::getGridThreeValue, 0);
-    createGridChoice("Co-op Grid Choice", subArm::getGridTwoValue, 1);
-    createGridChoice("Right Grid Choice", subArm::getGridOneValue, 2);
   }
 
   public ShuffleboardLayout createGridLayout(String gridName, int gridColumn) {
