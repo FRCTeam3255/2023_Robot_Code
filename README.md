@@ -1,7 +1,7 @@
-# FRC Team 3255's 2023 Robot
+# **Doc Ock** - FRC Team 3255's 2023 Robot
 ![Photo of our robot at the San Diego Regional](src/main/documentation/robotphotoSDR.JPG)
 
-SuperNURDs' code for our 2023 FRC robot Doc Ock. Doc Ock's code is written in Java and uses WPILib's command based framework.
+The SuperNURDs' code for our 2023 FRC robot, Doc Ock. Doc Ock's code is written in Java and uses WPILib's command based framework.
 
 ## Controls
 ![Controller Map](src/main/documentation/controllerMap2023.png)
