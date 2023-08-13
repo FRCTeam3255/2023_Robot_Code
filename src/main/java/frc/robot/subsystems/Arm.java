@@ -22,7 +22,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.constArm;
+import frc.robot.Constants.constArm.ArmHeight;
 import frc.robot.Constants.constArm.ArmState;
 import frc.robot.RobotMap.mapArm;
 import frc.robot.RobotPreferences.prefArm;
@@ -48,6 +50,8 @@ public class Arm extends SubsystemBase {
   int desiredNode;
   int gridChoice;
   ArmState armStateFromDesiredNode;
+  ArmHeight desiredArmHeight;
+  GamePiece desiredGamePiece;
 
   public Arm() {
     shoulderJoint = new TalonFX(mapArm.SHOULDER_CAN);
@@ -69,6 +73,8 @@ public class Arm extends SubsystemBase {
 
     goalState = ArmState.NONE;
     armStateFromDesiredNode = ArmState.NONE;
+    desiredArmHeight = ArmHeight.NONE;
+    desiredGamePiece = GamePiece.NONE;
 
     desiredNode = 0;
 
@@ -410,44 +416,46 @@ public class Arm extends SubsystemBase {
     this.gridChoice = MathUtil.clamp(gridChoice, 0, 3);
   }
 
+  public Command setDesiredArmHeight(ArmHeight height) {
+    return Commands.runOnce(() -> desiredArmHeight = height);
+  }
+
+  public Command setDesiredGamePiece(GamePiece gamePiece) {
+    return Commands.runOnce(() -> desiredGamePiece = gamePiece);
+  }
+
   public void setArmStateFromDesiredNode() {
-    switch (desiredNode % 9) {
-      case 0:
-        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-        break;
-      case 1:
-        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-        break;
-      case 2:
-        armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
-        break;
-      case 3:
-        armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
-        break;
-      case 4:
-        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-        break;
-      case 5:
-        armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
-        break;
-      case 6:
-        armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
-        break;
-      case 7:
-        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-        break;
-      case 8:
-        armStateFromDesiredNode = ArmState.HYBRID_SCORE;
-        break;
-      default:
-        armStateFromDesiredNode = ArmState.NONE;
-        break;
+    if (desiredGamePiece == GamePiece.CONE) {
+      switch (desiredArmHeight) {
+        case LOW:
+          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+          break;
+        case MID:
+          armStateFromDesiredNode = ArmState.MID_CONE_SCORE;
+          break;
+        case HIGH:
+          armStateFromDesiredNode = ArmState.HIGH_CONE_SCORE;
+          break;
+        case NONE:
+          armStateFromDesiredNode = ArmState.NONE;
+          break;
+      }
+    } else if (desiredGamePiece == GamePiece.CUBE) {
+      switch (desiredArmHeight) {
+        case LOW:
+          armStateFromDesiredNode = ArmState.HYBRID_SCORE;
+          break;
+        case MID:
+          armStateFromDesiredNode = ArmState.MID_CUBE_SCORE;
+          break;
+        case HIGH:
+          armStateFromDesiredNode = ArmState.HIGH_CUBE_SCORE_PLACE;
+          break;
+        case NONE:
+          armStateFromDesiredNode = ArmState.NONE;
+          break;
+      }
     }
-
-    if (desiredNode == 0) {
-      armStateFromDesiredNode = ArmState.NONE;
-    }
-
   }
 
   public Command prepPlaceCommand() {
@@ -751,6 +759,9 @@ public class Arm extends SubsystemBase {
       SmartDashboard.putBoolean("Arm Is Hybrid Node", isHybridNode());
       SmartDashboard.putBoolean("Arm Is Cube Node", isCubeNode());
       SmartDashboard.putBoolean("Arm Is Cone Node", isConeNode());
+
+      SmartDashboard.putString("Desired Arm Height", desiredArmHeight.name());
+      SmartDashboard.putString("Desired Game Piece", desiredGamePiece.name());
     }
   }
 }
