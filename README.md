@@ -4,7 +4,8 @@
 The SuperNURDs' code for our 2023 FRC robot, Doc Ock. Doc Ock's code is written in Java and uses WPILib's command based framework.
 
 ## Controls
-![Controller Map](src/main/documentation/controllerMap2023.png)
+![Driver Controls](src/main/documentation/driverControls23.png)
+![Operator Controls](src/main/documentation/operatorControls23.png)
 
 ## Code Highlights
 

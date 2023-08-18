@@ -40,6 +40,9 @@ public final class Constants {
     // public static final double OPERATOR_RIGHT_STICK_Y_DEADBAND = 0.1;
     // public static final double OPERATOR_LEFT_TRIGGER_DEADBAND = 0.0;
     // public static final double OPERATOR_RIGHT_TRIGGER_DEADBAND = 0.0;
+
+    // Refer to documentation/operatorControls vs operatorDEMO
+    public static final boolean IS_DEMO_CONTROLS = false;
   }
 
   // Drivetrain (no subclass)
@@ -89,7 +92,6 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABSOLUTE_ENCODER_OFFSET = 232.119140625;
   public static final double BACK_LEFT_ABSOLUTE_ENCODER_OFFSET = 87.36328125;
   public static final double BACK_RIGHT_ABSOLUTE_ENCODER_OFFSET = 332.9296875;
-
 
   // module positions follow the WPILib robot coordinate system
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system
