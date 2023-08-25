@@ -183,10 +183,15 @@ public class RobotContainer {
     conOperator.btn_Back
         .whileTrue(subIntake.releaseCommand());
 
-    conOperator.btn_North.onTrue(subArm.setDesiredArmHeight(ArmHeight.LOW));
     conOperator.btn_East.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
     conOperator.btn_West.onTrue(subArm.setDesiredArmHeight(ArmHeight.MID));
-    conOperator.btn_South.onTrue(subArm.setDesiredArmHeight(ArmHeight.HIGH));
+    if (constControllers.IS_DEMO_CONTROLS) {
+      conOperator.btn_North.onTrue(subArm.setDesiredArmHeight(ArmHeight.HIGH));
+      conOperator.btn_South.onTrue(subArm.setDesiredArmHeight(ArmHeight.LOW));
+    } else {
+      conOperator.btn_North.onTrue(subArm.setDesiredArmHeight(ArmHeight.LOW));
+      conOperator.btn_South.onTrue(subArm.setDesiredArmHeight(ArmHeight.HIGH));
+    }
 
     // teleopTrigger.onTrue(new SetRumble(conDriver, conOperator, subIntake));
   }
