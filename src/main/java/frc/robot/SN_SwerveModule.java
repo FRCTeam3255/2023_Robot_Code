@@ -39,8 +39,6 @@ public class SN_SwerveModule {
   private SupplyCurrentLimitConfiguration driveCurrentLimit;
   private SupplyCurrentLimitConfiguration steerCurrentLimit;
 
-  private double lastAngle;
-
   /**
    * Create a new SN_SwerveModule.
    * 
@@ -57,8 +55,6 @@ public class SN_SwerveModule {
 
     driveConfiguration = new TalonFXConfiguration();
     steerConfiguration = new TalonFXConfiguration();
-
-    lastAngle = 0;
 
     configure();
   }
@@ -152,16 +148,13 @@ public class SN_SwerveModule {
         state.angle.getDegrees(),
         Constants.STEER_GEAR_RATIO);
 
-    // if the module doesn't actually have any speed, don't bother steering it
-    if ((Math.abs(state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue() * Constants.MAX_MODULE_SPEED))
-        && !steerWhenStill) {
-
-      angle = lastAngle;
+    // If the requested speed is lower than a relevant steering speed,
+    // don't turn the motor.
+    if (Math.abs(state.speedMetersPerSecond) < (prefDrivetrain.percentToSteer.getValue()
+        * Constants.MAX_MODULE_SPEED)) {
+      return;
     }
-
     steerMotor.set(ControlMode.Position, angle);
-
-    lastAngle = angle;
   }
 
   /**
